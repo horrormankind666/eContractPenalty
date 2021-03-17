@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>ระบบคำนวณเงินผิดสัญญาเข้าศึกษาในมหาวิทยาลัยมหิดล</title>
+  <title>ระบบคำนวณเงินผิดสัญญาเข้าศึกษาในมหาวิทยาลัยมหิดล</title>
 </head>
 <body>
 </body>

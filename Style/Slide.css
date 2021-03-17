@@ -1,21 +1,68 @@
-﻿.slide-nav
-{
-    margin:0px;
-    padding:0px;
-    font:normal 10px Tahoma, Verdana, Arial, sans-serif;
-    width:50px;
-    height:18px;
-    line-height:14px;
-    outline:none;    
+﻿.slide-nav {
+  margin: 0;
+  padding: 0;
+  font: normal 10px Tahoma, Verdana, Arial, sans-serif;
+  width: 50px;
+  height: 18px;
+  line-height: 14px;
+  outline: none;    
 }
 
-.slide {position:relative;}
-.slide .slide-tools {background:transparent;position:absolute;top:0px;}
-.slide .slide-tools .slide-tool-content {padding-top:7px;display:none;}
-.slide .slide-tools .slide-tool {width:100%;height:15px;color:#000000;background:#999999;text-align:center;cursor:pointer;font:bold 10px Tahoma, Verdana, Arial, sans-serif;}
+.slide {
+  position: relative;
+}
+.slide .slide-tools {
+  background: transparent;
+  position: absolute;
+  top: 0;
+}
+.slide .slide-tools .slide-tool-content {
+  padding-top: 7px;
+  display: none;
+}
+.slide .slide-tools .slide-tool {
+  width: 100%;
+  height: 15px;
+  color: #000000;
+  background: #999999;
+  text-align: center;
+  cursor: pointer;
+  font: bold 10px Tahoma, Verdana, Arial, sans-serif;
+}
 
-.nav-slide {float:left;position:relative;left:50%;margin:0px;padding:0px;list-style-type:none;font:normal 10px Tahoma, Verdana, Arial, sans-serif;color:#FFFFFF;height:18px;line-height:17px;}
-.nav-slide li {float:left;display:block;margin-right:3px;position:relative;right:50%;}
-.nav-slide li a {display:block;height:18px;line-height:15px;text-align:center;text-decoration:none;background:#5EA8E0;color:#FFFFFF;}
-.nav-slide li a.fix-width {width:22px;}
-.nav-slide li a:hover {background:#990000;color:#FFFFFF;text-decoration:none;}
+.nav-slide {
+  float: left;
+  position: relative;
+  left: 50%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  font: normal 10px Tahoma, Verdana, Arial, sans-serif;
+  color: #FFFFFF;
+  height: 18px;
+  line-height: 17px;
+}
+.nav-slide li {
+  float: left;
+  display: block;
+  margin-right: 3px;
+  position: relative;
+  right: 50%;
+}
+.nav-slide li a {
+  display: block;
+  height: 18px;
+  line-height: 15px;
+  text-align: center;
+  text-decoration: none;
+  background: #5EA8E0;
+  color: #FFFFFF;
+}
+.nav-slide li a.fix-width {
+  width: 22px;
+}
+.nav-slide li a:hover {
+  background: #990000;
+  color: #FFFFFF;
+  text-decoration: none;
+}
