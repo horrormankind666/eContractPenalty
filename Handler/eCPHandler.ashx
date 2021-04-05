@@ -2,10 +2,11 @@
 
 //eCPHandler.ashx     : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
 //Date Created        : 06/08/2555
-//Last Date Modified  : 12/03/2564
+//Last Date Modified  : ๑๘/๐๓/๒๕๖๔
 //Create By           : Yutthaphoom Tawana
 
 using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.SessionState;
 
@@ -38,67 +39,67 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
       {
         case "add":
         case "update":
-        case "del": 
-        {
-          AddUpdateData(_context);
-          break;
-        }
+        case "del":
+          {
+            AddUpdateData(_context);
+            break;
+          }
         case "form":
-        {
-          ShowForm(_context);
-          break;
-        }
+          {
+            ShowForm(_context);
+            break;
+          }
         case "setpage":
-        {
-          SetPage(_context);
-          break;
-        }
+          {
+            SetPage(_context);
+            break;
+          }
         case "page":
-        {
-          ShowPage(_context);
-          break;
-        }
+          {
+            ShowPage(_context);
+            break;
+          }
         case "signin":
-        {
-          Signin(_context);
-          break;
-        }
+          {
+            Signin(_context);
+            break;
+          }
         case "signout":
-        {
-          Signout();
-          break;
-        }
+          {
+            Signout();
+            break;
+          }
         case "list":
         case "combobox":
-        {
-          ShowList(_context);
-          break;
-        }
+          {
+            ShowList(_context);
+            break;
+          }
         case "search":
-        {
-          ShowSearch(_context);
-          break;
-        }
+          {
+            ShowSearch(_context);
+            break;
+          }
         case "resize":
-        {
-          ImageProcess.ResizeImage(_context.Request["file"], int.Parse(_context.Request["width"]), int.Parse(_context.Request["height"]));
-          break;
-        }
+          {
+            ImageProcess.ResizeImage(_context.Request["file"], int.Parse(_context.Request["width"]), int.Parse(_context.Request["height"]));
+            break;
+          }
         case "calculate":
-        {
-          ShowCalculate(_context);
-          break;
-        }
+          {
+            ShowCalculate(_context);
+            break;
+          }
         case "print":
-        {
-          ShowPrint(_context);
-          break;
-        }
+          {
+            ShowPrint(_context);
+            break;
+          }
         case "econtract":
-        {
-          ShowDocEContract(_context);
-          break;
-        }
+          {
+            ShowDocEContract(_context);
+            break;
+          }
       }
     }
   }
@@ -164,16 +165,14 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
       _content = _util.GenPage(_loginResult, int.Parse(_c.Request["pid"]) - 1);
     }
 
-
     _c.Response.Write(SetValuePageReturn());
   }
 
   //สำหรับตรวจสอบการเข้าระบบ
   private void Signin(HttpContext _c)
   {
-    bool _loginResult;
+    bool _loginResult = eCPDB.Signin(_c.Request["authen"]);
 
-    _loginResult = eCPDB.Signin(_c.Request["username"], _c.Request["password"]);
     if (!_loginResult)
     {
       _error = 1;
@@ -205,406 +204,406 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     switch (_frmOrder)
     {
       case "searchcptabuser":
-      {
-        _frm = eCPDataFormSearch.SearchCPTabUser();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-tab-user";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPTabUser();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-tab-user";
+          break;
+        }
       case "addcptabuser":
-      {
-        _frm = eCPDataUser.AddCPTabuser();
-        break;
-      }
+        {
+          _frm = eCPDataUser.AddCPTabuser();
+          break;
+        }
       case "updatecptabuser":
-      {
-        char[] _separator = new char[] { ':' };
-        string[] _userpass = (_c.Request["id"]).Split(_separator);
+        {
+          char[] _separator = new char[] { ':' };
+          string[] _userpass = (_c.Request["id"]).Split(_separator);
 
-        _frm = eCPDataUser.UpdateCPTabUser(_userpass[0], _userpass[1]);
-        break;
-      }
+          _frm = eCPDataUser.UpdateCPTabUser(_userpass[0], _userpass[1]);
+          break;
+        }
       case "addcptabprogram":
-      {
-        _frm = eCPDataConfiguration.AddCPTabProgram();
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.AddCPTabProgram();
+          break;
+        }
       case "updatecptabprogram":
-      {
-        _frm = eCPDataConfiguration.UpdateCPTabProgram(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.UpdateCPTabProgram(_c.Request["id"]);
+          break;
+        }
       case "detailcptabcaldate":
-      {
-        _frm = eCPDataConfiguration.DetailCPTabCalDate(_c.Request["id"]);
-        _width = 750;
-        _height = 0;
-        _title = "detail-cp-tab-cal-date";
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.DetailCPTabCalDate(_c.Request["id"]);
+          _width = 750;
+          _height = 0;
+          _title = "detail-cp-tab-cal-date";
+          break;
+        }
       case "addcptabinterest":
-      { 
-        _frm = eCPDataConfiguration.AddCPTabInterest();
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.AddCPTabInterest();
+          break;
+        }
       case "updatecptabinterest":
-      {
-        _frm = eCPDataConfiguration.UpdateCPTabInterest(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.UpdateCPTabInterest(_c.Request["id"]);
+          break;
+        }
       case "addcptabpaybreakcontract":
-      {
-        _frm = eCPDataConfiguration.AddCPTabPayBreakContract();
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.AddCPTabPayBreakContract();
+          break;
+        }
       case "updatecptabpaybreakcontract":
-      {
-        _frm = eCPDataConfiguration.UpdateCPTabPayBreakContract(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.UpdateCPTabPayBreakContract(_c.Request["id"]);
+          break;
+        }
       case "addcptabscholarship":
-      {
-        _frm = eCPDataConfiguration.AddCPTabScholarship();
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.AddCPTabScholarship();
+          break;
+        }
       case "updatecptabscholarship":
-      {
-        _frm = eCPDataConfiguration.UpdateCPTabScholarship(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataConfiguration.UpdateCPTabScholarship(_c.Request["id"]);
+          break;
+        }
       case "addprofilestudent":
-      {
-        _frm = eCPDataBreakContract.AddProfileStudent();
-        _width = 831;
-        _height = 0;
-        _title = "add-profile-student";
-        break;
-      }
+        {
+          _frm = eCPDataBreakContract.AddProfileStudent();
+          _width = 831;
+          _height = 0;
+          _title = "add-profile-student";
+          break;
+        }
       case "searchstudentwithresult":
-      {
-        _frm = eCPDataFormSearch.SearchStudentWithResult();
-        _width = 900;
-        _height = 0;
-        _title = "search-student";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchStudentWithResult();
+          _width = 900;
+          _height = 0;
+          _title = "search-student";
+          break;
+        }
       case "addcptransbreakcontract":
-      {
-        _frm = eCPDataBreakContract.AddCPTransBreakContract();
-        break;
-      }
+        {
+          _frm = eCPDataBreakContract.AddCPTransBreakContract();
+          break;
+        }
       case "updatecptransbreakcontract":
-      {
-        _frm = eCPDataBreakContract.UpdateCPTransBreakContract(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataBreakContract.UpdateCPTransBreakContract(_c.Request["id"]);
+          break;
+        }
       case "searchcptransbreakcontract":
-      {
-        _frm =  eCPDataFormSearch.SearchCPTransBreakContract();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-trans-break-contract";
-        break;
-      }
+        {
+          _frm =  eCPDataFormSearch.SearchCPTransBreakContract();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-trans-break-contract";
+          break;
+        }
       case "detailtrackingstatus":
-      {
-        _frm = "<div id='status-tracking-explanation'></div>";
-        _width = 350;
-        _height = 0;
-        _title = "detail-tracking-status";
-        break;
-      }
+        {
+          _frm = "<div id='status-tracking-explanation'></div>";
+          _width = 350;
+          _height = 0;
+          _title = "detail-tracking-status";
+          break;
+        }
       case "detailcptransbreakcontract":
       case "detailcptransrequirecontract":
       case "detailcptransrequirerepaycontract":
       case "receivercptransbreakcontract":
       case "repaycptransrequirecontract":
       case "repaycptransrequirecontract1":
-      {
-        _trackingStatus = _frmOrder.Equals("detailcptransbreakcontract") ? "v1" : _trackingStatus;
-        _trackingStatus = _frmOrder.Equals("detailcptransrequirecontract") ? "v2" : _trackingStatus;
-        _trackingStatus = _frmOrder.Equals("detailcptransrequirerepaycontract") ? "v3" : _trackingStatus;
-        _trackingStatus = _frmOrder.Equals("receivercptransbreakcontract") ? "a" : _trackingStatus;
-        _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract") ? "r" : _trackingStatus;
-        _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract1") ? "r1" : _trackingStatus;
-
-        if (_trackingStatus.Equals("v1") || _trackingStatus.Equals("a"))
         {
-          _frm = eCPDataBreakContract.DetailCPTransBreakContract(_c.Request["id"], _trackingStatus);
-          _width = 800;
-          _height = 0;
-          _title = "detail-cp-trans-break-contract";
-        }
+          _trackingStatus = _frmOrder.Equals("detailcptransbreakcontract") ? "v1" : _trackingStatus;
+          _trackingStatus = _frmOrder.Equals("detailcptransrequirecontract") ? "v2" : _trackingStatus;
+          _trackingStatus = _frmOrder.Equals("detailcptransrequirerepaycontract") ? "v3" : _trackingStatus;
+          _trackingStatus = _frmOrder.Equals("receivercptransbreakcontract") ? "a" : _trackingStatus;
+          _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract") ? "r" : _trackingStatus;
+          _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract1") ? "r1" : _trackingStatus;
 
-        if (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") || _trackingStatus.Equals("r") || _trackingStatus.Equals("r1"))
-        {
-          _frm = eCPDataRequireContract.DetailCPTransRequireContract(_c.Request["id"], _trackingStatus);
-          _width = 800;
-          _height = 0;
-          _title = (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") ? "detail-cp-trans-require-contract" : "repay-cp-trans-require-contract");
+          if (_trackingStatus.Equals("v1") || _trackingStatus.Equals("a"))
+          {
+            _frm = eCPDataBreakContract.DetailCPTransBreakContract(_c.Request["id"], _trackingStatus);
+            _width = 800;
+            _height = 0;
+            _title = "detail-cp-trans-break-contract";
+          }
+
+          if (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") || _trackingStatus.Equals("r") || _trackingStatus.Equals("r1"))
+          {
+            _frm = eCPDataRequireContract.DetailCPTransRequireContract(_c.Request["id"], _trackingStatus);
+            _width = 800;
+            _height = 0;
+            _title = (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") ? "detail-cp-trans-require-contract" : "repay-cp-trans-require-contract");
+          }
+          break;
         }
-        break;
-      }
       case "addcommenteditbreakcontract":
       case "addcommentcancelbreakcontract":
       case "addcommentcancelrequirecontract":
       case "addcommentcancelrepaycontract":
-      {
-        _action = _frmOrder.Equals("addcommenteditbreakcontract") ? "E" : _action;
-        _action = _frmOrder.Equals("addcommentcancelbreakcontract") ? "C" : _action;
-        _action = _frmOrder.Equals("addcommentcancelrequirecontract") ? "C" : _action;
-        _action = _frmOrder.Equals("addcommentcancelrepaycontract") ? "C" : _action;
+        {
+          _action = _frmOrder.Equals("addcommenteditbreakcontract") ? "E" : _action;
+          _action = _frmOrder.Equals("addcommentcancelbreakcontract") ? "C" : _action;
+          _action = _frmOrder.Equals("addcommentcancelrequirecontract") ? "C" : _action;
+          _action = _frmOrder.Equals("addcommentcancelrepaycontract") ? "C" : _action;
 
-        _from = _frmOrder.Equals("addcommenteditbreakcontract") ? "breakcontract" : _from;
-        _from = _frmOrder.Equals("addcommentcancelbreakcontract") ? "breakcontract" : _from;
-        _from = _frmOrder.Equals("addcommentcancelrequirecontract") ? "requirecontract" : _from;
-        _from = _frmOrder.Equals("addcommentcancelrepaycontract") ? "repaycontract" : _from;
+          _from = _frmOrder.Equals("addcommenteditbreakcontract") ? "breakcontract" : _from;
+          _from = _frmOrder.Equals("addcommentcancelbreakcontract") ? "breakcontract" : _from;
+          _from = _frmOrder.Equals("addcommentcancelrequirecontract") ? "requirecontract" : _from;
+          _from = _frmOrder.Equals("addcommentcancelrepaycontract") ? "repaycontract" : _from;
 
-        _frm = eCPDataBreakContract.AddCommentBreakContract(_c.Request["id"], _action, _from);
-        _width = 480;
-        _height = 0;
-        _title = "add-comment-" + _action + "-break-contract";
-        break;
-      }
+          _frm = eCPDataBreakContract.AddCommentBreakContract(_c.Request["id"], _action, _from);
+          _width = 480;
+          _height = 0;
+          _title = "add-comment-" + _action + "-break-contract";
+          break;
+        }
       case "addcptransrequirecontract":
-      {
-        _frm = eCPDataRequireContract.AddCPTransRequireContract(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataRequireContract.AddCPTransRequireContract(_c.Request["id"]);
+          break;
+        }
       case "updatecptransrequirecontract":
-      {
-        _frm = eCPDataRequireContract.UpdateCPTransRequireContract(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataRequireContract.UpdateCPTransRequireContract(_c.Request["id"]);
+          break;
+        }
       case "detailrepaystatus":
-      {
-        _frm = "<div id='status-repay-explanation'></div>";
-        _width = 406;
-        _height = 0;
-        _title = "detail-repay-status";
-        break;
-      }
+        {
+          _frm = "<div id='status-repay-explanation'></div>";
+          _width = 406;
+          _height = 0;
+          _title = "detail-repay-status";
+          break;
+        }
       case "searchcptransrepaycontract":
-      {
-        _frm = eCPDataFormSearch.SearchCPTransRepayContract();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-trans-repay-contract";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPTransRepayContract();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-trans-repay-contract";
+          break;
+        }
       case "addupdaterepaycontract":
-      {
-        _frm = eCPDataRepay.AddUpdateCPTransRepayContract(_c.Request["id"]);
-        _width = 680;
-        _height = 0;
-        _title = "addupdate-repay-contract";
-        break;
-      }
+        {
+          _frm = eCPDataRepay.AddUpdateCPTransRepayContract(_c.Request["id"]);
+          _width = 680;
+          _height = 0;
+          _title = "addupdate-repay-contract";
+          break;
+        }
       case "viewrepaycontract":
-      {
-        _frm = eCPDataRepay.ViewCPTransRepayContract(_c.Request["id"]);
-        _width = 680;
-        _height = 0;
-        _title = "addupdate-repay-contract";
-        break;
-      }
+        {
+          _frm = eCPDataRepay.ViewCPTransRepayContract(_c.Request["id"]);
+          _width = 680;
+          _height = 0;
+          _title = "addupdate-repay-contract";
+          break;
+        }
       case "calinterest":
-      {
-        _frm = eCPDataRepay.DetailCalInterestOverpayment(_c.Request["id"]);
-        _width = 721;
-        _height = 0;
-        _title = "cal-interest";
-        break;
-      }
+        {
+          _frm = eCPDataRepay.DetailCalInterestOverpayment(_c.Request["id"]);
+          _width = 721;
+          _height = 0;
+          _title = "cal-interest";
+          break;
+        }
       case "detailpaymentstatus":
-      {
-        _frm = "<div id='status-payment-explanation'></div>";
-        _width = 350;
-        _height = 146;
-        _title = "detail-payment-status";
-        break;
-      }
+        {
+          _frm = "<div id='status-payment-explanation'></div>";
+          _width = 350;
+          _height = 146;
+          _title = "detail-payment-status";
+          break;
+        }
       case "adddetailcptranspayment":
-      {
-        _frm = eCPDataPayment.TabAddDetailCPTransPayment(_c.Request["id"]);
-        _width = 900;
-        _height = 0;
-        _title = "adddetail-cp-trans-payment";
-        break;
-      }
+        {
+          _frm = eCPDataPayment.TabAddDetailCPTransPayment(_c.Request["id"]);
+          _width = 900;
+          _height = 0;
+          _title = "adddetail-cp-trans-payment";
+          break;
+        }
       case "searchcptranspayment":
-      {
-        _frm = eCPDataFormSearch.SearchCPTransPayment();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-trans-payment";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPTransPayment();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-trans-payment";
+          break;
+        }
       case "selectformatpayment":
-      {
-        _frm = eCPDataPayment.SelectFormatPayment(_c.Request["id"]);
-        _width = 500;
-        _height = 0;
-        _title = "select-format-payment";
-        break;
-      }
+        {
+          _frm = eCPDataPayment.SelectFormatPayment(_c.Request["id"]);
+          _width = 500;
+          _height = 0;
+          _title = "select-format-payment";
+          break;
+        }
       case "detailcptranspayment":
-      {
-        _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "detail");
-        break;
-      }
+        {
+          _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "detail");
+          break;
+        }
       case "detailtranspayment":
-      {
-        _frm = eCPDataPayment.DetailTransPayment(_c.Request["id"]);
-        _width = 650;
-        _height = 0;
-        _title = "detail-trans-payment";
-        break;
-      }
+        {
+          _frm = eCPDataPayment.DetailTransPayment(_c.Request["id"]);
+          _width = 650;
+          _height = 0;
+          _title = "detail-trans-payment";
+          break;
+        }
       case "addcptranspaymentfullrepay":
-      {
-        _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addfullrepay");
-        break;
-      }
+        {
+          _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addfullrepay");
+          break;
+        }
       case "addcptranspaymentpayrepay":
-      {
-        _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addpayrepay");
-        break;
-      }
+        {
+          _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addpayrepay");
+          break;
+        }
       case "adddetailpaychannel":
-      {
-        _frm = eCPDataPayment.AddDetailPayChannel(_c.Request["id"]);
-        _width = 557;
-        _height = 0;
-        _title = "add-detail-pay-channel";
-        break;
-      }
+        {
+          _frm = eCPDataPayment.AddDetailPayChannel(_c.Request["id"]);
+          _width = 557;
+          _height = 0;
+          _title = "add-detail-pay-channel";
+          break;
+        }
       case "chkbalance":
-      {
-        _frm = eCPDataPayment.ChkBalance();
-        _width = 557;
-        _height = 0;
-        _title = "chk-balance";
-        break;
-      }
+        {
+          _frm = eCPDataPayment.ChkBalance();
+          _width = 557;
+          _height = 0;
+          _title = "chk-balance";
+          break;
+        }
       case "searchcpreporttablecalcapitalandinterest":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportTableCalCapitalAndInterest();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-table-cal-capital-and-interest";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportTableCalCapitalAndInterest();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-table-cal-capital-and-interest";
+          break;
+        }
       case "calreporttablecalcapitalandinterest":
-      {
-        _frm = eCPDataReportTableCalCapitalAndInterest.CalReportTableCalCapitalAndInterest(_c.Request["id"]);
-        break;
-      }
+        {
+          _frm = eCPDataReportTableCalCapitalAndInterest.CalReportTableCalCapitalAndInterest(_c.Request["id"]);
+          break;
+        }
       case "searchcpreportstepofwork":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportStepOfWork();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-step-of-work";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportStepOfWork();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-step-of-work";
+          break;
+        }
       case "reportstepofworkonstatisticrepaybyprogram":
-      {
-        _frm = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram();
-        _width = 750;
-        _height = 0;
-        _title = "report-step-of-work-on-statistic-repay-by-program";
-        break;
-      }
+        {
+          _frm = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram();
+          _width = 750;
+          _height = 0;
+          _title = "report-step-of-work-on-statistic-repay-by-program";
+          break;
+        }
       case "reportstudentonstatisticcontractbyprogram":
-      {
-        _frm = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram();
-        _width = 750;
-        _height = 0;
-        _title = "report-student-on-statistic-contract-by-program";
-        break;
-      }
+        {
+          _frm = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram();
+          _width = 750;
+          _height = 0;
+          _title = "report-student-on-statistic-contract-by-program";
+          break;
+        }
       case "searchcpreportnoticerepaycomplete":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportNoticeRepayComplete();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-notice-repay-complete";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportNoticeRepayComplete();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-notice-repay-complete";
+          break;
+        }
       case "searchcpreportnoticeclaimdebt":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportNoticeClaimDebt();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-notice-claim-debt";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportNoticeClaimDebt();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-notice-claim-debt";
+          break;
+        }
       case "searchcpreportpaymentbydate":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportStatisticPaymentByDate();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-statistic-payment-by-date";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportStatisticPaymentByDate();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-statistic-payment-by-date";
+          break;
+        }
       case "viewtranspaymentbydate":
-      {
-        _frm = eCPDataReportStatisticPaymentByDate.ViewTransPaymentByDate(_c.Request["id"]);
-        _width = 950;
-        _height = 0;
-        _title = "view-trans-payment-by-date";
-        break;
-      }
+        {
+          _frm = eCPDataReportStatisticPaymentByDate.ViewTransPaymentByDate(_c.Request["id"]);
+          _width = 950;
+          _height = 0;
+          _title = "view-trans-payment-by-date";
+          break;
+        }
       case "viewtranspayment":
-      {
-        _frm = eCPDataReportDebtorContract.ViewTransPayment(_c.Request["id"]);
-        _width = 950;
-        _height = 0;
-        _title = "view-trans-payment";
-        break;
-      }
+        {
+          _frm = eCPDataReportDebtorContract.ViewTransPayment(_c.Request["id"]);
+          _width = 950;
+          _height = 0;
+          _title = "view-trans-payment";
+          break;
+        }
       case "manual":
-      {
-        _frm = eCPUtil.Manual();
-        _width = 570;
-        _height = 0;
-        _title = "manual";
-        break;
-      }
+        {
+          _frm = eCPUtil.Manual();
+          _width = 570;
+          _height = 0;
+          _title = "manual";
+          break;
+        }
       case "detailecontractstatus":
-      {
-        _frm = "<div id='status-e-contract'></div>";
-        _width = 350;
-        _height = 117;
-        _title = "detail-e-contract-status";
-        break;
-      }
+        {
+          _frm = "<div id='status-e-contract'></div>";
+          _width = 350;
+          _height = 117;
+          _title = "detail-e-contract-status";
+          break;
+        }
       case "searchcpreportecontract":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportEContract();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-e-contract";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportEContract();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-e-contract";
+          break;
+        }
       case "searchcpreportdebtorcontract":
-      {
-        _frm = eCPDataFormSearch.SearchCPReportDebtorContract();
-        _width = 655;
-        _height = 0;
-        _title = "search-cp-report-debtor-contract";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchCPReportDebtorContract();
+          _width = 655;
+          _height = 0;
+          _title = "search-cp-report-debtor-contract";
+          break;
+        }
       case "searchstudentdebtorcontractbyprogram":
-      {
-        _frm = eCPDataFormSearch.SearchStudentDebtorContractByProgram();
-        _width = 750;
-        _height = 0;
-        _title = "search-cp-report-debtor-contract-by-program";
-        break;
-      }
+        {
+          _frm = eCPDataFormSearch.SearchStudentDebtorContractByProgram();
+          _width = 750;
+          _height = 0;
+          _title = "search-cp-report-debtor-contract-by-program";
+          break;
+        }
     }
 
     _c.Response.Write("<form>" + _frm + "<form><width>" + _width + "<width><height>" + _height + "<height><title>" + _title + "<title>");
@@ -645,10 +644,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     switch (_listOrder)
     {
       case "program":
-      {
-        _listData = eCPUtil.ListProgram(false, "program", _c.Request["dlevel"], _c.Request["faculty"]);
-        break;
-      }
+        {
+          _listData = eCPUtil.ListProgram(false, "program", _c.Request["dlevel"], _c.Request["faculty"]);
+          break;
+        }
       case "programcptabprogram":
       case "programtransbreakcontract":
       case "programtransrepaycontract":
@@ -661,40 +660,40 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
       case "programreportnoticeclaimdebt":
       case "programreportstatisticpaymentbydate":
       case "programreportecontract":
-      {
-        _listData = eCPUtil.ListProgram(true, _listOrder, _c.Request["dlevel"], _c.Request["faculty"]);
-        break;
-      }
+        {
+          _listData = eCPUtil.ListProgram(true, _listOrder, _c.Request["dlevel"], _c.Request["faculty"]);
+          break;
+        }
       case "cpprogram":
-      {
-        _listData = eCPDataConfiguration.ListUpdateCPTabProgram();
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListUpdateCPTabProgram();
+          break;
+        }
       case "interest":
-      {
-        _listData = eCPDataConfiguration.ListUpdateCPTabInterest();
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListUpdateCPTabInterest();
+          break;
+        }
       case "pay-break-contract":
-      {
-        _listData = eCPDataConfiguration.ListUpdateCPTabPayBreakContract();
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListUpdateCPTabPayBreakContract();
+          break;
+        }
       case "scholarship":
-      {
-        _listData = eCPDataConfiguration.ListUpdateCPTabScholarship();
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListUpdateCPTabScholarship();
+          break;
+        }
       case "cpreportstatisticrepay":
-      {
-        _listData = eCPDataReportStatisticRepay.ListUpdateCPReportStatisticRepay();
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticRepay.ListUpdateCPReportStatisticRepay();
+          break;
+        }
       case "cpreportstatisticrecontract":
-      {
-        _listData = eCPDataReportStatisticContract.ListUpdateCPReportStatisticContract();
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticContract.ListUpdateCPReportStatisticContract();
+          break;
+        }
     }
 
     _c.Response.Write(_listData);
@@ -708,135 +707,135 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
 
     switch (_searchFrom) {
       case "tabuser":
-      {
-        _listData = eCPDataUser.ListCPTabUser(_c);
-        break;
-      }
+        {
+          _listData = eCPDataUser.ListCPTabUser(_c);
+          break;
+        }
       case "studentwithresult":
-      {
-        _listData = eCPDataFormSearch.ListSearchStudentWithResult(_c);
-        break;
-      }
+        {
+          _listData = eCPDataFormSearch.ListSearchStudentWithResult(_c);
+          break;
+        }
       case "profilestudent":
-      {
-        _listData = eCPDataFormSearch.ListProfileStudent(_c.Request["studentid"]);
-        break;
-      }
+        {
+          _listData = eCPDataFormSearch.ListProfileStudent(_c.Request["studentid"]);
+          break;
+        }
       case "scholarship":
-      { 
-        _listData = eCPDataConfiguration.ListSearchCPTabScholarship(_c);
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListSearchCPTabScholarship(_c);
+          break;
+        }
       case "paybreakcontract":
-      {
-        _listData = eCPDataConfiguration.ListSearchCPTabPayBreakContract(_c);
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListSearchCPTabPayBreakContract(_c);
+          break;
+        }
       case "scholarshipandpaybreakcontract":
-      {
-        _listData = eCPDataConfiguration.ListSearchScholarshipAndPayBreakContract(_c);
-        break;
-      }
+        {
+          _listData = eCPDataConfiguration.ListSearchScholarshipAndPayBreakContract(_c);
+          break;
+        }
       case "studenttransbreakcontract":
-      {
-        _listData = eCPDataBreakContract.ListSearchStudentCPTransBreakContract(_c.Request["studentid"]);
-        break;
-      }
+        {
+          _listData = eCPDataBreakContract.ListSearchStudentCPTransBreakContract(_c.Request["studentid"]);
+          break;
+        }
       case "transbreakcontract":
-      {
-        _listData = eCPDataBreakContract.ListCPTransBreakContract(_c);
-        break;
-      }
+        {
+          _listData = eCPDataBreakContract.ListCPTransBreakContract(_c);
+          break;
+        }
       case "trackingstatustransbreakcontract":
-      {
-        _listData = eCPDataBreakContract.ListSearchTrackingStatusCPTransBreakContract(_c.Request["cp1id"]);
-        break;
-      }
+        {
+          _listData = eCPDataBreakContract.ListSearchTrackingStatusCPTransBreakContract(_c.Request["cp1id"]);
+          break;
+        }
       case "repaystatustransrequirecontract":
-      {
-        _listData = eCPDataRequireContract.ListSearchRepayStatusCPTransRequireContract(_c.Request["cp1id"]);
-        break;
-      }
+        {
+          _listData = eCPDataRequireContract.ListSearchRepayStatusCPTransRequireContract(_c.Request["cp1id"]);
+          break;
+        }
       case "transrepaycontract":
-      {
-        _listData = eCPDataRepay.ListRepay(_c);
-        break;
-      }
+        {
+          _listData = eCPDataRepay.ListRepay(_c);
+          break;
+        }
       case "repaystatuscalinterest":
-      {
-        _listData = eCPDataRepay.ListSearchRepayStatusCalInterestOverpayment(_c.Request["cp2id"]);
-        break;
-      }
+        {
+          _listData = eCPDataRepay.ListSearchRepayStatusCalInterestOverpayment(_c.Request["cp2id"]);
+          break;
+        }
       case "transpayment":
-      {
-        _listData = eCPDataPayment.ListPaymentOnCPTransRequireContract(_c);
-        break;
-      }
+        {
+          _listData = eCPDataPayment.ListPaymentOnCPTransRequireContract(_c);
+          break;
+        }
       case "formatpayment":
-      {
-        _listData = eCPUtil._paymentFormat[int.Parse(_c.Request["formatpayment"]) - 1];
-        break;
-      }
+        {
+          _listData = eCPUtil._paymentFormat[int.Parse(_c.Request["formatpayment"]) - 1];
+          break;
+        }
       case "reporttablecalcapitalandinterest":
-      {
-        _listData = eCPDataReportTableCalCapitalAndInterest.ListCPReportTableCalCapitalAndInterest(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportTableCalCapitalAndInterest.ListCPReportTableCalCapitalAndInterest(_c);
+          break;
+        }
       case "reportstepofwork":
-      {
-        _listData = eCPDataReportStepOfWork.ListCPReportStepOfWork(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportStepOfWork.ListCPReportStepOfWork(_c);
+          break;
+        }
       case "reportstatisticrepaybyprogram":
-      {
-        _listData = eCPDataReportStatisticRepay.ListCPReportStatisticRepayByProgram(_c.Request["acadamicyear"]);
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticRepay.ListCPReportStatisticRepayByProgram(_c.Request["acadamicyear"]);
+          break;
+        }
       case "reportstepofworkonstatisticrepaybyprogram":
-      {
-        _listData = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram(_c);
+          break;
+        }
       case "reportstatisticcontractbyprogram":
-      {
-        _listData = eCPDataReportStatisticContract.ListCPReportStatisticContractByProgram(_c.Request["acadamicyear"]);
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticContract.ListCPReportStatisticContractByProgram(_c.Request["acadamicyear"]);
+          break;
+        }
       case "reportstudentonstatisticcontractbyprogram":
-      {
-        _listData = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram(_c);
+          break;
+        }
       case "reportnoticerepaycomplete":
-      {
-        _listData = eCPDataReportNoticeRepayComplete.ListCPReportNoticeRepayComplete(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportNoticeRepayComplete.ListCPReportNoticeRepayComplete(_c);
+          break;
+        }
       case "reportnoticeclaimdebt":
-      {
-        _listData = eCPDataReportNoticeClaimDebt.ListCPReportNoticeClaimDebt(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportNoticeClaimDebt.ListCPReportNoticeClaimDebt(_c);
+          break;
+        }
       case "reportstatisticpaymentbydate":
-      {
-        _listData = eCPDataReportStatisticPaymentByDate.ListCPReportStatisticPaymentByDate(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportStatisticPaymentByDate.ListCPReportStatisticPaymentByDate(_c);
+          break;
+        }
       case "reportecontract":
-      {
-        _listData = eCPDataReportEContract.ListCPReportEContract(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportEContract.ListCPReportEContract(_c);
+          break;
+        }
       case "reportdebtorcontract":
-      {
-        _listData = eCPDataReportDebtorContract.ListCPReportDebtorContract(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportDebtorContract.ListCPReportDebtorContract(_c);
+          break;
+        }
       case "reportdebtorcontractbyprogram":
-      {
-        _listData = eCPDataReportDebtorContract.ListCPReportDebtorContractByProgram(_c);
-        break;
-      }
+        {
+          _listData = eCPDataReportDebtorContract.ListCPReportDebtorContractByProgram(_c);
+          break;
+        }
     }
 
     _c.Response.Write(_listData);
@@ -850,85 +849,60 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     switch (_cal)
     {
       case "scholarshipandpenalty":
-      {
-        ShowCalScholarshipPenalty(_c);
-        break;
-      }
+        {
+          ShowCalScholarshipPenalty(_c);
+          break;
+        }
       case "interestoverpayment":
-      {
-        ShowCalInterestOverpayment(_c);
-        break;
-      }
+        {
+          ShowCalInterestOverpayment(_c);
+          break;
+        }
       case "interestpayrepay":
-      {
-        ShowCalInterestPayRepay(_c);
-        break;
-      }
+        {
+          ShowCalInterestPayRepay(_c);
+          break;
+        }
       case "interestoverpaymentandpayrepay":
-      {
-        ShowCalInterestOverpaymentAndPayRepay(_c);
-        break;
-      }
+        {
+          ShowCalInterestOverpaymentAndPayRepay(_c);
+          break;
+        }
       case "chkbalance":
-      {
-        ShowCalChkBalance(_c);
-        break;
-      }
+        {
+          ShowCalChkBalance(_c);
+          break;
+        }
       case "totalpayment":
-      {
-        ShowCalTotalPayment(_c);
-        break;
-      }
+        {
+          ShowCalTotalPayment(_c);
+          break;
+        }
       case "reporttablecalcapitalandinterest":
-      {
-        ShowCalReportTableCalCapitalAndInterest(_c);
-        break;
-      }
+        {
+          ShowCalReportTableCalCapitalAndInterest(_c);
+          break;
+        }
     }
   }
 
   //สำหรับคำนวณทุนการศึกษาที่ต้องชดใช้
   private void ShowCalScholarshipPenalty(HttpContext _c)
   {
-    /*
-    _send[0] = "scholar"
-    _send[1] = "scholarshipmoney"
-    _send[2] = "scholarshipyear"
-    _send[3] = "scholarshipmonth"
-    _send[4] = "allactualmonthscholarship"
-    _send[5] = "casegraduate"
-    _send[6] = "civil"
-    _send[7] = "datestart"
-    _send[8] = "dateend"
-    _send[9] = "indemnitoryear"
-    _send[10] = "indemnitorcash"
-    _send[11] = "caldatecondition"
-    //ปรับปรุงเมื่อ ๐๕/๐๔/๒๕๖๒
-    //---------------------------------------------------------------------------------------------------
-    _send[12] = "studyleave"
-    _send[13] = "beforestudyleavestartdate"
-    _send[14] = "beforestudyleaveenddate"
-    _send[15] = "studyleavestartdate"
-    _send[16] = "studyleaveenddate"
-    _send[17] = "afterstudyleavestartdate"
-    _send[18] = "afterstudyleaveenddate"
-    //---------------------------------------------------------------------------------------------------
-    */
-
     string _scholar = _c.Request["scholar"];
     string _scholarshipMoney = _c.Request["scholarshipmoney"];
     string _scholarshipYear = _c.Request["scholarshipyear"];
     string _scholarshipMonth = _c.Request["scholarshipmonth"];
     string _allActualMonthScholarship = _c.Request["allactualmonthscholarship"];
     string _caseGraduate = _c.Request["casegraduate"];
+    string _educationDate = _c.Request["educationdate"];
+    string _graduateDate = _c.Request["graduatedate"];
     string _civil = _c.Request["civil"];
     string _dateStart = _c.Request["datestart"];
     string _dateEnd = _c.Request["dateend"];
     string _indemnitorYear = _c.Request["indemnitoryear"];
     string _indemnitorCash = _c.Request["indemnitorcash"];
     string _calDateCondition = _c.Request["caldatecondition"];
-    //ปรับปรุงเมื่อ ๐๕/๐๔/๒๕๖๒
-    //---------------------------------------------------------------------------------------------------
     string _studyLeave = _c.Request["studyleave"];
     string _beforeStudyLeaveStartDate = _c.Request["beforestudyleavestartdate"];
     string _beforeStudyLeaveEndDate = _c.Request["beforestudyleaveenddate"];
@@ -936,7 +910,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     string _studyLeaveEndDate = _c.Request["studyleaveenddate"];
     string _afterStudyLeaveStartDate = _c.Request["afterstudyleavestartdate"];
     string _afterStudyLeaveEndDate = _c.Request["afterstudyleaveenddate"];
-    //---------------------------------------------------------------------------------------------------
     string _result = String.Empty;
     double[] _resultPayScholarship;
     double[] _resultPenalty;
@@ -944,7 +917,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     _resultPayScholarship = eCPUtil.CalPayScholarship(_scholar, _caseGraduate, _civil, _scholarshipMoney, _scholarshipYear, _scholarshipMonth, _allActualMonthScholarship);
 
     if (!_studyLeave.Equals("Y"))
-      _resultPenalty = eCPUtil.CalPenalty(_scholar, _caseGraduate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, 0);
+      _resultPenalty = eCPUtil.CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, 0);
     else
     {
       _dateStart = _beforeStudyLeaveStartDate;
@@ -955,7 +928,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
       DateTime _dateB = DateTime.Parse(_afterStudyLeaveEndDate, _provider);
       double[] _totalDaysAfterStudyLeave  = Util.CalcDate(_dateA, _dateB);
 
-      _resultPenalty = eCPUtil.CalPenalty(_scholar, _caseGraduate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, _totalDaysAfterStudyLeave[0]);
+      _resultPenalty = eCPUtil.CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, _totalDaysAfterStudyLeave[0]);
     }
 
     _result += "<allactualscholarship>" + _resultPayScholarship[0].ToString("#,##0.00") + "<allactualscholarship>" +
@@ -1249,15 +1222,15 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
       switch (_c.Request["order"])
       {
         case "reporttablecalcapitalandinterest":
-        {
-          eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(_send);
-          break;
-        }
+          {
+            eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(_send);
+            break;
+          }
         case "reportnoticecheckforreimbursement":
-        {
-          eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(_send);
-          break;
-        }
+          {
+            eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(_send);
+            break;
+          }
       }
     }
 
@@ -1266,15 +1239,15 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
       switch (_c.Request["order"])
       {
         case "reportnoticerepaycomplete":
-        {
-          eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(_send);
-          break;
-        }
+          {
+            eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(_send);
+            break;
+          }
         case "reportnoticeclaimdebt":
-        {
-          eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(_send);
-          break;
-        }
+          {
+            eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(_send);
+            break;
+          }
       }
     }
   }

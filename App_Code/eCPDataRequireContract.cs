@@ -1,6 +1,6 @@
 ﻿//eCPDataRequireContract.cs : สำหรับการรับรายการแจ้ง
 //Date Created              : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified        : ๑๗/๐๓/๒๕๖๔
+//Last Date Modified        : ๐๒/๐๔/๒๕๖๔
 //Create By                 : Yutthaphoom Tawana
 
 using System;
@@ -46,6 +46,7 @@ public class eCPDataRequireContract
     string _contractForceDateStartDefault = _action.Equals("update") ? _data[0, 62] : _data[0, 47];
     string _contractForceDateEndDefault = _action.Equals("update") ? _data[0, 63] : _data[0, 48];
     string _calDateCondition = _action.Equals("update") ? _data[0, 48] : _data[0, 35];
+    string _setAmtIndemnitorYear = _action.Equals("update") ? _data[0, 77] : _data[0, 51];
     string _indemnitorYearDefault = _action.Equals("update") ? (!_data[0, 49].Equals("0") ? double.Parse(_data[0, 49]).ToString("#,##0") : String.Empty) : (!_data[0, 36].Equals("0") ? double.Parse(_data[0, 36]).ToString("#,##0") : String.Empty);
     string _indemnitorCashDefault = _action.Equals("update") ? double.Parse(_data[0, 50]).ToString("#,##0") : double.Parse(_data[0, 37]).ToString("#,##0");
     string _trackingStatus = _action.Equals("update") ? (_data[0, 52] + _data[0, 53] + _data[0, 54] + _data[0, 55]) : (_data[0, 40] + _data[0, 41] + _data[0, 42] + _data[0, 43]);
@@ -71,6 +72,10 @@ public class eCPDataRequireContract
     string _remainDateDefault = _action.Equals("update") ? (!String.IsNullOrEmpty(_data[0, 15]) ? double.Parse(_data[0, 15]).ToString("#,##0") : String.Empty) : String.Empty;
     string _subtotalPenaltyDefault = _action.Equals("update") ? (!String.IsNullOrEmpty(_data[0, 16]) ? double.Parse(_data[0, 16]).ToString("#,##0.00") : String.Empty) : String.Empty;
     string _totalPenaltyDefault = _action.Equals("update") ? (!String.IsNullOrEmpty(_data[0, 17]) ? double.Parse(_data[0, 17]).ToString("#,##0.00") : String.Empty) : String.Empty;
+    string _lawyerFullname = _action.Equals("update") ? _data[0, 73] : String.Empty;
+    string _lawyerPhoneNumber = _action.Equals("update") ? _data[0, 74] : String.Empty;
+    string _lawyerMobileNumber = _action.Equals("update") ? _data[0, 75] : String.Empty;
+    string _lawyerEmail = _action.Equals("update") ? _data[0, 76] : String.Empty;
     string _statusRepay = _action.Equals("update") ? _data[0, 18] : String.Empty;
 
     _html += "<div class='form-content' id='" + _action + "-cp-trans-require-contract'>" +
@@ -84,6 +89,7 @@ public class eCPDataRequireContract
              "    <input type='hidden' id='civil-hidden' value='" + _civilDefault + "' />" +
              "    <input type='hidden' id='contract-force-date-start-hidden' value='" + _contractForceDateStartDefault + "' />" +
              "    <input type='hidden' id='contract-force-date-end-hidden' value='" + _contractForceDateEndDefault + "' />" +
+             "    <input type='hidden' id='set-amt-indemnitor-year' value='" + _setAmtIndemnitorYear + "' />" +
              "    <input type='hidden' id='indemnitor-year-hidden' value='" + _indemnitorYearDefault + "' />" +
              "    <input type='hidden' id='indemnitor-cash-hidden' value='" + _indemnitorCashDefault + "' />" +
              "    <input type='hidden' id='cal-date-condition-hidden' value='" + _calDateCondition + "' />" +
@@ -110,6 +116,10 @@ public class eCPDataRequireContract
              "    <input type='hidden' id='remain-date-hidden' value='" + _remainDateDefault + "' />" +
              "    <input type='hidden' id='subtotal-penalty-hidden' value='" + _subtotalPenaltyDefault + "' />" +
              "    <input type='hidden' id='total-penalty-hidden' value='" + _totalPenaltyDefault + "' />" +
+             "    <input type='hidden' id='lawyer-fullname-hidden' value='" + _lawyerFullname + "' />" +
+             "    <input type='hidden' id='lawyer-phonenumber-hidden' value='" + _lawyerPhoneNumber + "' />" +
+             "    <input type='hidden' id='lawyer-mobilenumber-hidden' value='" + _lawyerMobileNumber + "' />" +
+             "    <input type='hidden' id='lawyer-email-hidden' value='" + _lawyerEmail + "' />" +
              "    <input type='hidden' id='repaystatus' value='" + _statusRepay + "' />" +
              "    <div>" +
              "      <div id='profile-student'>" +
@@ -195,7 +205,14 @@ public class eCPDataRequireContract
              "              <div class='clear'></div>" +
              "              <div>" +
              "                <div class='content-left' id='indemnitor-year-label'>ระยะเวลาที่ต้องปฏิบัติงานชดใช้</div>" +
-             "                <div class='content-left' id='indemnitor-year-input'><input class='inputbox textbox-numeric' type='text' id='indemnitor-year' onblur=Trim('indemnitor-year');AddCommas('indemnitor-year',0) onkeyup='ExtractNumber(this,0,false)' onkeypress='return BlockNonNumbers(this,event,false,false)' value='' style='width:120px' /></div>" +
+             "                <div class='content-left' id='indemnitor-year-input'>";
+
+    if (_setAmtIndemnitorYear.Equals("Y"))
+      _html += "                <input class='inputbox textbox-numeric' type='text' id='indemnitor-year' onblur=Trim('indemnitor-year');AddCommas('indemnitor-year',0) onkeyup='ExtractNumber(this,0,false)' onkeypress='return BlockNonNumbers(this,event,false,false)' value='' style='width:120px' />";
+    else
+      _html += "                <input class='inputbox textbox-numeric' type='text' id='indemnitor-year' value='' style='width:120px' />";
+
+    _html += "                </div>" +
              "                <div class='content-left' id='indemnitor-year-unit-label'>ปี</div>" +
              "              </div>" +
              "              <div class='clear'></div>" +
@@ -215,9 +232,9 @@ public class eCPDataRequireContract
     {
       _html += "    <div class='box3'></div>" +
                "    <div id='cal-contract-penalty1'>" +
-               "      <div id='clear-bottom'>" +
-               "        <div class='content-left' id='cal-contract-penalty-label'>" +
-               "          <div class='form-label-discription-style'>" +
+               "      <div>" +
+               "        <div class='content-left cal-contract-penalty-label' id='cal-contract-penalty-label'>" +
+               "          <div class='form-label-discription-style clear-bottom'>" +
                "            <div class='form-label-style'>คำนวณเงินชดใช้</div>" +
                "            <div class='form-discription-style'>" +
                "              <div class='form-discription-line1-style'>กรุณากดปุ่มคำนวณเพื่อทำการคำนวณเงินทุนการศึกษาที่</div>" +
@@ -226,7 +243,7 @@ public class eCPDataRequireContract
                "            </div>" +
                "          </div>" +
                "        </div>" +
-               "        <div class='content-left' id='cal-contract-penalty-input'>" +
+               "        <div class='content-left cal-contract-penalty-input' id='cal-contract-penalty-input'>" +
                "          <div class='form-label-discription-style' id='cal-contract-penalty-button'>" +
                "            <div class='button-style2'>" +
                "              <ul>" +
@@ -264,9 +281,9 @@ public class eCPDataRequireContract
                "            </div>" +
                "            <div>" +
                "              <div class='content-left' id='all-actual-date-label'>ระยะเวลาที่ใช้ในการศึกษา</div>" +
-               "              <div class='content-left' id='all-actual-month-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-month' value='' style='width:37px' /></div>" +
+               "              <div class='content-left' id='all-actual-month-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-month' value='' style='width:120px' /></div>" +
                "              <div class='content-left' id='all-actual-month-unit-label'>เดือน</div>" +
-               "              <div class='content-left' id='all-actual-day-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-day' value='' style='width:37px' /></div>" +
+               "              <div class='content-left' id='all-actual-day-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-day' value='' style='width:120px' /></div>" +
                "              <div class='content-left' id='all-actual-day-unit-label'>วัน</div>" +
                "            </div>" +
                "            <div class='clear'></div>" +
@@ -277,8 +294,8 @@ public class eCPDataRequireContract
                "            </div>" +
                "            <div class='clear'></div>" +
                "          </div>" +
-               "          <div class='form-label-discription-style' id='cal-contract-penalty-total'>" +
-               "            div>" +
+               "          <div class='form-label-discription-style clear-bottom' id='cal-contract-penalty-total'>" +
+               "            <div>" +
                "              <div class='content-left' id='total-penalty-label'>ยอดเงินที่ต้องรับผิดชอบชดใช้</div>" +
                "              <div class='content-left' id='total-penalty-input'><input class='inputbox textbox-numeric' type='text' id='total-penalty' value='' style='width:120px' /></div>" +
                "              <div class='content-left' id='total-penalty-unit-label'>บาท</div>" +
@@ -290,7 +307,7 @@ public class eCPDataRequireContract
                "      <div class='clear'></div>" +
                "    </div>";
     }
-                            
+    
     if (_caseGraduateBreakContractDefault.Equals("2"))
     {
       if (_civilDefault.Equals("1"))
@@ -320,8 +337,6 @@ public class eCPDataRequireContract
                  "            </div>" +
                  "          </div>" +
                  "          <div class='clear'></div>" +
-                 //ปรับปรุงเมื่อ ๐๓/๐๔/๒๕๖๒
-                 //---------------------------------------------------------------------------------------------------
                  "          <div id='study-leave-yesno'>" +
                  "            <div class='content-left' id='study-leave-yesno-label'>ช่วงวันที่ทำงานชดใช้</div>" +
                  "            <div class='content-left' id='study-leave-yesno-input'>" +
@@ -378,7 +393,6 @@ public class eCPDataRequireContract
                  "          </div>" +
                  "          <div class='clear'></div>" +
                  "        </div>" +
-                 //---------------------------------------------------------------------------------------------------
                  "      </div>" +
                  "    </div>" +
                  "    <div class='clear'></div>" +
@@ -387,9 +401,9 @@ public class eCPDataRequireContract
 
       _html += "    <div class='box3'></div>" +
                "    <div id='cal-contract-penalty2'>" +
-               "      <div id='clear-bottom'>" +
-               "        <div class='content-left' id='cal-contract-penalty-label'>" +
-               "          <div class='form-label-discription-style'>" +
+               "      <div>" +
+               "        <div class='content-left cal-contract-penalty-label' id='cal-contract-penalty-label-civil-" + _civilDefault + "-set-" + _setAmtIndemnitorYear.ToLower() + "'>" +
+               "          <div class='form-label-discription-style clear-bottom'>" +
                "            <div class='form-label-style'>คำนวณเงินชดใช้</div>" +
                "            <div class='form-discription-style'>" +
                "              <div class='form-discription-line1-style'>กรุณากดปุ่มคำนวณเพื่อทำการคำนวณเงินทุนการศึกษาที่ต้อง</div>" +
@@ -398,7 +412,7 @@ public class eCPDataRequireContract
                "            </div>" +
                "          </div>" +
                "        </div>" +
-               "        <div class='content-left' id='cal-contract-penalty-input'>" +
+               "        <div class='content-left clear-bottom cal-contract-penalty-input' id='cal-contract-penalty-input-civil-" + _civilDefault + "-set-" + _setAmtIndemnitorYear.ToLower() + "'>" +
                "          <div class='form-label-discription-style' id='cal-contract-penalty-button'>" +
                "            <div class='button-style2'>" +
                "              <ul>" +
@@ -421,33 +435,58 @@ public class eCPDataRequireContract
                "                  <li><a href='javascript:void(0)' onclick=ViewCalDate('" + _calDateCondition + "')>ดูสูตรคำนวณ</a></li>" +
                "                </ul>" +
                "              </div>" +
-               "            </div>" +
-               "            <div>" +
-               "              <div class='content-left' id='all-actual-date-label'>ระยะเวลาที่ต้องปฏิบัติงานชดใช้</div>" +
-               "              <div class='content-left' id='all-actual-date-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-date' value='' style='width:120px' /></div>" +
-               "              <div class='content-left' id='all-actual-date-unit-label'>วัน</div>" +
-               "            </div>" +
-               "            <div class='clear'></div>" +
-               "            <div>" +
-               "              <div class='content-left' id='actual-date-label'>ระยะเวลาที่ปฏิบัติงานชดใช้แล้ว</div>" +
-               "              <div class='content-left' id='actual-date-input'><input class='inputbox textbox-numeric' type='text' id='actual-date' value='' style='width:120px' /></div>" +
-               "              <div class='content-left' id='actual-date-unit-label'>วัน</div>" +
-               "            </div>" +
-               "            <div class='clear'></div>" +
-               "            <div>" +
-               "              <div class='content-left' id='remain-date-label'>ระยะเวลาปฏิบัติงานชดใช้ที่ขาด</div>" +
-               "              <div class='content-left' id='remain-date-input'><input class='inputbox textbox-numeric' type='text' id='remain-date' value='' style='width:120px' /></div>" +
-               "              <div class='content-left' id='remain-date-unit-label'>วัน</div>" +
-               "            </div>" +
-               "            <div class='clear'></div>" +
-               "            <div>" +
+               "            </div>";
+
+      if (_setAmtIndemnitorYear.Equals("Y"))
+      {
+        _html += "          <div>" +
+                 "            <div class='content-left' id='all-actual-date-label'>ระยะเวลาที่ต้องปฏิบัติงานชดใช้</div>" +
+                 "            <div class='content-left' id='all-actual-date-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-date' value='' style='width:120px' /></div>" +
+                 "            <div class='content-left' id='all-actual-date-unit-label'>วัน</div>" +
+                 "          </div>" +
+                 "          <div class='clear'></div>" +
+                 "          <div>" +
+                 "            <div class='content-left' id='actual-date-label'>ระยะเวลาที่ปฏิบัติงานชดใช้แล้ว</div>" +
+                 "            <div class='content-left' id='actual-date-input'><input class='inputbox textbox-numeric' type='text' id='actual-date' value='' style='width:120px' /></div>" +
+                 "            <div class='content-left' id='actual-date-unit-label'>วัน</div>" +
+                 "          </div>" +
+                 "          <div class='clear'></div>" +
+                 "          <div>" +
+                 "            <div class='content-left' id='remain-date-label'>ระยะเวลาปฏิบัติงานชดใช้ที่ขาด</div>" +
+                 "            <div class='content-left' id='remain-date-input'><input class='inputbox textbox-numeric' type='text' id='remain-date' value='' style='width:120px' /></div>" +
+                 "            <div class='content-left' id='remain-date-unit-label'>วัน</div>" +
+                 "          </div>" +
+                 "          <div class='clear'></div>";
+      }
+      
+      if (_setAmtIndemnitorYear.Equals("N"))
+      {
+        _html += "          <div>" +
+                 "            <div class='content-left' id='all-actual-day-label'>ระยะเวลาที่ใช้ในการศึกษา</div>" +
+                 "            <div class='content-left' id='all-actual-day-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-day' value='' style='width:120px' /></div>" +
+                 "            <div class='content-left' id='all-actual-day-unit-label'>วัน</div>" +
+                 "          </div>" +
+                 "          <div class='clear'></div>";
+
+        if (_civilDefault.Equals("1"))
+        {
+          _html += "        <div>" +
+                   "          <div class='content-left' id='actual-date-label'>ระยะเวลาที่ปฏิบัติงานชดใช้</div>" +
+                   "          <div class='content-left' id='actual-date-input'><input class='inputbox textbox-numeric' type='text' id='actual-date' value='' style='width:120px' /></div>" +
+                   "          <div class='content-left' id='actual-date-unit-label'>วัน</div>" +
+                   "        </div>" +
+                   "        <div class='clear'></div>";
+        }
+      }
+
+      _html += "            <div>" +
                "              <div class='content-left' id='subtotal-penalty-label'>ยอดเงินค่าปรับผิดสัญญา</div>" +
                "              <div class='content-left' id='subtotal-penalty-input'><input class='inputbox textbox-numeric' type='text' id='subtotal-penalty' value='' style='width:120px' /></div>" +
                "              <div class='content-left' id='subtotal-penalty-unit-label'>บาท</div>" +
                "            </div>" +
                "            <div class='clear'></div>" +
                "          </div>" +
-               "          <div class='form-label-discription-style' id='cal-contract-penalty-total'>" +
+               "          <div class='form-label-discription-style clear-bottom' id='cal-contract-penalty-total'>" +
                "            <div>" +
                "              <div class='content-left' id='total-penalty-label'>ยอดเงินที่ต้องรับผิดชอบชดใช้</div>" +
                "              <div class='content-left' id='total-penalty-input'><input class='inputbox textbox-numeric' type='text' id='total-penalty' value='' style='width:120px' /></div>" +
@@ -461,8 +500,48 @@ public class eCPDataRequireContract
                "      <div class='clear'></div>" +
                "    </div>";
     }
-                            
-    _html += "    </div>" +
+
+    _html += "      <div class='box3'></div>" +
+             "      <div id='lawyer'>" +
+             "        <div>" +
+             "          <div class='form-label-discription-style'>" +
+             "            <div id='lawyer-label'>" +
+             "              <div class='form-label-style'>นิติกรผู้รับผิดชอบ</div>" +
+             "            </div>" +
+             "          </div>" +
+             "          <div class='form-input-style'>" +
+             "            <div class='form-input-content' id='lawyer-input'>" +
+             "              <div>" +
+             "                <div class='content-left' id='fullname-label'>ชื่อ - นามสกุล</div>" +
+             "                <div class='content-left' id='fullname-input'>" +
+             "                  <input class='inputbox' type='text' id='lawyer-fullname' value='" + _lawyerFullname + "' style='width:254px' />" +
+             "                  <div class='form-discription-style'>" +
+             "                    <div class='form-discription-line1-style'>ไม่ต้องระบุคำนำหน้าชื่อ</div>" +
+             "                  </div>" +
+             "                </div>" +
+             "              </div>" +
+             "              <div class='clear'></div>" +
+             "              <div>" +
+             "                <div class='content-left' id='phonenumber-label'>หมายเลขโทรศัพท์</div>" +
+             "                <div class='content-left' id='phonenumber-input'><input class='inputbox' type='text' id='lawyer-phonenumber' value='" + _lawyerPhoneNumber + "' style='width:120px' /></div>" +
+             "              </div>" +
+             "              <div class='clear'></div>" +
+             "              <div>" +
+             "                <div class='content-left' id='mobilenumber-label'>หมายเลขโทรศัพท์มือถือ</div>" +
+             "                <div class='content-left' id='mobilenumber-input'><input class='inputbox' type='text' id='lawyer-mobilenumber' value='" + _lawyerMobileNumber + "' style='width:120px' /></div>" +            
+             "              </div>" +
+             "              <div class='clear'></div>" +
+             "              <div>" +
+             "                <div class='content-left' id='email-label'>อีเมล์</div>" +
+             "                <div class='content-left' id='email-input'><input class='inputbox' type='text' id='lawyer-email' value='" + _lawyerEmail + "' style='width:254px' /></div>" +
+             "              </div>" +
+             "              <div class='clear'></div>" +            
+             "            </div>" +
+             "          </div>" +
+             "        </div>" +
+             "        <div class='clear'></div>" +
+             "      </div>" +
+             "    </div>" +
              "  </div>" +
              "  <div class='button'>" +
              "    <div class='button-style1' id='button-style11'>" +

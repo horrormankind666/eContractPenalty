@@ -2,15 +2,23 @@
 var _manual = new Array();
 
 function Signin() {
+  var _username = ($("#username").val($.trim($("#username").val()))).val();
+  var _password = ($("#password").val($.trim($("#password").val()))).val();
+  var _d = new Date();
+  var _authen = window.btoa(window.btoa(_d.getDate() + _d.getMonth() + _d.getFullYear()) + "." + window.btoa(_username).split("").reverse().join("") + "." + window.btoa(_password).split("").reverse().join("") + "." + window.btoa(_d.getHours() + _d.getMinutes() + _d.getSeconds() + _d.getMilliseconds()));
   var _send = new Array();
   _send[0] = "action=signin";
+  _send[1] = "authen=" + _authen;
+
+  /*
   _send[1] = "username=" + ($("#username").val($.trim($("#username").val()))).val();
   _send[2] = "password=" + ($("#password").val($.trim($("#password").val()))).val();
+  */
 
   var _msg;
   var _error = false;
   var _focus;
-
+  
   SetMsgLoading("กำลังเข้าสู่ระบบ...");
 
   LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
@@ -349,9 +357,9 @@ function LoadPage(_area, _section, _pid) {
   var _msg;
     
   if (_oldMenu != 0) $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
-
+  
   SetMsgLoading("กำลังโหลด...");
-    
+  
   LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
     var _dataError = _result.split("<error>");
     var _dataHead = _result.split("<head>");
@@ -965,8 +973,12 @@ function SetSelectCombobox(_id, _value) {
     var _caseGraduate = _value;
 
     if (_caseGraduate == "2")
-      TextboxEnable("#amt-indemnitor-year")
+      $("input[name=set-amt-indemnitor-year]:radio").prop("disabled", false);
     else {
+      $("input[name=set-amt-indemnitor-year]:radio").prop({
+        "checked": false,
+        "disabled": true
+      });
       $("#amt-indemnitor-year").val("");
       TextboxDisable("#amt-indemnitor-year");
     }
@@ -1198,9 +1210,15 @@ function SetSelectDefaultCombobox(_id) {
   }
 
   if (_id == "case-graduate") {
-    if (ComboboxGetSelectedValue("case-graduate") == "2")
-      TextboxEnable("#amt-indemnitor-year")
+    if (ComboboxGetSelectedValue("case-graduate") == "2") {
+      $("input[name=set-amt-indemnitor-year]:radio").prop("disabled", false);
+      TextboxEnable("#amt-indemnitor-year");        
+    }
     else {
+      $("input[name=set-amt-indemnitor-year]:radio").prop({
+        "checked": false,
+        "disabled": true
+      });
       $("#amt-indemnitor-year").val("");
       TextboxDisable("#amt-indemnitor-year");
     }
@@ -1348,6 +1366,7 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
       }
       case "addcptabpaybreakcontract":
       case "updatecptabpaybreakcontract": {
+        InitSetAmtIndemnitorYear();
         ResetFrmCPTabPayBreakContract(false);
         break;
       }
@@ -1376,6 +1395,7 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
       case "addcptransrequirecontract":
       case "updatecptransrequirecontract": {
         InitStudyLeaveYesNo();
+        InitCPTransRequireContract();
         ResetFrmCPTransRequireContract(false);
         break;
       }
@@ -1489,19 +1509,16 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
 
 function AddUpdateData(_action, _cmd, _valueSend, _listUpdate, _recordCount, _listData, _navPage, _closeFrm, _callbackFunc) {
   var _i;
-  var _j = 2;
   var _msgAction = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
   var _send = new Array();
-  _send[0] = "action=" + _action;
-  _send[1] = "cmd=" + _cmd;
+  _send[_send.length] = "action=" + _action;
+  _send[_send.length] = "cmd=" + _cmd;
 
   if (_valueSend.length > 0) {
-    for(_i = 0; _i < _valueSend.length; _i++) {
-      _send[_j] = _valueSend[_i];
-      _j++;
+    for (_i = 0; _i < _valueSend.length; _i++) {
+      _send[_send.length] = _valueSend[_i];
     }
   }
-
   SetMsgLoading("กำลัง" + _msgAction + "...");
 
   LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {

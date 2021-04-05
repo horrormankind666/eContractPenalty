@@ -34,6 +34,12 @@ function ResetFrmStudyLeaveYesNo() {
   $("#total-penalty").val("");
 }
 //---------------------------------------------------------------------------------------------------
+function InitCPTransRequireContract() {
+  $("#lawyer-phonenumber").inputmask("9-9999-9999");
+  $("#lawyer-mobilenumber").inputmask("999-9999999");
+  $("#lawyer-email").inputmask("email");
+}
+
 function ResetFrmCPTransRequireContract(_disable) {
   GoToElement("top-page");
 
@@ -78,6 +84,10 @@ function ResetFrmCPTransRequireContract(_disable) {
     TextboxDisable("#remain-date");
     TextboxDisable("#subtotal-penalty");
     TextboxDisable("#total-penalty");
+    TextboxDisable("#lawyer-fullname");
+    TextboxDisable("#lawyer-phonenumber");
+    TextboxDisable("#lawyer-mobilenumber");
+    TextboxDisable("#lawyer-email");
     $("#button-style11").hide();
     $("#button-style12").show();
     return;
@@ -141,6 +151,8 @@ function ResetFrmCPTransRequireContract(_disable) {
     }
     $("#total-pay-scholarship").val($("#total-pay-scholarship-hidden").val() == "0.00" ? "" : $("#total-pay-scholarship-hidden").val());        
     TextboxDisable("#total-pay-scholarship");
+    $("#all-actual-day").val($("#actual-day-hidden").val());
+    TextboxDisable("#all-actual-day");
     $("#all-actual-date").val($("#all-actual-date-hidden").val());
     TextboxDisable("#all-actual-date");
     $("#actual-date").val($("#actual-date-hidden").val());
@@ -148,14 +160,38 @@ function ResetFrmCPTransRequireContract(_disable) {
     $("#remain-date").val($("#remain-date-hidden").val());
     TextboxDisable("#remain-date");
   }
-
+  
+  if ($("#set-amt-indemnitor-year").val() == "N")
+    TextboxDisable("#indemnitor-year");       
+  
   $("#subtotal-penalty").val($("#subtotal-penalty-hidden").val());
   TextboxDisable("#subtotal-penalty");
   $("#total-penalty").val($("#total-penalty-hidden").val());
   TextboxDisable("#total-penalty");
-
+  $("#lawyer-fullname").val($("#lawyer-fullname-hidden").val());
+  $("#lawyer-phonenumber").val($("#lawyer-phonenumber-hidden").val());
+  $("#lawyer-mobilenumber").val($("#lawyer-mobilenumber-hidden").val());
+  $("#lawyer-email").val($("#lawyer-email-hidden").val());
   $("#button-style11").show();
-  $("#button-style12").hide();    
+  $("#button-style12").hide();
+}
+
+function ValidateLawyer() {
+  var _error = false;
+  var _msg;
+  var _focus;
+
+  if (_error == false && (($("#lawyer-fullname").val().length == 0) || (($("#lawyer-phonenumber").val().length == 0) && ($("#lawyer-mobilenumber").val().length == 0)) || ($("#lawyer-email").val().length == 0))) { _error = true; _msg = "กรุณาใส่นิติกรผูู้รับผิดชอบให้ครบถ้วน"; _focus = "#lawyer-fullname"; }
+  if (_error == false && (($("#lawyer-phonenumber").val().length > 0) && ($("#lawyer-phonenumber").inputmask("isComplete") == false))) { _error = true; _msg = "กรุณาใส่หมายเลขโทรศัพท์ของนิติกรผู้รับผิดชอบให้ถูกต้อง"; _focus = "#lawyer-phonenumber"; }
+  if (_error == false && (($("#lawyer-mobilenumber").val().length > 0) && ($("#lawyer-mobilenumber").inputmask("isComplete") == false))) { _error = true; _msg = "กรุณาใส่หมายโทรศัพท์มือถือของนิติกรผู้รับผิดชอบให้ถูกต้อง"; _focus = "#lawyer-mobilenumber"; }
+  if (_error == false && ($("#lawyer-email").inputmask("isComplete") == false)) { _error = true; _msg = "กรุณาใส่อีเมล์ของนิติกรผู้รับผิดชอบให้ถูกต้อง"; _focus = "#lawyer-email"; }
+
+  if (_error == true) {
+    DialogMessage(_msg, _focus, false, "");
+    return false;
+  }
+
+  return true;
 }
 
 function ValidateCPTransRequireContract() { 
@@ -165,24 +201,18 @@ function ValidateCPTransRequireContract() {
   var _scholar = $("#scholar-hidden").val();
   var _caseGraduate = $("#case-graduate-break-contract-hidden").val();
   var _civil = $("#civil-hidden").val();
+  var _setAmtIndemnitorYear = $("#set-amt-indemnitor-year").val();
   var _indemnitorYear = $("#indemnitor-year").val();
   var _indemnitorCash = $("#indemnitor-cash").val();
   var _allActualMonthScholarship = (_caseGraduate == "1" ? $("#all-actual-month-scholarship").val() : "");
-    
-  if (_error == false && (_caseGraduate == "2") && (_indemnitorYear.length == 0 || _indemnitorYear == "0")) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ต้องปฏิบัติงานชดใช้"; _focus = "#indemnitor-year"; }
+  
+  if (_error == false && (_setAmtIndemnitorYear == "Y") && (_indemnitorYear.length == 0 || _indemnitorYear == "0")) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ต้องปฏิบัติงานชดใช้"; _focus = "#indemnitor-year"; }
   if (_error == false && (_caseGraduate == "2") && (_indemnitorCash.length == 0 || _indemnitorCash == "0")) { _error = true; _msg = "กรุณาใส่จำนวนเงินต้องชดใช้ตามสัญญา"; _focus = "#indemnitor-cash"; }
   if (_error == false && (_indemnitorCash.length == 0 || _indemnitorCash == "0")) { _error = true; _msg = "กรุณาใส่จำนวนเงินต้องชดใช้ตามสัญญา"; _focus = "#indemnitor-cash"; }
-  /*
-  ก่อนปรับปรุง
-  if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#indemnitor-address").val().length == 0) || (ComboboxGetSelectedValue("province") == "0") || ($("#require-date").val().length == 0) || ($("#approve-date").val().length == 0))) { _error = true; _msg = "กรุณาใส่รายละเอียดข้อมูลการทำงานชดใช้ให้ครบถ้วน"; _focus = "#indemnitor-address"; }
-  */
-  //ปรับปรุงเมื่อ ๐๔/๐๔/๒๕๖๒
-  //---------------------------------------------------------------------------------------------------
   if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#indemnitor-address").val().length == 0) || (ComboboxGetSelectedValue("province") == "0") || ($("input[name=study-leave-yesno]:checked").length == 0))) { _error = true; _msg = "กรุณาใส่รายละเอียดข้อมูลการทำงานชดใช้ให้ครบถ้วน"; _focus = "#indemnitor-address"; }
   if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("input[name=study-leave-yesno]:checked").val() == "N") && (($("#require-date").val().length == 0) || ($("#approve-date").val().length == 0)))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีไม่มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ครบถ้วน"; _focus = "#require-date"; }    
   if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("input[name=study-leave-yesno]:checked").val() == "Y") && (($("#before-study-leave-start-date").val().length == 0) || ($("#before-study-leave-end-date").val().length == 0) || ($("#study-leave-start-date").val().length == 0) || ($("#study-leave-end-date").val().length == 0) || ($("#after-study-leave-start-date").val().length == 0) || ($("#after-study-leave-end-date").val().length == 0)))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีมีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ครบถ้วน"; _focus = "#before-study-leave-start-date"; }    
   if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#study-leave-start-date").datepicker("getDate") < $("#before-study-leave-end-date").datepicker("getDate")) || ($("#after-study-leave-start-date").datepicker("getDate") < $("#study-leave-end-date").datepicker("getDate")))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีมีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ถูกต้อง"; _focus = "#before-study-leave-start-date"; }    
-  //---------------------------------------------------------------------------------------------------
   if (_error == false && (_scholar == "1") && (_caseGraduate == "1") && (_allActualMonthScholarship.length == 0 || _allActualMonthScholarship == "0")) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ชดใช้ทุนการศึกษา"; _focus = "#all-actual-month-scholarship"; }
 
   if (_error == true) {
@@ -199,32 +229,47 @@ function CalculatePayScholarshipAndPenalty() {
     SetMsgLoading("กำลังคำนวณ...");
 
     var _caseGraduate = $("#case-graduate-break-contract-hidden").val();
-    var _civil = $("#civil-hidden").val();
-    var _dateStartID = (_caseGraduate == "1" ? "contract-force-date-start-hidden" : (_caseGraduate == "2" && _civil == "1" ? "require-date" : ""));
-    var _dateEndID = (_caseGraduate == "1" ? "contract-force-date-end-hidden" : (_caseGraduate == "2" && _civil == "1" ? "approve-date" : ""));
+    var _civil = $("#civil-hidden").val();    
+    var _dateStartID = "";
+    var _dateEndID = "";
+
+    if (_caseGraduate == "1") {
+      _dateStartID  = "contract-force-date-start-hidden";
+      _dateEndID    = "contract-force-date-end-hidden";
+    }
+
+    if (_caseGraduate == "2" && _civil == "1") {
+      _dateStartID  = "require-date";
+      _dateEndID    = "approve-date";
+    }
+
+    if (_caseGraduate == "2" && _civil == "2") {
+      _dateStartID  = "education-date-start-hidden";
+      _dateEndID    = "education-date-end-hidden";
+    }
+
     var _send = new Array();
-    _send[0] = "scholar=" + $("#scholar-hidden").val();
-    _send[1] = "scholarshipmoney=" + DelCommas("scholarship-money");
-    _send[2] = "scholarshipyear=" + ($("#scholarship-year").val().length > 0 ? DelCommas("scholarship-year") : "0");
-    _send[3] = "scholarshipmonth=" + ($("#scholarship-month").val().length > 0 ? DelCommas("scholarship-month") : "0");
-    _send[4] = "allactualmonthscholarship=" + (_caseGraduate == "1" ? DelCommas("all-actual-month-scholarship") : "");
-    _send[5] = "casegraduate=" + _caseGraduate;
-    _send[6] = "civil=" + _civil;
-    _send[7] = "datestart=" + (_dateStartID.length > 0 ? $("#" + _dateStartID).val() : "");
-    _send[8] = "dateend=" + (_dateEndID.length > 0 ? $("#" + _dateEndID).val() : "");
-    _send[9] = "indemnitoryear=" + DelCommas("indemnitor-year");
-    _send[10] = "indemnitorcash=" + DelCommas("indemnitor-cash");
-    _send[11] = "caldatecondition=" + $("#cal-date-condition-hidden").val();
-    //ปรับปรุงเมื่อ ๐๕/๐๔/๒๕๖๒
-    //---------------------------------------------------------------------------------------------------
-    _send[12] = "studyleave=" + $("input[name=study-leave-yesno]:checked").val();
-    _send[13] = "beforestudyleavestartdate=" + $("#before-study-leave-start-date").val();
-    _send[14] = "beforestudyleaveenddate=" + $("#before-study-leave-end-date").val();
-    _send[15] = "studyleavestartdate=" + $("#study-leave-start-date").val();
-    _send[16] = "studyleaveenddate=" + $("#study-leave-end-date").val();
-    _send[17] = "afterstudyleavestartdate=" + $("#after-study-leave-start-date").val();
-    _send[18] = "afterstudyleaveenddate=" + $("#after-study-leave-end-date").val();
-    //---------------------------------------------------------------------------------------------------
+    _send[_send.length] = "scholar=" + $("#scholar-hidden").val();
+    _send[_send.length] = "scholarshipmoney=" + DelCommas("scholarship-money");
+    _send[_send.length] = "scholarshipyear=" + ($("#scholarship-year").val().length > 0 ? DelCommas("scholarship-year") : "0");
+    _send[_send.length] = "scholarshipmonth=" + ($("#scholarship-month").val().length > 0 ? DelCommas("scholarship-month") : "0");
+    _send[_send.length] = "allactualmonthscholarship=" + (_caseGraduate == "1" ? DelCommas("all-actual-month-scholarship") : "");
+    _send[_send.length] = "casegraduate=" + _caseGraduate;
+    _send[_send.length] = "educationdate=" + $("#education-date-start-hidden").val();
+    _send[_send.length] = "graduatedate=" + $("#education-date-end-hidden").val();
+    _send[_send.length] = "civil=" + _civil;
+    _send[_send.length] = "datestart=" + (_dateStartID.length > 0 ? $("#" + _dateStartID).val() : "");
+    _send[_send.length] = "dateend=" + (_dateEndID.length > 0 ? $("#" + _dateEndID).val() : "");
+    _send[_send.length] = "indemnitoryear=" + DelCommas("indemnitor-year");
+    _send[_send.length] = "indemnitorcash=" + DelCommas("indemnitor-cash");
+    _send[_send.length] = "caldatecondition=" + $("#cal-date-condition-hidden").val();
+    _send[_send.length] = "studyleave=" + $("input[name=study-leave-yesno]:checked").val();
+    _send[_send.length] = "beforestudyleavestartdate=" + $("#before-study-leave-start-date").val();
+    _send[_send.length] = "beforestudyleaveenddate=" + $("#before-study-leave-end-date").val();
+    _send[_send.length] = "studyleavestartdate=" + $("#study-leave-start-date").val();
+    _send[_send.length] = "studyleaveenddate=" + $("#study-leave-end-date").val();
+    _send[_send.length] = "afterstudyleavestartdate=" + $("#after-study-leave-start-date").val();
+    _send[_send.length] = "afterstudyleaveenddate=" + $("#after-study-leave-end-date").val();
 
     CalculateFrm("scholarshipandpenalty", _send, function (_result) {
       FillCalPayScholarshipPenalty(_result);
@@ -233,6 +278,8 @@ function CalculatePayScholarshipAndPenalty() {
 }
 
 function FillCalPayScholarshipPenalty(_result) {
+  var _setAmtIndemnitorYear = $("#set-amt-indemnitor-year").val();
+
   if (($("#all-actual-month-scholarship").length > 0) && ($("#all-actual-month-scholarship").val() == "0")) $("#all-actual-month-scholarship").val("");
   if ($("#all-actual-scholarship").length > 0) $("#all-actual-scholarship").val("");
   if ($("#total-pay-scholarship").length > 0) $("#total-pay-scholarship").val("");
@@ -261,20 +308,27 @@ function FillCalPayScholarshipPenalty(_result) {
     if ($("#all-actual-month").length > 0) $("#all-actual-month").val(_dataMonth[1]);
     if ($("#all-actual-day").length > 0) $("#all-actual-day").val(_dataDay[1]);
     if ($("#case-graduate-break-contract-hidden").val() == "2") {
-      if (_dataAllActual[1] == "0" && _dataActual[1] == "0" && _dataRemain[1] == "0") {
-        if ($("#all-actual-date").length > 0) $("#all-actual-date").val("");
-        if ($("#actual-date").length > 0) $("#actual-date").val("");
-        if ($("#remain-date").length > 0) $("#remain-date").val("");
-      }
-      else {                
-        if (parseInt(_dataRemain[1]) <= 0) {
-          DialogMessage("ระยะเวลาที่ปฏิบัติงานชดใช้แล้วต้องน้อยกว่าระยะเวลาที่ต้องปฏิบัติงานชดใช้", "", false, "");
-          return;
+      if (_setAmtIndemnitorYear == "Y") {
+        if (_dataAllActual[1] == "0" && _dataActual[1] == "0" && _dataRemain[1] == "0") {
+          if ($("#all-actual-date").length > 0) $("#all-actual-date").val("");
+          if ($("#actual-date").length > 0) $("#actual-date").val("");
+          if ($("#remain-date").length > 0) $("#remain-date").val("");
         }
+        else {
+          if (parseInt(_dataRemain[1]) <= 0) {
+            DialogMessage("ระยะเวลาที่ปฏิบัติงานชดใช้แล้วต้องน้อยกว่าระยะเวลาที่ต้องปฏิบัติงานชดใช้", "", false, "");
+            return;
+          }
 
-        if ($("#all-actual-date").length > 0) $("#all-actual-date").val(_dataAllActual[1]);
+          if ($("#all-actual-date").length > 0) $("#all-actual-date").val(_dataAllActual[1]);
+          if ($("#actual-date").length > 0) $("#actual-date").val(_dataActual[1]);
+          if ($("#remain-date").length > 0) $("#remain-date").val(_dataRemain[1]);
+        }
+      }
+
+      if (_setAmtIndemnitorYear == "N") {
+        if ($("#all-actual-day").length > 0) $("#all-actual-day").val(_dataAllActual[1]);
         if ($("#actual-date").length > 0) $("#actual-date").val(_dataActual[1]);
-        if ($("#remain-date").length > 0) $("#remain-date").val(_dataRemain[1]);
       }
     }
     if ($("#subtotal-penalty").length > 0) $("#subtotal-penalty").val(_dataSubtotal[1]);
@@ -291,93 +345,125 @@ function ConfirmActionCPTransRequireContract(_action) {
       "ตกลง": function () {
         $(this).dialog("close");
 
-        if (ValidateCPTransRequireContract() == true) {
+        if (ValidateCPTransRequireContract() == true && ValidateLawyer() == true) {
           var _caseGraduate = $("#case-graduate-break-contract-hidden").val();
           var _civil = $("#civil-hidden").val();
-          var _dateStartID = (_caseGraduate == "1" ? "education-date-start-hidden" : (_caseGraduate == "2" && _civil == "1" ? "require-date" : ""));
-          var _dateEndID = (_caseGraduate == "1" ? "education-date-end-hidden" : (_caseGraduate == "2" && _civil == "1" ? "approve-date" : ""));
+          var _setAmtIndemnitorYear = $("#set-amt-indemnitor-year").val();
+          var _dateStartID = "";
+          var _dateEndID = "";
+
+          if (_caseGraduate == "1") {
+            _dateStartID = "contract-force-date-start-hidden";
+            _dateEndID = "contract-force-date-end-hidden";
+          }
+
+          if (_caseGraduate == "2" && _civil == "1") {
+            _dateStartID = "require-date";
+            _dateEndID = "approve-date";
+          }
+
+          if (_caseGraduate == "2" && _civil == "2") {
+            _dateStartID = "education-date-start-hidden";
+            _dateEndID = "education-date-end-hidden";
+          }
+
           var _send = new Array();
-          _send[0] = "scholar=" + $("#scholar-hidden").val();
-          _send[1] = "scholarshipmoney=" + DelCommas("scholarship-money");
-          _send[2] = "scholarshipyear=" + ($("#scholarship-year").val().length > 0 ? DelCommas("scholarship-year") : "0");
-          _send[3] = "scholarshipmonth=" + ($("#scholarship-month").val().length > 0 ? DelCommas("scholarship-month") : "0");
-          _send[4] = "allactualmonthscholarship=" + (_caseGraduate == "1" ? DelCommas("all-actual-month-scholarship") : "");
-          _send[5] = "casegraduate=" + _caseGraduate;
-          _send[6] = "civil=" + _civil;
-          _send[7] = "datestart=" + (_dateStartID.length > 0 ? $("#" + _dateStartID).val() : "");
-          _send[8] = "dateend=" + (_dateEndID.length > 0 ? $("#" + _dateEndID).val() : "");
-          _send[9] = "indemnitoryear=" + DelCommas("indemnitor-year");
-          _send[10] = "indemnitorcash=" + DelCommas("indemnitor-cash");
-          _send[11] = "caldatecondition=" + $("#cal-date-condition-hidden").val();
-          //ปรับปรุงเมื่อ ๐๙/๐๔/๒๕๖๒
-          //---------------------------------------------------------------------------------------------------
-          _send[12] = "studyleave=" + $("input[name=study-leave-yesno]:checked").val();
-          _send[13] = "beforestudyleavestartdate=" + $("#before-study-leave-start-date").val();
-          _send[14] = "beforestudyleaveenddate=" + $("#before-study-leave-end-date").val();
-          _send[15] = "studyleavestartdate=" + $("#study-leave-start-date").val();
-          _send[16] = "studyleaveenddate=" + $("#study-leave-end-date").val();
-          _send[17] = "afterstudyleavestartdate=" + $("#after-study-leave-start-date").val();
-          _send[18] = "afterstudyleaveenddate=" + $("#after-study-leave-end-date").val();
-          //---------------------------------------------------------------------------------------------------
+          _send[_send.length] = "scholar=" + $("#scholar-hidden").val();
+          _send[_send.length] = "scholarshipmoney=" + DelCommas("scholarship-money");
+          _send[_send.length] = "scholarshipyear=" + ($("#scholarship-year").val().length > 0 ? DelCommas("scholarship-year") : "0");
+          _send[_send.length] = "scholarshipmonth=" + ($("#scholarship-month").val().length > 0 ? DelCommas("scholarship-month") : "0");
+          _send[_send.length] = "allactualmonthscholarship=" + (_caseGraduate == "1" ? DelCommas("all-actual-month-scholarship") : "");
+          _send[_send.length] = "casegraduate=" + _caseGraduate;
+          _send[_send.length] = "educationdate=" + $("#education-date-start-hidden").val();
+          _send[_send.length] = "graduatedate=" + $("#education-date-end-hidden").val();
+          _send[_send.length] = "civil=" + _civil;
+          _send[_send.length] = "datestart=" + (_dateStartID.length > 0 ? $("#" + _dateStartID).val() : "");
+          _send[_send.length] = "dateend=" + (_dateEndID.length > 0 ? $("#" + _dateEndID).val() : "");
+          _send[_send.length] = "indemnitoryear=" + DelCommas("indemnitor-year");
+          _send[_send.length] = "indemnitorcash=" + DelCommas("indemnitor-cash");
+          _send[_send.length] = "caldatecondition=" + $("#cal-date-condition-hidden").val();
+          _send[_send.length] = "studyleave=" + $("input[name=study-leave-yesno]:checked").val();
+          _send[_send.length] = "beforestudyleavestartdate=" + $("#before-study-leave-start-date").val();
+          _send[_send.length] = "beforestudyleaveenddate=" + $("#before-study-leave-end-date").val();
+          _send[_send.length] = "studyleavestartdate=" + $("#study-leave-start-date").val();
+          _send[_send.length] = "studyleaveenddate=" + $("#study-leave-end-date").val();
+          _send[_send.length] = "afterstudyleavestartdate=" + $("#after-study-leave-start-date").val();
+          _send[_send.length] = "afterstudyleaveenddate=" + $("#after-study-leave-end-date").val();
 
           CalculateFrm("scholarshipandpenalty", _send, function (_result) {
             FillCalPayScholarshipPenalty(_result);
                         
             var _send1 = new Array();
-            _send1[0] = "cp1id=" + $("#cp1id").val();
-            _send1[1] = "scholar=" + $("#scholar-hidden").val();
-            _send1[2] = "casegraduate=" + _caseGraduate;
-            _send1[3] = "civil=" + _civil;
-            _send1[4] = "indemnitoryear=" + DelCommas("indemnitor-year");
-            _send1[5] = "indemnitorcash=" + DelCommas("indemnitor-cash");
-            _send1[6] = "trackingstatus=" + $("#trackingstatus").val();
-            _send1[7] = "cp2id=" + $("#cp2id").val();
+            _send1[_send1.length] = "cp1id=" + $("#cp1id").val();
+            _send1[_send1.length] = "scholar=" + $("#scholar-hidden").val();
+            _send1[_send1.length] = "casegraduate=" + _caseGraduate;
+            _send1[_send1.length] = "civil=" + _civil;
+            _send1[_send1.length] = "indemnitoryear=" + DelCommas("indemnitor-year");
+            _send1[_send1.length] = "indemnitorcash=" + DelCommas("indemnitor-cash");
+            _send1[_send1.length] = "trackingstatus=" + $("#trackingstatus").val();
+            _send1[_send1.length] = "cp2id=" + $("#cp2id").val();
 
             if (_caseGraduate == "1") {
-              _send1[8] = "actualmonthscholarship=" + DelCommas("all-actual-month-scholarship");
-              _send1[9] = "actualscholarship=" + DelCommas("all-actual-scholarship");
-              _send1[10] = "totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0");
-              _send1[11] = "actualmonth=" + DelCommas("all-actual-month");
-              _send1[12] = "actualday=" + DelCommas("all-actual-day");
-              _send1[13] = "subtotalpenalty=" + DelCommas("subtotal-penalty");
-              _send1[14] = "totalpenalty=" + DelCommas("total-penalty");
+              _send1[_send1.length] = "actualmonthscholarship=" + DelCommas("all-actual-month-scholarship");
+              _send1[_send1.length] = "actualscholarship=" + DelCommas("all-actual-scholarship");
+              _send1[_send1.length] = "totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0");
+              _send1[_send1.length] = "actualmonth=" + DelCommas("all-actual-month");
+              _send1[_send1.length] = "actualday=" + DelCommas("all-actual-day");
+              _send1[_send1.length] = "subtotalpenalty=" + DelCommas("subtotal-penalty");
+              _send1[_send1.length] = "totalpenalty=" + DelCommas("total-penalty");
             }
 
             if (_caseGraduate == "2") {
               if (_civil == "1") {
-                if (DelCommas("remain-date") > 0) {
-                  _send1[8] = "indemnitoraddress=" + $("#indemnitor-address").val();
-                  _send1[9] = "province=" + ComboboxGetSelectedValue("province");
-                  //ปรับปรุงเมื่อ ๐๙/๐๔/๒๕๖๒
-                  //---------------------------------------------------------------------------------------------------
-                  _send1[10] = "studyleave=" + $("input[name=study-leave-yesno]:checked").val();
-                  _send1[11] = "requiredate=" + $("#require-date").val();
-                  _send1[12] = "approvedate=" + $("#approve-date").val();
-                  _send1[13] = "beforestudyleavestartdate=" + $("#before-study-leave-start-date").val();
-                  _send1[14] = "beforestudyleaveenddate=" + $("#before-study-leave-end-date").val();
-                  _send1[15] = "studyleavestartdate=" + $("#study-leave-start-date").val();
-                  _send1[16] = "studyleaveenddate=" + $("#study-leave-end-date").val();
-                  _send1[17] = "afterstudyleavestartdate=" + $("#after-study-leave-start-date").val();
-                  _send1[18] = "afterstudyleaveenddate=" + $("#after-study-leave-end-date").val();
-                  //---------------------------------------------------------------------------------------------------
-                  _send1[19] = "totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0");
-                  _send1[20] = "allactualdate=" + DelCommas("all-actual-date");
-                  _send1[21] = "actualdate=" + DelCommas("actual-date");
-                  _send1[22] = "remaindate=" + DelCommas("remain-date");
-                  _send1[23] = "subtotalpenalty=" + DelCommas("subtotal-penalty");
-                  _send1[24] = "totalpenalty=" + DelCommas("total-penalty");
+                if (DelCommas("remain-date") > 0 || _setAmtIndemnitorYear == "N") {
+                  _send1[_send1.length] = "indemnitoraddress=" + $("#indemnitor-address").val();
+                  _send1[_send1.length] = "province=" + ComboboxGetSelectedValue("province");
+                  _send1[_send1.length] = "studyleave=" + $("input[name=study-leave-yesno]:checked").val();
+                  _send1[_send1.length] = "requiredate=" + $("#require-date").val();
+                  _send1[_send1.length] = "approvedate=" + $("#approve-date").val();
+                  _send1[_send1.length] = "beforestudyleavestartdate=" + $("#before-study-leave-start-date").val();
+                  _send1[_send1.length] = "beforestudyleaveenddate=" + $("#before-study-leave-end-date").val();
+                  _send1[_send1.length] = "studyleavestartdate=" + $("#study-leave-start-date").val();
+                  _send1[_send1.length] = "studyleaveenddate=" + $("#study-leave-end-date").val();
+                  _send1[_send1.length] = "afterstudyleavestartdate=" + $("#after-study-leave-start-date").val();
+                  _send1[_send1.length] = "afterstudyleaveenddate=" + $("#after-study-leave-end-date").val();
+                  _send1[_send1.length] = "totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0");
+
+                  if (_setAmtIndemnitorYear == "Y") {
+                    _send1[_send1.length] = "allactualdate=" + DelCommas("all-actual-date");
+                    _send1[_send1.length] = "actualdate=" + DelCommas("actual-date");
+                    _send1[_send1.length] = "remaindate=" + DelCommas("remain-date");
+                  }
+                  if (_setAmtIndemnitorYear == "N") {
+                    _send1[_send1.length] = "actualday=" + DelCommas("all-actual-day");
+                    _send1[_send1.length] = "actualdate=" + DelCommas("actual-date");
+                  }
+
+                  _send1[_send1.length] = "subtotalpenalty=" + DelCommas("subtotal-penalty");
+                  _send1[_send1.length] = "totalpenalty=" + DelCommas("total-penalty");
                 }
                 else {
-                  DialogMessage("ปฏิบัติงานชดใช้ครบตามสัญญาแล้ว", "#require-date", false, "");
-                  return;
-                }
+                  if (DelCommas("remain-date") <= 0) {
+                    DialogMessage("ปฏิบัติงานชดใช้ครบตามสัญญาแล้ว", "#require-date", false, "");
+                    return;
+                  }
+                }                
               }
               else {
-                _send1[8] = "totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0");
-                _send1[9] = "subtotalpenalty=" + DelCommas("subtotal-penalty");
-                _send1[10] = "totalpenalty=" + DelCommas("total-penalty");
+                if (_setAmtIndemnitorYear == "N") {
+                  _send1[_send1.length] = "actualday=" + DelCommas("all-actual-day");
+                }
+
+                _send1[_send1.length] = "totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0");
+                _send1[_send1.length] = "subtotalpenalty=" + DelCommas("subtotal-penalty");
+                _send1[_send1.length] = "totalpenalty=" + DelCommas("total-penalty");
               }
             }
+
+            _send1[_send1.length] = "lawyerfullname=" + $("#lawyer-fullname").val();
+            _send1[_send1.length] = "lawyerphonenumber=" + $("#lawyer-phonenumber").val();
+            _send1[_send1.length] = "lawyermobilenumber=" + $("#lawyer-mobilenumber").val();
+            _send1[_send1.length] = "lawyeremail=" + $("#lawyer-email").val();
 
             ChkTrackingStatusViewTransBreakContract($("#cp1id").val(), $("#trackingstatus").val(), "", function (_result) {
               if (_result == "0")
@@ -417,7 +503,7 @@ function AddUpdateCPTransRequireContract(_action, _send) {
 
 function ChkRepayStatusViewTransRequireContract(_cp1id, _callbackFunc) {
   var _send = new Array();
-  _send[0] = "cp1id=" + _cp1id;
+  _send[_send.length] = "cp1id=" + _cp1id;
 
   SetMsgLoading("");
 

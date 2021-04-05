@@ -1,21 +1,14 @@
 ﻿//eCPDB.cs            : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
 //Date Created        : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified  : ๑๗/๐๓/๒๕๖๔
+//Last Date Modified  : ๐๒/๐๔/๒๕๖๔
 //Create By           : Yutthaphoom Tawana
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Data;
-using System.Data.SqlClient;
 using System.Reflection;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Net;
-using System.IO;
+using System.Text;
+using System.Web;
 
 public class eCPUtil
 {  
@@ -385,7 +378,9 @@ public class eCPUtil
       HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
       _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
-      _data = eCPDB.ListDetailCPTabUser(_eCPCookie["Username"], _eCPCookie["Password"], "");
+      Dictionary<string, string> _auth = GetUsername();
+
+      _data = eCPDB.ListDetailCPTabUser(_auth["Username"], _auth["Password"], "");
 
       _html += "    <li><div id='whois'>ผู้ใช้งาน : " + _data[0, 3] + " ( " + eCPDB._userSection[int.Parse(_eCPCookie["UserSection"]) - 1] + " )&nbsp;</div></li>" +
                "    <li class='have-link'><a class='link-msg' id='menu7' href='javascript:void(0)' onclick='ShowManual()'>คู่มือ</a></li>" +
@@ -890,13 +885,14 @@ public class eCPUtil
   }
 
   //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา
-  public static double[] CalPenalty(string _scholar, string _caseGraduate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition, double _addDays)
+  public static double[] CalPenalty(string _scholar, string _caseGraduate, string _educationDate, string _graduateDate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition, double _addDays)
   {
     double _actual;
     double _month;
     double _day;
     int _dayLastMonth;
     double _allActual;
+    double _educationActual = 0;
     double _totalPenalty = 0;
     double[] _result = new double[8];
     int _sYear = !String.IsNullOrEmpty(_scholarshipYear) ? int.Parse(_scholarshipYear) : 0;
@@ -912,9 +908,20 @@ public class eCPUtil
       _iCash = _sPayScholarship + _iCash;
       _sPayScholarship = 0;                        
     }
-        
-    if (!String.IsNullOrEmpty(_dateStart) && !String.IsNullOrEmpty(_dateEnd))
+
+    if (!String.IsNullOrEmpty(_educationDate) && !String.IsNullOrEmpty(_graduateDate))
     {
+      IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
+      DateTime _dateA = DateTime.Parse(_educationDate, _provider);
+      DateTime _dateB = DateTime.Parse(_graduateDate, _provider);
+
+      _dateB = _dateB.AddDays(_addDays);
+      _resultCalcDate = Util.CalcDate(_dateA, _dateB);
+      _educationActual = !_resultCalcDate[0].Equals(0) ? _resultCalcDate[0] : 0;
+    }
+
+    if (!String.IsNullOrEmpty(_dateStart) && !String.IsNullOrEmpty(_dateEnd))
+    {            
       IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
       DateTime _dateA = DateTime.Parse(_dateStart, _provider);
       DateTime _dateB = DateTime.Parse(_dateEnd, _provider);
@@ -944,6 +951,15 @@ public class eCPUtil
           _totalPenalty = CalPenaltyFormular3(_iCash, _allActual, _resultCalcDate[0]);
           break;
         }
+        case 4:
+        {
+          _month        = 0;
+          _day          = 0;
+          _allActual    = _educationActual;
+          _actual       = (_civil.Equals("1") ? _actual : 0);
+          _totalPenalty = CalPenaltyFormular4(_iCash, _educationActual, _actual);
+          break;
+        }
       }
 
       _result[0] = _month;
@@ -954,18 +970,20 @@ public class eCPUtil
       _result[5] = _sPayScholarship;
       _result[6] = _totalPenalty;
       _result[7] = Util.RoundStang(_sPayScholarship + _totalPenalty);
+
+      return _result;
     }
-    else
-    {
-      _result[0] = 0;
-      _result[1] = 0;
-      _result[2] = 0;
-      _result[3] = 0;
-      _result[4] = 0;
-      _result[5] = _sPayScholarship;
-      _result[6] = _iCash;
-      _result[7] = Util.RoundStang(_sPayScholarship + _iCash);
-    }
+
+
+
+    _result[0] = 0;
+    _result[1] = 0;
+    _result[2] = 0;
+    _result[3] = 0;
+    _result[4] = 0;
+    _result[5] = _sPayScholarship;
+    _result[6] = _iCash;
+    _result[7] = Util.RoundStang(_sPayScholarship + _iCash);
 
     return _result;
   }
@@ -996,6 +1014,16 @@ public class eCPUtil
     double _total;
 
     _total = (_indemnitorCash * (_allActual - _actual)) / _allActual;
+
+    return _total;
+  }
+
+  //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา สูตรที่ 4
+  private static double CalPenaltyFormular4(double _indemnitorCash, double _educationActual, double _actual)
+  {
+    double _total;
+
+    _total = (_indemnitorCash * ((2 * _educationActual) - _actual)) / (2 * _educationActual);
 
     return _total;
   }
@@ -1137,6 +1165,67 @@ public class eCPUtil
       _result[3] = String.Empty;
       _result[4] = String.Empty;
     }
+
+    return _result;
+  }
+
+  public static string DecodeFromBase64(string _strEncode)
+  {
+    string _strDecode = String.Empty;
+
+    try
+    {
+      UTF8Encoding _encoder = new UTF8Encoding();
+      Decoder _utf8Decode = _encoder.GetDecoder();
+      byte[] _todecodeByte = Convert.FromBase64String(_strEncode);
+      int _charCount = _utf8Decode.GetCharCount(_todecodeByte, 0, _todecodeByte.Length);
+      char[] _decodedChar = new char[_charCount];
+
+      _utf8Decode.GetChars(_todecodeByte, 0, _todecodeByte.Length, _decodedChar, 0);
+      _strDecode = new String(_decodedChar);
+    }
+    catch
+    {
+    }
+
+    return _strDecode;
+  }
+
+  public static Dictionary<string, string> GetUsername()
+  {
+    Dictionary<string, string> _result = new Dictionary<string, string>();
+    string _username = String.Empty;
+    string _password = String.Empty;
+
+    HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+    _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+
+    if (_eCPCookie != null)
+      return GetUsername(_eCPCookie["Authen"]);
+    else
+    {
+      _result.Add("Username", _username);
+      _result.Add("Password", _password);
+
+      return _result;
+    }
+  }
+
+  public static Dictionary<string, string> GetUsername(string _authen)
+  {
+    Dictionary<string, string> _result = new Dictionary<string, string>();
+    string[] _auth = DecodeFromBase64(_authen).Split('.');
+    string _username = String.Empty;
+    string _password = String.Empty;
+
+    if (_auth.Length.Equals(4))
+    {
+      _username = eCPUtil.DecodeFromBase64(new String(_auth[1].Reverse().ToArray()));
+      _password = eCPUtil.DecodeFromBase64(new String(_auth[2].Reverse().ToArray()));
+    }
+
+    _result.Add("Username", _username);
+    _result.Add("Password", _password);
 
     return _result;
   }

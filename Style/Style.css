@@ -73,6 +73,9 @@ input {
   background-color: #CCCCCC;
   cursor: default;
 }
+.text-underline {
+  text-decoration: underline !important;
+}
 .textareabox {
   font: normal 12px Tahoma, Verdana, Arial, sans-serif;
   border-left: 2px solid #404040;
@@ -315,7 +318,8 @@ a {
 .form-content a:hover {
   color: #FF0000;
 }
-.form-content .form-label-discription-style, .form-content .form-input-style {
+.form-content .form-label-discription-style,
+.form-content .form-input-style {
   float: left;
   margin-bottom: 1px;
 }
@@ -336,18 +340,18 @@ a {
   line-height: 12px;
   color: #000000;
 }
-.form-content .form-label-discription-style .form-discription-style {
+.form-discription-style {
   margin-top: 9px;
   color: #666666;
 }
-.form-content .form-label-discription-style .form-discription-style .form-discription-line1-style,
-.form-content .form-label-discription-style .form-discription-style .form-discription-line2-style,
-.form-content .form-label-discription-style .form-discription-style .form-discription-line3-style {
+.form-discription-style .form-discription-line1-style,
+.form-discription-style .form-discription-line2-style,
+.form-discription-style .form-discription-line3-style {
   font-size: 11px;
   line-height: 11px;
 }
-.form-content .form-label-discription-style .form-discription-style .form-discription-line2-style,
-.form-content .form-label-discription-style .form-discription-style .form-discription-line3-style {
+.form-discription-style .form-discription-line2-style,
+.form-discription-style .form-discription-line3-style {
   margin-top: 5px;
 }
 .form-content .form-input-style {
@@ -3327,6 +3331,7 @@ a.link-disable:hover {
 }
 #addupdate-cp-tab-pay-break-contract .form-input-style {
   width: 714px;
+  font-size: 12px;
 }
 #addupdate-cp-tab-pay-break-contract #dlevel-label,
 #addupdate-cp-tab-pay-break-contract #case-graduate-label {
@@ -3340,7 +3345,25 @@ a.link-disable:hover {
   height: 73px;
 }
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-label {
-  height: 57px;
+  height: 67px;
+  margin-top: 10px;
+}
+#addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input .radio {
+  margin-top: 5px;
+}
+#addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-no-label,
+#addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-yes-label {
+  margin-top: 5px;
+  height: 12px;
+  line-height: 12px;
+}
+#addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-no-input, 
+#addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-yes-input {
+  width: 20px;
+  height: 20px;
+}
+#addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #set-amt-indemnitor-year {
+  margin-bottom: 5px;
 }
 #addupdate-cp-tab-pay-break-contract #cal-date-condition-label {
   height: 63px;
@@ -3363,8 +3386,8 @@ a.link-disable:hover {
   margin-top: 28px;
 }
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input {
-  height: 43px;
-  margin-top: 20px;
+  height: 78px;
+  margin-top: 5px;
 }
 #addupdate-cp-tab-pay-break-contract #cal-date-condition-input {
   height: 65px;
@@ -3849,7 +3872,8 @@ a.link-disable:hover {
 }
 #detail-cp-trans-break-require-contract #indemnitor-work #indemnitor-work-label .form-label-discription-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty1 #cal-contract-penalty1-label .form-label-discription-style,
-#detail-cp-trans-break-require-contract #cal-contract-penalty2 #cal-contract-penalty2-label .form-label-discription-style {
+#detail-cp-trans-break-require-contract #cal-contract-penalty2 #cal-contract-penalty2-label .form-label-discription-style,
+#detail-cp-trans-break-require-contract #lawyer #lawyer-label .form-label-discription-style {
   width: 280px;
 }
 #detail-cp-trans-break-require-contract #profile-student #profile-student-input .form-label-discription-style,
@@ -3877,7 +3901,8 @@ a.link-disable:hover {
 }
 #detail-cp-trans-break-require-contract #indemnitor-work #indemnitor-work-input .form-input-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty1 #cal-contract-penalty1-input .form-input-style,
-#detail-cp-trans-break-require-contract #cal-contract-penalty2 #cal-contract-penalty2-input .form-input-style {
+#detail-cp-trans-break-require-contract #cal-contract-penalty2 #cal-contract-penalty2-input .form-input-style,
+#detail-cp-trans-break-require-contract #lawyer #lawyer-input .form-input-style {
   width: 499px;
 }
 #detail-cp-trans-break-require-contract #pursuant-detail-detail {
@@ -3946,9 +3971,14 @@ a.link-disable:hover {
   padding-top: 41px;
   height: 56px;
 }
+#detail-cp-trans-break-require-contract #lawyer-label .form-label-discription-style {
+  padding-top: 18px;
+  height: 33px;
+}
 #detail-cp-trans-break-require-contract #cal-contract-penalty1-input .form-input-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty2-input .form-input-style,
-#detail-cp-trans-break-require-contract #indemnitor-work-input .form-input-style {
+#detail-cp-trans-break-require-contract #indemnitor-work-input .form-input-style,
+#detail-cp-trans-break-require-contract #lawyer-input .form-input-style {
   padding-top: 5px;
   line-height: 18px;
 }
@@ -3963,6 +3993,9 @@ a.link-disable:hover {
 }
 #detail-cp-trans-break-require-contract #indemnitor-work-input.study-leave-y .form-input-style {
   height: 92px;
+}
+#detail-cp-trans-break-require-contract #lawyer-input .form-input-style {
+  height: 46px;
 }
 #detail-cp-trans-break-require-contract #button-style1-1a11 {
   position: relative;
@@ -4115,26 +4148,36 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #profile-student #profile-student-input span {
   color: #0000FF;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-label .form-label-discription-style,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-label .form-label-discription-style {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-label .form-label-discription-style,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-label .form-label-discription-style {
   float: none;
   width: 279px;
   height: 183px;
   padding-top: 117px;
   margin-right: 1px;
 }
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-label-civil-1-set-n .form-label-discription-style {
+  height: 169px;
+  padding-top: 101px;
+}
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-label-civil-2-set-n .form-label-discription-style {
+  height: 154px;
+  padding-top: 86px;
+}
 #addupdate-cp-trans-require-contract #break-contract .form-label-discription-style,
-#addupdate-cp-trans-require-contract #indemnitor-work .form-label-discription-style {
+#addupdate-cp-trans-require-contract #indemnitor-work .form-label-discription-style,
+#addupdate-cp-trans-require-contract #lawyer .form-label-discription-style {
   width: 279px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input .form-label-discription-style,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input .form-label-discription-style {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input .form-label-discription-style,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input .form-label-discription-style {
   float: none;
   background: #8FAEC9;
   width: 676px;
 }
 #addupdate-cp-trans-require-contract #break-contract .form-input-style,
-#addupdate-cp-trans-require-contract #indemnitor-work .form-input-style {
+#addupdate-cp-trans-require-contract #indemnitor-work .form-input-style,
+#addupdate-cp-trans-require-contract #lawyer .form-input-style {
   width: 690px;
 }
 #addupdate-cp-trans-require-contract #break-contract #break-contract-label {
@@ -4163,21 +4206,32 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #indemnitor-address-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #require-date-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #approve-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-pay-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-pay-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-day-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #all-actual-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #actual-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #remain-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #subtotal-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #subtotal-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-penalty-input {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-pay-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-pay-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-day-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-day-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-date-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #actual-date-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #remain-date-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #subtotal-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #subtotal-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-penalty-input,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-input,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #phonenumber-input,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #mobilenumber-input,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #email-input {
   height: 30px;
-} 
+}
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-input {
+  height: 50px;
+}
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-input .form-discription-style {
+  margin-top: 6px;
+}
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-label {
   height: 171px;
   margin-top: 150px;
@@ -4192,109 +4246,132 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input .calendar {
   width: 80px;
 }
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-agreement-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #guarantor-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholar-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-unit-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-unit-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-month-unit-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-start-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-end-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #case-graduate-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #civil-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-force-date-start-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-force-date-end-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-year-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-year-unit-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-cash-label,
-#addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-cash-unit-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #indemnitor-address-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #province-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-yesno-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #require-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #approve-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-start-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-end-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-start-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-end-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-start-date-label,
-#addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-end-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-scholarship-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-scholarship-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-pay-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-pay-scholarship-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-pay-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-pay-scholarship-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #all-actual-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-day-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #all-actual-date-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #actual-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #actual-date-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #remain-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #remain-date-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #subtotal-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #subtotal-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #subtotal-penalty-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #subtotal-penalty-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-penalty-unit-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-penalty-unit-label {
-  margin-top: 5px;
-  height: 12px;
-  line-height: 12px;
+#addupdate-cp-trans-require-contract #lawyer #lawyer-label {
+  height: 84px;
+  margin-top: 63px;
 }
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input {
+  height: 143px;
+  margin-top: 10px;
+}
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-agreement-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #guarantor-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholar-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-unit-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-unit-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-month-unit-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-start-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-end-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #case-graduate-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #civil-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-force-date-start-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-force-date-end-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-year-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-year-unit-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-cash-label,
+  #addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-cash-unit-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #indemnitor-address-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #province-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-yesno-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #require-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #approve-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-start-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-end-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-start-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-end-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-start-date-label,
+  #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-end-date-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-scholarship-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-scholarship-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-scholarship-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-scholarship-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-pay-scholarship-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-pay-scholarship-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-pay-scholarship-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-pay-scholarship-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-date-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-date-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-day-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-day-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-day-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-date-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #actual-date-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #actual-date-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #remain-date-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #remain-date-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #subtotal-penalty-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #subtotal-penalty-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #subtotal-penalty-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #subtotal-penalty-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-penalty-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-penalty-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-penalty-unit-label,
+  #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-penalty-unit-label,
+  #addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-label,
+  #addupdate-cp-trans-require-contract #lawyer #lawyer-input #phonenumber-label,
+  #addupdate-cp-trans-require-contract #lawyer #lawyer-input #mobilenumber-label,
+  #addupdate-cp-trans-require-contract #lawyer #lawyer-input #email-label {
+    margin-top: 5px;
+    height: 12px;
+    line-height: 12px;
+  }
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-yesno-label {
   margin-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #cal-contract-penalty-button,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #cal-contract-penalty-button {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-button,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #cal-contract-penalty-button {
   height: 35px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #cal-contract-penalty-scholarship {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-scholarship {
   height: 93px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #cal-contract-penalty-scholarship {
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #cal-contract-penalty-scholarship {
   height: 33px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #cal-contract-penalty-actual {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-actual {
   height: 96px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #cal-contract-penalty-actual {
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-1-set-y #cal-contract-penalty-actual {
   height: 156px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #cal-contract-penalty-total {
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-1-set-n #cal-contract-penalty-actual {
+  height: 126px;
+  padding-top: 10px;
+}
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-2-set-n #cal-contract-penalty-actual {
+  height: 96px;
+  padding-top: 10px;
+}
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-total {
   height: 33px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #cal-contract-penalty-total {
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #cal-contract-penalty-total {
   height: 33px;
   padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input .button-style2,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input .button-style2 {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input .button-style2,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input .button-style2 {
   margin-bottom: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input .button-style2 ul li a,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input .button-style2 ul li a {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input .button-style2 ul li a,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input .button-style2 ul li a {
   width: 80px;
 }
 #addupdate-cp-trans-require-contract #break-contract .form-input-style,
 #addupdate-cp-trans-require-contract #indemnitor-work .form-input-style,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input  {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input,
+#addupdate-cp-trans-require-contract #lawyer .form-input-style {
   font-size: 12px;
 }
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-label,
@@ -4309,18 +4386,23 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #indemnitor-address-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #province-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-yesno-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-pay-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-pay-scholarship-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #all-actual-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #actual-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #remain-date-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #subtotal-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #subtotal-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-penalty-label,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-penalty-label {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-scholarship-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-scholarship-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-pay-scholarship-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-pay-scholarship-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-date-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-date-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-day-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #actual-date-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #remain-date-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #subtotal-penalty-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #subtotal-penalty-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-penalty-label,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-penalty-label,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-label,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #phonenumber-label,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #mobilenumber-label,
+#addupdate-cp-trans-require-contract #lawyer #lawyer-input #email-label {
   width: 159px;
 }
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #guarantor-label {
@@ -4338,28 +4420,28 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-unit-label {
   width: 14px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-unit-label {
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-unit-label {
   width: 32px;
 }
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-end-label,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-force-date-end-label {
   width: 59px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-day-input {
-  width: 51px;
-}
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-month-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #all-actual-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-pay-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-pay-scholarship-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #all-actual-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #actual-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #remain-date-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #subtotal-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #subtotal-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty1 #cal-contract-penalty-input #total-penalty-input,
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input #total-penalty-input,
+
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-pay-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-pay-scholarship-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-date-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #actual-date-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-day-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #all-actual-day-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #remain-date-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #subtotal-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #subtotal-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #total-penalty-input,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #total-penalty-input,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-agreement-input,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholar-input,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-start-input,
@@ -4483,8 +4565,8 @@ a.link-disable:hover {
 }
 #addupdate-cp-trans-repay-contract #history-repay-label .form-label-discription-style,
 #addupdate-cp-trans-repay-contract #status-repay23-current-label .form-label-discription-style {
-  padding-top: 54px;
-  height: 69px;
+  padding-top: 63px;
+  height: 78px;
 }
 #addupdate-cp-trans-repay-contract #status-repay1-current-input .form-input-style,
 #addupdate-cp-trans-repay-contract #history-repay-input .form-input-style,
@@ -4492,11 +4574,33 @@ a.link-disable:hover {
 #addupdate-cp-trans-repay-contract #status-repay23-current-input .form-input-style {
   padding-top: 5px;
   line-height: 18px;
-  height: 118px;
+  height: 136px;
 }
 #addupdate-cp-trans-repay-contract #status-repay1-current-input .form-input-style,
 #addupdate-cp-trans-repay-contract #status-repay2-current-input .form-input-style {
   height: 49px;
+}
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-label {
+  height: 73px;
+}
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input {
+  height: 66px;
+  margin-top: 13px;
+}
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-input {
+  height: 30px;
+}
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-label,
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-book-date-label {
+  margin-top: 5px;
+  height: 12px;
+  line-height: 12px;  
+}
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-label {
+  width: 180px;
+}
+#addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-book-date-label {
+  width: 40px;
 }
 #addupdate-cp-trans-repay-contract #payment-label .form-label-discription-style {
   padding-top: 31px;
@@ -4836,6 +4940,9 @@ a.link-disable:hover {
   float: none;
   line-height: 28px;
   margin-left: 0;
+}
+#detail-cp-trans-payment #certificate-reimbursement-input .form-input-style a {
+  line-height: 28px;  
 }
 #detail-cp-trans-payment .form-input-style span,
 #add-cp-trans-payment .form-input-style span {

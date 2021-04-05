@@ -6,6 +6,9 @@
   }
 
   $("#repay-date").val($("#repay-date-hidden").val());
+  $("#pursuant").val($("#pursuant-hidden").val());
+  $("#pursuant-book-date").val($("#pursuant-book-date-hidden").val());
+  InitCalendar("#pursuant-book-date");
   if ($("#action").val() == "update") {
     var _replyResult = $("input[name=reply-result]:radio");
 
@@ -22,7 +25,7 @@
   }
 
   InitCalendar("#repay-date");
-}
+ }
 
 function ResetFrmCalInterestOverpayment(_disable) {
   GoToElement("top-page");
@@ -149,10 +152,12 @@ function ValidateCPTransRepayContract(_action) {
   var _msg;
   var _focus;
 
-  if (_error == false && ($("#repay-date").val().length == 0)) { _error = true; _msg = "กรุณาใส่วันที่แจังให้ผู้ผิดสัญญาชำระหนี้"; _focus = "#repay-date"; }
+  if (_error == false && ($("#repay-date").val().length == 0)) { _error = true; _msg = "กรุณาใส่วันที่แจังให้ผู้ผิดสัญญาชำระหนี้"; _focus = "#repay-date"; }  
   if (_action == "update") {
     var _replyResult = $("input[name=reply-result]:checked");
 
+    if (_error == false && (($("#pursuant").val().length > 0 && $("#pursuant-book-date").val().length == 0) || ($("#pursuant").val().length == 0 && $("#pursuant-book-date").val().length > 0))) { _error = true; _msg = "กรุณาใส่ข้อมูลเกี่ยวกับหนังสือขอให้ชดใช้เงินให้ครบถ้วน"; _focus = "#pursuant"; }  
+    if (_error == false && ($("#reply-date").val().length > 0 && _replyResult.length > 0 && $("#pursuant").val().length == 0 && $("#pursuant-book-date").val().length == 0)) { _error = true; _msg = "กรุณาใส่ข้อมูลเกี่ยวกับหนังสือขอให้ชดใช้เงิน"; _focus = "#pursuant"; }
     if (_error == false && ($("#reply-date").val().length == 0 && _replyResult.length > 0)) { _error = true; _msg = "กรุณาใส่วันที่รับเอกสารตอบกลับจากไปรษณีย์"; _focus = "#reply-date"; }
     if (_error == false && ($("#reply-date").val().length > 0 && _replyResult.length == 0)) { _error = true; _msg = "กรุณาใส่ผลการรับทราบการแจ้งชำระหนี้"; _focus = "#reply-yes-input"; }
   }
@@ -163,12 +168,14 @@ function ValidateCPTransRepayContract(_action) {
   }
 
   var _send = new Array();
-  _send[0] = "cp2id=" + $("#cp2id").val();
-  _send[1] = "statusrepay=" + $("#status-repay-hidden").val();
-  _send[2] = "repaydate=" + $("#repay-date").val();
+  _send[_send.length] = "cp2id=" + $("#cp2id").val();
+  _send[_send.length] = "statusrepay=" + $("#status-repay-hidden").val();
+  _send[_send.length] = "repaydate=" + $("#repay-date").val();
+  _send[_send.length] = "pursuant=" + $("#pursuant").val();
+  _send[_send.length] = "pursuantbookdate=" + $("#pursuant-book-date").val();
 
   if (_action == "update") {
-    _send[3] = "replydate=" + $("#reply-date").val();
+    _send[_send.length] = "replydate=" + $("#reply-date").val();
 
     var _valCheck = "";
 
@@ -178,7 +185,7 @@ function ValidateCPTransRepayContract(_action) {
       });
     }
 
-    _send[4] = "replyresult=" + _valCheck;
+    _send[_send.length] = "replyresult=" + _valCheck;
   }
 
   AddUpdateData(_action, _action + "cptransrepaycontract", _send, false, "", "", "", false, function (_result) {

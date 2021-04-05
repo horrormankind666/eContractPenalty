@@ -6,7 +6,7 @@
 <head runat="server">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>เข้าสู่ระบบคำนวณเงินผิดสัญญาการเป็นนักศึกษา</title>
-  <link rel="Shortcut Icon" href="Image/MUFavicon.ico" />
+  <link rel="Shortcut Icon" href="Image/MUFavicon.png" />
   <link href="jQuery/css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />
   <link href="Style/Style.css" rel="stylesheet" type="text/css" />
   <link href="Style/Slide.css" rel="stylesheet" type="text/css" />    

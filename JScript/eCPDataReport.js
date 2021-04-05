@@ -73,10 +73,10 @@ function CalReportTableCalCapitalAndInterest() {
   if (ValidateCalCPReportTableCalCapitalAndInterest() == true) {
     var _pay = ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" ? (parseFloat(DelCommas("period")) == 1 ? DelCommas("capital") : (parseFloat((parseFloat(DelCommas("capital")) / parseFloat(DelCommas("period"))).toFixed(0)) + 1).toFixed(2)) : DelCommas("pay");
     var _send = new Array();
-    _send[0] = "capital=" + DelCommas("capital");
-    _send[1] = "interest=" + DelCommas("interest");
-    _send[2] = "pay=" + _pay;
-    _send[3] = "paymentdate=" + $("#payment-date").val();
+    _send[_send.length] = "capital=" + DelCommas("capital");
+    _send[_send.length] = "interest=" + DelCommas("interest");
+    _send[_send.length] = "pay=" + _pay;
+    _send[_send.length] = "paymentdate=" + $("#payment-date").val();
 
     SetMsgLoading("กำลังคำนวณ");
 
@@ -119,11 +119,11 @@ function ExportReportTableCalCapitalAndInterest() {
   if (ValidateExportCPReportTableCalCapitalAndInterest() == true) {
     var _pay = ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" ? (parseFloat(DelCommas("period")) == 1 ? DelCommas("capital") : (parseFloat((parseFloat(DelCommas("capital")) / parseFloat(DelCommas("period"))).toFixed(0)) + 1).toFixed(2)) : DelCommas("pay");
     var _send = new Array();
-    _send[0] = $("#cp2id").val();
-    _send[1] = DelCommas("capital");
-    _send[2] = DelCommas("interest");
-    _send[3] = _pay;
-    _send[4] = $("#payment-date").val();
+    _send[_send.length] = $("#cp2id").val();
+    _send[_send.length] = DelCommas("capital");
+    _send[_send.length] = DelCommas("interest");
+    _send[_send.length] = _pay;
+    _send[_send.length] = $("#payment-date").val();
 
     Printing(_send.join("&"), "reporttablecalcapitalandinterest", "pdf", "eCPPrinting.aspx", "export-target");
   }
@@ -175,8 +175,8 @@ function ConfirmPrintNoticeRepayComplete() {
 
 function PrintNoticeCheckForReimbursement(_cp1id, _action) {
   var _send = new Array();
-  _send[0] = _cp1id;
-  _send[1] = _action;
+  _send[_send.length] = _cp1id;
+  _send[_send.length] = _action;
 
   Printing(_send.join(":"), "reportnoticecheckforreimbursement", "pdf", "eCPPrinting.aspx", "export-target");
 }
@@ -201,9 +201,9 @@ function PrintNoticeRepayComplete() {
 
 function PrintNoticeClaimDebt(_cp1id, _time, _previousRepayDateEnd) {
   var _send = new Array();
-  _send[0] = _cp1id;
-  _send[1] = _time;
-  _send[2] = _previousRepayDateEnd
+  _send[_send.length] = _cp1id;
+  _send[_send.length] = _time;
+  _send[_send.length] = _previousRepayDateEnd
 
   Printing(_send.join(":"), "reportnoticeclaimdebt", "word", "eCPPrinting.aspx", "export-target");
 }
@@ -253,12 +253,19 @@ function PrintDebtorContract(_tabOrder) {
   var _program = $("#program-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#program-report-debtor-contract-by-program-hidden").val() : "";
   var _formatPayment = $("#format-payment-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#format-payment-report-debtor-contract-by-program-hidden").val() : "";
   var _send = new Array();
-  _send[0] = $("#date-start-report-debtor-contract-hidden").val();
-  _send[1] = $("#date-end-report-debtor-contract-hidden").val();
-  _send[2] = $("#id-name-report-debtor-contract-by-program-hidden").val();
-  _send[3] = _faculty;
-  _send[4] = _program;
-  _send[5] = _formatPayment;
+  _send[_send.length] = $("#date-start-report-debtor-contract-hidden").val();
+  _send[_send.length] = $("#date-end-report-debtor-contract-hidden").val();
+  _send[_send.length] = $("#id-name-report-debtor-contract-by-program-hidden").val();
+  _send[_send.length] = _faculty;
+  _send[_send.length] = _program;
+  _send[_send.length] = _formatPayment;
     
   Printing(_send.join(":"), _reportOrder, "excel", "eCPPrinting.aspx", "export-target");
+}
+
+function PrintCertificateReimbursement(_cp2id) {
+  var _send = new Array();
+  _send[_send.length] = _cp2id;
+
+  Printing(_send.join(":"), "reportcertificatereimbursement", "word", "eCPPrinting.aspx", "export-target");
 }

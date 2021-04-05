@@ -176,6 +176,23 @@ function UpdateUseContractInterest(_cp1id) {
   });
 }
 
+function InitSetAmtIndemnitorYear() {
+  $("input[name=set-amt-indemnitor-year]:radio").click(function () {
+    ResetSetAmtIndemnitorYear();
+  });
+}
+
+function ResetSetAmtIndemnitorYear() {
+  var _result = $("input[name=set-amt-indemnitor-year]:checked").val();
+
+  if (_result == "Y")
+    TextboxEnable("#amt-indemnitor-year")
+  else {
+    $("#amt-indemnitor-year").val("");
+    TextboxDisable("#amt-indemnitor-year");
+  }
+}
+
 function ResetFrmCPTabPayBreakContract(_disable) {
   GoToElement("top-page");
 
@@ -185,6 +202,7 @@ function ResetFrmCPTabPayBreakContract(_disable) {
     ComboboxDisable("facultycptabprogram");
     ComboboxDisable("programcptabprogram");
     TextboxDisable("#amount-cash");
+    $("input[name=set-amt-indemnitor-year]:radio").prop("disabled", true);
     TextboxDisable("#amt-indemnitor-year");
     ComboboxDisable("cal-date-condition");
     ButtonDisable("#addupdate-cp-tab-pay-break-contract #view-cal-date .button-style2", "button-style2-disable");
@@ -198,6 +216,8 @@ function ResetFrmCPTabPayBreakContract(_disable) {
   InitCombobox("facultycptabprogram", "0", $("#faculty-hidden").val(), 390, 415);
   $("#amount-cash").val($("#amount-cash-hidden").val());
   $("#amt-indemnitor-year").val($("#amt-indemnitor-year-hidden").val());
+  $("input[name=set-amt-indemnitor-year][value=Y]").prop("checked", ($("#amt-indemnitor-year").val().length > 0 ? true : false));
+  ResetSetAmtIndemnitorYear();
   InitCombobox("cal-date-condition", "0", $("#cal-date-condition-hidden").val(), 200, 225);
   $("#button-style11").show();
   $("#button-style12").hide();
@@ -244,7 +264,7 @@ function ValidateCPTabPayBreakContract(_action) {
   if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") { _error = true; _msg = "กรุณาเลือกคณะ"; _focus = ".facultycptabprogram-combobox-input"; }
   if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") { _error = true; _msg = "กรุณาเลือกหลักสูตร"; _focus = ".programcptabprogram-combobox-input"; }
   if (_error == false && (($("#amount-cash").val().length == 0) || ($("#amount-cash").val() == "0"))) { _error = true; _msg = "กรุณาใส่จำนวนเงินชดใช้"; _focus = "#amount-cash"; }
-  if (_error == false && ((ComboboxGetSelectedValue("case-graduate") == "2") && (($("#amt-indemnitor-year").val().length == 0) || ($("#amt-indemnitor-year").val() == "0")))) { _error = true; _msg = "กรุณาใส่ระยะเวลาทำงานชดใช้หลังสำเร็จการศึกษา"; _focus = "#amt-indemnitor-year"; }
+  if (_error == false && ((ComboboxGetSelectedValue("case-graduate") == "2") && ($("input[name=set-amt-indemnitor-year]:checked").val() == "Y") && (($("#amt-indemnitor-year").val().length == 0) || ($("#amt-indemnitor-year").val() == "0")))) { _error = true; _msg = "กรุณาใส่ระยะเวลาทำงานชดใช้หลังสำเร็จการศึกษา"; _focus = "#amt-indemnitor-year"; }
   if (_error == false && ComboboxGetSelectedValue("cal-date-condition") == "0") { _error = true; _msg = "กรุณาเลือกวิธีคิดและคำนวณเงินชดใช้"; _focus = ".cal-date-condition-combobox-input"; }
 
   if (_error == true) {
@@ -255,17 +275,17 @@ function ValidateCPTabPayBreakContract(_action) {
   var _faculty = ComboboxGetSelectedValue("facultycptabprogram").split(";");
   var _program = ComboboxGetSelectedValue("programcptabprogram").split(";");
   var _send = new Array();
-  _send[0] = "cp1id=" + $("#cp1id").val();
-  _send[1] = "dlevel=" + ComboboxGetSelectedValue("dlevel");
-  _send[2] = "casegraduate=" + ComboboxGetSelectedValue("case-graduate");
-  _send[3] = "faculty=" + _faculty[0];
-  _send[4] = "programcode=" + _program[0];
-  _send[5] = "majorcode=" + _program[2];
-  _send[6] = "groupnum=" + _program[3];
-  _send[7] = "amountcash=" + DelCommas("amount-cash");
-  _send[8] = "amtindemnitoryear=" + DelCommas("amt-indemnitor-year");
-  _send[9] = "caldatecondition=" + ComboboxGetSelectedValue("cal-date-condition");
-
+  _send[_send.length] = "cp1id=" + $("#cp1id").val();
+  _send[_send.length] = "dlevel=" + ComboboxGetSelectedValue("dlevel");
+  _send[_send.length] = "casegraduate=" + ComboboxGetSelectedValue("case-graduate");
+  _send[_send.length] = "faculty=" + _faculty[0];
+  _send[_send.length] = "programcode=" + _program[0];
+  _send[_send.length] = "majorcode=" + _program[2];
+  _send[_send.length] = "groupnum=" + _program[3];
+  _send[_send.length] = "amountcash=" + DelCommas("amount-cash");
+  _send[_send.length] = "amtindemnitoryear=" + DelCommas("amt-indemnitor-year");
+  _send[_send.length] = "caldatecondition=" + ComboboxGetSelectedValue("cal-date-condition");
+  
   AddUpdateData(_action, _action + "cptabpaybreakcontract", _send, false, "", "", "", false, function (_result) {
     if (_result == "1") {
       GotoSignin();

@@ -339,6 +339,7 @@ function ViewPayBreakContract(_faculty, _program, _caseGraduateBreakContract) {
 
       if (_dataError[1] == "0") {
         $("#cal-date-condition").val(_dataList[0]);
+        $("#set-amt-indemnitor-year").val((_dataList[1] != "0") ? "Y" : "N");
         $("#indemnitor-year").val((_dataList[1] != "0") ? _dataList[1] : "");
         $("#indemnitor-cash").val(_dataList[2]);
       }
@@ -410,7 +411,7 @@ function ValidateCPTransBreakContract(_action) {
   if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (DateDiff(GetDateObject($("#education-date-end").val()), GetDateObject($("#contract-force-date-start").val()), "days") >= 0))) { _error = true; _msg = "กรุณาใส่วันที่สัญญาเริ่มมีผลบังคับใช้ให้น้อยกว่าวันที่พ้นสภาพนักศึกษา"; _focus = "#contract-force-date-start"; }
   if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (DateDiff(GetDateObject($("#education-date-start").val()), GetDateObject($("#contract-force-date-end").val()), "days") < 0))) { _error = true; _msg = "กรุณาใส่วันที่สัญญาสิ้นสุดมีผลบังคับใช้ให้มากกว่าหรือเท่ากับวันที่เริ่มเข้าศึกษา"; _focus = "#contract-force-date-end"; }
   if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "2") && ($("#contract-force-date-start").val().length == 0))) { _error = true; _msg = "กรุณาใส่วันที่สัญญามีผลบังคับใช้ให้ครบถ้วน"; _focus = "#contract-force-date-start"; }    
-  if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "2") && (($("#indemnitor-year").val().length == 0) || ($("#indemnitor-cash").val().length == 0)))) { _error = true; _msg = "กรุณาใส่เวลาที่ทำงานชดใช้และจำนวนเงินที่ชดใช้"; _focus = "#indemnitor-year"; }
+  if (_error == false && (($("#set-amt-indemnitor-year").val() == "Y") && (($("#indemnitor-year").val().length == 0) || ($("#indemnitor-cash").val().length == 0)))) { _error = true; _msg = "กรุณาใส่เวลาที่ทำงานชดใช้และจำนวนเงินที่ชดใช้"; _focus = "#indemnitor-year"; }
   if (_error == false && ($("#indemnitor-cash").val().length == 0)) { _error = true; _msg = "กรุณาใส่จำนวนเงินที่ชดใช้"; _focus = "#indemnitor-cash"; }
     
   if (_error == true) {
@@ -462,7 +463,7 @@ function ValidateCPTransBreakContract(_action) {
   _send[37] = "trackingstatus=" + $("#trackingstatus").val();
   _send[38] = "contractforcedatestart=" + $("#contract-force-date-start").val();
   _send[39] = "contractforcedateend=" + $("#contract-force-date-end").val();
-
+  
   if (_action == "add") {
     ChkStudentTransBreakContract($("#profile-student-id-hidden").val(), function (_result) {
       if (_result == "0")
@@ -475,7 +476,7 @@ function ValidateCPTransBreakContract(_action) {
       if (_result == "0")
         AddUpdateCPTransBreakContract(_action, _send);
     });
-  }
+  }  
 }
 
 function ChkTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, _idActive, _callbackFunc) {

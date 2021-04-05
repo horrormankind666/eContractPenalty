@@ -6,7 +6,7 @@
 <head runat="server">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>ระบบคำนวณเงินผิดสัญญาการเป็นนักศึกษา</title>
-  <link rel="Shortcut Icon" href="Image/MUFavicon.ico" />
+  <link rel="Shortcut Icon" href="Image/MUFavicon.png" />
   <link href="jQuery/css/ui-lightness/jquery-ui-1.8.17.custom.css" rel="stylesheet" type="text/css" />
   <link href="Style/Style.css" rel="stylesheet" type="text/css" />
   <link href="Style/Slide.css" rel="stylesheet" type="text/css" />
@@ -15,6 +15,7 @@
   <script src="jQuery/js/jquery-ui-1.8.16.offset.datepicker.min.js" language="javascript" type="text/javascript"></script>
   <script src="jQuery/js/jquery-slimScroll.js" language="javascript" type="text/javascript"></script>
   <script src="JScript/Autocomplete.js" language="javascript" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.3/jquery.inputmask.min.js" language="javascript" type="text/javascript"></script>
   <script src="JScript/Util.js" language="javascript" type="text/javascript"></script>
   <script src="JScript/Slide.js" language="javascript" type="text/javascript"></script>
   <script src="JScript/eCPUtil.js" language="javascript" type="text/javascript"></script>

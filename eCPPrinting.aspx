@@ -25,8 +25,9 @@
     {
       switch (Request.Form["export-order"])
       {
-        case "reportnoticerepaycomplete"  : { eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(Request.Form["export-send"]); break; }
-        case "reportnoticeclaimdebt"      : { eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(Request.Form["export-send"]); break; }
+        case "reportnoticerepaycomplete"      : { eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(Request.Form["export-send"]); break; }
+        case "reportnoticeclaimdebt"          : { eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(Request.Form["export-send"]); break; }
+        case "reportcertificatereimbursement" : { eCPDataReportCertificateReimbursement.ExportCPReportCertificateReimbursement(Request.Form["export-send"]); break; }
       }
     }
 
@@ -38,7 +39,7 @@
         case "reportdebtorcontractpaid"   : { eCPDataReportDebtorContract.ExportCPReportDebtorContractPaid(Request.Form["export-send"]); break; }
         case "reportdebtorcontractremain" : { eCPDataReportDebtorContract.ExportCPReportDebtorContractRemain(Request.Form["export-send"]); break; }
       }
-    }        
+    }
   %>
 </body>
 </html>

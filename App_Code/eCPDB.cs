@@ -1,6 +1,6 @@
 ﻿//eCPDB.cs            : สำหรับจัดการฐานข้อมูล
 //Date Created        : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified  : ๑๗/๐๓/๒๕๖๔
+//Last Date Modified  : ๐๒/๐๔/๒๕๖๔
 //Create By           : Yutthaphoom Tawana
 
 using System;
@@ -66,7 +66,7 @@ public class eCPDB
         
     SqlCommand _cmd = new SqlCommand(_sqlCmd);        
     _cmd.CommandType = CommandType.StoredProcedure;
-    _cmd.CommandTimeout = _eCPConn.ConnectionTimeout;
+    _cmd.CommandTimeout = 1000;//_eCPConn.ConnectionTimeout;
     _cmd.Connection = _eCPConn;
 
     return _cmd;
@@ -97,12 +97,10 @@ public class eCPDB
     string _name = String.Empty;
     string[,] _data;
 
+    Dictionary<string, string> _auth = eCPUtil.GetUsername();
+    _whoIs = _auth["Username"];
 
-    HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
-    _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
-    _whoIs = _eCPCookie["Username"];
-
-    _data = eCPDB.ListDetailCPTabUser(_eCPCookie["Username"], _eCPCookie["Password"], "");
+    _data = eCPDB.ListDetailCPTabUser(_auth["Username"], _auth["Password"], "");
     _name = _data[0, 3];
 
     _command += "INSERT INTO ecpTransLog " +
@@ -139,8 +137,9 @@ public class eCPDB
     {
       int _rowCount;
 
-      if ((String.IsNullOrEmpty(_eCPCookie["Username"])) ||
-          (String.IsNullOrEmpty(_eCPCookie["Password"])) ||
+      if ((String.IsNullOrEmpty(_eCPCookie["Authen"])) ||
+          //(String.IsNullOrEmpty(_eCPCookie["Username"])) ||
+          //(String.IsNullOrEmpty(_eCPCookie["Password"])) ||
           //(String.IsNullOrEmpty(_eCPCookie["Name"])) ||
           (String.IsNullOrEmpty(_eCPCookie["UserSection"])) ||
           (String.IsNullOrEmpty(_eCPCookie["UserLevel"])) ||
@@ -151,10 +150,12 @@ public class eCPDB
       }
       else
       {
+        Dictionary<string, string> _authen = eCPUtil.GetUsername();
+
         SqlCommand _cmd =  ConnectStoreProc(STORE_PROC);
         _cmd.Parameters.AddWithValue("@ordertable", 1);
-        _cmd.Parameters.AddWithValue("@username", _eCPCookie["Username"]);
-        _cmd.Parameters.AddWithValue("@password", _eCPCookie["Password"]);
+        _cmd.Parameters.AddWithValue("@username", _authen["Username"]);
+        _cmd.Parameters.AddWithValue("@password", _authen["Password"]);
 
         SqlDataAdapter _da = new SqlDataAdapter(_cmd);
         DataSet _ds = new DataSet();
@@ -169,8 +170,8 @@ public class eCPDB
         else
         {
           DataRow _dr = _ds.Tables[0].Rows[0];
-          if (!(_dr["Username"].ToString()).Equals(_eCPCookie["Username"]) ||
-              !(_dr["Password"].ToString()).Equals(_eCPCookie["Password"]) ||
+          if (!(_dr["Username"].ToString()).Equals(_authen["Username"]) ||
+              !(_dr["Password"].ToString()).Equals(_authen["Password"]) ||
               //!(_dr["Name"].ToString()).Equals(HttpContext.Current.Server.UrlDecode(_eCPCookie["Name"])) ||
               !(_dr["UserSection"].ToString()).Equals(_eCPCookie["UserSection"]) ||
               !(_dr["UserLevel"].ToString()).Equals(_eCPCookie["UserLevel"]))
@@ -194,12 +195,16 @@ public class eCPDB
   }
 
   //สำหรับตรวจสอบการเข้าระบบ
-  public static bool Signin(string _username, string _password)
+  public static bool Signin(string _authen)
   {
     int _rowCount;
     bool _loginResult = false;
     string _sql = String.Empty;
     string _sqlCommand = String.Empty;
+    
+    Dictionary<string, string> _auth = eCPUtil.GetUsername(_authen);
+    string _username = _auth["Username"];
+    string _password = _auth["Password"];
 
     SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
     _cmd.Parameters.AddWithValue("@ordertable", 1);
@@ -225,10 +230,11 @@ public class eCPDB
       }
       else
       {
-        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");                        
-        _eCPCookie.Values.Add("Username", _dr["Username"].ToString());
-        _eCPCookie.Values.Add("Password", _dr["Password"].ToString());
+        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+        //_eCPCookie.Values.Add("Username", _dr["Username"].ToString());
+        //_eCPCookie.Values.Add("Password", _dr["Password"].ToString());
         //_eCPCookie.Values.Add("Name", HttpContext.Current.Server.UrlEncode(_dr["Name"].ToString()));
+        _eCPCookie.Values.Add("Authen", _authen);
         _eCPCookie.Values.Add("UserSection", _dr["UserSection"].ToString());
         _eCPCookie.Values.Add("UserLevel", _dr["UserLevel"].ToString());
         _eCPCookie.Values.Add("Pid", "0");
@@ -1220,7 +1226,7 @@ public class eCPDB
     DataSet _ds = new DataSet();
     _da.Fill(_ds);
 
-    string[,] _data = new string[_ds.Tables[1].Rows.Count, 51];
+    string[,] _data = new string[_ds.Tables[1].Rows.Count, 52];
     string[,] _data1;
     foreach (DataRow _dr in _ds.Tables[1].Rows)
     {
@@ -1280,6 +1286,8 @@ public class eCPDB
       _data[_i, 46] = _dr["ContractDateAgreement"].ToString();
       _data[_i, 47] = _dr["ContractForceStartDate"].ToString();
       _data[_i, 48] = _dr["ContractForceEndDate"].ToString();
+
+      _data[_i, 51] = _dr["SetAmtIndemnitorYear"].ToString();
     }
 
     _ds.Dispose();
@@ -1510,7 +1518,7 @@ public class eCPDB
     DataSet _ds = new DataSet();
     _da.Fill(_ds);
 
-    string[,] _data = new string[_ds.Tables[1].Rows.Count, 73];
+    string[,] _data = new string[_ds.Tables[1].Rows.Count, 78];
     string[,] _data1;
     foreach (DataRow _dr in _ds.Tables[1].Rows)
     {           
@@ -1595,6 +1603,15 @@ public class eCPDB
       _data[_i, 71] = _dr["AfterStudyLeaveStartDate"].ToString();
       _data[_i, 72] = _dr["AfterStudyLeaveEndDate"].ToString();
       //---------------------------------------------------------------------------------------------------
+
+      //ปรับปรุงเมื่อ ๑๘/๐๓/๒๕๖๔
+      //---------------------------------------------------------------------------------------------------
+      _data[_i, 73] = _dr["LawyerFullname"].ToString();
+      _data[_i, 74] = _dr["LawyerPhoneNumber"].ToString();
+      _data[_i, 75] = _dr["LawyerMobileNumber"].ToString();
+      _data[_i, 76] = _dr["LawyerEmail"].ToString();
+
+      _data[_i, 77] = _dr["SetAmtIndemnitorYear"].ToString();
     }
 
     _ds.Dispose();
@@ -1640,7 +1657,7 @@ public class eCPDB
     DataSet _ds = new DataSet();
     _da.Fill(_ds);
 
-    string[,] _data = new string[_ds.Tables[0].Rows.Count, 12];
+    string[,] _data = new string[_ds.Tables[0].Rows.Count, 14];
     string[,] _data1;
     foreach (DataRow _dr in _ds.Tables[0].Rows)
     {
@@ -1667,6 +1684,9 @@ public class eCPDB
         _data[_i, 9] = _data1[0, 3];
         _data[_i, 10] = _data1[0, 4];
       }
+
+      _data[_i, 12] = _dr["Pursuant"].ToString();
+      _data[_i, 13] = _dr["PursuantBookDate"].ToString();
 
       _i++;
     }
@@ -1784,7 +1804,7 @@ public class eCPDB
       DataSet _ds = new DataSet();
       _da.Fill(_ds);
 
-      _data = new string[_ds.Tables[0].Rows.Count, 6];
+      _data = new string[_ds.Tables[0].Rows.Count, 8];
       foreach (DataRow _dr in _ds.Tables[0].Rows)
       {
         _data[_i, 0] = _dr["ID"].ToString();
@@ -1793,6 +1813,8 @@ public class eCPDB
         _data[_i, 3] = _dr["ReplyResult"].ToString();
         _data[_i, 4] = _dr["RepayDate"].ToString();
         _data[_i, 5] = _dr["ReplyDate"].ToString();
+        _data[_i, 6] = _dr["Pursuant"].ToString();
+        _data[_i, 7] = _dr["PursuantBookDate"].ToString();
 
         _i++;
       }
@@ -1927,7 +1949,7 @@ public class eCPDB
     DataSet _ds = new DataSet();
     _da.Fill(_ds);
 
-    string[,] _data = new string[_ds.Tables[1].Rows.Count, 28];
+    string[,] _data = new string[_ds.Tables[1].Rows.Count, 33];
     string[,] _data1;
     foreach (DataRow _dr in _ds.Tables[1].Rows)
     {
@@ -1967,6 +1989,14 @@ public class eCPDB
         _data[_i, 26] = _data1[0, 3];
         _data[_i, 27] = _data1[0, 4];
       }
+
+      //ปรับปรุงเมื่อ ๓๐/๐๓/๒๕๖๔
+      //---------------------------------------------------------------------------------------------------
+      _data[_i, 28] = _dr["ContractDate"].ToString();
+      _data[_i, 29] = _dr["LawyerFullname"].ToString();
+      _data[_i, 30] = _dr["LawyerPhoneNumber"].ToString();
+      _data[_i, 31] = _dr["LawyerMobileNumber"].ToString();
+      _data[_i, 32] = _dr["LawyerEmail"].ToString();
     }
 
     _ds.Dispose();
@@ -3029,7 +3059,7 @@ public class eCPDB
     DataSet _ds = new DataSet();
     _da.Fill(_ds);
 
-    string[,] _data = new string[_ds.Tables[1].Rows.Count, 21];
+    string[,] _data = new string[_ds.Tables[1].Rows.Count, 27];
     foreach (DataRow _dr in _ds.Tables[1].Rows)
     {            
       _data[_i, 0] = _dr["BCID"].ToString();
@@ -3056,6 +3086,14 @@ public class eCPDB
       _data[_i, 19] = _dr["StudyLeave"].ToString();
       _data[_i, 20] = _dr["AfterStudyLeaveEndDate"].ToString();
       //---------------------------------------------------------------------------------------------------
+      //ปรับปรุงเมื่อ ๑๙/๐๓/๒๕๖๔
+      //---------------------------------------------------------------------------------------------------
+      _data[_i, 21] = _dr["LawyerFullname"].ToString();
+      _data[_i, 22] = _dr["LawyerPhoneNumber"].ToString();
+      _data[_i, 23] = _dr["LawyerMobileNumber"].ToString();
+      _data[_i, 24] = _dr["LawyerEmail"].ToString();
+      _data[_i, 25] = _dr["StatusRepay"].ToString();
+      _data[_i, 26] = _dr["StatusPayment"].ToString();
     }
 
     _ds.Dispose();
@@ -4191,7 +4229,7 @@ public class eCPDB
       {
         if (_c.Request["scholar"].Equals("1"))
         {
-          _command += "(BCID, ActualMonthScholarship, ActualScholarship, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, StatusRepay, StatusPayment, FormatPayment)" +
+          _command += "(BCID, ActualMonthScholarship, ActualScholarship, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber,	LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                       "VALUES " +
                       "(" +
                       _c.Request["cp1id"] + ", " +
@@ -4202,13 +4240,17 @@ public class eCPDB
                       _c.Request["actualday"] + ", " +
                       _c.Request["subtotalpenalty"] + ", " +
                       _c.Request["totalpenalty"] + ", " +
+                      "'" + _c.Request["lawyerfullname"] + "', " +
+                      (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                      "'" + _c.Request["lawyeremail"] + "', " +
                       "0, " +
                       "1, " +
                       "0)";
         }
         else
         {
-          _command += "(BCID, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, StatusRepay, StatusPayment, FormatPayment)" +
+          _command += "(BCID, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                       "VALUES " +
                       "(" +
                       _c.Request["cp1id"] + ", " +
@@ -4217,6 +4259,10 @@ public class eCPDB
                       _c.Request["actualday"] + ", " +
                       _c.Request["subtotalpenalty"] + ", " +
                       _c.Request["totalpenalty"] + ", " +
+                      "'" + _c.Request["lawyerfullname"] + "', " +
+                      (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                      "'" + _c.Request["lawyeremail"] + "', " +
                       "0, " +
                       "1, " +
                       "0)";
@@ -4227,7 +4273,7 @@ public class eCPDB
       {
         if (_c.Request["civil"].Equals("1"))
         {
-          _command += "(BCID, IndemnitorAddress, Province, StudyLeave, RequireDate, ApproveDate, BeforeStudyLeaveStartDate, BeforeStudyLeaveEndDate, StudyLeaveStartDate, StudyLeaveEndDate, AfterStudyLeaveStartDate, AfterStudyLeaveEndDate, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, SubtotalPenalty, TotalPenalty, StatusRepay, StatusPayment, FormatPayment)" +
+          _command += "(BCID, IndemnitorAddress, Province, StudyLeave, RequireDate, ApproveDate, BeforeStudyLeaveStartDate, BeforeStudyLeaveEndDate, StudyLeaveStartDate, StudyLeaveEndDate, AfterStudyLeaveStartDate, AfterStudyLeaveEndDate, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                       "VALUES " +
                       "(" +
                       _c.Request["cp1id"] + ", " +
@@ -4243,24 +4289,34 @@ public class eCPDB
                       (String.IsNullOrEmpty(_c.Request["afterstudyleavestartdate"]) ? "NULL" : ("'" + _c.Request["afterstudyleavestartdate"] + "'")) + ", " +
                       (String.IsNullOrEmpty(_c.Request["afterstudyleaveenddate"]) ? "NULL" : ("'" + _c.Request["afterstudyleaveenddate"] + "'")) + ", " +
                       _c.Request["totalpayscholarship"] + ", " +
-                      _c.Request["allactualdate"] + ", " +
-                      _c.Request["actualdate"] + ", " +
-                      _c.Request["remaindate"] + ", " +
+                      (String.IsNullOrEmpty(_c.Request["allactualdate"]) ? "NULL" : _c.Request["allactualdate"]) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["actualdate"]) ? "NULL" : _c.Request["actualdate"]) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["remaindate"]) ? "NULL" : _c.Request["remaindate"]) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["actualday"]) ? "NULL" : _c.Request["actualday"]) + ", " +
                       _c.Request["subtotalpenalty"] + ", " +
                       _c.Request["totalpenalty"] + ", " +
+                      "'" + _c.Request["lawyerfullname"] + "', " +
+                      (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                      "'" + _c.Request["lawyeremail"] + "', " +
                       "0, " +
                       "1, " +
                       "0)";
         }
         else
         {
-          _command += "(BCID, TotalPayScholarship, SubtotalPenalty, TotalPenalty, StatusRepay, StatusPayment, FormatPayment)" +
+          _command += "(BCID, TotalPayScholarship, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                       "VALUES " +
                       "(" +
                       _c.Request["cp1id"] + ", " +
                       _c.Request["totalpayscholarship"] + ", " +
+                      (String.IsNullOrEmpty(_c.Request["actualday"]) ? "NULL" : _c.Request["actualday"]) + ", " +
                       _c.Request["subtotalpenalty"] + ", " +
                       _c.Request["totalpenalty"] + ", " +
+                      "'" + _c.Request["lawyerfullname"] + "', " +
+                      (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                      (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                      "'" + _c.Request["lawyeremail"] + "', " +
                       "0, " +
                       "1, " +
                       "0)";
@@ -4283,18 +4339,22 @@ public class eCPDB
 
       if (_c.Request["casegraduate"].Equals("1"))
       {
-        _command += "ActualMonthScholarship = " + _c.Request["actualmonthscholarship"] + ", " +
-                    "ActualScholarship = " + _c.Request["actualscholarship"] + ", " +
+        _command += "ActualMonthScholarship = " + (String.IsNullOrEmpty(_c.Request["actualmonthscholarship"]) ? "NULL" : _c.Request["actualmonthscholarship"]) + ", " +
+                    "ActualScholarship = " + (String.IsNullOrEmpty(_c.Request["actualscholarship"]) ? "NULL" : _c.Request["actualscholarship"]) + ", " +
                     "TotalPayScholarship = " + _c.Request["totalpayscholarship"] + ", " +
                     "ActualMonth = " + _c.Request["actualmonth"] + ", " +
                     "ActualDay = " + _c.Request["actualday"] + ", " +
                     "SubtotalPenalty = " + _c.Request["subtotalpenalty"] + ", " +
                     "TotalPenalty = " + _c.Request["totalpenalty"] + ", " +
+                    "LawyerFullname = '" + _c.Request["lawyerfullname"] + "', " +
+                    "LawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                    "LawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                    "LawyerEmail = '" + _c.Request["lawyeremail"] + "', " +
                     "StatusRepay = 0, " +
                     "StatusPayment = 1, " +
                     "FormatPayment = 0 ";
       }
-
+      
       if (_c.Request["casegraduate"].Equals("2"))
       {
         if (_c.Request["civil"].Equals("1"))
@@ -4311,11 +4371,16 @@ public class eCPDB
                       "AfterStudyLeaveStartDate = " + (String.IsNullOrEmpty(_c.Request["afterstudyleavestartdate"]) ? "NULL" : ("'" + _c.Request["afterstudyleavestartdate"] + "'")) + ", " +
                       "AfterStudyLeaveEndDate = " + (String.IsNullOrEmpty(_c.Request["afterstudyleaveenddate"]) ? "NULL" : ("'" + _c.Request["afterstudyleaveenddate"] + "'")) + ", " +
                       "TotalPayScholarship = " + _c.Request["totalpayscholarship"] + ", " +
-                      "AllActualDate = " + _c.Request["allactualdate"] + ", " +
-                      "ActualDate = " + _c.Request["actualdate"] + ", " +
-                      "RemainDate = " + _c.Request["remaindate"] + ", " +
+                      "AllActualDate = " + (String.IsNullOrEmpty(_c.Request["allactualdate"]) ? "NULL" : _c.Request["allactualdate"]) + ", " +
+                      "ActualDate = " + (String.IsNullOrEmpty(_c.Request["actualdate"]) ? "NULL" : _c.Request["actualdate"]) + ", " +
+                      "RemainDate = " + (String.IsNullOrEmpty(_c.Request["remaindate"]) ? "NULL" : _c.Request["remaindate"]) + ", " +
+                      "ActualDay = " + (String.IsNullOrEmpty(_c.Request["actualday"]) ? "NULL" : _c.Request["actualday"]) + ", " +
                       "SubtotalPenalty = " + _c.Request["subtotalpenalty"] + ", " +
                       "TotalPenalty = " + _c.Request["totalpenalty"] + ", " +
+                      "LawyerFullname = '" + _c.Request["lawyerfullname"] + "', " +
+                      "LawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                      "LawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                      "LawyerEmail = '" + _c.Request["lawyeremail"] + "', " +
                       "StatusRepay = 0, " +
                       "StatusPayment = 1, " +
                       "FormatPayment = 0 ";
@@ -4325,12 +4390,16 @@ public class eCPDB
           _command += "TotalPayScholarship = " + _c.Request["totalpayscholarship"] + ", " +
                       "SubtotalPenalty = " + _c.Request["subtotalpenalty"] + ", " +
                       "TotalPenalty = " + _c.Request["totalpenalty"] + ", " +
+                      "LawyerFullname = '" + _c.Request["lawyerfullname"] + "', " +
+                      "LawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                      "LawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                      "LawyerEmail = '" + _c.Request["lawyeremail"] + "', " +
                       "StatusRepay = 0, " +
                       "StatusPayment = 1, " +
                       "FormatPayment = 0 ";
         }                        
       }
-            
+      
       _command += "WHERE ID = " + _c.Request["cp2id"];
     }
 
@@ -4367,7 +4436,9 @@ public class eCPDB
                     "ReplyDate = '" + _c.Request["replydate"] + "', ";
       }
                 
-      _command += "RepayDate = '" + _c.Request["repaydate"] + "' " +
+      _command += "RepayDate = '" + _c.Request["repaydate"] + "', " +
+                  "Pursuant = " + (String.IsNullOrEmpty(_c.Request["pursuant"]) ? "NULL" : ("'" + _c.Request["pursuant"] + "'")) + ", " +
+                  "PursuantBookDate = " + (String.IsNullOrEmpty(_c.Request["pursuantbookdate"]) ? "NULL" : ("'" + _c.Request["pursuantbookdate"] + "'")) + " " +
                   "WHERE (RCID = " + _c.Request["cp2id"] + ") AND (StatusRepay = " + _c.Request["statusrepay"] + ")";
     }
 

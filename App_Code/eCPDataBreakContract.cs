@@ -1,6 +1,6 @@
 ﻿//eCPDataBreakContract.cs : สำหรับการทำรายการแจ้ง
 //Date Created            : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified      : ๑๖/๐๓/๒๕๖๔
+//Last Date Modified      : ๒๒/๐๓/๒๕๖๔
 //Create By               : Yutthaphoom Tawana
 
 using System;
@@ -167,13 +167,14 @@ public class eCPDataBreakContract
     string _contractForceDateStartDefault = _action.Equals("update") ? _data[0, 47] : String.Empty;
     string _contractForceDateEndDefault = _action.Equals("update") ? _data[0, 48] : String.Empty;
     string _calDateCondition = _action.Equals("update") ? _data[0, 35] : String.Empty;
+    string _setAmtIndemnitorYear = _action.Equals("update") ? _data[0, 51] : String.Empty;
     string _indemnitorYearDefault = ((_action.Equals("update")) && (!_data[0, 36].Equals("0"))) ? double.Parse(_data[0, 36]).ToString("#,##0") : String.Empty;
     string _indemnitorCashDefault = _action.Equals("update") ? double.Parse(_data[0, 37]).ToString("#,##0") : String.Empty;
     string _commentEditDefault = _action.Equals("update") ? _data[0, 38] : String.Empty;
     string _rejectEditDateDefault = _action.Equals("update") ? _data[0, 49] : String.Empty;
     string _statusEdit = _action.Equals("update") ? _data[0, 42] : String.Empty;
-    string _trackingStatus = _action.Equals("update") ? (_data[0, 40] + _data[0, 41] + _data[0, 42] + _data[0, 43]) : String.Empty;
-        
+    string _trackingStatus = _action.Equals("update") ? (_data[0, 40] + _data[0, 41] + _data[0, 42] + _data[0, 43]) : String.Empty;    
+
     _html += "<a name='aa'></a>" +
              "<div class='form-content' id='" + _action + "-cp-trans-break-contract'>" +
              "  <div id='addupdate-cp-trans-break-contract'>" +
@@ -226,10 +227,11 @@ public class eCPDataBreakContract
              "    <input type='hidden' id='contract-force-date-start-hidden' value='" + _contractForceDateStartDefault + "' />" +
              "    <input type='hidden' id='contract-force-date-end-hidden' value='" + _contractForceDateEndDefault + "' />" +
              "    <input type='hidden' id='cal-date-condition-hidden' value='" + _calDateCondition + "' />" +
+             "    <input type='hidden' id='set-amt-indemnitor-year' value='" + _setAmtIndemnitorYear  + "' />" +
              "    <input type='hidden' id='indemnitor-year-hidden' value='" + _indemnitorYearDefault + "' />" +
              "    <input type='hidden' id='indemnitor-cash-hidden' value='" + _indemnitorCashDefault + "' />" +
              "    <input type='hidden' id='comment-hidden' value='" + _commentEditDefault + "' />" +
-             "    <div>" +
+             "    <div>" + 
              "      <div id='profile-student'>" +
              "        <div class='content-left' id='picture-add-student'>" +
              "          <div id='picture-student'></div>" +
@@ -636,6 +638,13 @@ public class eCPDataBreakContract
     string _remainDateDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 15] : String.Empty;
     string _subtotalPenaltyDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 16] : String.Empty;
     string _totalPenaltyDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 17] : String.Empty;
+    //ปรับปรุงเมื่อ ๒๒/๐๓/๒๕๖๔
+    //---------------------------------------------------------------------------------------------------
+    string _lawyerFullnameDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 73] : String.Empty;
+    string _lawyerPhoneNumberDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 74] : String.Empty;
+    string _lawyerMobileNumber = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 75] : String.Empty;
+    string _lawyerEmail = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 76] : String.Empty;
+    //---------------------------------------------------------------------------------------------------
     string _statusRepay = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 18] : String.Empty;
     string _statusPayment = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 58] : String.Empty;
     string[] _statusRepayCurrent;
@@ -804,7 +813,26 @@ public class eCPDataBreakContract
                  "<div class='clear'></div>";
       }
 
-      _html += "<div id='status-repay'>" +
+      _html += "<div id='lawyer'>" +
+               "  <div class='content-left' id='lawyer-label'>" +
+               "    <div class='form-label-discription-style'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>" +
+               "  </div>" +
+               "  <div class='content-left' id='lawyer-input'>" +
+               "    <div class='form-input-style'>";
+
+      if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumber) && !String.IsNullOrEmpty(_lawyerEmail)))
+      {
+        _html += "    <div class='form-input-content'>" +
+                 "      <div>คุณ<span>" + _lawyerFullnameDefault + "</span> ( <span>" + (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) ? _lawyerPhoneNumberDefault : _lawyerMobileNumber) + "</span> )</div>" +
+                 "      <div class='form-input-content-line'>อีเมล์ <span>" + _lawyerEmail + "</span></div>" +
+                 "    </div>";
+      }
+
+      _html += "    </div>" +
+               "  </div>" +
+               "</div>" +
+               "<div class='clear'></div>" +
+               "<div id='status-repay'>" +
                "  <div class='content-left' id='status-repay-label'>" +
                "    <div class='form-label-discription-style " + ((_statusCancel.Equals("2") || _statusEdit.Equals("2")) ? "clear-bottom" : "") + "'><div class='form-label-style'>สถานะการแจ้งชำระหนี้</div></div>" +
                "  </div>" +

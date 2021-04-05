@@ -1,6 +1,6 @@
 ﻿//eCPDataPayment.cs   : สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง
 //Date Created        : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified  : ๑๖/๐๓/๒๕๖๔
+//Last Date Modified  : ๓๐/๐๓/๒๕๖๔
 //Create By           : Yutthaphoom Tawana
 
 using System;
@@ -974,7 +974,8 @@ public class eCPDataPayment
   //สำหรับแสดงเงินที่ต้องชดใช้และรูปแบบการชำระหนี้
   private static string DetailPenaltyAndFormatPayment(string[,] _data)
   {
-    string _html = String.Empty;        
+    string _html = String.Empty;
+    string _cp2id = _data[0, 1];
     string _totalPayScholarshipDefault = _data[0, 3];
     string _subtotalPenaltyDefault = _data[0, 4];
     string _totalPenaltyDefault = _data[0, 5];
@@ -1005,14 +1006,34 @@ public class eCPDataPayment
              "  <div class='clear'></div>" +
              "  <div>" +
              "    <div class='content-left' id='status-payment-label'>" +
-             "      <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>สถานะการชำระหนี้</div></div>" +
+             "      <div class='form-label-discription-style" + (!_statusPayment.Equals("3") ? " clear-bottom" : "") + "'><div class='form-label-style'>สถานะการชำระหนี้</div></div>" +
              "    </div>" +
              "    <div class='content-left' id='status-payment-input'>" +
-             "      <div class='form-input-style clear-bottom'><div class='form-input-content'><span>" + eCPUtil._paymentStatus[int.Parse(_statusPayment) - 1] + "</span></div></div>" +
+             "      <div class='form-input-style" + (!_statusPayment.Equals("3") ? " clear-bottom" : "") + "'><div class='form-input-content'><span>" + eCPUtil._paymentStatus[int.Parse(_statusPayment) - 1] + "</span></div></div>" +
              "    </div>" +
              "  </div>" +
-             "  <div class='clear'></div>" +
-             "</div>";
+             "  <div class='clear'></div>";
+
+    if (_statusPayment.Equals("3"))
+    {
+      _html += "<div>" +
+               "  <div class='content-left' id='certificate-reimbursement-label'>" +
+               "    <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หนังสือรับรองการชดใช้เงิน</div></div>" +
+               "  </div>" +
+               "  <div class='content-left' id='certificate-reimbursement-input'>" +
+               "    <div class='form-input-style clear-bottom'><div class='form-input-content'><span><a class='text-underline' href='javascript:void(0)' onclick=PrintCertificateReimbursement('" + _cp2id + "')>พิมพ์หนังสือรับรองการชำระหนี้เรียบร้อย</a></span></div></div>" +
+               "  </div>" +
+               "</div>" +
+               "<div class='clear'></div>";
+    }
+
+    _html += "</div>" +
+             "<iframe class='export-target' id='export-target' name='export-target' src='#'></iframe>" +
+             "<form id='export-setvalue' method='post' target='export-target'>" +
+             "  <input id='export-send' name='export-send' value='' type='hidden' />" +
+             "  <input id='export-order' name='export-order' value='' type='hidden' />" +
+             "  <input id='export-type' name='export-type' value='' type='hidden' />" +
+             "</form>";
 
     return _html;
   }
@@ -1020,34 +1041,6 @@ public class eCPDataPayment
   //สำหรับแสดงฟอร์มการบันทึกการชำระหนี้
   public static string AddDetailCPTransPayment(string _cp2id, string _action)
   {
-    /*
-    ก่อนปรับปรุง 
-    string _html = String.Empty;
-    string[,] _data;
-
-    _data = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
-    if (_data.GetLength(0) > 0)
-    {
-      switch (_action)
-      {
-        case "detail":
-        {
-          _html = DetailCpTransPayment(_data);
-          break;
-        }
-        case "addfullrepay":
-        {
-          _html = AddCpTransPaymentFullRepay(_data);
-          break;
-        }
-        case "addpayrepay":
-        {
-          _html = AddCpTransPaymentPayRepay(_data);
-          break;
-        }
-      }
-    }
-    */
     int _i;
     string _html = String.Empty;
     string _statusRepay = String.Empty;
@@ -1260,22 +1253,6 @@ public class eCPDataPayment
                  "  <li class='table-col' id='table-content-cp-trans-payment-col2' onclick=" + _callFunc + "><div>" + _data[_i, 3] + "</div></li>" +
                  "  <li class='table-col' id='table-content-cp-trans-payment-col3' onclick=" + _callFunc + "><div>" + _data[_i, 4] + _data[_i, 5] + " " + _data[_i, 6] + "</div></li>" +
                  "  <li class='table-col' id='table-content-cp-trans-payment-col4' onclick=" + _callFunc + "><div><span class='programcode-col'>" + _data[_i, 7] + "</span>- " + _data[_i, 8] + _groupNum + "</div></li>" +
-                 /*
-                 ก่อนปรับปรุง
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col3' onclick=" + _callFunc + "><div>" + _data[_i, 4] + _data[_i, 5] + " " + _data[_i, 6] + "</div></li>" +
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col4' onclick=" + _callFunc + "><div><span class='programcode-col'>" + _data[_i, 7] + "</span>- " + _data[_i, 8] + _groupNum + "</div></li>" +
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col5' onclick=" + _callFunc + "><div>" + _data[_i, 17] + "</div></li>" +
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col6' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 18]).ToString("#,##0.00") + "</div></li>" +
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col7' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 19]).ToString("#,##0.00") + "</div></li>" +
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col8' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 20]).ToString("#,##0.00") + "</div></li>" +
-                 "  <li class='table-col' id='table-content-cp-trans-payment-col9' onclick=" + _callFunc + ">" +
-                 "    <div class='icon-status-style'>" +
-                 "      <ul>" +
-                 "        <li class='" + _iconStatus + "'></li>" +
-                 "      </ul>" +
-                 "    </div>" +
-                 "  </li>" +
-                 */
                  //ปรับปรุงเมื่อ ๒๘/๐๓/๒๕๖๒
                  //---------------------------------------------------------------------------------------------------
                  "  <li class='table-col' id='table-content-cp-trans-payment-col5' onclick=" + _callFunc + "><div>" + _data[_i, 22].Replace(",", "<br />") + "</div></li>" +
@@ -1392,14 +1369,6 @@ public class eCPDataPayment
              "          <li class='table-col' id='table-head-cp-trans-payment-col2'><div class='table-head-line1'>รหัส</div><div>นักศึกษา</div></li>" +
              "          <li class='table-col' id='table-head-cp-trans-payment-col3'><div class='table-head-line1'>ชื่อ - นามสกุล</div></li>" +
              "          <li class='table-col' id='table-head-cp-trans-payment-col4'><div class='table-head-line1'>หลักสูตร</div></li>" +
-             /*
-             ก่อนปรับปรุง
-             "          <li class='table-col' id='table-head-cp-trans-payment-col5'><div class='table-head-line1'>รับเอกสาร</div><div>ล่าสุดเมื่อ</div></li>" +
-             "          <li class='table-col' id='table-head-cp-trans-payment-col6'><div class='table-head-line1'>ทุนการศึกษา</div><div>ที่ต้องชดใช้</div><div>( บาท )</div></li>" +
-             "          <li class='table-col' id='table-head-cp-trans-payment-col7'><div class='table-head-line1'>เงินค่าปรับ</div><div>ผิดสัญญา</div><div>( บาท )</div></li>" +
-             "          <li class='table-col' id='table-head-cp-trans-payment-col8'><div class='table-head-line1'>ยอดเงินต้น</div><div>ที่ต้องชดใช้</div><div>( บาท )</div></li>" +
-             "          <li class='table-col' id='table-head-cp-trans-payment-col9'><div class='table-head-line1'>สถานะ</div><div>การชำระหนี้</div><div><a href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>( ความหมาย )</a></div></li>" +
-             */
              //ปรับปรุงเมื่อ ๒๘/๐๓/๒๕๖๒
              //---------------------------------------------------------------------------------------------------
              "          <li class='table-col' id='table-head-cp-trans-payment-col5'><div class='table-head-line1'>รับเอกสาร</div><div>การทวงถาม</div><div>คร้้งที่ 1, 2</div></li>" +

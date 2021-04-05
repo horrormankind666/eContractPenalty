@@ -1,6 +1,6 @@
 ﻿//eCPDataConfiguration.cs : สำหรับการตั้งค่าระบบ
 //Date Created            : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified      : ๑๖/๐๑/๒๕๕๖
+//Last Date Modified      : ๓๑/๐๓/๒๕๖๔
 //Create By               : Yutthaphoom Tawana
 
 using System;
@@ -678,7 +678,21 @@ public class eCPDataConfiguration
              "        </div>" +
              "      </div>" +
              "      <div class='form-input-style'>" +
-             "        <div class='form-input-content' id='amt-indemnitor-year-input'><input class='inputbox textbox-numeric' type='text' id='amt-indemnitor-year' onblur=Trim('amt-indemnitor-year');AddCommas('amt-indemnitor-year',0) onkeyup='ExtractNumber(this,0,false)' onkeypress='return BlockNonNumbers(this,event,false,false)' value='' style='width:221px' /></div>" +
+             "        <div class='form-input-content' id='amt-indemnitor-year-input'>" +
+             "          <div id='set-amt-indemnitor-year'>" +
+             "            <div>" +
+             "              <div class='content-left' id='amt-indemnitor-year-no-input'><input class='radio' type='radio' name='set-amt-indemnitor-year' value='N' /></div>" +
+             "              <div class='content-left' id='amt-indemnitor-year-no-label'>ไม่กำหนด</div>" +
+             "            </div>" +
+             "            <div class='clear'></div>" +
+             "            <div>" +
+             "              <div class='content-left' id='amt-indemnitor-year-yes-input'><input class='radio' type='radio' name='set-amt-indemnitor-year' value='Y' /></div>" +
+             "              <div class='content-left' id='amt-indemnitor-year-yes-label'>กำหนด</div>" +
+             "            </div>" +
+             "            <div class='clear'></div>" +
+             "          </div>" +
+             "          <input class='inputbox textbox-numeric' type='text' id='amt-indemnitor-year' onblur=Trim('amt-indemnitor-year');AddCommas('amt-indemnitor-year',0) onkeyup='ExtractNumber(this,0,false)' onkeypress='return BlockNonNumbers(this,event,false,false)' value='' style='width:221px' />" +
+             "        </div>" +
              "      </div>" +
              "    </div>" +
              "    <div class='clear'></div>" +

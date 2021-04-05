@@ -100,11 +100,11 @@ public class eCPDataFormSearch
     int _currentPage;
 
     _recordCount = eCPDB.CountStudent(_c);
-
+    
     if (_recordCount > 0)
     {
       _data = eCPDB.ListStudent(_c);
-
+      
       _html += "<div class='table-content'>";
 
       for (_i = 0; _i < _data.GetLength(0); _i++)
@@ -130,7 +130,7 @@ public class eCPDataFormSearch
                    "  <div class='clear'></div>" +
                    "</div>";
     }
-
+    
     return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
   }
 
