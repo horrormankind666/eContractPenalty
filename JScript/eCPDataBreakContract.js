@@ -563,22 +563,19 @@ function ValidateCommentBreakContract(_cp1id, _action, _from) {
 
                     if (_action == "C") {
                         switch (_from) {
-                            case "breakcontract": {
+                            case "breakcontract":
                                 CloseFrm(true, "");
                                 OpenTab("link-tab1-cp-trans-break-contract", "#tab1-cp-trans-break-contract", "", true, "", "", "");
                                 break;
-                            }
-                            case "requirecontract": {
+                            case "requirecontract":
                                 CloseFrm(true, "");
                                 OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
                                 break;
-                            }
-                            case "repaycontract": {
+                            case "repaycontract":
                                 CloseFrm(true, "");
                                 CloseFrm(true, "");
                                 OpenTab("link-tab2-cp-trans-require-contract", "#tab2-cp-trans-require-contract", "", true, "", "", "");
                                 break;
-                            }
                         }
                     }
                 }
@@ -642,19 +639,16 @@ function UpdateTrackingStatus(_cp1id, _status, _from) {
                 if (_status == "edit") OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
                 if (_status == "cancel") {
                     switch (_from) {
-                        case "breakcontract": {
+                        case "breakcontract":
                             ResetFrmCPTransBreakContract(true);
                             break;
-                        }
-                        case "requirecontract": {  
+                        case "requirecontract":
                             ResetFrmCPTransRequireContract(true);
                             break;
-                        }
-                        case "repaycontract": {
+                        case "repaycontract":
                             CloseFrm(true, "");
                             OpenTab("link-tab2-cp-trans-require-contract", "#tab2-cp-trans-require-contract", "", true, "", "", "");
                             break;
-                        }
                     }
                 }
             });

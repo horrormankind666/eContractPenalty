@@ -1,6 +1,6 @@
 ﻿//eCPDataReport.cs      : สำหรับการแสดงรายงาน
 //Date Created          : ๐๙/๐๘/๒๕๕๕
-//Last Date Modified    : ๐๙/๐๔/๒๕๖๔
+//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
 //Create By             : Yutthaphoom Tawana
 
 using System;
@@ -2347,12 +2347,9 @@ public class eCPDataReportNoticeClaimDebt
         switch (_time)
         {
             case 1:
-            {
                 _html = ExportCPReportNoticeClaimDebtTime1(_data);
                 break;
-            }
             case 2:
-            {
                 if (!String.IsNullOrEmpty(_previousRepayDateEnd))
                 {
                     _repayDate = eCPUtil.RepayDate(_previousRepayDateEnd);
@@ -2360,7 +2357,6 @@ public class eCPDataReportNoticeClaimDebt
                 }
                 _html = ExportCPReportNoticeClaimDebtTime2(_data, _overpaymentDateStart);
                 break;
-            }
         }
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=NoticeClaimDebtTime" + _time.ToString() + ".doc");

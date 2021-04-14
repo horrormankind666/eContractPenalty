@@ -10,14 +10,16 @@
 </head>
 <body>
 <%
-    //eCPDB.ConnectStoreProcAddUpdate(eCPDB.InsertTransactionLog("EXPORT", "", "SelectReportExport, " + Request.Form["export-order"], Request.Form["export-send"]));
-
     if (Request.Form["export-type"].Equals("pdf"))
     {
         switch (Request.Form["export-order"])
         {
-            case "reporttablecalcapitalandinterest"     : { eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(Request.Form["export-send"]); break; }
-            case "reportnoticecheckforreimbursement"    : { eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(Request.Form["export-send"]); break; }
+            case "reporttablecalcapitalandinterest": 
+                eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(Request.Form["export-send"]);
+                break;
+            case "reportnoticecheckforreimbursement":
+                eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(Request.Form["export-send"]);
+                break;
         }
     }
 
@@ -25,9 +27,15 @@
     {
         switch (Request.Form["export-order"])
         {
-            case "reportnoticerepaycomplete"        : { eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(Request.Form["export-send"]); break; }
-            case "reportnoticeclaimdebt"            : { eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(Request.Form["export-send"]); break; }
-            case "reportcertificatereimbursement"   : { eCPDataReportCertificateReimbursement.ExportCPReportCertificateReimbursement(Request.Form["export-send"]); break; }
+            case "reportnoticerepaycomplete":
+                eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(Request.Form["export-send"]);
+                break;
+            case "reportnoticeclaimdebt":
+                eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(Request.Form["export-send"]);
+                break;
+            case "reportcertificatereimbursement":
+                eCPDataReportCertificateReimbursement.ExportCPReportCertificateReimbursement(Request.Form["export-send"]);
+                break;
         }
     }
 
@@ -35,9 +43,15 @@
     {
         switch (Request.Form["export-order"])
         {
-            case "reportdebtorcontract"         : { eCPDataReportDebtorContract.ExportCPReportDebtorContract(Request.Form["export-send"]); break; }
-            case "reportdebtorcontractpaid"     : { eCPDataReportDebtorContract.ExportCPReportDebtorContractPaid(Request.Form["export-send"]); break; }
-            case "reportdebtorcontractremain"   : { eCPDataReportDebtorContract.ExportCPReportDebtorContractRemain(Request.Form["export-send"]); break; }
+            case "reportdebtorcontract":
+                eCPDataReportDebtorContract.ExportCPReportDebtorContract(Request.Form["export-send"]);
+                break;
+            case "reportdebtorcontractpaid":
+                eCPDataReportDebtorContract.ExportCPReportDebtorContractPaid(Request.Form["export-send"]);
+                break;
+            case "reportdebtorcontractremain":
+                eCPDataReportDebtorContract.ExportCPReportDebtorContractRemain(Request.Form["export-send"]);
+                break;
         }
     }
 %>

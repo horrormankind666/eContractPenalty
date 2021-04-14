@@ -102,6 +102,107 @@ function InitPayChannel() {
     });
 }
 
+function InitReceiptCopy() {
+    $("#receipt-copy-linkpreview a").click(function () {
+        DownloadReceiptCopy(btoa($("#receipt-copy").val()));
+    });
+
+    $("#receipt-copy-file").change(function () {
+        $("#receipt-copy").val("");
+        $("#receipt-copy-preview, " +
+          "#receipt-copy-nopreview, " +
+          "#receipt-copy-linkpreview").addClass("hidden");
+
+        if (this.files && this.files[0]) {
+            var _fd = new FormData();
+            var _files = this.files[0];
+
+            if (_files.type == "application/pdf") {
+                if (_files.size <= 4194304) {
+                    _fd.append("action", "preview");
+                    _fd.append("file", _files);
+
+                    $.ajax({
+                        beforeSend: function () {
+                            $("#receipt-copy-input .uploadfile-container .uploadfile-form, " +
+                              "#receipt-copy-input .uploadfile-container .form-discription-style, " +
+                              "#receipt-copy-preview").addClass("hidden");
+                            $("#receipt-copy-input .uploadfile-container .preloading-inline").removeClass("hidden");
+                        },
+                        async: true,
+                        type: "POST",
+                        url: "../FileProcess.aspx",
+                        data: _fd,
+                        contentType: false,
+                        processData: false,
+                        success: function (_result) {                            
+                            $("#receipt-copy").val("data:" + _files.type + ";base64," + _result);
+
+                            try {
+                                var _pdfData = atob(_result);
+                                var _pdfjs = window["pdfjs-dist/build/pdf"];
+
+                                _pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.worker.min.js";
+
+                                var _canvas = document.getElementById("receipt-copy-preview");
+                                var _context = _canvas.getContext("2d");
+                                var _scale = 0.5;
+
+                                _pdfjs.getDocument({ data: _pdfData }).promise.then(function (_pdf) {
+                                    _pdf.getPage(1).then(function (_page) {
+                                        var _viewport = _page.getViewport({ scale: _scale });
+
+                                        _canvas.width = _viewport.width;
+                                        _canvas.height = _viewport.height;
+                                        _page.render({
+                                            canvasContext: _context,
+                                            viewport: _viewport
+                                        });
+                                        
+                                        $("#receipt-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
+                                        $("#receipt-copy-input .uploadfile-container .uploadfile-form, " +
+                                          "#receipt-copy-input .uploadfile-container .form-discription-style, " +
+                                          "#receipt-copy-preview, " +
+                                          "#receipt-copy-linkpreview").removeClass("hidden");
+
+                                        DialogMessage("อัพโหลดเอกสารเรียบร้อย", "", false, "");
+                                    });
+                                });
+                            }
+                            catch (_e) {
+                                $("#receipt-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
+                                $("#receipt-copy-input .uploadfile-container .uploadfile-form, " +
+                                  "#receipt-copy-input .uploadfile-container .form-discription-style, " +
+                                  "#receipt-copy-nopreview, " +
+                                  "#receipt-copy-linkpreview").removeClass("hidden");
+
+                                DialogMessage("อัพโหลดเอกสารเรียบร้อย", "", false, "");
+                            };
+
+                            /*
+                            $("#receipt-copy-preview").attr("src", ("data:" + _files.type + ";base64, " + _result));
+                            $("#receipt-copy-preview").load(function () {
+                                var _imgH = 217;
+
+                                $(this).css({
+                                    "display": ($(this).height() > _imgH ? "block" : "table-cell"),
+                                    "height": ($(this).height() > _imgH ? "inherit" : "auto"),
+                                    "vertical-align": ($(this).height() > _imgH ? "top" : "middle"),
+                                });
+                            });
+                            */
+                        }
+                    });
+                }
+                else
+                    DialogMessage("ขนาดไฟล์เกิน 4MB", "", false, "");
+            }
+            else
+                DialogMessage("เฉพาะไฟล์นามสกุล .pdf", "", false, "");
+        }
+    });
+}
+
 function ResetFrmAddCPTransPayment() {
     GoToElement("top-page");
 
@@ -180,36 +281,10 @@ function ResetFrmAddCPTransPayment() {
     InitCalendar("#receipt-date");
     $("#receipt-send-no").val("");
     $("#receipt-fund").val("");
-    $("#receipt-copy-preview").attr("src", "").addClass("hidden");
+    $("#receipt-copy").val("");
+    $("#receipt-copy-preview, #receipt-copy-nopreview, #receipt-copy-linkpreview").addClass("hidden");
 
-    $("#receipt-copy-file").change(function () {
-        if (this.files && this.files[0]) {      
-            var _fd = new FormData();
-            var _files = this.files[0];
-
-            _fd.append("action", "preview");
-            _fd.append("file", _files);      
-
-            $.ajax({
-                beforeSend: function () {
-                    $("#receipt-copy-input .uploadfile-container .preloading-inline").removeClass("hidden");
-                    $("#receipt-copy-input .uploadfile-container .uploadfile-form, #receipt-copy-preview").addClass("hidden");
-                },
-                async: true,
-                type: "POST",
-                url: "../UploadFile.aspx",
-                data: _fd,
-                contentType: false,
-                processData: false,
-                success: function (_result) {          
-                    $("#receipt-copy-preview").attr("src", ("data:image/png;base64," + _result));
-
-                    $("#receipt-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
-                    $("#receipt-copy-input .uploadfile-container .uploadfile-form, #receipt-copy-preview").removeClass("hidden");
-                }
-            });
-        }
-    });
+    
 
     $(".calendar").change(function () {
         if ($(this).attr("id") == "overpayment-date-end") $("#payment-date").val($("#overpayment-date-end").val());
@@ -366,7 +441,7 @@ function ConfirmActionCPTransPaymentFullRepay() {
                 if (ValidateCPTransPaymentFullRepay() == true) {
                     var _overpayment = $("#overpayment-hidden").val();
                     var _payChannel = $("input[name=pay-channel]:checked");
-                    var _receiptCopy = $("#receipt-copy-preview").attr("src");                
+                    var _receiptCopy = $("#receipt-copy").val();                
 
                     if (_receiptCopy.length > 0)
                         _receiptCopy = btoa(_receiptCopy);
@@ -523,7 +598,7 @@ function ConfirmActionCPTransPaymentPayRepay() {
                     var _calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
                     var _statusPayment = $("#statuspayment-hidden").val();
                     var _payChannel = $("input[name=pay-channel]:checked");
-                    var _receiptCopy = $("#receipt-copy-preview").attr("src");
+                    var _receiptCopy = $("#receipt-copy").val();
 
                     if (_receiptCopy.length > 0)
                         _receiptCopy = btoa(_receiptCopy);
@@ -717,4 +792,15 @@ function ChkBalanceCPTransPaymentPayRepay() {
 
         LoadForm(1, "chkbalance", true, "", "", "");
     }
+}
+
+function DownloadReceiptCopy(_file) {
+    DialogLoading("กำลังโหลด...");
+
+    $("#download-receiptcopy-form #file").val(_file);
+    $("#download-receiptcopy-form").submit();
+
+    window.setTimeout(function () {
+        $("#dialog-loading").dialog("close");
+    }, 500);
 }

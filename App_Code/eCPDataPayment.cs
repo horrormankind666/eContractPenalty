@@ -1,6 +1,6 @@
 ﻿//eCPDataPayment.cs     : สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง
 //Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๐๙/๐๔/๒๕๖๔
+//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
 //Create By             : Yutthaphoom Tawana
 
 using System;
@@ -455,14 +455,29 @@ public class eCPDataPayment
                  "          <div>" +
                  "              <div class='content-left' id='receipt-copy-label'>สำเนาใบเสร็จรับเงิน</div>" +
                  "              <div class='content-left' id='receipt-copy-input'>" +
+                 "                  <input type='hidden' id='receipt-copy' value=''>" +
                  "                  <div class='uploadfile-container'>" +
                  "                      <img class='preloading-inline hidden' src='../Image/PreloadingInline.gif' />" +
                  "                      <form class='uploadfile-form' method='post' enctype='multipart/form-data'>" +
-                 "                          <div class='uploadfile-button browse'><span><a class='text-underline' href='javascript:void(0)'>เลือกเอกสาร<input type='file' id='receipt-copy-file' /></a></span></div>" +
+                 "                          <div class='uploadfile-button browse'>" +
+                 "                              <span><a class='text-underline' href='javascript:void(0)'>เลือกเอกสาร<input type='file' id='receipt-copy-file' /></a></span>" +
+                 "                          </div>" +
                  "                      </form>" +
+                 "                      <div class='form-discription-style'>" +
+                 "                          <div class='form-discription-line1-style'>( เฉพาะไฟล์นามสกุล .pdf )</div>" +
+                 "                      </div>" +
                  "                  </div>" +
                  "                  <div id='receipt-copy-preview-container'>" +
-                 "                      <img class='hidden' id='receipt-copy-preview' src='' />" +
+                 "                      <canvas class='hidden' id='receipt-copy-preview'></canvas>" +
+                 "                      <div class='hidden' id='receipt-copy-nopreview'>ไม่สามารถแสดงตัวอย่างเอกสาร</div>" +
+                 "                      <div class='hidden' id='receipt-copy-linkpreview'>" +
+                 "                          <a class='text-underline' href='javascript:void(0)'>ดูเอกสาร</a>" +
+                 "                          <form id='download-receiptcopy-form' action='../FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
+                 "                              <input type='hidden' id='action' name='action' value='download' />" +
+                 "                              <input type='hidden' id='file' name='file' value='' />" +
+                 "                           </form>" +
+                 "                          <iframe class='export-target' id='download-receiptcopy' name='download-receiptcopy'></iframe>" +
+                 "                      </div>" +
                  "                  </div>" +
                  "              </div>" +
                  "          </div>" +
@@ -707,6 +722,7 @@ public class eCPDataPayment
             string _receiptDateDefault = !String.IsNullOrEmpty(_data[0, 30]) ? Util.LongDateTH(_data[0, 30]) : "-";
             string _receiptSendNoDefault = !String.IsNullOrEmpty(_data[0, 31]) ? _data[0, 31] : "-";
             string _receiptFundDefault = !String.IsNullOrEmpty(_data[0, 32]) ? _data[0, 32] : "-";
+            string _receiptCopyDefault = _data[0, 42];
             string _chequeNoDefault = !String.IsNullOrEmpty(_data[0, 33]) ? _data[0, 33] : "-";
             string _chequeBankDefault = !String.IsNullOrEmpty(_data[0, 34]) ? _data[0, 34] : "-";
             string _chequeBankBranchDefault = !String.IsNullOrEmpty(_data[0, 35]) ? _data[0, 35] : "-";
@@ -857,7 +873,18 @@ public class eCPDataPayment
                      "                          <div class='form-input-content-line'>ลงวันที่ <span>" + _receiptDateDefault + "</span></div>" +
                      "                          <div class='form-input-content-line'>เลขที่ใบนำส่ง <span>" + _receiptSendNoDefault + "</span></div>" +
                      "                          <div class='form-input-content-line'>เข้ากองทุน <span>" + _receiptFundDefault + "</span></div>" +
-                     "                      </div>" +
+                     "                          <div class='form-input-content-line'>สำเนาใบเสร็จรับเงิน <span>" + (!String.IsNullOrEmpty(_receiptCopyDefault) ? "<a class='text-underline' href='javascript:void(0)' onclick=DownloadReceiptCopy('" + _receiptCopyDefault + "')>ดาว์นโหลดสำเนาใบเสร็จรับเงิน</a>" : "-") + "</span></div>";
+
+            if (!String.IsNullOrEmpty(_receiptCopyDefault))
+            {
+                _html += "                      <form id='download-receiptcopy-form' action='../FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
+                         "                          <input type='hidden' id='action' name='action' value='download' />" +
+                         "                          <input type='hidden' id='file' name='file' value='' />" +
+                         "                      </form>" +
+                         "                      <iframe class='export-target' id='download-receiptcopy' name='download-receiptcopy'></iframe>";
+            }
+
+            _html += "                      </div>" +
                      "                  </div>" +
                      "              </div>" +
                      "          </div>" +
@@ -1035,7 +1062,11 @@ public class eCPDataPayment
                      "      <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หนังสือรับรองการชดใช้เงิน</div></div>" +
                      "  </div>" +
                      "  <div class='content-left' id='certificate-reimbursement-input'>" +
-                     "      <div class='form-input-style clear-bottom'><div class='form-input-content'><span><a class='text-underline' href='javascript:void(0)' onclick=PrintCertificateReimbursement('" + _cp2id + "')>พิมพ์หนังสือรับรองการชำระหนี้เรียบร้อย</a></span></div></div>" +
+                     "      <div class='form-input-style clear-bottom'>" +
+                     "          <div class='form-input-content'>" +
+                     "              <span><a class='text-underline' href='javascript:void(0)' onclick=PrintCertificateReimbursement('" + _cp2id + "')>พิมพ์หนังสือรับรองการชำระหนี้เรียบร้อย</a></span>" +
+                     "          </div>" +
+                     "      </div>" +
                      "  </div>" +
                      "</div>" +
                      "<div class='clear'></div>";
@@ -1072,20 +1103,14 @@ public class eCPDataPayment
             switch (_action)
             {
                 case "detail":
-                {
                     _html = DetailCpTransPayment(_data1);
                     break;
-                }
                 case "addfullrepay":
-                {
                     _html = AddCpTransPaymentFullRepay(_data1);
                     break;
-                }
                 case "addpayrepay":
-                {
                     _html = AddCpTransPaymentPayRepay(_data1);
                     break;
-                }
             }
         }
 

@@ -54,76 +54,66 @@ function SetStatusRepay() {
     var _result = new Array();
 
     switch ($("#repaystatus-trans-repay-contract-hidden").val()) {
-        case "0": {
+        case "0":
             _result[0] = "0";
             _result[1] = "";
             _result[2] = "";
             _result[3] = "";
             break;
-        }
-        case "1": {
+        case "1":
             _result[0] = "1";
             _result[1] = "1";
             _result[2] = "";
             _result[3] = "";
             break;
-        }
-        case "2": {
+        case "2":
             _result[0] = "1";
             _result[1] = "2";
             _result[2] = "1";
             _result[3] = "";
             break;
-        }
-        case "3": {
+        case "3":
             _result[0] = "1";
             _result[1] = "2";
             _result[2] = "2";
             _result[3] = "";
             break;
-        }
-        case "4": {
+        case "4":
             _result[0] = "2";
             _result[1] = "1";
             _result[2] = "";
             _result[3] = "";
             break;
-        }
-        case "5": {
+        case "5":
             _result[0] = "2";
             _result[1] = "2";
             _result[2] = "1";
             _result[3] = "";
             break;
-        }
-        case "6": {
+        case "6":
             _result[0] = "2";
             _result[1] = "2";
             _result[2] = "2";
             _result[3] = "";
             break;
-        }
-        case "7": {
+        case "7":
             _result[0] = "";
             _result[1] = "";
             _result[2] = "";
             _result[3] = "2";
             break;
-        }
-        case "8": {
+        case "8":
             _result[0] = "";
             _result[1] = "";
             _result[2] = "";
             _result[3] = "3";
             break;
-        }
-        default: {
+        default:
             _result[0] = "";
             _result[1] = "";
             _result[2] = "";
             _result[3] = "";
             break;
-        }
     }
 
     return _result;

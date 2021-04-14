@@ -24,12 +24,11 @@ function Signin() {
         var _dataError = _result.split("<error>");
 
         switch (_dataError[1]) {
-            case "1"  : {
+            case "1":
                 _error = true;
                 _msg = "ไม่พบผู้ใช้งานนี้";
                 _focus = "username";
                 break;
-            }
         }
 
         if (_error == true) {
@@ -104,119 +103,100 @@ function GoToPage(_section, _order) {
     if (_order != 0 && _section == 1) {
         switch (_order) {
             //หน้าแรก
-            case 1: {
+            case 1:
                 _pid = 1;
                 _area = "sec";
                 break;
-            } 
             //บัญชีผู้ใช้งาน
-            case 2: { 
+            case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            } 
             //ตั้งค่าระบบ - กำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา
-            case 3: { 
+            case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            }
             //ตั้งค่าระบบ - เงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
-            case 4: {
+            case 4:
                 _pid = 4;
                 _area = "sec";
                 break;
-            }
             //ตั้งค่าระบบ - กำหนดดอกเบี้ยจากการผิดนัดชำระ
-            case 5: {        
+            case 5:
                 _pid = 5;
                 _area = "sec";
                 break;
-            }
             //ตั้งค่าระบบ - เกณฑ์การชดใช้ตามสัญญา
-            case 6: {
+            case 6:
                 _pid = 6;
                 _area = "sec";
                 break;
-            }
             //ตั้งค่าระบบ - กำหนดทุนการศึกษาแต่ละหลักสูตร
-            case 7: {        
+            case 7:
                 _pid = 7;
                 _area = "sec";
                 break;
-            } 
             //รับแจ้งนักศึกษาผิดสัญญา
-            case 8: { 
+            case 8:
                 _pid = 8;
                 _area = "sec";
                 break;
-            }
             //บันทึกการชำระหนี้ / ดอกเบี้ย
-            case 9: {
+            case 9:
                 _pid = 9;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
-            case 10: { 
+            case 10:
                 _pid = 10;
                 _area = "sec";
                 break;
-            }
             //รายงาน - ตารางคำนวณเงินต้นและดอกเบี้ย
-            case 11: {        
+            case 11:
                 _pid = 11;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
-            case 12: { 
+            case 12:
                 _pid = 12;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
-            case 13: {        
+            case 13:
                 _pid = 13;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
-            case 14: { 
+            case 14:
                 _pid = 14;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
-            case 15: {        
+            case 15:
                 _pid = 15;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - เอกสารสัญญาการเป็นนักศึกษา
-            case 16: { 
+            case 16:
                 _pid = 16;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
-            case 17: {        
+            case 17:
                 _pid = 17;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
-            case 18: { 
+            case 18:
                 _pid = 18;
                 _area = "sec";
                 break;
-            } 
             //รายงาน - ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้
-            case 19: {
+            case 19:
                 _pid = 19;
                 _area = "sec";
                 break;
-            } 
         }
     }
 
@@ -224,59 +204,50 @@ function GoToPage(_section, _order) {
     if (_order != 0 && _section == 2) {
         switch (_order) {
             //หน้าแรก
-            case 1: {
+            case 1:
                 _pid = 1;
                 _area = "sec";
                 break;
-            }
             //บัญชีผู้ใช้งาน
-            case 2: {
+            case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            }
             //แจ้งนักศึกษาผิดสัญญา
-            case 3: {
+            case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            }
             //รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
-            case 4: {
+            case 4:
                 _pid = 4;
                 _area = "sec";
-                break;
-            }
+                break;            
             //รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
-            case 5: {
+            case 5:
                 _pid = 5;
                 _area = "sec";
                 break;
-            }
             //รายงาน - หนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
-            case 6: {
+            case 6:
                 _pid = 6;
                 _area = "sec";
                 break;
-            }
             //รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
-            case 7: {
+            case 7:
                 _pid = 7;
                 _area = "sec";
                 break;
-            }
             //รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
-            case 8: {
+            case 8:
                 _pid = 8;
                 _area = "sec";
                 break;
-            }
             //รายงาน - เอกสารสัญญาการเป็นนักศึกษา
-            case 9: {
+            case 9:
                 _pid = 9;
                 _area = "sec";
                 break;
-            }
         }
     }
 
@@ -284,29 +255,25 @@ function GoToPage(_section, _order) {
     if (_order != 0 && _section == 3) {
         switch (_order) {
             //หน้าแรก
-            case 1: {
+            case 1:
                 _pid = 1;
                 _area = "sec";
                 break;
-            }
             //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
-            case 2: {
+            case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            }
             //รายงาน - การรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
-            case 3: {
+            case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            }
             //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
-            case 4: {
+            case 4:
                 _pid = 4;
                 _area = "sec";
                 break;
-            }
         }
     }
     
@@ -391,89 +358,70 @@ function LoadPage(_area, _section, _pid) {
 
         if (_section == 1) {
             switch (_pid) {
-                case 2: {
+                case 2:
                     OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
                     break;
-                }
-                case 8: {
+                case 8:
                     OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
                     break;
-                }
-                case 9: {
+                case 9:
                     OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
                     break;
-                }
-                case 10: {
+                case 10:
                     SetMsgLoading("กำลังโหลด..."); SearchReportStepOfWork();
                     break;
-                }
-                case 11: {
+                case 11:
                     OpenTab("link-tab1-cp-report-table-cal-capital-and-interest", "#tab1-cp-report-table-cal-capital-and-interest", "", true, "", "", "");
                     break;
-                }
-                case 12: {
+                case 12:
                     OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
                     break;
-                }
-                case 13: {
+                case 13:
                     SetMsgLoading("กำลังโหลด..."); SearchReportNoticeClaimDebt();
                     break;
-                }
-                case 14: {
+                case 14:
                     OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
                     break;
-                }
-                case 15: {
+                case 15:
                     SetMsgLoading("กำลังโหลด..."); SearchReportStatisticPaymentByDate();
                     break;
-                }
-                case 16: {
+                case 16:
                     SetMsgLoading("กำลังโหลด..."); SearchReportEContract();
                     break;
-                }
                 case 17:
                 case 18:
-                case 19: {
+                case 19:
                     OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
                     break;
-                }
             }
         }
         
         if (_section == 2) {
             switch (_pid) {
-                case 2: {
+                case 2:
                     OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
                     break;
-                }
-                case 3: {
+                case 3:
                     OpenTab("link-tab1-cp-trans-break-contract", "#tab1-cp-trans-break-contract", "", true, "", "", "");
                     break;
-                }
-                case 4: {
+                case 4:
                     SetMsgLoading("กำลังโหลด..."); SearchReportStepOfWork();
                     break;
-                }
-                case 5: {
+                case 5:
                     OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
                     break;
-                }
-                case 6: {
+                case 6:
                     SetMsgLoading("กำลังโหลด..."); SearchReportNoticeRepayComplete();
                     break;
-                }
-                case 7: {
+                case 7:
                     OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
                     break;
-                }
-                case 8: {
+                case 8:
                     SetMsgLoading("กำลังโหลด..."); SearchReportStatisticPaymentByDate();
                     break;
-                }
-                case 9: {
+                case 9:
                     SetMsgLoading("กำลังโหลด..."); SearchReportEContract();
                     break;
-                }
             }
         }
 
@@ -481,10 +429,9 @@ function LoadPage(_area, _section, _pid) {
             switch (_pid) {
                 case 2:
                 case 3:
-                case 4: {
+                case 4:
                     OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
                     break;
-                }
             }
         }
         
@@ -545,42 +492,37 @@ function InitTab(_subTab) {
 
             if (_subTab == false) {
                 switch (_dropID) { 
-                    case "link-tab3-cp-tab-user": {
+                    case "link-tab3-cp-tab-user":
                         _action = $("#action").val();
                         _id = $("#username-hidden").val() + ":" + $("#password-hidden").val();
                         _trackingStatus = "";
                         break;
-                    }
                     case "link-tab3-cp-tab-program":
                     case "link-tab3-cp-tab-interest":
                     case "link-tab3-cp-tab-pay-break-contract":
-                    case "link-tab3-cp-tab-scholarship": {
+                    case "link-tab3-cp-tab-scholarship":
                         _action = $("#action").val();
                         _id = $("#cp1id").val();
                         _trackingStatus = "";
                         break;
-                    }
-                    case "link-tab3-cp-trans-break-contract": {
+                    case "link-tab3-cp-trans-break-contract":
                         _action = $("#action").val();
                         _id = $("#cp1id").val();
                         _trackingStatus = $("#trackingstatus").val();
                         break;
-                    }
-                    case "link-tab3-cp-trans-require-contract": {
+                    case "link-tab3-cp-trans-require-contract":
                         _action = $("#action").val();
                         _id = $("#cp1id").val();
                         _trackingStatus = $("#trackingstatus").val();
                         break;
-                    }
                     case "link-tab2-cp-trans-payment":
                     case "link-tab1-adddetail-cp-trans-payment": 
                     case "link-tab2-adddetail-cp-trans-payment":
-                    case "link-tab2-cp-report-table-cal-capital-and-interest": {
+                    case "link-tab2-cp-report-table-cal-capital-and-interest":
                         _action = "";
                         _id = $("#cp2id").val();
                         _trackingStatus = "";
                         break;
-                    }
                 }
 
                 OpenTab(_dropID, _linkTab, "", true, _action, _id, _trackingStatus);
@@ -589,12 +531,11 @@ function InitTab(_subTab) {
             if (_subTab == true) {
                 switch (_dropID) {
                     case "link-tab1-adddetail-cp-trans-payment":
-                    case "link-tab2-adddetail-cp-trans-payment": {
+                    case "link-tab2-adddetail-cp-trans-payment":
                         _action = "";
                         _id = $("#cp2id").val();
                         _trackingStatus = "";
                         break;
-                    }
                 }
 
                 OpenSubTab(_dropID, _linkTab, _id);
@@ -623,89 +564,72 @@ function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _tracki
     $(_linkTab + "-content").show();
 
     switch (_dropID) {
-        case "link-tab1-cp-tab-user": {
+        case "link-tab1-cp-tab-user":
             SetMsgLoading("กำลังโหลด...");
             SearchCPTabUser();
             break;
-        }
-        case "link-tab2-cp-tab-user": {
+        case "link-tab2-cp-tab-user":
             $(".addupdate-data-tab-user").html("");
             LoadForm(1, "addcptabuser", false, "add-data-tab-user", "", "");
             break;
-        }
-        case "link-tab3-cp-tab-user": {
+        case "link-tab3-cp-tab-user":
             $(".addupdate-data-tab-user").html("");
             LoadForm(1, "updatecptabuser", false, "update-data-tab-user", _id, "");
             break;
-        }
-        case "link-tab1-cp-tab-program": {      
+        case "link-tab1-cp-tab-program":
             LoadList("cpprogram", "record-count-program", "list-data-tab-program", "");
             break;
-        }
-        case "link-tab2-cp-tab-program": {
+        case "link-tab2-cp-tab-program":
             $(".addupdate-data-tab-program").html("");
             LoadForm(1, "addcptabprogram", false, "add-data-tab-program", "", "");
             break;
-        }
-        case "link-tab3-cp-tab-program": {
+        case "link-tab3-cp-tab-program":
             $(".addupdate-data-tab-program").html("");
             LoadForm(1, "updatecptabprogram", false, "update-data-tab-program", _id, "");
             break;
-        }
-        case "link-tab1-cp-tab-interest": {
+        case "link-tab1-cp-tab-interest":
             LoadList("interest", "record-count-interest", "list-data-tab-interest", "");
             break;
-        }
-        case "link-tab2-cp-tab-interest": {
+        case "link-tab2-cp-tab-interest":
             $(".addupdate-data-tab-interest").html("");
             LoadForm(1, "addcptabinterest", false, "add-data-tab-interest", "", "");
             break;
-        }
-        case "link-tab3-cp-tab-interest": {
+        case "link-tab3-cp-tab-interest":
             $(".addupdate-data-tab-interest").html("");
             LoadForm(1, "updatecptabinterest", false, "update-data-tab-interest", _id, "");
             break;
-        }
-        case "link-tab1-cp-tab-pay-break-contract": {
+        case "link-tab1-cp-tab-pay-break-contract":
             LoadList("pay-break-contract", "record-count-pay-break-contract", "list-data-tab-pay-break-contract", "");
             break;
-        }
-        case "link-tab2-cp-tab-pay-break-contract": {
+        case "link-tab2-cp-tab-pay-break-contract":
             $(".addupdate-data-tab-pay-break-contract").html("");
             LoadForm(1, "addcptabpaybreakcontract", false, "add-data-tab-pay-break-contract", "", "");
             break;
-        }
-        case "link-tab3-cp-tab-pay-break-contract": {
+        case "link-tab3-cp-tab-pay-break-contract":
             $(".addupdate-data-tab-pay-break-contract").html("");
             LoadForm(1, "updatecptabpaybreakcontract", false, "update-data-tab-pay-break-contract", _id, "");
             break;
-        }
-        case "link-tab1-cp-tab-scholarship": {
+        case "link-tab1-cp-tab-scholarship":
             LoadList("scholarship", "record-count-scholarship", "list-data-tab-scholarship", "");
             break;
-        }
-        case "link-tab2-cp-tab-scholarship": {
+        case "link-tab2-cp-tab-scholarship":
             $(".addupdate-data-tab-scholarship").html("");
             LoadForm(1, "addcptabscholarship", false, "add-data-tab-scholarship", "", "");
             break;
-        }
-        case "link-tab3-cp-tab-scholarship": {
+        case "link-tab3-cp-tab-scholarship":
             $(".addupdate-data-tab-scholarship").html("");
             LoadForm(1, "updatecptabscholarship", false, "update-data-tab-scholarship", _id, "");
             break;
-        }
         case "link-tab1-cp-trans-break-contract":
-        case "link-tab1-cp-trans-require-contract": {
+        case "link-tab1-cp-trans-require-contract":
             SetMsgLoading("กำลังโหลด...");
             SearchCPTransBreakContract();
             break;
-        }
-        case "link-tab2-cp-trans-break-contract": {
+        case "link-tab2-cp-trans-break-contract":
             $(".addupdate-data-trans-break-contract").html("");
             LoadForm(1, "addcptransbreakcontract", false, "add-data-trans-break-contract", "", "");
             break;
-        }   
-        case "link-tab3-cp-trans-break-contract": { 
+        case "link-tab3-cp-trans-break-contract":
             ChkTrackingStatusViewTransBreakContract(_id, _trackingStatus, "trans-break-contract" + _id, function (_result) {
                 if (_result == "0") {
                     $(".addupdate-data-trans-break-contract").html("");
@@ -713,13 +637,11 @@ function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _tracki
                 }        
             });
             break;
-        }
-        case "link-tab2-cp-trans-require-contract": {
+        case "link-tab2-cp-trans-require-contract":
             SetMsgLoading("กำลังโหลด...");
             SearchRepay();
             break;
-        }
-        case "link-tab3-cp-trans-require-contract": {
+        case "link-tab3-cp-trans-require-contract":
             if (_action == "add") {
                 ChkTrackingStatusViewTransBreakContract(_id, _trackingStatus, "trans-break-contract" + _id, function (_result) {
                     if (_result == "0") {
@@ -738,55 +660,44 @@ function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _tracki
                 });
             }
             break;
-        }
-        case "link-tab1-cp-trans-payment": {
+        case "link-tab1-cp-trans-payment":
             SetMsgLoading("กำลังโหลด...");
             SearchPayment();
             break;
-        }
-        case "link-tab2-cp-trans-payment": {
+        case "link-tab2-cp-trans-payment":
             $("#adddetail-data-trans-payment").html("");
             LoadForm(1, "adddetailcptranspayment", false, "adddetail-data-trans-payment", _id, "");
             break;
-        }        
-        case "link-tab1-cp-report-table-cal-capital-and-interest": {
+        case "link-tab1-cp-report-table-cal-capital-and-interest":
             SetMsgLoading("กำลังโหลด...");
             SearchReportTableCalCapitalAndInterest();
             break;
-        }
-        case "link-tab2-cp-report-table-cal-capital-and-interest": {
+        case "link-tab2-cp-report-table-cal-capital-and-interest":
             $("#cal-data-report-table-cal-capital-and-interest").html("");
             LoadForm(1, "calreporttablecalcapitalandinterest", false, "cal-data-report-table-cal-capital-and-interest", _id, "");
             break;
-        }
-        case "link-tab1-cp-report-statistic-repay": {
+        case "link-tab1-cp-report-statistic-repay":
             LoadList("cpreportstatisticrepay", "record-count-cp-report-statistic-repay", "list-data-report-statistic-repay", "");
             break;
-        }
-        case "link-tab2-cp-report-statistic-repay": {
+        case "link-tab2-cp-report-statistic-repay":
             SetMsgLoading("กำลังโหลด...");
             SearchReportStatisticRepayByProgram();
             break;
-        }
-        case "link-tab1-cp-report-statistic-contract": {
+        case "link-tab1-cp-report-statistic-contract":
             LoadList("cpreportstatisticrecontract", "record-count-cp-report-statistic-contract", "list-data-report-statistic-contract", "");
             break;
-        }
-        case "link-tab2-cp-report-statistic-contract": {
+        case "link-tab2-cp-report-statistic-contract":
             SetMsgLoading("กำลังโหลด...");
             SearchReportStatisticContractByProgram();
             break;
-        }
-        case "link-tab1-cp-report-debtor-contract": {
+        case "link-tab1-cp-report-debtor-contract":
             SetMsgLoading("กำลังโหลด...");                                                                        
             SearchReportDebtorContract();
             break;
-        }
-        case "link-tab2-cp-report-debtor-contract": {
+        case "link-tab2-cp-report-debtor-contract":
             SetMsgLoading("กำลังโหลด...");
             SearchReportDebtorContractByProgram();
             break;
-        }                                                                    
     }
 }
 
@@ -802,25 +713,22 @@ function OpenSubTab(_dropID, _linkTab, _id) {
     $(_linkTab + "-content").show();
 
     switch (_dropID) {
-        case "link-tab1-adddetail-cp-trans-payment": {
+        case "link-tab1-adddetail-cp-trans-payment":
             $(".adddetail-cp-trans-payment-content").html("");
             LoadForm(1, "detailcptranspayment", false, "detail-data-trans-payment", _id, "");
             break;
-        }
-        case "link-tab2-adddetail-cp-trans-payment": {
+        case "link-tab2-adddetail-cp-trans-payment":
             var _formatPayment = $("#format-payment-hidden").val() == "1" ? "fullrepay" : "payrepay";
     
             $(".adddetail-cp-trans-payment-content").html("");
             LoadForm(1, "addcptranspayment" + _formatPayment, false, "add-data-trans-payment", _id, "");
             break;
-        }
         case "link-tab1-report-student-on-statistic-contract-by-program":
-        case "link-tab2-report-student-on-statistic-contract-by-program": {
+        case "link-tab2-report-student-on-statistic-contract-by-program":
             SetMsgLoading("กำลังโหลด...");
             if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(1);
             if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(2);
             break;
-        }
     }
 }
 
@@ -1326,160 +1234,127 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
             $("#" + _frmID).html(_dataForm[1]);
 
         switch (_frm) {
-            case "searchcptabuser": {
+            case "searchcptabuser":
                 ResetFrmSearchCPTabUser("");
                 break;
-            }
             case "addcptabuser":
-            case "updatecptabuser": {
+            case "updatecptabuser":
                 ResetFrmCPTabUser(false);
                 break;
-            }
             case "addcptabprogram":
-            case "updatecptabprogram": {
+            case "updatecptabprogram":
                 ResetFrmCPTabProgram(false);
                 break;
-            } 
             case "addcptabinterest":
-            case "updatecptabinterest": {
+            case "updatecptabinterest":
                 ResetFrmCPTabInterest(false);
                 break;
-            }
             case "addcptabpaybreakcontract":
-            case "updatecptabpaybreakcontract": {
+            case "updatecptabpaybreakcontract":
                 InitSetAmtIndemnitorYear();
                 ResetFrmCPTabPayBreakContract(false);
                 break;
-            }
             case "addcptabscholarship":
-            case "updatecptabscholarship": {
+            case "updatecptabscholarship":
                 ResetFrmCPTabScholarship(false);
                 break;
-            }
-            case "addprofilestudent": {
+            case "addprofilestudent":
                 ResetFrmAddProfileStudent();
                 break;
-            }
-            case "searchstudentwithresult": {
+            case "searchstudentwithresult":
                 ResetFrmSearchStudentWithResult();
                 break;
-            }
-            case "searchcptransbreakcontract": {
+            case "searchcptransbreakcontract":
                 ResetFrmSearchCPTransBreakContract("");
                 break;
-            }            
             case "addcptransbreakcontract":
-            case "updatecptransbreakcontract": {
+            case "updatecptransbreakcontract":
                 ResetFrmCPTransBreakContract(false);
                 break;
-            }
             case "addcptransrequirecontract":
-            case "updatecptransrequirecontract": {
+            case "updatecptransrequirecontract":
                 InitStudyLeaveYesNo();
                 InitCPTransRequireContract();
                 ResetFrmCPTransRequireContract(false);
                 break;
-            }
-            case "searchcptransrepaycontract": {
+            case "searchcptransrepaycontract":
                 ResetFrmSearchCPTransRepayContract("");
                 break;
-            }
-            case "addupdaterepaycontract": {
+            case "addupdaterepaycontract":
                 ResetFrmCPTransRepayContract(false);
                 break;
-            }
-            case "calinterest": {
+            case "calinterest":
                 ResetFrmCalInterestOverpayment(false);
                 break;
-            }
-            case "selectformatpayment": {
+            case "selectformatpayment":
                 ResetFrmSelectFormatPayment();
                 break;
-            }
-            case "adddetailcptranspayment": {
+            case "adddetailcptranspayment":
                 InitTab(true);
                 ResetFormatPayment();
                 ResetListTransPayment();
                 break;
-            }
-            case "searchcptranspayment": {
+            case "searchcptranspayment":
                 ResetFrmSearchCPTransPayment("");
                 break;
-            }
-            case "detailcptranspayment": {
+            case "detailcptranspayment":
                 GoToTopElement("html, body");
                 ResetListTransPayment();
                 break;
-            }
             case "addcptranspaymentfullrepay":
-            case "addcptranspaymentpayrepay": {
+            case "addcptranspaymentpayrepay":
                 InitCalInterestYesNo();
                 InitPayChannel();
+                InitReceiptCopy();
                 ResetFrmAddCPTransPayment();
                 break;
-            }
-            case "detailtranspayment": {
+            case "detailtranspayment":
                 ResetDetailTransPayment();
                 break;
-            }
-            case "adddetailpaychannel": {
+            case "adddetailpaychannel":
                 ResetFrmAddDetailPayChannel();
                 break;
-            }
-            case "chkbalance": {
+            case "chkbalance":
                 CalculateChkBalance();
                 break;
-            }
-            case "calreporttablecalcapitalandinterest": {            
+            case "calreporttablecalcapitalandinterest":
                 GoToTopElement("html, body");
                 ResetFrmCalReportTableCalCapitalAndInterest();
                 break;
-            }
-            case "searchcpreporttablecalcapitalandinterest": {
+            case "searchcpreporttablecalcapitalandinterest":
                 ResetFrmSearchCPReportTableCalCapitalAndInterest("");
                 break;
-            }
-            case "searchcpreportstepofwork": {
+            case "searchcpreportstepofwork":
                 ResetFrmSearchCPReportStepOfWork("");
                 break;
-            }
-            case "reportstepofworkonstatisticrepaybyprogram": {
+            case "reportstepofworkonstatisticrepaybyprogram":
                 ResetFrmSearchReportStepOfWorkOnStatisticRepayByProgram();
                 break;
-            }
-            case "reportstudentonstatisticcontractbyprogram": {
+            case "reportstudentonstatisticcontractbyprogram":
                 InitTab(true);
                 ResetFrmSearchReportStudentOnStatisticContractByProgram();
                 break;
-            }
-            case "searchcpreportnoticerepaycomplete": {
+            case "searchcpreportnoticerepaycomplete":
                 ResetFrmSearchCPReportNoticeRepayComplete("");
                 break;
-            }
-            case "searchcpreportnoticeclaimdebt": {
+            case "searchcpreportnoticeclaimdebt":
                 ResetFrmSearchCPReportNoticeClaimDebt("");
                 break;
-            }
-            case "searchcpreportpaymentbydate": {
+            case "searchcpreportpaymentbydate":
                 ResetFrmSearchCPReportStatisticPaymentByDate("");
                 break;
-            }
-            case "manual": {
+            case "manual":
                 InitSlide(".class-dialog-form-manual .ui-dialog-content", _manual, true, "Manual/UserManual.zip");
                 break;
-            }
-            case "searchcpreportecontract": {
+            case "searchcpreportecontract":
                 ResetFrmSearchCPReportEContract("");
                 break;
-            }
-            case "searchcpreportdebtorcontract": {
+            case "searchcpreportdebtorcontract":
                 ResetFrmSearchCPReportDebtorContract("");
                 break;
-            }
-            case "searchstudentdebtorcontractbyprogram": {
+            case "searchstudentdebtorcontractbyprogram":
                 ResetFrmSearchStudentDebtorContractByProgram("");
                 break;
-            }
         }
 
         InitTextSelect();
@@ -1864,42 +1739,33 @@ function CloseFrm(_dialogFrm, _frmClose) {
     }
 
     switch (_frmClose) {
-        case "addupdate-cp-tab-user": {
+        case "addupdate-cp-tab-user":
             $("#link-tab1-cp-tab-user").click();
             break;
-        }
-        case "addupdate-cp-tab-program": {
+        case "addupdate-cp-tab-program":
             $("#link-tab1-cp-tab-program").click();
             break;
-        }
-        case "addupdate-cp-tab-interest": {
+        case "addupdate-cp-tab-interest":
             $("#link-tab1-cp-tab-interest").click();
             break;
-        }
-        case "addupdate-cp-tab-pay-break-contract": {
+        case "addupdate-cp-tab-pay-break-contract":
             $("#link-tab1-cp-tab-pay-break-contract").click();
             break;
-        }
-        case "addupdate-cp-tab-scholarship": {
+        case "addupdate-cp-tab-scholarship":
             $("#link-tab1-cp-tab-scholarship").click();
             break;
-        }
-        case "addupdate-cp-trans-break-contract": {
+        case "addupdate-cp-trans-break-contract":
             $("#link-tab1-cp-trans-break-contract").click();
             break;
-        }
-        case "addupdate-cp-trans-require-contract": {
+        case "addupdate-cp-trans-require-contract":
             $("#link-tab1-cp-trans-require-contract").click();
             break;
-        }
-        case "add-cp-trans-payment": {
+        case "add-cp-trans-payment":
             $("#link-tab1-adddetail-cp-trans-payment").click();
             break;
-        }
-        case "cal-report-table-cal-capital-and-interest": {
+        case "cal-report-table-cal-capital-and-interest":
             $("#link-tab1-cp-report-table-cal-capital-and-interest").click();
             break;
-        }
     }
 }
 

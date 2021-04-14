@@ -1,6 +1,6 @@
 ﻿//eCPDB.cs              : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
 //Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๑๐/๐๔/๒๕๖๔
+//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
 //Create By             : Yutthaphoom Tawana
 
 using System;
@@ -859,20 +859,16 @@ public class eCPUtil
             switch (_caseGraduate)
             {
                 case "1":
-                {
                     double _aMonth = double.Parse(_allActualMonthScholarship);        
 
                     _result[0] = _sMoney / 12;
                     _result[1] = _aMonth * _result[0];
                     break;
-                }
                 case "2":
-                {
                     _result[0] = 0;                            
                     //_result[1] = _civil.Equals("1") ? (_sMoney * _sYear) : ((_sMoney * _sYear) * 2);
                     _result[1] = _civil.Equals("1") ? _sMoney : ((_sMoney * _sYear) * 2);
                     break;
-                }
             }
         }
         else
@@ -937,29 +933,21 @@ public class eCPUtil
             switch (_formular)
             {
                 case 1:
-                {
                     _totalPenalty = CalPenaltyFormular1(_iCash, _resultCalcDate[3]);
                     break;
-                }
                 case 2:
-                { 
                     _totalPenalty = CalPenaltyFormular2(_iCash, _resultCalcDate[1], _resultCalcDate[2], _dayLastMonth);
                     break;
-                }
                 case 3:
-                {
                     _totalPenalty = CalPenaltyFormular3(_iCash, _allActual, _resultCalcDate[0]);
                     break;
-                }
                 case 4:
-                {
                     _month        = 0;
                     _day          = 0;
                     _allActual    = _educationActual;
                     _actual       = (_civil.Equals("1") ? _actual : 0);
                     _totalPenalty = CalPenaltyFormular4(_iCash, _educationActual, _actual);
                     break;
-                }
             }
 
             _result[0] = _month;
@@ -1226,5 +1214,31 @@ public class eCPUtil
         _result.Add("Password", _password);
 
         return _result;
+    }
+
+    public static string GetFileExtension(string _contentType)
+    {
+        string _fileExtension = String.Empty;
+        
+        switch (_contentType)
+        {
+            case "image/gif": 
+                _fileExtension = "gif";
+                break;
+            case "image/jpeg":
+                _fileExtension = "jpg";
+                break;
+            case "image/png":
+                _fileExtension = "png";
+                break;
+            case "application/msword":
+                _fileExtension = "doc";
+                break;
+            case "application/pdf":
+                _fileExtension = "pdf";
+                break;
+        }
+
+        return _fileExtension;
     }
 }

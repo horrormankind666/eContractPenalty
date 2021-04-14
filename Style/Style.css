@@ -47,7 +47,7 @@ body > .body-main {
     background-repeat: no-repeat;
 }
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 form, 
@@ -5068,17 +5068,17 @@ a.link-disable:hover {
 #add-cp-trans-payment #detail-receipt-input #receipt-fund-input {
     height: 30px;
 }
-#add-cp-trans-payment #detail-receipt-input #receipt-copy-input {
-    height: 278px;
-}
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container {
     height: 28px;
 }
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .preloading-inline {
     padding-top: 2px;
 }
-#add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .uploadfile-form {
+#add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .uploadfile-form,
+#add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .form-discription-style {
+    display: inline-block;
     padding-top: 4px;
+    margin-top: 0;
 }
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse {
     width: 63px;
@@ -5089,17 +5089,34 @@ a.link-disable:hover {
     height: 100%;
 }
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-preview-container {
+    position: relative;
     background: #FFFFFF;
     width: 196px;
-    height: 238px;
+    height: 243px;
     border: 1px solid #000000;
-    overflow: hidden;
+    overflow: hidden;    
     display: table-cell;
     vertical-align: middle;
-    text-align: center;
+    text-align: center;    
 }
-#add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-preview-container img {
-    width: 100%;
+#add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-preview {
+    width: inherit;
+    height: inherit;
+    margin-right: auto;
+    margin-left: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-nopreview,
+#add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-linkpreview a {
+    position: relative;
+    font-size: 16px;
+    line-height: 1.8;
+}
+#add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-nopreview {
+    font-size: 14px;
+    color: #000000;
 }
 #add-cp-trans-payment #cal-interest-overpayment-input, #add-cp-trans-payment #cal-interest-pay-repay-input {
     height: 156px;
@@ -5118,11 +5135,11 @@ a.link-disable:hover {
     margin-top: 10px;
 } 
 #add-cp-trans-payment #detail-receipt-label {
-    height: 237px;
-    margin-top: 195px;
+    height: 239px;
+    margin-top: 198px;
 } 
 #add-cp-trans-payment #detail-receipt-input {
-    height: 428px;
+    height: 433px;
     margin-top: 10px;
 } 
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-label,
@@ -5333,13 +5350,13 @@ a.link-disable:hover {
     height: 140px;
 }
 #detail-trans-payment #detail-receipt .form-label-discription-style {
-    padding-top: 54px;
-    height: 68px;
+    padding-top: 65px;
+    height: 80px;
 }
 #detail-trans-payment #detail-receipt .form-input-style {
     padding-top: 5px;
     line-height: 18px;
-    height: 117px;
+    height: 140px;
 }
 #detail-trans-payment .button-style1 {
     position: relative;

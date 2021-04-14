@@ -1,6 +1,6 @@
 ﻿//eCPDB.cs              : สำหรับจัดการฐานข้อมูล
 //Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๑๐/๐๔/๒๕๖๔
+//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
 //Create By             : Yutthaphoom Tawana
 
 using System;
@@ -2042,7 +2042,7 @@ public class eCPDB
         DataSet _ds = new DataSet();
         _da.Fill(_ds);
 
-        string[,] _data = new string[_ds.Tables[0].Rows.Count, 42];
+        string[,] _data = new string[_ds.Tables[0].Rows.Count, 43];
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {            
             _data[_i, 0] = _dr["ID"].ToString();
@@ -2087,6 +2087,7 @@ public class eCPDB
             _data[_i, 39] = _dr["CashBankAccount"].ToString();
             _data[_i, 40] = _dr["CashBankAccountNo"].ToString();
             _data[_i, 41] = _dr["CashBankDate"].ToString();
+            _data[_i, 42] = _dr["ReceiptCopy"].ToString();
         }
 
         _ds.Dispose();
@@ -3252,19 +3253,15 @@ public class eCPDB
 
             if (_dr["ProgramCode"].Equals("NSNSB"))
             {
-            switch (_dr["QuotaCode"].ToString())
-            {
-                case "350":
+                switch (_dr["QuotaCode"].ToString())
                 {
-                    _p = _p + "_Chulabhorn";
-                    break;
-                }   
-                case "391":
-                {
-                    _p = _p + "_MT";
-                    break;
+                    case "350":
+                        _p = _p + "_Chulabhorn";
+                        break;
+                    case "391":
+                        _p = _p + "_MT";
+                        break;
                 }
-            }
             }
 
             _yearFolder = DateTime.Parse(_dr["contractDateSignByStudent"].ToString()).Month >= 5 ? DateTime.Parse(_dr["contractDateSignByStudent"].ToString()).ToString("yyyy", new CultureInfo("th-TH")) : (DateTime.Parse(_dr["contractDateSignByStudent"].ToString()).AddYears(-1)).ToString("yyyy", new CultureInfo("th-TH"));
@@ -3297,20 +3294,14 @@ public class eCPDB
     switch (_c.Request["reportorder"])
     {
         case "reportdebtorcontract":
-        {
             _orderTable = 43;
             break;
-        }
         case "reportdebtorcontractpaid":
-        {
             _orderTable = 45;
             break;
-        }
         case "reportdebtorcontractremain":
-        {
             _orderTable = 47;
             break;
-        }
     }
 
     SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
@@ -3340,20 +3331,14 @@ public class eCPDB
         switch (_c.Request["reportorder"])
         {
             case "reportdebtorcontract":
-            {
                 _orderTable = 43;
                 break;
-            }
             case "reportdebtorcontractpaid":
-            {
                 _orderTable = 45;
                 break;
-            }
             case "reportdebtorcontractremain":
-            {
                 _orderTable = 47;
                 break;
-            }
         }
 
         SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
@@ -3404,20 +3389,14 @@ public class eCPDB
         switch (_c.Request["reportorder"])
         {
             case "reportdebtorcontract":
-            {
                 _orderTable = 44;
                 break;
-            }
             case "reportdebtorcontractpaid":
-            {
                 _orderTable = 46;
                 break;
-            }
             case "reportdebtorcontractremain":
-            {
                 _orderTable = 48;
                 break;
-            }
         }
 
         SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
@@ -3457,20 +3436,14 @@ public class eCPDB
         switch (_c.Request["reportorder"])
         {
             case "reportdebtorcontract":
-            {
                 _orderTable = 44;
                 break;
-            }
             case "reportdebtorcontractpaid":
-            {
                 _orderTable = 46;
                 break;
-            }
             case "reportdebtorcontractremain":
-            {
                 _orderTable = 48;
                 break;
-            }
         }
 
         SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
@@ -4431,23 +4404,17 @@ public class eCPDB
             switch (int.Parse(_c.Request["channel"]))
             {
                 case 1: 
-                {
                     _channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
-                }
                 case 2:
-                {
                     _channelDetail[0] = "ChequeNo, ChequeBank, ChequeBankBranch, ChequeDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["chequeno"] + "', '" + _c.Request["chequebank"] + "', '" + _c.Request["chequebankbranch"] + "', '" + _c.Request["chequedate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
-                }
                 case 3:
-                {
                     _channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', '" + _c.Request["cashbankaccountno"] + "', '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
-                }
             }
 
             _what = "UPDATE, INSERT";
@@ -4553,23 +4520,17 @@ public class eCPDB
             switch (int.Parse(_c.Request["channel"]))
             {
                 case 1:
-                {
                     _channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
-                }
                 case 2:
-                {
                     _channelDetail[0] = "ChequeNo, ChequeBank, ChequeBankBranch, ChequeDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["chequeno"] + "', '" + _c.Request["chequebank"] + "', '" + _c.Request["chequebankbranch"] + "', '" + _c.Request["chequedate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
-                }
                 case 3:
-                {
                     _channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', '" + _c.Request["cashbankaccountno"] + "', '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
-                }
             }
 
             _what = "UPDATE, INSERT";
