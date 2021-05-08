@@ -48,9 +48,23 @@ function ValidateCPTabUser(_action) {
     var _msg;
     var _focus;
 
-    if (_error == false && ($("#username").val().length == 0)) { _error = true; _msg = "กรุณาใส่ Username"; _focus = "#username"; }
-    if (_error == false && ($("#password").val().length == 0)) { _error = true; _msg = "กรุณาใส่ Password"; _focus = "#password"; }
-    if (_error == false && ($("#name").val().length == 0)) { _error = true; _msg = "กรุณาใส่ชื่อ"; _focus = "#name"; }
+    if (_error == false && ($("#username").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่ Username";
+        _focus = "#username";
+    }
+
+    if (_error == false && ($("#password").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่ Password";
+        _focus = "#password";
+    }
+
+    if (_error == false && ($("#name").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่ชื่อ";
+        _focus = "#name";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -71,8 +85,16 @@ function ValidateCPTabUser(_action) {
         }
 
         _error = false;
-        if (_error == false && _result == "2") { _error = true; _msg = "ชื่อผู้ใช้งานนี้มีอยู่แล้ว"; }
-        if (_error == false && _result == "3") { _error = true; _msg = "รหัสผ่านนี้มีอยู่แล้ว"; }
+
+        if (_error == false && _result == "2") {
+            _error = true;
+            _msg = "ชื่อผู้ใช้งานนี้มีอยู่แล้ว";
+        }
+
+        if (_error == false && _result == "3") {
+            _error = true;
+            _msg = "รหัสผ่านนี้มีอยู่แล้ว";
+        }
 
         if (_error == true) {
             DialogMessage(_msg, _focus, false, "");
@@ -87,13 +109,16 @@ function ValidateCPTabUser(_action) {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add") ResetFrmCPTabUser(false);
+                    if (_action == "add")
+                        ResetFrmCPTabUser(false);
+
                     if (_action == "update") {
                         $("#username-hidden").val($("#username").val());
                         $("#password-hidden").val($("#password").val());
 
                         ResetFrmCPTabUser(true);
                     }
+
                     if (_action == "del") OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
                 }
             }

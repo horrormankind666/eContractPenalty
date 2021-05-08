@@ -1,7 +1,9 @@
-﻿//eCPDataFormSearch.cs  : สำหรับการแสดงฟอร์มการค้นหา
-//Date Created          : ๐๙/๐๘/๒๕๕๕
-//Last Date Modified    : ๐๙/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการแสดงฟอร์มการค้นหา
+Date Created        : ๐๙/๐๘/๒๕๕๕
+Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Globalization;
@@ -9,7 +11,6 @@ using System.Web;
 
 public class eCPDataFormSearch
 {
-    //สำหรับแสดงฟอร์มการค้นหาผู้ใช้งาน
     public static string SearchCPTabUser()
     {
         string _html = String.Empty;
@@ -45,13 +46,13 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงผลการค้นหานักศึกษาที่ต้องการทำรายการแจ้ง
     public static string ListProfileStudent(string _studentid)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListProfileStudent(_studentid);
+
         if (_data.GetLength(0) > 0)
         {
             _html = "<list>" +
@@ -85,7 +86,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงผลการค้นหานักศึกษาที่ต้องการทำรายการแจ้ง
     public static string ListSearchStudentWithResult(HttpContext _c)
     {
         string _html = String.Empty;
@@ -109,16 +109,16 @@ public class eCPDataFormSearch
 
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
-            _groupNum = !_data[_i, 12].Equals("0") ? " ( กลุ่ม " + _data[_i, 12] + " )" : "";
-            _callFunc = "ViewStudent('" + _data[_i, 1] + ";" + _data[_i, 2] + ";" + _data[_i, 3].Replace(" ", "&nbsp;") + ";" + _data[_i, 4].Replace(" ", "&nbsp;") + ";" + _data[_i, 5].Replace(" ", "&nbsp;") + ";" + _data[_i, 6].Replace(" ", "&nbsp;") + ";" + _data[_i, 7] + ";" + _data[_i, 8].Replace(" ", "&nbsp;") + ";" + _data[_i, 9] + ";" + _data[_i, 10].Replace(" ", "&nbsp;") + ";" + _data[_i, 11] + ";" + _data[_i, 12] + ";" + _data[_i, 13] + ";" + _data[_i, 14] + "')";
-            _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
-            _html += "<ul class='table-row-content " + _highlight + "' id='student" + _data[_i, 1] + "'>" +
-                     "  <li id='tab1-table-content-search-student-with-result-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
-                     "  <li class='table-col' id='tab1-table-content-search-student-with-result-col2' onclick=" + _callFunc + "><div>" + _data[_i, 1] + "</div></li>" +
-                     "  <li class='table-col' id='tab1-table-content-search-student-with-result-col3' onclick=" + _callFunc + "><div>" + _data[_i, 4] + _data[_i, 5] + " " + _data[_i, 6] + "</div></li>" +
-                     "  <li class='table-col' id='tab1-table-content-search-student-with-result-col4' onclick=" + _callFunc + "><div><span class='facultycode-col-s'>" + _data[_i, 7] + "</span>- " + _data[_i, 8] + "</div></li>" +
-                     "  <li class='table-col' id='tab1-table-content-search-student-with-result-col5' onclick=" + _callFunc + "><div><span class='programcode-col-s'>" + _data[_i, 9] + "</span>- " + _data[_i, 10] + _groupNum + "</div></li>" +
-                     "</ul>";
+                _groupNum = !_data[_i, 12].Equals("0") ? " ( กลุ่ม " + _data[_i, 12] + " )" : "";
+                _callFunc = "ViewStudent('" + _data[_i, 1] + ";" + _data[_i, 2] + ";" + _data[_i, 3].Replace(" ", "&nbsp;") + ";" + _data[_i, 4].Replace(" ", "&nbsp;") + ";" + _data[_i, 5].Replace(" ", "&nbsp;") + ";" + _data[_i, 6].Replace(" ", "&nbsp;") + ";" + _data[_i, 7] + ";" + _data[_i, 8].Replace(" ", "&nbsp;") + ";" + _data[_i, 9] + ";" + _data[_i, 10].Replace(" ", "&nbsp;") + ";" + _data[_i, 11] + ";" + _data[_i, 12] + ";" + _data[_i, 13] + ";" + _data[_i, 14] + "')";
+                _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
+                _html += "<ul class='table-row-content " + _highlight + "' id='student" + _data[_i, 1] + "'>" +
+                         "  <li id='tab1-table-content-search-student-with-result-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
+                         "  <li class='table-col' id='tab1-table-content-search-student-with-result-col2' onclick=" + _callFunc + "><div>" + _data[_i, 1] + "</div></li>" +
+                         "  <li class='table-col' id='tab1-table-content-search-student-with-result-col3' onclick=" + _callFunc + "><div>" + _data[_i, 4] + _data[_i, 5] + " " + _data[_i, 6] + "</div></li>" +
+                         "  <li class='table-col' id='tab1-table-content-search-student-with-result-col4' onclick=" + _callFunc + "><div><span class='facultycode-col-s'>" + _data[_i, 7] + "</span>- " + _data[_i, 8] + "</div></li>" +
+                         "  <li class='table-col' id='tab1-table-content-search-student-with-result-col5' onclick=" + _callFunc + "><div><span class='programcode-col-s'>" + _data[_i, 9] + "</span>- " + _data[_i, 10] + _groupNum + "</div></li>" +
+                         "</ul>";
             }
 
             _html += "</div>";
@@ -134,7 +134,6 @@ public class eCPDataFormSearch
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงฟอร์มและผลการค้นหานักศึกษาที่ต้องการทำรายการแจ้ง
     public static string SearchStudentWithResult()
     {
         string _html = String.Empty;
@@ -212,7 +211,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหารายการแจ้ง
     public static string SearchCPTransBreakContract()
     {
         string _html = String.Empty;
@@ -322,7 +320,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหารายการแจ้งที่ทำการแจ้งชำระหนี้
     public static string SearchCPTransRepayContract()
     {
         string _html = String.Empty;
@@ -425,7 +422,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหารายการแจ้งที่ทำการชำระหนี้
     public static string SearchCPTransPayment()
     {
         string _html = String.Empty;
@@ -529,7 +525,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาผู้ผิดสัญญา ในการแสดงคำนวณเงินต้นและดอกเบี้ย
     public static string SearchCPReportTableCalCapitalAndInterest()
     {
         string _html = String.Empty;
@@ -583,7 +578,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาผู้ผิดสัญญา ในการแสดงสถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา
     public static string SearchCPReportStepOfWork()
     {        
         string _html = String.Empty;
@@ -663,7 +657,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาผู้ผิดสัญญา ในการทำหนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
     public static string SearchCPReportNoticeRepayComplete()
     {
         string _html = String.Empty;
@@ -717,7 +710,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาผู้ผิดสัญญา ในการทำหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
     public static string SearchCPReportNoticeClaimDebt()
     {
         string _html = String.Empty;
@@ -771,7 +763,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาผู้ผิดสัญญา ในการแสดงสถิติการชำระหนี้ตามช่วงวันที่
     public static string SearchCPReportStatisticPaymentByDate()
     {
         string _html = String.Empty;
@@ -872,7 +863,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาผู้ผิดสัญญา ในการแสดงเอกสารสัญญาการเป็นนักศึกษา
     public static string SearchCPReportEContract()
     {        
         string _html = String.Empty;
@@ -952,7 +942,6 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการค้นหาลูกหนี้ผิดสัญญาการศึกษา ในการแสดงลูกหนี้ผิดสัญญาการศึกษา
     public static string SearchCPReportDebtorContract()
     {
         string _html = String.Empty;
@@ -994,7 +983,6 @@ public class eCPDataFormSearch
         return _html;
     }    
     
-    //สำหรับแสดงฟอร์มการค้นหาลูกหนี้ผิดสัญญาการศึกษาตามหลักสูตร ในการแสดงลูกหนี้ผิดสัญญาการศึกษาตามหลักสูตร
     public static string SearchStudentDebtorContractByProgram()
     {        
         string _html = String.Empty;

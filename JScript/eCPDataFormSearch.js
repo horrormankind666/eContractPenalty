@@ -71,6 +71,7 @@ function ValidateSearchStudentWithResult() {
 function SearchStudentWithResult() {
     var _faculty = ComboboxGetSelectedValue("facultysearchstudent") != "0" ? ComboboxGetSelectedValue("facultysearchstudent") : "";
     var _program = ComboboxGetSelectedValue("programsearchstudent") != "0" ? ComboboxGetSelectedValue("programsearchstudent") : "";
+
     _faculty = _faculty.length > 0 ? _faculty.split(";") : "";
     _program = _program.length > 0 ? _program.split(";") : "";
 
@@ -111,7 +112,11 @@ function ValidateSearchCPTransBreakContract() {
     var _msg;
     var _focus;
 
-    if (_error == false && ((($("#date-start-trans-break-contract").val().length > 0) && ($("#date-end-trans-break-contract").val().length == 0))) || (($("#date-start-trans-break-contract").val().length == 0) && ($("#date-end-trans-break-contract").val().length > 0))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน"; _focus = "#date-start-trans-break-contract"; }
+    if (_error == false && ((($("#date-start-trans-break-contract").val().length > 0) && ($("#date-end-trans-break-contract").val().length == 0))) || (($("#date-start-trans-break-contract").val().length == 0) && ($("#date-end-trans-break-contract").val().length > 0))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน";
+        _focus = "#date-start-trans-break-contract";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -188,7 +193,11 @@ function ValidateSearchCPTransRepayContract() {
     var _msg;
     var _focus;
 
-    if (_error == false && ((($("#date-start-trans-repay-contract").val().length > 0) && ($("#date-end-trans-repay-contract").val().length == 0))) || (($("#date-start-trans-repay-contract").val().length == 0) && ($("#date-end-trans-repay-contract").val().length > 0))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน"; _focus = "#date-start-trans-repay-contract"; }
+    if (_error == false && ((($("#date-start-trans-repay-contract").val().length > 0) && ($("#date-end-trans-repay-contract").val().length == 0))) || (($("#date-start-trans-repay-contract").val().length == 0) && ($("#date-end-trans-repay-contract").val().length > 0))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน";
+        _focus = "#date-start-trans-repay-contract";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -264,7 +273,11 @@ function ValidateSearchCPTransPayment() {
     var _msg;
     var _focus;
 
-    if (_error == false && ((($("#date-start-trans-repay1-reply").val().length > 0) && ($("#date-end-trans-repay1-reply").val().length == 0))) || (($("#date-start-trans-repay1-reply").val().length == 0) && ($("#date-end-trans-repay1-reply").val().length > 0))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน"; _focus = "#date-start-trans-repay1-reply"; }
+    if (_error == false && ((($("#date-start-trans-repay1-reply").val().length > 0) && ($("#date-end-trans-repay1-reply").val().length == 0))) || (($("#date-start-trans-repay1-reply").val().length == 0) && ($("#date-end-trans-repay1-reply").val().length > 0))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน";
+        _focus = "#date-start-trans-repay1-reply";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -521,15 +534,21 @@ function ResetFrmSearchReportStudentOnStatisticContractByProgram() {
 
     SetMsgLoading("");
 
-    if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(1);
-    if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(2);
+    if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true)
+        SearchReportStudentOnStatisticContractByProgram(1);
+
+    if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true)
+        SearchReportStudentOnStatisticContractByProgram(2);
 }
 
 function ValidateSearchReportStudentOnStatisticContractByProgram() {
     SetMsgLoading("กำลังค้นหา...");
 
-    if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(1);
-    if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(2);
+    if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true)
+        SearchReportStudentOnStatisticContractByProgram(1);
+
+    if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true)
+        SearchReportStudentOnStatisticContractByProgram(2);
 }
 
 function SearchReportStudentOnStatisticContractByProgram(_searchTab) {
@@ -730,7 +749,11 @@ function ValidateSearchCPReportStatisticPaymentByDate() {
     var _msg;
     var _focus;
 
-    if (_error == false && ((($("#date-start-report-statistic-payment-by-date").val().length > 0) && ($("#date-end-report-statistic-payment-by-date").val().length == 0))) || (($("#date-start-report-statistic-payment-by-date").val().length == 0) && ($("#date-end-report-statistic-payment-by-date").val().length > 0))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน"; _focus = "#date-start-report-statistic-payment-by-date"; }
+    if (_error == false && ((($("#date-start-report-statistic-payment-by-date").val().length > 0) && ($("#date-end-report-statistic-payment-by-date").val().length == 0))) || (($("#date-start-report-statistic-payment-by-date").val().length == 0) && ($("#date-end-report-statistic-payment-by-date").val().length > 0))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ให้ครบถ้วน";
+        _focus = "#date-start-report-statistic-payment-by-date";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -847,7 +870,11 @@ function ValidateSearchCPReportDebtorContract() {
     var _msg;
     var _focus;
 
-    if (_error == false && ((($("#date-start-report-debtor-contract").val().length > 0) && ($("#date-end-report-debtor-contract").val().length == 0))) || (($("#date-start-report-debtor-contract").val().length == 0) && ($("#date-end-report-debtor-contract").val().length > 0))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่รับสภาพหนี้ให้ครบถ้วน"; _focus = "#date-start-report-debtor-contract"; }
+    if (_error == false && ((($("#date-start-report-debtor-contract").val().length > 0) && ($("#date-end-report-debtor-contract").val().length == 0))) || (($("#date-start-report-debtor-contract").val().length == 0) && ($("#date-end-report-debtor-contract").val().length > 0))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่รับสภาพหนี้ให้ครบถ้วน";
+        _focus = "#date-start-report-debtor-contract";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");

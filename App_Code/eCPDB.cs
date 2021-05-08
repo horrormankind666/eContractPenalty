@@ -1,7 +1,9 @@
-﻿//eCPDB.cs              : สำหรับจัดการฐานข้อมูล
-//Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับจัดการฐานข้อมูล
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๐๘/๐๕/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +14,6 @@ using System.Data.SqlClient;
 
 public class eCPDB
 {
-    public static SqlConnection _eCPConn;
     public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
     //public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=Infinity;User ID=MUstudent53;Password=oydL7dKk53;Connect Timeout=600;Asynchronous Processing=true;";
     //public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=MUStudent;User ID=MUstudent53;Password=oydL7dKk53;Asynchronous Processing=true;";
@@ -22,7 +23,7 @@ public class eCPDB
     public static string _username;
     public static string _password;
 
-    //สำหรับติดต่อฐานข้อมูล
+    /*
     private static void ConnectDB()
     {
         _eCPConn = new SqlConnection();
@@ -38,9 +39,8 @@ public class eCPDB
         catch
         {
         }
-    }
+    }    
 
-    //สำหรับปิดการเชื่อมต่อฐานข้อมูล
     private static void DisConnectDB()
     {
         try
@@ -55,37 +55,82 @@ public class eCPDB
         }
     }
 
-    //สำหรับติดต่อ Store Procecure เพื่อ Select ข้อมูล
     private static SqlCommand ConnectStoreProc(string _sqlCmd)
     {
         ConnectDB();
         
-        SqlCommand _cmd = new SqlCommand(_sqlCmd);        
+        SqlCommand _cmd = new SqlCommand(_sqlCmd);
         _cmd.CommandType = CommandType.StoredProcedure;
         _cmd.CommandTimeout = _eCPConn.ConnectionTimeout;
         _cmd.Connection = _eCPConn;
 
         return _cmd;
     }
+    */
 
-    //สำหรับติดต่อ Store Procecure เพื่อ Insert และ Update ข้อมูล
+    public static SqlConnection ConnectDB(string _connString)
+    {
+        SqlConnection _conn = new SqlConnection(_connString);
+
+        return _conn;
+    }
+
+    public static DataSet ExecuteCommandStoredProcedure(params SqlParameter[] _values)
+    {
+        SqlConnection _conn = ConnectDB(CONNECTION_STRING);
+        SqlCommand _cmd = new SqlCommand(STORE_PROC, _conn);
+        DataSet _ds = new DataSet();
+
+        _cmd.CommandType = CommandType.StoredProcedure;
+        _cmd.CommandTimeout = 1000;
+
+        if (_values != null && _values.Length > 0)
+            _cmd.Parameters.AddRange(_values);
+
+        try
+        {
+            _conn.Open();
+
+            SqlDataAdapter _da = new SqlDataAdapter(_cmd);
+
+            _ds = new DataSet();
+            _da.Fill(_ds);
+        }
+        finally
+        {
+            _cmd.Dispose();
+
+            _conn.Close();
+            _conn.Dispose();
+        }
+
+        return _ds;
+    }
+
     public static void ConnectStoreProcAddUpdate(string _sqlCmd)
     {
-        ConnectDB();
-        
-        SqlCommand _cmd = new SqlCommand(STORE_PROC);
+        SqlConnection _conn = ConnectDB(CONNECTION_STRING);
+        SqlCommand _cmd = new SqlCommand(STORE_PROC, _conn);
+
         _cmd.CommandType = CommandType.StoredProcedure;
-        _cmd.CommandTimeout = _eCPConn.ConnectionTimeout;
+        _cmd.CommandTimeout = 1000;
         _cmd.Parameters.AddWithValue("@ordertable", 52);
         _cmd.Parameters.AddWithValue("@cmd", _sqlCmd);
 
-        _cmd.Connection = _eCPConn;
-        _cmd.ExecuteNonQuery();
+        try
+        {
+            _conn.Open();
+            _cmd.ExecuteNonQuery();
+        }
+        finally
+        {
+            _cmd.Dispose();
 
-        DisConnectDB();
+            _conn.Close();
+            _conn.Dispose();
+        }
     }
-
-    //สำหรับ Insert Transaction Log
+    
     public static string InsertTransactionLog(string _what, string _where, string _function, string _sqlCommand)
     {
         string _command = String.Empty;
@@ -115,8 +160,7 @@ public class eCPDB
 
         return _command;
     }
-    
-    //สำหรับตรวจสอบว่าอยู่ในระบบหรือไม่
+
     public static bool ChkLogin()
     {
         bool _loginResult = false;
@@ -148,17 +192,15 @@ public class eCPDB
             {
                 Dictionary<string, string> _authen = eCPUtil.GetUsername();
 
-                SqlCommand _cmd =  ConnectStoreProc(STORE_PROC);
-                _cmd.Parameters.AddWithValue("@ordertable", 1);
-                _cmd.Parameters.AddWithValue("@username", _authen["Username"]);
-                _cmd.Parameters.AddWithValue("@password", _authen["Password"]);
-
-                SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-                DataSet _ds = new DataSet();
-                _da.Fill(_ds);
+                DataSet _ds = ExecuteCommandStoredProcedure(
+                    new SqlParameter("@ordertable", 1),
+                    new SqlParameter("@username", _authen["Username"]),
+                    new SqlParameter("@password", _authen["Password"])
+                );
 
                 _rowCount = _ds.Tables[0].Rows.Count;
-                if(_rowCount <= 0)
+
+                if (_rowCount <= 0)
                 {
                     Signout();
                     _loginResult = false;
@@ -166,13 +208,14 @@ public class eCPDB
                 else
                 {
                     DataRow _dr = _ds.Tables[0].Rows[0];
+
                     if (!(_dr["Username"].ToString()).Equals(_authen["Username"]) ||
                         !(_dr["Password"].ToString()).Equals(_authen["Password"]) ||
                         //!(_dr["Name"].ToString()).Equals(HttpContext.Current.Server.UrlDecode(_eCPCookie["Name"])) ||
                         !(_dr["UserSection"].ToString()).Equals(_eCPCookie["UserSection"]) ||
                         !(_dr["UserLevel"].ToString()).Equals(_eCPCookie["UserLevel"]))
                     {
-                        Signout();                                    
+                        Signout();
                         _loginResult = false;
                     }
                     else
@@ -180,17 +223,12 @@ public class eCPDB
                         _loginResult = true;
                     }
                 }
-
-                _ds.Dispose();
-                _da.Dispose();
-                DisConnectDB();
             }
         }
 
         return _loginResult;
     }
 
-    //สำหรับตรวจสอบการเข้าระบบ
     public static bool Signin(string _authen)
     {
         int _rowCount;
@@ -202,14 +240,11 @@ public class eCPDB
         string _username = _auth["Username"];
         string _password = _auth["Password"];
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 1);
-        _cmd.Parameters.AddWithValue("@username", _username);
-        _cmd.Parameters.AddWithValue("@password", _password);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 1),
+            new SqlParameter("@username", _username),
+            new SqlParameter("@password", _password)
+        );
 
         _rowCount = _ds.Tables[0].Rows.Count;
         
@@ -220,6 +255,7 @@ public class eCPDB
         else
         {
             DataRow _dr = _ds.Tables[0].Rows[0];
+
             if (!(_dr["Username"].ToString()).Equals(_username) || !(_dr["Password"].ToString()).Equals(_password))
             {
                 _loginResult = false;
@@ -227,9 +263,11 @@ public class eCPDB
             else
             {
                 HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
-                //_eCPCookie.Values.Add("Username", _dr["Username"].ToString());
-                //_eCPCookie.Values.Add("Password", _dr["Password"].ToString());
-                //_eCPCookie.Values.Add("Name", HttpContext.Current.Server.UrlEncode(_dr["Name"].ToString()));
+                /*
+                _eCPCookie.Values.Add("Username", _dr["Username"].ToString());
+                _eCPCookie.Values.Add("Password", _dr["Password"].ToString());
+                _eCPCookie.Values.Add("Name", HttpContext.Current.Server.UrlEncode(_dr["Name"].ToString()));
+                */
                 _eCPCookie.Values.Add("Authen", _authen);
                 _eCPCookie.Values.Add("UserSection", _dr["UserSection"].ToString());
                 _eCPCookie.Values.Add("UserLevel", _dr["UserLevel"].ToString());
@@ -246,10 +284,6 @@ public class eCPDB
             }
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _loginResult;
     }
 
@@ -259,7 +293,6 @@ public class eCPDB
         _password = String.Empty;
     }
 
-    //สำหรับการออกจากระบบ
     public static void Signout()
     {
         ConnectStoreProcAddUpdate(InsertTransactionLog("SIGN OUT", "", "Signout", ""));
@@ -270,10 +303,9 @@ public class eCPDB
         _eCPCookie.Expires = DateTime.Now.AddDays(-1D);
         HttpContext.Current.Response.Cookies.Add(_eCPCookie);
         
-        ClearUser();        
+        ClearUser();
     }
 
-    //สำหรับนับจำนวนผู้ใช้งานในบัญชีผู้ใช้งาน
     public static int CountCPTabUser(HttpContext _c)
     {
         int _section;
@@ -283,27 +315,19 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 36);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        _cmd.Parameters.AddWithValue("@userlevel", "User");
-        if (!String.IsNullOrEmpty(_c.Request["name"])) _cmd.Parameters.AddWithValue("@name", _c.Request["name"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 36),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@userlevel", "User"),
+            new SqlParameter("@name", (!String.IsNullOrEmpty(_c.Request["name"]) ? _c.Request["name"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountCPTabUser"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลผู้ใช้งาน
     public static string[,] ListCPTabUser(HttpContext _c)
     {
         int _section;
@@ -313,19 +337,17 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 36);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        _cmd.Parameters.AddWithValue("@section", _section);
-        _cmd.Parameters.AddWithValue("@userlevel", "User");
-        if (!String.IsNullOrEmpty(_c.Request["name"])) _cmd.Parameters.AddWithValue("@name", _c.Request["name"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 36),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@userlevel", "User"),
+            new SqlParameter("@name", (!String.IsNullOrEmpty(_c.Request["name"]) ? _c.Request["name"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 6];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -338,14 +360,9 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดข้อมูลผู้ใช้งาน
     public static string[,] ListDetailCPTabUser(string _username, string _password, string _userlevel)
     {
         int _section;
@@ -355,22 +372,16 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 36);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        if (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password))
-        {
-            _cmd.Parameters.AddWithValue("@username", _username);
-            _cmd.Parameters.AddWithValue("@password", _password);
-        }
-        if (!String.IsNullOrEmpty(_userlevel))
-            _cmd.Parameters.AddWithValue("@userlevel", _userlevel);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 36),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@username", (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password) ? _username : null)),
+            new SqlParameter("@password", (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password) ? _password : null)),
+            new SqlParameter("@userlevel", (!String.IsNullOrEmpty(_userlevel) ? _userlevel : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 6];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -381,60 +392,38 @@ public class eCPDB
             _data[_i, 5] = _dr["UserLevel"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับตรวจสอบผู้ใช้งานว่ามีแล้วหรือยัง
     public static int CheckRepeatCPTabUser(HttpContext _c, string _column)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 37);
-        if (_column.Equals("username"))
-        {
-            _cmd.Parameters.AddWithValue("@username", _c.Request["username"]);
-            if (!String.IsNullOrEmpty(_c.Request["usernameold"])) _cmd.Parameters.AddWithValue("@usernameold", _c.Request["usernameold"]);
-        }
-
-        if (_column.Equals("password"))
-        {
-            _cmd.Parameters.AddWithValue("@password", _c.Request["password"]);
-            if (!String.IsNullOrEmpty(_c.Request["passwordold"])) _cmd.Parameters.AddWithValue("@passwordold", _c.Request["passwordold"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 37),
+            new SqlParameter("@username", (_column.Equals("username") ? _c.Request["username"] : null)),
+            new SqlParameter("@usernameold", (_column.Equals("username") && !String.IsNullOrEmpty(_c.Request["usernameold"]) ? _c.Request["usernameold"] : null)),
+            new SqlParameter("@password", (_column.Equals("password") ? _c.Request["password"] : null)),
+            new SqlParameter("@passwordold", (_column.Equals("password") && !String.IsNullOrEmpty(_c.Request["passwordold"]) ? _c.Request["passwordold"] : null))
+        );
 
         _recordCount = _ds.Tables[0].Rows.Count;
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
 
         return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string[,] ListCPTabProgram(string _cp1id)
     {
         int _i = 0;
         string _sql = String.Empty;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 23);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+           new SqlParameter("@ordertable", 23),
+           new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 9];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -450,54 +439,39 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับตรวจสอบหลักสูตรที่ให้มีการทำสัญญาการศึกษาว่ามีแล้วหรือยัง
     public static int CheckRepeatCPTabProgram(HttpContext _c)
     {
         int _recordCount = 0;
-        
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 24);
-        if (!String.IsNullOrEmpty(_c.Request["cp1id"])) _cmd.Parameters.AddWithValue("@cp1id", _c.Request["cp1id"]);
-        _cmd.Parameters.AddWithValue("@dlevel", _c.Request["dlevel"]);
-        _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-        _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-        _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
 
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 24),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_c.Request["cp1id"]) ? _c.Request["cp1id"] : null)),
+            new SqlParameter("@dlevel", _c.Request["dlevel"]),
+            new SqlParameter("@faculty", _c.Request["faculty"]),
+            new SqlParameter("@program", _c.Request["programcode"]),
+            new SqlParameter("@major", _c.Request["majorcode"]),
+            new SqlParameter("@groupnum", _c.Request["groupnum"])
+        );
         
         _recordCount = _ds.Tables[0].Rows.Count;
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
 
         return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลเงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
     public static string[,] ListCPTabCalDate(string _cpid)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 2);
-        if (!String.IsNullOrEmpty(_cpid)) _cmd.Parameters.AddWithValue("@cp1id", _cpid);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 2),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cpid) ? _cpid : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 3];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -506,28 +480,21 @@ public class eCPDB
 
             _i++;
         }
-        
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
 
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลดอกเบี้ยจากการผิดนัดชำระ
     public static string[,] ListCPTabInterest(string _cp1id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 3);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 3),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -538,27 +505,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลดอกเบี้ยจากการผิดนัดชำระที่มีสถานะการใช้งานเป็น True
     public static string[,] ListSearchUseContractInterest()
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 3);
-        _cmd.Parameters.AddWithValue("@usecontractinterest", "1");
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 3),
+            new SqlParameter("@usecontractinterest", "1")
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["InContractInterest"].ToString();
@@ -567,27 +527,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลเกณฑ์การชดใช้ตามสัญญา
     public static string[,] ListCPTabPayBreakContract(string _cp1id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 4);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 4),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 16];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -610,60 +563,45 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับตรวจสอบเกณฑ์การชดใช้ตามสัญญาว่ามีแล้วหรือยัง    
     public static int CheckRepeatCPTabPayBreakContract(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 7);
-        if (!String.IsNullOrEmpty(_c.Request["cp1id"])) _cmd.Parameters.AddWithValue("@cp1id", _c.Request["cp1id"]);
-        _cmd.Parameters.AddWithValue("@casegraduate", _c.Request["casegraduate"]);
-        _cmd.Parameters.AddWithValue("@dlevel", _c.Request["dlevel"]);
-        _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-        _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-        _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
-
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 7),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_c.Request["cp1id"]) ? _c.Request["cp1id"] : null)),
+            new SqlParameter("@casegraduate", _c.Request["casegraduate"]),
+            new SqlParameter("@dlevel", _c.Request["dlevel"]),
+            new SqlParameter("@faculty", _c.Request["faculty"]),
+            new SqlParameter("@program", _c.Request["programcode"]),
+            new SqlParameter("@major", _c.Request["majorcode"]),
+            new SqlParameter("@groupnum", _c.Request["groupnum"])
+        );
+        
         _recordCount = _ds.Tables[0].Rows.Count;
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
 
         return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลเกณฑ์การชดใช้ตามสัญญาตามเงื่อนไขการค้นหา
     public static string[,] ListSearchCPTabPayBreakContract(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 7);
-        _cmd.Parameters.AddWithValue("@casegraduate", _c.Request["casegraduate"]);
-        _cmd.Parameters.AddWithValue("@dlevel", _c.Request["dlevel"]);
-        _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-        _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-        _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 7),
+            new SqlParameter("@casegraduate", _c.Request["casegraduate"]),
+            new SqlParameter("@dlevel", _c.Request["dlevel"]),
+            new SqlParameter("@faculty", _c.Request["faculty"]),
+            new SqlParameter("@program", _c.Request["programcode"]),
+            new SqlParameter("@major", _c.Request["majorcode"]),
+            new SqlParameter("@groupnum", _c.Request["groupnum"])
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -672,27 +610,20 @@ public class eCPDB
             _data[_i, 3] = _dr["AmountCash"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลทุนการศึกษาแต่ละหลักสูตร
     public static string[,] ListCPTabScholarship(string _cp1id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 14);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 14),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 10];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -709,84 +640,62 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับตรวจสอบทุนการศึกษาแต่ละหลักสูตรว่ามีแล้วหรือยัง
     public static int CheckRepeatCPTabScholarship(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 15);
-        if (!String.IsNullOrEmpty(_c.Request["cp1id"])) _cmd.Parameters.AddWithValue("@cp1id", _c.Request["cp1id"]);
-        _cmd.Parameters.AddWithValue("@dlevel", _c.Request["dlevel"]);
-        _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-        _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-        _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 15),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_c.Request["cp1id"]) ? _c.Request["cp1id"] : null)),
+            new SqlParameter("@dlevel", _c.Request["dlevel"]),
+            new SqlParameter("@faculty", _c.Request["faculty"]),
+            new SqlParameter("@program", _c.Request["programcode"]),
+            new SqlParameter("@major", _c.Request["majorcode"]),
+            new SqlParameter("@groupnum", _c.Request["groupnum"])
+        );
 
         _recordCount = _ds.Tables[0].Rows.Count;
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
-        return _ds.Tables[0].Rows.Count;
+        return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลทุนการศึกษาแต่ละหลักสูตรตามเงื่อนไขการค้นหา
     public static string[,] ListSearchCPTabScholarship(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 15);
-        _cmd.Parameters.AddWithValue("@dlevel", _c.Request["dlevel"]);
-        _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-        _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-        _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 15),
+            new SqlParameter("@dlevel", _c.Request["dlevel"]),
+            new SqlParameter("@faculty", _c.Request["faculty"]),
+            new SqlParameter("@program", _c.Request["programcode"]),
+            new SqlParameter("@major", _c.Request["majorcode"]),
+            new SqlParameter("@groupnum", _c.Request["groupnum"])
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["ScholarshipMoney"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลคำนำหน้าชื่อ
     public static string[,] ListTitlename()
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 27);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 27)
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["TitleCode"].ToString();
@@ -797,26 +706,19 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลคณะ
     public static string[,] ListFaculty(bool _cpTabProgram)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", _cpTabProgram.Equals(false) ? 5 : 25);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", (_cpTabProgram.Equals(false) ? 5 : 25))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["FacultyCode"].ToString();
@@ -825,34 +727,21 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลหลักสูตร
     public static string[,] ListProgram(bool _cpTabProgram, string _dlevel, string _faculty)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", _cpTabProgram.Equals(false) ? 6 : 26);
-        if ((String.IsNullOrEmpty(_dlevel)) && (!String.IsNullOrEmpty(_faculty)))
-            _cmd.Parameters.AddWithValue("@faculty", _faculty);
-
-        if ((!String.IsNullOrEmpty(_dlevel)) && (!String.IsNullOrEmpty(_faculty)))
-        {
-            _cmd.Parameters.AddWithValue("@dlevel", _dlevel);
-            _cmd.Parameters.AddWithValue("@faculty", _faculty);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", (_cpTabProgram.Equals(false) ? 6 : 26)),
+            new SqlParameter("@dlevel", (!String.IsNullOrEmpty(_faculty) ? (!String.IsNullOrEmpty(_dlevel) ? _dlevel : null) : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_faculty) ? _faculty : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 6];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ProgramCode"].ToString();
@@ -865,26 +754,19 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลจังหวัด
     public static string[,] ListProvince()
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 11);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
-
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 11)
+        );
+        
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ProvinceID"].ToString();
@@ -892,67 +774,46 @@ public class eCPDB
 
             _i++;
         }
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
+        
         return _data;
     }
     
-    //สำหรับนับจำนวนนักศึกษาตามเงื่อนไขการค้นหา
     public static int CountStudent(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 8);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 8),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountStudent"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลนักศึกษาตามเงื่อนไขการค้นหา
     public static string[,] ListStudent(HttpContext _c)
     {
         int _i = 0;
-        
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 8);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);        
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]); 
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {            
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
 
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 8),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 15];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -974,27 +835,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดข้อมูลนักศึกษาตามรหัสนักศึกษา
     public static string[,] ListProfileStudent(string _studentid)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 8);
-        if (!String.IsNullOrEmpty(_studentid)) _cmd.Parameters.AddWithValue("@studentid", _studentid);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 8),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_studentid) ? _studentid : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 26];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1029,27 +883,20 @@ public class eCPDB
             _data[_i, 25] = _dr["FolderName"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select ข้อมูลนักศึกษาที่มีทำรายการแจ้ง
     public static string[,] ListSearchStudentCPTransBreakContract(string _studentid)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 9);
-        if (!String.IsNullOrEmpty(_studentid)) _cmd.Parameters.AddWithValue("@studentid", _studentid);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 9),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_studentid) ? _studentid : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -1058,14 +905,9 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งตามเงื่อนไขการค้นหา
     public static int CountCPTransBreakContract(HttpContext _c)
     {        
         int _section;
@@ -1075,39 +917,28 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 10);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        if (!String.IsNullOrEmpty(_c.Request["statussend"])) _cmd.Parameters.AddWithValue("@statussend", _c.Request["statussend"]);
-        if (!String.IsNullOrEmpty(_c.Request["statusreceiver"])) _cmd.Parameters.AddWithValue("@statusreceiver", _c.Request["statusreceiver"]);
-        if (!String.IsNullOrEmpty(_c.Request["statusedit"])) _cmd.Parameters.AddWithValue("@statusedit", _c.Request["statusedit"]);
-        if (!String.IsNullOrEmpty(_c.Request["statuscancel"])) _cmd.Parameters.AddWithValue("@statuscancel", _c.Request["statuscancel"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 10),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@statussend", (!String.IsNullOrEmpty(_c.Request["statussend"]) ? _c.Request["statussend"] : null)),
+            new SqlParameter("@statusreceiver", (!String.IsNullOrEmpty(_c.Request["statusreceiver"]) ? _c.Request["statusreceiver"] : null)),
+            new SqlParameter("@statusedit", (!String.IsNullOrEmpty(_c.Request["statusedit"]) ? _c.Request["statusedit"] : null)),
+            new SqlParameter("@statuscancel", (!String.IsNullOrEmpty(_c.Request["statuscancel"]) ? _c.Request["statuscancel"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountCPTransBreakContract"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select ข้อมูลรายการแจ้งตามเงื่อนไขการค้นหา
     public static string[,] ListCPTransBreakContract(HttpContext _c)
     {
         int _section;
@@ -1117,31 +948,26 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 10);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        _cmd.Parameters.AddWithValue("@section", _section);
-        if (!String.IsNullOrEmpty(_c.Request["statussend"])) _cmd.Parameters.AddWithValue("@statussend", _c.Request["statussend"]);
-        if (!String.IsNullOrEmpty(_c.Request["statusreceiver"])) _cmd.Parameters.AddWithValue("@statusreceiver", _c.Request["statusreceiver"]);
-        if (!String.IsNullOrEmpty(_c.Request["statusedit"])) _cmd.Parameters.AddWithValue("@statusedit", _c.Request["statusedit"]);
-        if (!String.IsNullOrEmpty(_c.Request["statuscancel"])) _cmd.Parameters.AddWithValue("@statuscancel", _c.Request["statuscancel"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 10),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@statussend", (!String.IsNullOrEmpty(_c.Request["statussend"]) ? _c.Request["statussend"] : null)),
+            new SqlParameter("@statusreceiver", (!String.IsNullOrEmpty(_c.Request["statusreceiver"]) ? _c.Request["statusreceiver"] : null)),
+            new SqlParameter("@statusedit", (!String.IsNullOrEmpty(_c.Request["statusedit"]) ? _c.Request["statusedit"] : null)),
+            new SqlParameter("@statuscancel", (!String.IsNullOrEmpty(_c.Request["statuscancel"]) ? _c.Request["statuscancel"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 16];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1164,14 +990,9 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select สถานะการติดตามในรายการแจ้ง
     public static string ChkTrackingStatusCPTransBreakContract(string _cp1id)
     {
         string _trackingStatus = String.Empty;
@@ -1182,26 +1003,18 @@ public class eCPDB
         _section = int.Parse(_eCPCookie["UserSection"]);
         _pid = int.Parse(_eCPCookie["Pid"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 10);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 10),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
             _trackingStatus = _dr["StatusSend"].ToString() + _dr["StatusReceiver"].ToString() + _dr["StatusEdit"].ToString() + _dr["StatusCancel"].ToString();
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _trackingStatus;
     }
 
-    //สำหรับ Select รายละเอียดรายการแจ้งตามรหัสรายการแจ้ง
     public static string[,] ListDetailCPTransBreakContract(string _cp1id)
     {
         int _section;
@@ -1211,17 +1024,15 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 10);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 10),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 52];
         string[,] _data1;
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1284,50 +1095,34 @@ public class eCPDB
             _data[_i, 51] = _dr["SetAmtIndemnitorYear"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
-
-    //สำหรับนับจำนวนรายการแจ้งที่แจ้งชำระหนี้ตามเงื่อนไขการค้นหา
+    
     public static int CountRepay(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 12);
-        if (!String.IsNullOrEmpty(_c.Request["statusrepay"])) _cmd.Parameters.AddWithValue("@statusrepay", _c.Request["statusrepay"]);
-        if (!String.IsNullOrEmpty(_c.Request["statusreply"])) _cmd.Parameters.AddWithValue("@statusreply", _c.Request["statusreply"]);
-        if (!String.IsNullOrEmpty(_c.Request["replyresult"])) _cmd.Parameters.AddWithValue("@replyresult", _c.Request["replyresult"]);
-        if (!String.IsNullOrEmpty(_c.Request["statuspayment"])) _cmd.Parameters.AddWithValue("@statuspayment", _c.Request["statuspayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 12),
+            new SqlParameter("@statusrepay", (!String.IsNullOrEmpty(_c.Request["statusrepay"]) ? _c.Request["statusrepay"] : null)),
+            new SqlParameter("@statusreply", (!String.IsNullOrEmpty(_c.Request["statusreply"]) ? _c.Request["statusreply"] : null)),
+            new SqlParameter("@replyresult", (!String.IsNullOrEmpty(_c.Request["replyresult"]) ? _c.Request["replyresult"] : null)),
+            new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
         
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
-
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountRepay"].ToString());
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
 
         return _recordCount;
     }
 
-    //สำหรับ Select รายละเอียดสถานะการแจ้งชำระหนี้
     public static string SearchRepayStatusDetail(string _cp2id, string _statusRepay, string _statusPayment)
     {
         string _repayStatusDetail = String.Empty;
@@ -1368,13 +1163,10 @@ public class eCPDB
                 _iconRepayStatus[0] = eCPUtil._iconRepayStatus[0, 0];
                 _iconRepayStatus[3] = eCPUtil._iconRepayStatus[3, 0];
 
-                SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-                _cmd.Parameters.AddWithValue("@ordertable", 13);
-                _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-                SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-                DataSet _ds = new DataSet();
-                _da.Fill(_ds);
+                DataSet _ds = ExecuteCommandStoredProcedure(
+                    new SqlParameter("@ordertable", 13),
+                    new SqlParameter("@cp2id", _cp2id)
+                );
 
                 foreach (DataRow _dr in _ds.Tables[0].Rows)
                 {
@@ -1418,10 +1210,6 @@ public class eCPDB
                         }
                     }
                 }
-
-                _ds.Dispose();
-                _da.Dispose();
-                DisConnectDB();
             }
         }
         else
@@ -1438,35 +1226,29 @@ public class eCPDB
         return _repayStatusDetail;
     }
 
-    //สำหรับ Select รายการแจ้งที่แจ้งชำระหนี้ตามเงื่อนไขการค้นหา
     public static string[,] ListRepay(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 12);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["statusrepay"])) _cmd.Parameters.AddWithValue("@statusrepay", _c.Request["statusrepay"]);
-        if (!String.IsNullOrEmpty(_c.Request["statusreply"])) _cmd.Parameters.AddWithValue("@statusreply", _c.Request["statusreply"]);
-        if (!String.IsNullOrEmpty(_c.Request["replyresult"])) _cmd.Parameters.AddWithValue("@replyresult", _c.Request["replyresult"]);
-        if (!String.IsNullOrEmpty(_c.Request["statuspayment"])) _cmd.Parameters.AddWithValue("@statuspayment", _c.Request["statuspayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 12),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@statusrepay", (!String.IsNullOrEmpty(_c.Request["statusrepay"]) ? _c.Request["statusrepay"] : null)),
+            new SqlParameter("@statusreply", (!String.IsNullOrEmpty(_c.Request["statusreply"]) ? _c.Request["statusreply"] : null)),
+            new SqlParameter("@replyresult", (!String.IsNullOrEmpty(_c.Request["replyresult"]) ? _c.Request["replyresult"] : null)),
+            new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 19];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1492,28 +1274,75 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
+        return _data;
+    }
+
+    public static string[,] ListRepay1(HttpContext _c)
+    {
+        int _i = 0;
+
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 53),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@statusrepay", (!String.IsNullOrEmpty(_c.Request["statusrepay"]) ? _c.Request["statusrepay"] : null)),
+            new SqlParameter("@statusreply", (!String.IsNullOrEmpty(_c.Request["statusreply"]) ? _c.Request["statusreply"] : null)),
+            new SqlParameter("@replyresult", (!String.IsNullOrEmpty(_c.Request["replyresult"]) ? _c.Request["replyresult"] : null)),
+            new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
+
+        string[,] _data = new string[_ds.Tables[1].Rows.Count, 22];
+
+        foreach (DataRow _dr in _ds.Tables[1].Rows)
+        {
+            _data[_i, 0] = _dr["RowNum"].ToString();
+            _data[_i, 1] = _dr["ID"].ToString();
+            _data[_i, 2] = _dr["BCID"].ToString();
+            _data[_i, 3] = _dr["StudentID"].ToString();
+            _data[_i, 4] = _dr["TitleTName"].ToString();
+            _data[_i, 5] = _dr["FirstTName"].ToString();
+            _data[_i, 6] = _dr["LastTName"].ToString();
+            _data[_i, 7] = _dr["ProgramCode"].ToString();
+            _data[_i, 8] = _dr["ProgramName"].ToString();
+            _data[_i, 9] = _dr["GroupNum"].ToString();
+            _data[_i, 10] = _dr["StatusSend"].ToString();
+            _data[_i, 11] = _dr["StatusReceiver"].ToString();
+            _data[_i, 12] = _dr["StatusEdit"].ToString();
+            _data[_i, 13] = _dr["StatusCancel"].ToString();
+            _data[_i, 14] = _dr["StatusRepay"].ToString();
+            _data[_i, 15] = _dr["StatusPayment"].ToString();
+            _data[_i, 16] = SearchRepayStatusDetail(_dr["ID"].ToString(), _dr["StatusRepay"].ToString(), _dr["StatusPayment"].ToString());
+            _data[_i, 17] = Util.ConvertDateTH(_dr["DateTimeReceiver"].ToString());
+            _data[_i, 18] = eCPUtil._actionTrackingStatus[1, Util.FindIndexArray3D(0, eCPUtil._actionTrackingStatus, _dr["StatusSend"].ToString() + _dr["StatusReceiver"].ToString() + _dr["StatusEdit"].ToString() + _dr["StatusCancel"].ToString()) - 1, 1];
+            _data[_i, 19] = _dr["StatusReply"].ToString();
+            _data[_i, 20] = _dr["ReplyResult"].ToString();
+            _data[_i, 21] = _dr["ReplyDate"].ToString();
+
+            _i++;
+        }
 
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดการรับรายการแจ้ง
     public static string[,] ListDetailCPTransRequireContract(string _cp1id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 12);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 12),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 78];
         string[,] _data1;
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {           
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1601,51 +1430,36 @@ public class eCPDB
             _data[_i, 77] = _dr["SetAmtIndemnitorYear"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select สถานะการแจ้งชำระหนี้ตามรายการแจ้งที่มีการรับ
     public static string ChkRepayStatusCPTransRequireContract(string _cp1id)
     {
         string _repayStatus = String.Empty;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 12);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 12),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
             _repayStatus = _dr["StatusRepay"].ToString();
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _repayStatus;
     }
 
-    //สำหรับ Select รายการแจ้งที่อยู่ในขั้นตอนการแจ้งชำระหนี้
     public static string[,] ListCPTransRepayContract(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 16);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 16),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 14];
         string[,] _data1;
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -1660,7 +1474,7 @@ public class eCPDB
             _data[_i, 9] = String.Empty;
             _data[_i, 10] = String.Empty;
             _data[_i, 11] = _dr["SubtotalPenalty"].ToString();
-
+            
             _data1 = ListMaxReplyDate(_dr["ID"].ToString());
 
             if (_data1.GetLength(0) > 0)
@@ -1671,34 +1485,27 @@ public class eCPDB
                 _data[_i, 9] = _data1[0, 3];
                 _data[_i, 10] = _data1[0, 4];
             }
-
+            
             _data[_i, 12] = _dr["Pursuant"].ToString();
             _data[_i, 13] = _dr["PursuantBookDate"].ToString();
 
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select วันล่าสุดในการตอบกลับการแจ้งชำระหนี้
     public static string[,] ListMaxReplyDate(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 17);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 17),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 6];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RCID"].ToString();
@@ -1711,14 +1518,9 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select สถานะการแจ้งชำระ เพื่อใช้ตรวจสอบการคำนวณดอกเบี้ย
     public static string ChkRepayStatusCalInterestOverpayment(string _cp2id)
     {
         string[,] _data;
@@ -1746,6 +1548,7 @@ public class eCPDB
                                 DateTime _dateB = DateTime.Parse(Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")), _provider);
 
                                 _overpayment = Util.CalcDate(_dateA, _dateB);
+
                                 if (!_overpayment[0].Equals(0))
                                 {
                                     _result = "0";
@@ -1774,7 +1577,6 @@ public class eCPDB
         return _result;
     }
 
-    //สำหรับ Select สถานะการแจ้งชำระหนี้และการตอบกลับเอกสารการแจ้งชำระหนี้
     public static string[,] ListCPTransRepayContractNoCurrentStatusRepay(string _cp2id, string _statusRepay)
     {
         int _i = 0;
@@ -1782,16 +1584,14 @@ public class eCPDB
 
         if (!String.IsNullOrEmpty(_cp2id) && !String.IsNullOrEmpty(_statusRepay))
         {
-            SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-            _cmd.Parameters.AddWithValue("@ordertable", 18);
-            _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-            _cmd.Parameters.AddWithValue("@statusrepay", _statusRepay);
-
-            SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-            DataSet _ds = new DataSet();
-            _da.Fill(_ds);
+            DataSet _ds = ExecuteCommandStoredProcedure(
+                new SqlParameter("@ordertable", 18),
+                new SqlParameter("@cp2id", _cp2id),
+                new SqlParameter("@statusrepay", _statusRepay)
+            );
 
             _data = new string[_ds.Tables[0].Rows.Count, 8];
+
             foreach (DataRow _dr in _ds.Tables[0].Rows)
             {
                 _data[_i, 0] = _dr["ID"].ToString();
@@ -1805,77 +1605,53 @@ public class eCPDB
 
                 _i++;
             }
-
-            _ds.Dispose();
-            _da.Dispose();
-            DisConnectDB();
         }
 
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งที่อยู่ในขั้นตอนการชำระหนี้ตามเงื่อนไขการค้นหา
     public static int CountPaymentOnCPTransRequireContract(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 19);
-        if (!String.IsNullOrEmpty(_c.Request["statuspayment"])) _cmd.Parameters.AddWithValue("@statuspayment", _c.Request["statuspayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        //ปรับปรุงเมื่อ ๒๘/๐๓/๒๕๖๒
-        //---------------------------------------------------------------------------------------------------
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-        //---------------------------------------------------------------------------------------------------
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 19),
+            new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountPayment"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select รายการแจ้งที่อยู่ในขั้นตอนการชำระหนี้ตามเงื่อนไขการค้นหา
     public static string[,] ListPaymentOnCPTransRequireContract(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 19);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["statuspayment"])) _cmd.Parameters.AddWithValue("@statuspayment", _c.Request["statuspayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 19),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 28];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1910,28 +1686,21 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดรายการแจ้งที่อยู่ในขั้นตอนการชำระหนี้
     public static string[,] ListDetailPaymentOnCPTransRequireContract(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 19);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 19),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 33];
         string[,] _data1;
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -1964,6 +1733,7 @@ public class eCPDB
             _data[_i, 27] = String.Empty;
 
             _data1 = ListLastTransPayment(_dr["ID"].ToString());
+
             if (_data1.GetLength(0) > 0)
             {
                 _data[_i, 25] = _data1[0, 2];
@@ -1977,30 +1747,23 @@ public class eCPDB
             _data[_i, 31] = _dr["LawyerMobileNumber"].ToString();
             _data[_i, 32] = _dr["LawyerEmail"].ToString();
         }
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
+        
         return _data;
     }
 
-    //สำหรับ Select ตารางการชำระหนี้ตามเงื่อนไขการค้นหา
     public static string[,] ListTransPayment(string _cp1id, string _dateStart, string _dateEnd)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 21);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-        if (!String.IsNullOrEmpty(_dateStart)) _cmd.Parameters.AddWithValue("@datestart", _dateStart);
-        if (!String.IsNullOrEmpty(_dateEnd)) _cmd.Parameters.AddWithValue("@dateend", _dateEnd);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 21),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_dateStart) ? _dateStart : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 15];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {            
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2022,27 +1785,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดการชำระหนี้ในแต่ละงวด
     public static string[,] ListDetailTransPayment(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 21);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 21),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 43];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {            
             _data[_i, 0] = _dr["ID"].ToString();
@@ -2090,27 +1846,20 @@ public class eCPDB
             _data[_i, 42] = _dr["ReceiptCopy"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select การชำระหนี้งวดล่าสุด
     public static string[,] ListLastTransPayment(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 22);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 22),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 5];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -2120,28 +1869,21 @@ public class eCPDB
             _data[_i, 4] = _dr["TotalRemain"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
                 
-    //สำหรับ Select Comment รายการแจ้งครั้งล่าสุด
     public static string[,] ListLastCommentOnCPTransBreakContract(string _cpid, string _action)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 20);
-        if (!String.IsNullOrEmpty(_cpid)) _cmd.Parameters.AddWithValue("@cp1id", _cpid);
-        if (!String.IsNullOrEmpty(_action)) _cmd.Parameters.AddWithValue("@actioncomment", _action);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 20),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cpid) ? _cpid : null)),
+            new SqlParameter("@actioncomment", (!String.IsNullOrEmpty(_action) ? _action : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -2152,67 +1894,46 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจังที่อยู่ในขั้นตอนการชำระหนี้ เพื่อนำมาคำนวณตารางเงินต้นและดอกเบี้ย
     public static int CountCPReportTableCalCapitalAndInterest(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 28);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 28),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportTableCalCapitalAndInterest"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select รายการแจังที่อยู่ในขั้นตอนการชำระหนี้ เพื่อนำมาคำนวณตารางเงินต้นและดอกเบี้ย
     public static string[,] ListCPReportTableCalCapitalAndInterest(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 28);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 28),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 20];
         string[,] _data1;
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {            
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2237,37 +1958,32 @@ public class eCPDB
             _data[_i, 19] = String.Empty;
 
             _data1 = ListSumPayOnPayment(_dr["ID"].ToString());
+
             if (_data1.GetLength(0) > 0)
                 _data[_i, 18] = _data1[0, 1];
 
             _data1 = ListLastTransPayment(_dr["ID"].ToString());
+
             if (_data1.GetLength(0) > 0)
                 _data[_i, 19] = _data1[0, 4];
 
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Sum ผลรวมการชำระหนี้
     public static string[,] ListSumPayOnPayment(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 29);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 29),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RCID"].ToString();
@@ -2276,28 +1992,21 @@ public class eCPDB
             _data[_i, 3] = _dr["SumTotalPay"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดรายการแจังที่อยู่ในขั้นตอนการชำระหนี้ เพื่อนำมาคำนวณตารางเงินต้นและดอกเบี้ย
     public static string[,] ListDetailCPReportTableCalCapitalAndInterest(string _cp2id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 28);
-        if (!String.IsNullOrEmpty(_cp2id)) _cmd.Parameters.AddWithValue("@cp2id", _cp2id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 28),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 22];
         string[,] _data1;
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2316,7 +2025,7 @@ public class eCPDB
             _data[_i, 13] = _dr["DLevel"].ToString();
             _data[_i, 14] = _dr["DLevelName"].ToString();
             _data[_i, 15] = _dr["FileName"].ToString();
-            _data[_i, 16] = _dr["FolderName"].ToString();            
+            _data[_i, 16] = _dr["FolderName"].ToString();
             _data[_i, 17] = _dr["StatusRepay"].ToString();
             _data[_i, 18] = _dr["StatusPayment"].ToString();
             _data[_i, 19] = _dr["FormatPayment"].ToString();
@@ -2324,34 +2033,28 @@ public class eCPDB
             _data[_i, 21] = String.Empty;
 
             _data1 = ListLastTransPayment(_dr["ID"].ToString());
+
             if (_data1.GetLength(0) > 0)
                 _data[_i, 21] = _data1[0, 4];
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับคำนวณตารางเงินต้นและดอกเบี้ย
     public static string[,] ListCalCPReportTableCalCapitalAndInterest(string _capital, string _interest, string _pay, string _paymentDate)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 30);
-        if (!String.IsNullOrEmpty(_capital)) _cmd.Parameters.AddWithValue("@capital", _capital);
-        if (!String.IsNullOrEmpty(_interest)) _cmd.Parameters.AddWithValue("@interest", _interest);
-        if (!String.IsNullOrEmpty(_pay)) _cmd.Parameters.AddWithValue("@pay", _pay);
-        if (!String.IsNullOrEmpty(_paymentDate)) _cmd.Parameters.AddWithValue("@paiddate", _paymentDate);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 30),
+            new SqlParameter("@capital", (!String.IsNullOrEmpty(_capital) ? _capital : null)),
+            new SqlParameter("@interest", (!String.IsNullOrEmpty(_interest) ? _interest : null)),
+            new SqlParameter("@pay", (!String.IsNullOrEmpty(_pay) ? _pay : null)),
+            new SqlParameter("@paiddate", (!String.IsNullOrEmpty(_paymentDate) ? _paymentDate : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count + 1, 9];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {           
             _data[_i, 0] = _dr["PaidPeriod"].ToString();
@@ -2371,30 +2074,23 @@ public class eCPDB
             _data[_i, 8] = _dr1["SumPayTotal"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับคำนวณผลรวมในตารางเงินต้นและดอกเบี้ย
     public static string[,] ListSumCalCPReportTableCalCapitalAndInterest(string _capital, string _interest, string _pay, string _paymentDate)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 30);
-        if (!String.IsNullOrEmpty(_capital)) _cmd.Parameters.AddWithValue("@capital", _capital);
-        if (!String.IsNullOrEmpty(_interest)) _cmd.Parameters.AddWithValue("@interest", _interest);
-        if (!String.IsNullOrEmpty(_pay)) _cmd.Parameters.AddWithValue("@pay", _pay);
-        if (!String.IsNullOrEmpty(_paymentDate)) _cmd.Parameters.AddWithValue("@paiddate", _paymentDate);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 30),
+            new SqlParameter("@capital", (!String.IsNullOrEmpty(_capital) ? _capital : null)),
+            new SqlParameter("@interest", (!String.IsNullOrEmpty(_interest) ? _interest : null)),
+            new SqlParameter("@pay", (!String.IsNullOrEmpty(_pay) ? _pay : null)),
+            new SqlParameter("@paiddate", (!String.IsNullOrEmpty(_paymentDate) ? _paymentDate : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 6];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["PaidPeriod"].ToString();
@@ -2407,51 +2103,35 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งตามเงื่อนไขการค้นหา
     public static int CountCPReportStepOfWork(HttpContext _c)
     {
         int _section;
-        int _recordCount = 0;        
+        int _recordCount = 0;
 
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
-                
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 31);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        if (!String.IsNullOrEmpty(_c.Request["statusstepofwork"])) _cmd.Parameters.AddWithValue("@statusstepofwork", _c.Request["statusstepofwork"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
 
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 31),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@statusstepofwork", (!String.IsNullOrEmpty(_c.Request["statusstepofwork"]) ? _c.Request["statusstepofwork"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStepOfWork"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ SELECT รายการแจ้งตามเงื่อนไขการค้นหา
     public static string[,] ListCPReportStepOfWork(HttpContext _c)
     {
         int _section;
@@ -2461,26 +2141,21 @@ public class eCPDB
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         _section = int.Parse(_eCPCookie["UserSection"]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 31);
-        _cmd.Parameters.AddWithValue("@section", _section);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["statusstepofwork"])) _cmd.Parameters.AddWithValue("@statusstepofwork", _c.Request["statusstepofwork"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 31),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@statusstepofwork", (!String.IsNullOrEmpty(_c.Request["statusstepofwork"]) ? _c.Request["statusstepofwork"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 17];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2504,68 +2179,47 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งที่มีการชำระหนี้ตามหลักสูตรตามเงื่อนไขการค้นหา
     public static int CountReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 31);
-        if (!String.IsNullOrEmpty(_c.Request["acadamicyear"])) _cmd.Parameters.AddWithValue("@acadamicyear", _c.Request["acadamicyear"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 31),
+            new SqlParameter("@acadamicyear", (!String.IsNullOrEmpty(_c.Request["acadamicyear"]) ? _c.Request["acadamicyear"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStepOfWork"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select รายการแจ้งที่มีการชำระหนี้ตามหลักสูตรตามเงื่อนไขการค้นหา
     public static string[,] ListReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 31);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["acadamicyear"])) _cmd.Parameters.AddWithValue("@acadamicyear", _c.Request["acadamicyear"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 31),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@acadamicyear", (!String.IsNullOrEmpty(_c.Request["acadamicyear"]) ? _c.Request["acadamicyear"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 17];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2589,27 +2243,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายการแจ้งที่มีการชำระหนี้
     public static string[,] ListCPReportStatisticRepay()
     {
         int _i = 0;
         double _remain = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 32);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 32)
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 10];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2629,28 +2276,21 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายการแจ้งที่มีการชำระหนี้ตามหลักสูตร
     public static string[,] ListCPReportStatisticRepayByProgram(string _acadamicyear)
     {
         int _i = 0;
         double _remain = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 33);
-        _cmd.Parameters.AddWithValue("@acadamicyear", _acadamicyear);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 33),
+            new SqlParameter("@acadamicyear", _acadamicyear)
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 15];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2675,26 +2315,19 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
-
-    //สำหรับ Select สถิติการทำสัญญาและผิดสัญญาของนักศึกษา
+    
     public static string[,] ListCPReportStatisticContract()
     {
-        int _i = 0;        
+        int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 38);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 38)
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 5];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2706,68 +2339,47 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนนักศึกษาที่มีการทำสัญญาตามเงื่อนไขการค้นหา
     public static int CountReportStudentSignContract(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 40);
-        if (!String.IsNullOrEmpty(_c.Request["acadamicyear"])) _cmd.Parameters.AddWithValue("@acadamicyear", _c.Request["acadamicyear"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
-
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 40),
+            new SqlParameter("@acadamicyear", (!String.IsNullOrEmpty(_c.Request["acadamicyear"]) ? _c.Request["acadamicyear"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
+        
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStudentSignContract"].ToString());
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
+        
         return _recordCount;
     }
 
-    //สำหรับ Select นักศึกษาที่มีการทำสัญญาตามเงื่อนไขการค้นหา
     public static string[,] ListReportStudentSignContract(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 40);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["acadamicyear"])) _cmd.Parameters.AddWithValue("@acadamicyear", _c.Request["acadamicyear"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 40),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@acadamicyear", (!String.IsNullOrEmpty(_c.Request["acadamicyear"]) ? _c.Request["acadamicyear"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 10];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2784,27 +2396,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select สถิติการทำสัญญาและผิดสัญญาของนักศึกษาตามหลักสูตร
     public static string[,] ListCPReportStatisticContractByProgram(string _acadamicyear)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 39);
-        _cmd.Parameters.AddWithValue("@acadamicyear", _acadamicyear);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 39),
+            new SqlParameter("@acadamicyear", _acadamicyear)
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 11];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2822,66 +2427,45 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งที่มีการชำระหนี้เรียบร้อยตามเงื่อนไขการค้นหา
     public static int CountCPReportNoticeRepayComplete(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 34);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 34),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportNoticeRepayComplete"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select รายการแจ้งที่มีการชำระหนี้เรียบร้อยตามเงื่อนไขการค้นหา
     public static string[,] ListReportNoticeRepayComplete(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 34);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 34),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 12];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -2900,27 +2484,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดรายการแจ้งที่มีการชำระหนี้เรียบร้อย
     public static string[,] ListDetailReportNoticeRepayComplete(string _cp1id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 34);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 34),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 16];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["BCID"].ToString();
@@ -2941,66 +2518,45 @@ public class eCPDB
             _data[_i, 15] = _dr["StatusPayment"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งที่มีการแจ้งชำระหนี้
     public static int CountCPReportNoticeClaimDebt(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 35);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 35),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportNoticeClaimDebt"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select รายการแจ้งที่มีการแจ้งชำระหนี้
     public static string[,] ListReportNoticeClaimDebt(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 35);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 35),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 12];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -3019,27 +2575,20 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับ Select รายละเอียดรายการแจ้งที่มีการแจ้งชำระหนี้
     public static string[,] ListDetailReportNoticeClaimDebt(string _cp1id)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 35);
-        if (!String.IsNullOrEmpty(_cp1id)) _cmd.Parameters.AddWithValue("@cp1id", _cp1id);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
-
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 35),
+            new SqlParameter("@cp1id", (!String.IsNullOrEmpty(_cp1id) ? _cp1id : null))
+        );
+        
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 27];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {            
             _data[_i, 0] = _dr["BCID"].ToString();
@@ -3071,72 +2620,51 @@ public class eCPDB
             _data[_i, 26] = _dr["StatusPayment"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนรายการแจ้งที่มีการชำระหนี้ตามช่วงวันที่
     public static int CountCPReportStatisticPaymentByDate(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 41);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["formatpayment"])) _cmd.Parameters.AddWithValue("@formatpayment", _c.Request["formatpayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 41),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@formatpayment", (!String.IsNullOrEmpty(_c.Request["formatpayment"]) ? _c.Request["formatpayment"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStatisticPaymentByDate"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select รายการแจ้งที่มีการชำระหนี้ตามช่วงวันที่
     public static string[,] ListReportStatisticPaymentByDate(HttpContext _c)
     {
         int _i = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 41);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["formatpayment"])) _cmd.Parameters.AddWithValue("@formatpayment", _c.Request["formatpayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 41),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@formatpayment", (!String.IsNullOrEmpty(_c.Request["formatpayment"]) ? _c.Request["formatpayment"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 14];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -3157,45 +2685,29 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
-    //สำหรับนับจำนวนนักศึกษาที่จัดทำสัญญาตามเงื่อนไขการค้นหา
     public static int CountCPReportEContract(HttpContext _c)
     {
         int _recordCount = 0;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 42);
-        if (!String.IsNullOrEmpty(_c.Request["acadamicyear"])) _cmd.Parameters.AddWithValue("@acadamicyear", _c.Request["acadamicyear"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 42),
+            new SqlParameter("@acadamicyear", (!String.IsNullOrEmpty(_c.Request["acadamicyear"]) ? _c.Request["acadamicyear"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportEContract"].ToString());
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _recordCount;
     }
 
-    //สำหรับ Select นักศึกษาที่จัดทำสัญญาตามเงื่อนไขการค้นหา
     public static string[,] ListCPReportEContract(HttpContext _c)
     {
         int _i = 0;
@@ -3205,25 +2717,20 @@ public class eCPDB
         string _yearFolder = String.Empty;
         string _fileDocA, _fileDocB, _fileDocC = String.Empty;
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 42);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["acadamicyear"])) _cmd.Parameters.AddWithValue("@acadamicyear", _c.Request["acadamicyear"]);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 42),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@acadamicyear", (!String.IsNullOrEmpty(_c.Request["acadamicyear"]) ? _c.Request["acadamicyear"] : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 15];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -3279,47 +2786,36 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
     public static int CountCPReportDebtorContract(HttpContext _c)
     {
-    int _recordCount = 0;
-    int _orderTable = 0;
+        int _recordCount = 0;
+        int _orderTable = 0;
 
-    switch (_c.Request["reportorder"])
-    {
-        case "reportdebtorcontract":
-            _orderTable = 43;
-            break;
-        case "reportdebtorcontractpaid":
-            _orderTable = 45;
-            break;
-        case "reportdebtorcontractremain":
-            _orderTable = 47;
-            break;
-    }
+        switch (_c.Request["reportorder"])
+        {
+            case "reportdebtorcontract":
+                _orderTable = 43;
+                break;
+            case "reportdebtorcontractpaid":
+                _orderTable = 45;
+                break;
+            case "reportdebtorcontractremain":
+                _orderTable = 47;
+                break;
+        }
 
-    SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-    _cmd.Parameters.AddWithValue("@ordertable", _orderTable);
-    if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-    if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", _orderTable),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
-    SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-    DataSet _ds = new DataSet();
-    _da.Fill(_ds);
+        _recordCount = _ds.Tables[0].Rows.Count;
 
-    _recordCount = _ds.Tables[0].Rows.Count;
-
-    _ds.Dispose();
-    _da.Dispose();
-    DisConnectDB();
-
-    return _recordCount;
+        return _recordCount;
     }
 
     public static string[,] ListCPReportDebtorContract(HttpContext _c)
@@ -3341,16 +2837,14 @@ public class eCPDB
                 break;
         }
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", _orderTable);
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", _orderTable),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 14];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -3374,10 +2868,6 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
@@ -3399,30 +2889,20 @@ public class eCPDB
                 break;
         }
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", _orderTable);
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["formatpayment"])) _cmd.Parameters.AddWithValue("@formatpayment", _c.Request["formatpayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
-
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", _orderTable),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@formatpayment", (!String.IsNullOrEmpty(_c.Request["formatpayment"]) ? _c.Request["formatpayment"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
+        
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportDebtorContractByProgram"].ToString());
-
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
 
         return _recordCount;
     }
@@ -3446,27 +2926,22 @@ public class eCPDB
                 break;
         }
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", _orderTable);
-        _cmd.Parameters.AddWithValue("@startrow", (!String.IsNullOrEmpty(_c.Request["startrow"]) ? int.Parse(_c.Request["startrow"]) : 1));
-        _cmd.Parameters.AddWithValue("@endrow", (!String.IsNullOrEmpty(_c.Request["endrow"]) ? int.Parse(_c.Request["endrow"]) : eCPUtil.ROW_PER_PAGE));
-        if (!String.IsNullOrEmpty(_c.Request["studentid"])) _cmd.Parameters.AddWithValue("@studentid", _c.Request["studentid"]);
-        if (!String.IsNullOrEmpty(_c.Request["faculty"])) _cmd.Parameters.AddWithValue("@faculty", _c.Request["faculty"]);
-        if (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _c.Request["programcode"]);
-            _cmd.Parameters.AddWithValue("@major", _c.Request["majorcode"]);
-            _cmd.Parameters.AddWithValue("@groupnum", _c.Request["groupnum"]);
-        }
-        if (!String.IsNullOrEmpty(_c.Request["formatpayment"])) _cmd.Parameters.AddWithValue("@formatpayment", _c.Request["formatpayment"]);
-        if (!String.IsNullOrEmpty(_c.Request["datestart"])) _cmd.Parameters.AddWithValue("@datestart", _c.Request["datestart"]);
-        if (!String.IsNullOrEmpty(_c.Request["dateend"])) _cmd.Parameters.AddWithValue("@dateend", _c.Request["dateend"]);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", _orderTable),
+            new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
+            new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
+            new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
+            new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
+            new SqlParameter("@major", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["majorcode"] : null)),
+            new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null)),
+            new SqlParameter("@formatpayment", (!String.IsNullOrEmpty(_c.Request["formatpayment"]) ? _c.Request["formatpayment"] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_c.Request["datestart"]) ? _c.Request["datestart"] : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_c.Request["dateend"]) ? _c.Request["dateend"] : null))
+        );
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 23];
+
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
             _data[_i, 0] = _dr["RowNum"].ToString();
@@ -3499,10 +2974,6 @@ public class eCPDB
             _i++;
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
@@ -3522,25 +2993,20 @@ public class eCPDB
         string[] _program = (!String.IsNullOrEmpty(_exportSendValue[4]) ? _exportSendValue[4].Split(_separator) : new string[0]);
         string[] _formatPayment = (!String.IsNullOrEmpty(_exportSendValue[5]) ? _exportSendValue[5].Split(_separator) : new string[0]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 49);
-        if (!String.IsNullOrEmpty(_idName)) _cmd.Parameters.AddWithValue("@studentid", _idName);
-        if (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0])) _cmd.Parameters.AddWithValue("@faculty", _faculty[0]);
-        if (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _program[0]);
-            _cmd.Parameters.AddWithValue("@major", _program[2]);
-            _cmd.Parameters.AddWithValue("@groupnum", _program[3]);
-        }
-        if (_formatPayment.GetLength(0) > 0 && !String.IsNullOrEmpty(_formatPayment[0])) _cmd.Parameters.AddWithValue("@formatpayment", _formatPayment[0]);
-        if (!String.IsNullOrEmpty(_dateStart)) _cmd.Parameters.AddWithValue("@datestart", _dateStart);
-        if (!String.IsNullOrEmpty(_dateEnd)) _cmd.Parameters.AddWithValue("@dateend", _dateEnd);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 49),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_idName) ? _idName : null)),
+            new SqlParameter("@faculty", (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0]) ? _faculty[0] : null)),
+            new SqlParameter("@program", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[0] : null)),
+            new SqlParameter("@major", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[2] : null)),
+            new SqlParameter("@groupnum", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[3] : null)),
+            new SqlParameter("@formatpayment", (_formatPayment.GetLength(0) > 0 && !String.IsNullOrEmpty(_formatPayment[0]) ? _formatPayment[0] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_dateStart) ? _dateStart : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : null))
+        );
 
         string[,] _data = new string[(_ds.Tables[0].Rows.Count + 1), 29];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["StudentID"].ToString();
@@ -3580,10 +3046,6 @@ public class eCPDB
             _data[_i, 28] = _dr["TotalPenalty"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
@@ -3602,26 +3064,21 @@ public class eCPDB
         string[] _faculty = (!String.IsNullOrEmpty(_exportSendValue[3]) ? _exportSendValue[3].Split(_separator) : new string[0]);
         string[] _program = (!String.IsNullOrEmpty(_exportSendValue[4]) ? _exportSendValue[4].Split(_separator) : new string[0]);
         string[] _formatPayment = (!String.IsNullOrEmpty(_exportSendValue[5]) ? _exportSendValue[5].Split(_separator) : new string[0]);
-        
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 50);
-        if (!String.IsNullOrEmpty(_idName)) _cmd.Parameters.AddWithValue("@studentid", _idName);
-        if (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0])) _cmd.Parameters.AddWithValue("@faculty", _faculty[0]);
-        if (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _program[0]);
-            _cmd.Parameters.AddWithValue("@major", _program[2]);
-            _cmd.Parameters.AddWithValue("@groupnum", _program[3]);
-        }
-        if (_formatPayment.GetLength(0) > 0 && !String.IsNullOrEmpty(_formatPayment[0])) _cmd.Parameters.AddWithValue("@formatpayment", _formatPayment[0]);
-        if (!String.IsNullOrEmpty(_dateStart)) _cmd.Parameters.AddWithValue("@datestart", _dateStart);
-        if (!String.IsNullOrEmpty(_dateEnd)) _cmd.Parameters.AddWithValue("@dateend", _dateEnd);
 
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 50),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_idName) ? _idName : null)),
+            new SqlParameter("@faculty", (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0]) ? _faculty[0] : null)),
+            new SqlParameter("@program", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[0] : null)),
+            new SqlParameter("@major", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[2] : null)),
+            new SqlParameter("@groupnum", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[3] : null)),
+            new SqlParameter("@formatpayment", (_formatPayment.GetLength(0) > 0 && !String.IsNullOrEmpty(_formatPayment[0]) ? _formatPayment[0] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_dateStart) ? _dateStart : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : null))
+        );
 
         string[,] _data = new string[(_ds.Tables[0].Rows.Count + 1), 46];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["StudentID"].ToString();
@@ -3678,10 +3135,6 @@ public class eCPDB
             _data[_i, 45] = _dr["TotalRemain"].ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
 
@@ -3705,25 +3158,20 @@ public class eCPDB
         string[] _program = (!String.IsNullOrEmpty(_exportSendValue[4]) ? _exportSendValue[4].Split(_separator) : new string[0]);
         string[] _formatPayment = (!String.IsNullOrEmpty(_exportSendValue[5]) ? _exportSendValue[5].Split(_separator) : new string[0]);
 
-        SqlCommand _cmd = ConnectStoreProc(STORE_PROC);
-        _cmd.Parameters.AddWithValue("@ordertable", 51);
-        if (!String.IsNullOrEmpty(_idName)) _cmd.Parameters.AddWithValue("@studentid", _idName);
-        if (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0])) _cmd.Parameters.AddWithValue("@faculty", _faculty[0]);
-        if (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]))
-        {
-            _cmd.Parameters.AddWithValue("@program", _program[0]);
-            _cmd.Parameters.AddWithValue("@major", _program[2]);
-            _cmd.Parameters.AddWithValue("@groupnum", _program[3]);
-        }
-        if (_formatPayment.GetLength(0) > 0 && !String.IsNullOrEmpty(_formatPayment[0])) _cmd.Parameters.AddWithValue("@formatpayment", _formatPayment[0]);
-        if (!String.IsNullOrEmpty(_dateStart)) _cmd.Parameters.AddWithValue("@datestart", _dateStart);
-        if (!String.IsNullOrEmpty(_dateEnd)) _cmd.Parameters.AddWithValue("@dateend", _dateEnd);
-
-        SqlDataAdapter _da = new SqlDataAdapter(_cmd);
-        DataSet _ds = new DataSet();
-        _da.Fill(_ds);
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 51),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_idName) ? _idName : null)),
+            new SqlParameter("@faculty", (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0]) ? _faculty[0] : null)),
+            new SqlParameter("@program", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[0] : null)),
+            new SqlParameter("@major", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[2] : null)),
+            new SqlParameter("@groupnum", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[3] : null)),
+            new SqlParameter("@formatpayment", (_formatPayment.GetLength(0) > 0 && !String.IsNullOrEmpty(_formatPayment[0]) ? _formatPayment[0] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_dateStart) ? _dateStart : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : null))
+        );
 
         string[,] _data = new string[(_ds.Tables[0].Rows.Count + 1), 37];
+
         foreach (DataRow _dr in _ds.Tables[0].Rows)
         {
             _data[_i, 0] = _dr["StudentID"].ToString();
@@ -3776,14 +3224,9 @@ public class eCPDB
             _data[_i, 36] = _totalTotalRemain.ToString();
         }
 
-        _ds.Dispose();
-        _da.Dispose();
-        DisConnectDB();
-
         return _data;
     }
-
-    //สำหรับ Insert และ Update ข้อมูล
+    
     public static void AddUpdateData(HttpContext _c)
     {
         string _command = String.Empty;

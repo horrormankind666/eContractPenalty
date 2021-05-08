@@ -1,14 +1,15 @@
-﻿//eCPDataUser.cs      : สำหรับจัดการบัญชีผู้ใช้งาน
-//Date Created        : ๒๘/๐๑/๒๕๕๖
-//Last Date Modified  : ๑๐/๐๔/๒๕๖๔
-//Create By           : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับจัดการบัญชีผู้ใช้งาน
+Date Created        : ๒๘/๐๑/๒๕๕๖
+Last Date Modified  : ๑๐/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
 
 public class eCPDataUser
 {
-    //สำหรับแสดงฟอร์มเพิ่มและแก้ไขบัญชีผู้ใช้งาน
     public static string AddUpdateCPTabUser(string _action, string[,] _data)
     {
         string _html = String.Empty;
@@ -88,7 +89,6 @@ public class eCPDataUser
         return _html;
     }
     
-    //สำหรับตรวจสอบการเพิ่มบัญชีผู้ใช้งาน
     public static string AddCPTabuser()
     {
         string _html = String.Empty;
@@ -99,20 +99,19 @@ public class eCPDataUser
         return _html;
     }
 
-    //สำหรับตรวจสอบการแก้ไขบัญชีผู้ใช้งาน
     public static string UpdateCPTabUser(string _username, string _password)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTabUser(_username, _password, "User");
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTabUser("update", _data);
 
         return _html;
     }
-
-    //สำหรับแสดงบัญชีผู้ใช้งาน
+    
     public static string ListCPTabUser(HttpContext _c)
     {
         string _html = String.Empty;
@@ -163,7 +162,6 @@ public class eCPDataUser
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
     
-    //สำหรับแสดงหน้าหลักบัญชีผู้ใช้งาน
     public static string TabCPTabUser()
     {
         string _html = String.Empty;

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Web.UI;
 
-public partial class Signin : System.Web.UI.Page
+public partial class Signin : Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {

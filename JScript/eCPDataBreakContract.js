@@ -111,12 +111,41 @@ function ViewStudentInTransBreakContract() {
     var _msg;
     var _focus;
 
-    if (_error == false && ($("#profile-student-id").val().length == 0)) { _error = true; _msg = "กรุณาใส่รหัสนักศึกษา"; _focus = "#profile-student-id"; }
-    if (_error == false && ComboboxGetSelectedValue("titlename") == "0") { _error = true; _msg = "กรุณาเลือกคำนำหน้าชื่อ"; _focus = ".titlename-combobox-input" }
-    if (_error == false && ($("#profile-student-firstname").val().length == 0)) { _error = true; _msg = "กรุณาใส่ชื่อ"; _focus = "#profile-student-firstname"; }
-    if (_error == false && ($("#profile-student-lastname").val().length == 0)) { _error = true; _msg = "กรุณาใส่นามสกุล"; _focus = "#profile-student-lastname"; }
-    if (_error == false && ComboboxGetSelectedValue("facultyprofilestudent") == "0") { _error = true; _msg = "กรุณาเลือกคณะ"; _focus = ".facultyprofilestudent-combobox-input" }
-    if (_error == false && ComboboxGetSelectedValue("programprofilestudent") == "0") { _error = true; _msg = "กรุณาเลือกหลักสูตร"; _focus = ".programprofilestudent-combobox-input" }
+    if (_error == false && ($("#profile-student-id").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่รหัสนักศึกษา";
+        _focus = "#profile-student-id";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("titlename") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกคำนำหน้าชื่อ";
+        _focus = ".titlename-combobox-input";
+    }
+
+    if (_error == false && ($("#profile-student-firstname").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่ชื่อ";
+        _focus = "#profile-student-firstname";
+    }
+
+    if (_error == false && ($("#profile-student-lastname").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่นามสกุล";
+        _focus = "#profile-student-lastname";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("facultyprofilestudent") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกคณะ";
+        _focus = ".facultyprofilestudent-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("programprofilestudent") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกหลักสูตร";
+        _focus = ".programprofilestudent-combobox-input";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -222,11 +251,14 @@ function ResetFrmCPTransBreakContract(_disable) {
 
     $(".calendar").change(function () {
         if ($(this).attr("id") == "education-date-start") {
-            if (ComboboxGetSelectedValue("case-graduate-break-contract") == "1") $("#contract-force-date-start").val($("#education-date-start").val());
+            if (ComboboxGetSelectedValue("case-graduate-break-contract") == "1")
+                $("#contract-force-date-start").val($("#education-date-start").val());
         }
 
         if ($(this).attr("id") == "education-date-end") {
-            if (ComboboxGetSelectedValue("case-graduate-break-contract") == "1") $("#contract-force-date-end").val($("#education-date-end").val());
+            if (ComboboxGetSelectedValue("case-graduate-break-contract") == "1")
+                $("#contract-force-date-end").val($("#education-date-end").val());
+
             if (ComboboxGetSelectedValue("case-graduate-break-contract") == "2") {
                 var _contractForceDateStart = $("#education-date-end").datepicker("getDate", "+1d");
                 _contractForceDateStart.setDate(_contractForceDateStart.getDate() + 1);
@@ -395,27 +427,131 @@ function ValidateCPTransBreakContract(_action) {
     var _msg;
     var _focus;
     
-    if (_error == false && ($("#profile-student-id-hidden").val().length == 0)) { _error = true; _msg = "กรุณาใส่ข้อมูลนักศึกษา"; _focus = "#add-student"; }
-    if (_error == false && (($("#pursuant-book").val().length == 0) || ($("#pursuant").val().length == 0) || ($("#pursuant-book-date").val().length == 0) || ($("#location").val().length == 0) || ($("#input-date").val().length == 0) || ($("#state-location").val().length == 0) || ($("#state-location-date").val().length == 0))) { _error = true; _msg = "กรุณาใส่รายละเอียดการรับเรื่องจากหน่วยงานชั้นต้นให้ครบถ้วน"; _focus = "#pursuant-book"; }
-    if (_error == false && ($("#contract-date").val().length == 0)) { _error = true; _msg = "กรุณาใส่วันที่ของสัญญานักศึกษา"; _focus = "#contract-date"; }
-    if (_error == false && ($("#contract-date-agreement").val().length == 0)) { _error = true; _msg = "กรุณาใส่วันที่ของสัญญาค้ำประกัน"; _focus = "#contract-date-agreement"; }
-    if (_error == false && ($("#guarantor").val().length == 0)) { _error = true; _msg = "กรุณาใส่ผู้ค้ำประกัน"; _focus = "#guarantor"; }
-    if (_error == false && ComboboxGetSelectedValue("scholar") == "0") { _error = true; _msg = "กรุณาเลือกสถานะการได้รับทุนการศึกษา"; _focus = ".scholar-combobox-input" }
-    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-money").val().length == 0) || ($("#scholarship-money").val() == "0")))) { _error = true; _msg = "กรุณาใส่จำนวนเงินทุนการศึกษา"; _focus = "#scholarship-money" }
-    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val().length == 0) && ($("#scholarship-month").val().length == 0)))) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน"; _focus = "#scholarship-year" }
-    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val() == "0") && ($("#scholarship-month").val() == "0")))) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน"; _focus = "#scholarship-year" }
-    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val() == "0") && ($("#scholarship-month").val().length == 0)))) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน"; _focus = "#scholarship-year" }
-    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val().length == 0) && ($("#scholarship-month").val() == "0")))) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน"; _focus = "#scholarship-year" }
-    if (_error == false && ComboboxGetSelectedValue("case-graduate-break-contract") == "0") { _error = true; _msg = "กรุณาเลือกสถานะการสำเร็จการศึกษา"; _focus = ".case-graduate-break-contract-combobox-input"; }
-    if (_error == false && (($("#education-date-start").val().length == 0) || ($("#education-date-end").val().length == 0))) { _error = true; _msg = "กรุณาใส่วันที่เริ่มต้นเข้าศึกษาและวันที่สำเร็จการศึกษา หรือวันที่พ้นสภาพนักศึกษาให้ครบถ้วน"; _focus = "#education-date-start"; }
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "2") && (ComboboxGetSelectedValue("civil") == "0"))) { _error = true; _msg = "กรุณาเลือกสถานะการปฏิบัติงานชดใช้"; _focus = ".civil-combobox-input"; }
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (($("#contract-force-date-start").val().length == 0) || ($("#contract-force-date-end").val().length == 0)))) { _error = true; _msg = "กรุณาใส่วันที่สัญญามีผลบังคับใช้ให้ครบถ้วน"; _focus = "#contract-force-date-start"; }
-    if (_error == false && (DateDiff(GetDateObject($("#education-date-start").val()), GetDateObject($("#contract-force-date-start").val()), "days") < 0)) { _error = true; _msg = "กรุณาใส่วันที่สัญญาเริ่มมีผลบังคับใช้ให้มากกว่าหรือเท่ากับวันที่เริ่มเข้าศึกษา"; _focus = "#contract-force-date-start"; }
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (DateDiff(GetDateObject($("#education-date-end").val()), GetDateObject($("#contract-force-date-start").val()), "days") >= 0))) { _error = true; _msg = "กรุณาใส่วันที่สัญญาเริ่มมีผลบังคับใช้ให้น้อยกว่าวันที่พ้นสภาพนักศึกษา"; _focus = "#contract-force-date-start"; }
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (DateDiff(GetDateObject($("#education-date-start").val()), GetDateObject($("#contract-force-date-end").val()), "days") < 0))) { _error = true; _msg = "กรุณาใส่วันที่สัญญาสิ้นสุดมีผลบังคับใช้ให้มากกว่าหรือเท่ากับวันที่เริ่มเข้าศึกษา"; _focus = "#contract-force-date-end"; }
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "2") && ($("#contract-force-date-start").val().length == 0))) { _error = true; _msg = "กรุณาใส่วันที่สัญญามีผลบังคับใช้ให้ครบถ้วน"; _focus = "#contract-force-date-start"; }    
-    if (_error == false && (($("#set-amt-indemnitor-year").val() == "Y") && (($("#indemnitor-year").val().length == 0) || ($("#indemnitor-cash").val().length == 0)))) { _error = true; _msg = "กรุณาใส่เวลาที่ทำงานชดใช้และจำนวนเงินที่ชดใช้"; _focus = "#indemnitor-year"; }
-    if (_error == false && ($("#indemnitor-cash").val().length == 0)) { _error = true; _msg = "กรุณาใส่จำนวนเงินที่ชดใช้"; _focus = "#indemnitor-cash"; }
+    if (_error == false && ($("#profile-student-id-hidden").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่ข้อมูลนักศึกษา";
+        _focus = "#add-student";
+    }
+
+    if (_error == false && (($("#pursuant-book").val().length == 0) || ($("#pursuant").val().length == 0) || ($("#pursuant-book-date").val().length == 0) || ($("#location").val().length == 0) || ($("#input-date").val().length == 0) || ($("#state-location").val().length == 0) || ($("#state-location-date").val().length == 0))) {
+        _error = true;
+        _msg = "กรุณาใส่รายละเอียดการรับเรื่องจากหน่วยงานชั้นต้นให้ครบถ้วน";
+        _focus = "#pursuant-book";
+    }
+
+    if (_error == false && ($("#contract-date").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่ของสัญญานักศึกษา";
+        _focus = "#contract-date";
+    }
+
+    if (_error == false && ($("#contract-date-agreement").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่ของสัญญาค้ำประกัน";
+        _focus = "#contract-date-agreement";
+    }
+
+    if (_error == false && ($("#guarantor").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่ผู้ค้ำประกัน";
+        _focus = "#guarantor";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("scholar") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกสถานะการได้รับทุนการศึกษา";
+        _focus = ".scholar-combobox-input";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-money").val().length == 0) || ($("#scholarship-money").val() == "0")))) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินทุนการศึกษา";
+        _focus = "#scholarship-money";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val().length == 0) && ($("#scholarship-month").val().length == 0)))) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน";
+        _focus = "#scholarship-year";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val() == "0") && ($("#scholarship-month").val() == "0")))) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน";
+        _focus = "#scholarship-year";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val() == "0") && ($("#scholarship-month").val().length == 0)))) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน";
+        _focus = "#scholarship-year";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("scholar") == "1") && (($("#scholarship-year").val().length == 0) && ($("#scholarship-month").val() == "0")))) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาที่ได้รับทุน";
+        _focus = "#scholarship-year";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("case-graduate-break-contract") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกสถานะการสำเร็จการศึกษา";
+        _focus = ".case-graduate-break-contract-combobox-input";
+    }
+
+    if (_error == false && (($("#education-date-start").val().length == 0) || ($("#education-date-end").val().length == 0))) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่เริ่มต้นเข้าศึกษาและวันที่สำเร็จการศึกษา หรือวันที่พ้นสภาพนักศึกษาให้ครบถ้วน";
+        _focus = "#education-date-start";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "2") && (ComboboxGetSelectedValue("civil") == "0"))) {
+        _error = true;
+        _msg = "กรุณาเลือกสถานะการปฏิบัติงานชดใช้";
+        _focus = ".civil-combobox-input";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (($("#contract-force-date-start").val().length == 0) || ($("#contract-force-date-end").val().length == 0)))) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่สัญญามีผลบังคับใช้ให้ครบถ้วน";
+        _focus = "#contract-force-date-start";
+    }
+
+    if (_error == false && (DateDiff(GetDateObject($("#education-date-start").val()), GetDateObject($("#contract-force-date-start").val()), "days") < 0)) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่สัญญาเริ่มมีผลบังคับใช้ให้มากกว่าหรือเท่ากับวันที่เริ่มเข้าศึกษา";
+        _focus = "#contract-force-date-start";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (DateDiff(GetDateObject($("#education-date-end").val()), GetDateObject($("#contract-force-date-start").val()), "days") >= 0))) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่สัญญาเริ่มมีผลบังคับใช้ให้น้อยกว่าวันที่พ้นสภาพนักศึกษา";
+        _focus = "#contract-force-date-start";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "1") && (DateDiff(GetDateObject($("#education-date-start").val()), GetDateObject($("#contract-force-date-end").val()), "days") < 0))) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่สัญญาสิ้นสุดมีผลบังคับใช้ให้มากกว่าหรือเท่ากับวันที่เริ่มเข้าศึกษา";
+        _focus = "#contract-force-date-end";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("case-graduate-break-contract") == "2") && ($("#contract-force-date-start").val().length == 0))) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่สัญญามีผลบังคับใช้ให้ครบถ้วน";
+        _focus = "#contract-force-date-start";
+    }
+    
+    if (_error == false && (($("#set-amt-indemnitor-year").val() == "Y") && (($("#indemnitor-year").val().length == 0) || ($("#indemnitor-cash").val().length == 0)))) {
+        _error = true;
+        _msg = "กรุณาใส่เวลาที่ทำงานชดใช้และจำนวนเงินที่ชดใช้";
+        _focus = "#indemnitor-year";
+    }
+
+    if (_error == false && ($("#indemnitor-cash").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินที่ชดใช้";
+        _focus = "#indemnitor-cash";
+    }
     
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -514,12 +650,23 @@ function ViewTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, _acti
         if (_result == "0") {
             var _frmIndex = $("#dialog-form1").is(":visible") == false ? 1 : 2;
 
-            if (_action == "v1") LoadForm(_frmIndex, "detailcptransbreakcontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
-            if (_action == "e1") OpenTab("link-tab3-cp-trans-break-contract", "#tab3-cp-trans-break-contract", "ปรับปรุงรายการแจ้ง", false, "update", _cp1id, _trackingStatus);
-            if (_action == "e2") ViewRepayStatusViewTransRequireContract(_cp1id, "", _trackingStatus, "e");
-            if (_action == "v2") LoadForm(_frmIndex, "detailcptransrequirecontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
-            if (_action == "a1") LoadForm(_frmIndex, "receivercptransbreakcontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
-            if (_action == "v3") LoadForm(_frmIndex, "detailcptransrequirerepaycontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
+            if (_action == "v1")
+                LoadForm(_frmIndex, "detailcptransbreakcontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
+
+            if (_action == "e1")
+                OpenTab("link-tab3-cp-trans-break-contract", "#tab3-cp-trans-break-contract", "ปรับปรุงรายการแจ้ง", false, "update", _cp1id, _trackingStatus);
+
+            if (_action == "e2")
+                ViewRepayStatusViewTransRequireContract(_cp1id, "", _trackingStatus, "e");
+
+            if (_action == "v2")
+                LoadForm(_frmIndex, "detailcptransrequirecontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
+
+            if (_action == "a1")
+                LoadForm(_frmIndex, "receivercptransbreakcontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
+
+            if (_action == "v3")
+                LoadForm(_frmIndex, "detailcptransrequirerepaycontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
         }
     });
 }
@@ -530,8 +677,17 @@ function ValidateCommentBreakContract(_cp1id, _action, _from) {
     var _focus;
     var _comment = $("#comment-reject").val();
 
-    if (_error == false && _action == "E" && (_comment.length <= 0)) { _error = true; _msg = "กรุณาใส่สาเหตุการส่งรายการแจ้งกลับไปแก้ไข"; _focus = "#comment-reject"; }
-    if (_error == false && _action == "C" && (_comment.length <= 0)) { _error = true; _msg = "กรุณาใส่สาเหตุการยกเลิกรายการ"; _focus = "#comment-reject"; }
+    if (_error == false && _action == "E" && (_comment.length <= 0)) {
+        _error = true;
+        _msg = "กรุณาใส่สาเหตุการส่งรายการแจ้งกลับไปแก้ไข";
+        _focus = "#comment-reject";
+    }
+
+    if (_error == false && _action == "C" && (_comment.length <= 0)) {
+        _error = true;
+        _msg = "กรุณาใส่สาเหตุการยกเลิกรายการ";
+        _focus = "#comment-reject";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -637,6 +793,7 @@ function UpdateTrackingStatus(_cp1id, _status, _from) {
                 }
 
                 if (_status == "edit") OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
+
                 if (_status == "cancel") {
                     switch (_from) {
                         case "breakcontract":

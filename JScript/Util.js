@@ -30,8 +30,15 @@ function LoadAjax(_param, _url, _method, _loading, _close, _callbackFunc) {
         var _error = false;
         var _msg;
 
-        if (_error == false && _dataErrorBrowser[1] == "1") { _error = true; _msg = "ไม่สนับสนุน IE6, IE7 และ IE8"; }
-        if (_error == false && _dataErrorBrowser[1] == "2") { _error = true; _msg = "ไม่ได้เปิดใช้งาน Cookies"; }
+        if (_error == false && _dataErrorBrowser[1] == "1") {
+            _error = true;
+            _msg = "ไม่สนับสนุน IE6, IE7 และ IE8";
+        }
+
+        if (_error == false && _dataErrorBrowser[1] == "2") {
+            _error = true;
+            _msg = "ไม่ได้เปิดใช้งาน Cookies";
+        }
 
         if (_error == true) {
             DialogMessage(_msg, "", false, "");
@@ -89,6 +96,7 @@ function IsEnglishCharacter(_strString) {
 
     for (_i = 0; _i < _strString.length && _blnResult == true; _i++) {
         _strChar = _strString.charAt(_i);
+
         if (_strValidChars.indexOf(_strChar) == -1) {
             _blnResult = false;
         }
@@ -107,6 +115,7 @@ function IsNumeric(_strString) {
 
     for (_i = 0; _i < _strString.length && _blnResult == true; _i++) {
         _strChar = _strString.charAt(_i);
+
         if (_strValidChars.indexOf(_strChar) == -1) {
             _blnResult = false;
         }
@@ -127,6 +136,7 @@ function EmailCheck(_emailStr) {
     var _domainPat = new RegExp("^" + _atom + "(\\." + _atom + ")*$");
 
     var _matchArray = _emailStr.match(_emailPat);
+
     if (_matchArray == null) {
         return false;
     }
@@ -139,6 +149,7 @@ function EmailCheck(_emailStr) {
     }
 
     var _ipArray = _domain.match(_ipDomainPat);
+
     if (_ipArray != null) {
         for (var _i = 1; _i <= 4; _i++) {
             if (_ipArray[i] > 255) {
@@ -150,6 +161,8 @@ function EmailCheck(_emailStr) {
     }
 
     var _domainArray = _domain.match(_domainPat);
+
+
     if (_domainArray == null) {
         return false;
     }
@@ -157,6 +170,7 @@ function EmailCheck(_emailStr) {
     var _atomPat = new RegExp(_atom, "g");
     var _domArr = _domain.match(_atomPat);
     var _len = _domArr.length;
+
     if (_domArr[_domArr.length - 1].length < 2 || _domArr[_domArr.length - 1].length > 3) {
         return false;
     }
@@ -181,9 +195,11 @@ function DaysInFebruary(_year) {
 function DaysArray(_n) {
     for (var _i = 1; _i <= _n; _i++) {
         this[_i] = 31;
+
         if (_i == 4 || _i == 6 || _i == 9 || _i == 11) {
             this[_i] = 30;
         }
+
         if (_i == 2) {
             this[_i] = 29;
         }
@@ -199,13 +215,15 @@ function IsDate(_day, _month, _year) {
     if (_date != "00-00-0000") {
         if (_day == "00")
             return false;
+
         if (_month == "00")
             return false;
+
         if (_year == "0000")
             return false;
-        if (((parseInt(_month) == 2) && (_day > DaysInFebruary(_year))) || (_day > _daysInMonth[parseInt(_month)])) {
+
+        if (((parseInt(_month) == 2) && (_day > DaysInFebruary(_year))) || (_day > _daysInMonth[parseInt(_month)]))
             return false;
-        }
     }
 
     return true;
@@ -264,6 +282,7 @@ function ReplaceText(_text, _textArea) {
                 _textArea.focus();
                 _textArea.setSelectionRange(_begin.length + _text.length, _begin.length + _text.length);
             }
+
             _textArea.scrollTop = _scrollPos;
         }
         else {
@@ -304,6 +323,7 @@ function SurroundText(_text1, _text2, _textArea) {
                     _textArea.setSelectionRange(_newCursorPos, _newCursorPos + _text1.length + _selection.length + _text2.length);
                 _textArea.focus();
             }
+
             _textArea.scrollTop = _scrollPos;
         }
         else {
@@ -322,7 +342,8 @@ function SelectToList(_objChoose, _objList) {
 
         if (_obj.length > 0) {
             for (_i = 0; _i < _obj.length; _i++) {
-            if (_choose == _obj.options[i].value) return;
+                if (_choose == _obj.options[i].value)
+                    return;
             }
         }
 
@@ -337,7 +358,8 @@ function ClearList(_obj, _mode) {
     var _objCombo = $("#" + _obj);
 
     if (_mode == 1) {
-        if (_objCombo.options.selectedIndex >= 0) _objCombo.options[_objCombo.options.selectedIndex] = null;
+        if (_objCombo.options.selectedIndex >= 0)
+            _objCombo.options[_objCombo.options.selectedIndex] = null;
     }
 
     if (_mode == 2) {
@@ -373,6 +395,7 @@ function CopyList(_objSource, _objDestination) {
     ClearList(_objDestination, 2);
 
     _objCombo = $("#" + _objSource);
+
     for (_i = 0; _i < _objCombo.length; _i++) {
         var _tmp = _objCombo.options[i].value;
         var _data = _tmp.split(";");
@@ -445,7 +468,10 @@ function InitCombobox(_id, _valueDefault, _valueNew, _widthInput, _widthList) {
     $(document).ready(function () {
         $("#" + _id).val(_valueDefault);
         $("#" + _id).combobox();
-        $("." + _id + "-combobox-input").css({ background: "#FFFFFF", width: _widthInput + "px" });
+        $("." + _id + "-combobox-input").css({
+            background: "#FFFFFF",
+            width: _widthInput + "px"
+        });
         $("." + _id + "-combobox-input").bind("autocompleteopen", function (event, ui) {
             $(".ui-autocomplete.ui-menu").width(_widthList + "px");
         });
@@ -603,22 +629,26 @@ function InitCalendarFromTo(_fromID, _fromFix, _toID, _toFix) {
                 dayNamesMin: ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."],
                 monthNames: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
                 monthNamesShort: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
-                beforeShow: function () {                    
-                    if ($(_fromID).val().length > 0) {                        
+                beforeShow: function () {
+                    if ($(_fromID).val().length > 0) {
                         $(_toID).datepicker("option", "minDate", $(_fromID).val());
                         $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
                     }
                 },
                 /*
                 onSelect: function (selectedDate) {
-                    if (_fromFix == false) {                        
+                    if (_fromFix == false) {
                         $(_fromID).datepicker("option", "maxDate", selectedDate);
                         $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
                     }
                 }
                 */
             });
-            $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
+            $("img.ui-datepicker-trigger").css({
+                "cursor": "pointer",
+                "vertical-align": "bottom",
+                "margin-left": "2px"
+            });
         }
     });
 }
@@ -630,14 +660,16 @@ function StickyRelocate() {
     _windowTop = _windowTop + 35;
 
     if (_windowTop >= _divTop) {
-        $("#sticky").addClass("stick");        
+        $("#sticky").addClass("stick");
     }
     else
         $("#sticky").removeClass("stick");
 }
 
 function RemoveSticky() {
-    if (($("#sticky-anchor").length > 0) && ($("#sticky").length > 0)) $("#sticky").removeClass("stick").next().css("padding-top", "0px");
+    if (($("#sticky-anchor").length > 0) && ($("#sticky").length > 0))
+        $("#sticky").removeClass("stick").next().css("padding-top", "0px");
+
     GoToElement("top-page");
 }    
 
@@ -647,6 +679,7 @@ function InitSticky() {
 
         $(document).ready(function () {
             var _aboveHeight = ($(".head").outerHeight() + $(".menu-bar-main").outerHeight() + $(".content-data-head").outerHeight()) + 10;
+
             $(window).scroll(function () {
                 if ($(window).scrollTop() > _aboveHeight) {
                     $("#sticky").addClass("stick").next().css("padding-top", $("#sticky").outerHeight() + "px");
@@ -680,21 +713,26 @@ function ExtractNumber(_obj, _decimalPlaces, _allowNegative) {
     
     var _reg1Str = "[^0-9" + (_decimalPlaces != 0 ? "." : "") + (_allowNegative ? "-" : "") + "]";
     var _reg1 = new RegExp(_reg1Str, "g");
+
     _temp = _temp.replace(_reg1, "");
 
     if (_allowNegative) {
         var _hasNegative = _temp.length > 0 && _temp.charAt(0) == "-";
         var _reg2 = /-/g;
+
         _temp = _temp.replace(_reg2, "");
         
-        if (_hasNegative) _temp = "-" + _temp;
+        if (_hasNegative)
+            _temp = "-" + _temp;
     }
 
     if (_decimalPlaces != 0) {
         var _reg3 = /\./g;
         var _reg3Array = _reg3.exec(_temp);
+
         if (_reg3Array != null) {
             var _reg3Right = _temp.substring(_reg3Array.index + _reg3Array[0].length);
+
             _reg3Right = _reg3Right.replace(_reg3, "");
             _reg3Right = _decimalPlaces > 0 ? _reg3Right.substring(0, _decimalPlaces) : _reg3Right;
             _temp = _temp.substring(0, _reg3Array.index) + "." + _reg3Right;
@@ -729,6 +767,7 @@ function BlockNonNumbers(_obj, _e, _allowDecimal, _allowNegative) {
         return true;
 
     _reg = /\d/;
+
     var _isFirstN = _allowNegative ? _keychar == "-" && _obj.value.indexOf("-") == -1 : false;
     var _isFirstD = _allowDecimal ? _keychar == "." && _obj.value.indexOf(".") == -1 : false;
 
@@ -745,8 +784,10 @@ function AddCommas(_obj, _decimalPlaces) {
 
     if (_x2.length > 0)
         _x1 = _x1.length == 0 ? "0" : _x1;
+
     if (parseInt(_x1) == 0)
         _x1 = "0";
+
     if (_x1.length > 0 && _decimalPlaces != null && _decimalPlaces != 0) {        
         if (_x2.length > 0) {
             if (_x[1].length < _decimalPlaces) {
@@ -906,6 +947,7 @@ function DialogMessage(_alertMsg, _focus, _closeFrm, _idActive) {
                     $("#dialog-form1").dialog("close");
             
                 $(_focus).focus();
+
                 if (_idActive.length > 0)
                     $("#" + _idActive).removeClass("active");
             }
@@ -928,8 +970,13 @@ function DialogConfirm(_confirmMsg) {
 
 function DialogForm(_frmIndex, _frm, _width, _height, _title, _idActive) {
     $("body").css("overflow", "hidden");
-    if (_frmIndex == 2) $(".dialog-overlay1").css("overflow-y", "hidden");
-    if (_frmIndex == 3) $(".dialog-overlay2").css("overflow-y", "hidden");
+
+    if (_frmIndex == 2)
+        $(".dialog-overlay1").css("overflow-y", "hidden");
+
+    if (_frmIndex == 3)
+        $(".dialog-overlay2").css("overflow-y", "hidden");
+
     $("#dialog-form" + _frmIndex).html(_frm);
     $("#dialog-form" + _frmIndex).dialog({
         dialogClass: "class-dialog-form class-dialog-form-" + _title,
@@ -948,7 +995,8 @@ function DialogForm(_frmIndex, _frm, _width, _height, _title, _idActive) {
             direction: "down",
             distance: 100,
             duration: 500
-        },*/
+        },
+        */
         open: function () {
             var _dialogObj = $("#dialog-form" + _frmIndex).closest("div[role='dialog']");
             var _dialogOverlay = ("dialog-overlay" + _frmIndex);
@@ -974,9 +1022,14 @@ function DialogForm(_frmIndex, _frm, _width, _height, _title, _idActive) {
             $(".combobox-input").autocomplete("close");
             $(".dialog-overlay" + _frmIndex).remove();
             
-            if (_frmIndex == 1) $("body").css("overflow", "auto");
-            if (_frmIndex == 2) $(".dialog-overlay1").css("overflow-y", "auto");
-            if (_frmIndex == 3) $(".dialog-overlay2").css("overflow-y", "auto");
+            if (_frmIndex == 1)
+                $("body").css("overflow", "auto");
+
+            if (_frmIndex == 2)
+                $(".dialog-overlay1").css("overflow-y", "auto");
+
+            if (_frmIndex == 3)
+                $(".dialog-overlay2").css("overflow-y", "auto");
         }
     });      
 }

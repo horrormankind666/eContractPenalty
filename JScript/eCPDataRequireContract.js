@@ -23,8 +23,11 @@ function ResetFrmStudyLeaveYesNo() {
     CalendarDisable("#study-leave-yesno #study-leave-status-yes .calendar");
     CalendarDisable("#study-leave-yesno #study-leave-status-no .calendar");
 
-    if (_studyLeaveYesNo == "Y") CalendarEnable("#study-leave-yesno #study-leave-status-yes .calendar");
-    if (_studyLeaveYesNo == "N") CalendarEnable("#study-leave-yesno #study-leave-status-no .calendar");
+    if (_studyLeaveYesNo == "Y")
+        CalendarEnable("#study-leave-yesno #study-leave-status-yes .calendar");
+
+    if (_studyLeaveYesNo == "N")
+        CalendarEnable("#study-leave-yesno #study-leave-status-no .calendar");
 
     $("#all-actual-date").val("");
     $("#actual-date").val("");
@@ -103,7 +106,10 @@ function ResetFrmCPTransRequireContract(_disable) {
     if ($("#case-graduate-break-contract-hidden").val() == "1") {
         TextboxDisable("#indemnitor-year");       
         $("#all-actual-month-scholarship").val($("#all-actual-month-scholarship-hidden").val());
-        if ($("#scholar-hidden").val() == "2") TextboxDisable("#all-actual-month-scholarship");
+
+        if ($("#scholar-hidden").val() == "2")
+            TextboxDisable("#all-actual-month-scholarship");
+
         $("#all-actual-scholarship").val($("#all-actual-scholarship-hidden").val());
         TextboxDisable("#all-actual-scholarship");
         $("#total-pay-scholarship").val($("#total-pay-scholarship-hidden").val() == "0.00" ? "" : $("#total-pay-scholarship-hidden").val());        
@@ -135,6 +141,7 @@ function ResetFrmCPTransRequireContract(_disable) {
             $("#after-study-leave-end-date").val($("#after-study-leave-end-date-hidden").val());
             InitCalendarFromTo("#after-study-leave-start-date", false, "#after-study-leave-end-date", false);
         }
+
         $("#total-pay-scholarship").val($("#total-pay-scholarship-hidden").val() == "0.00" ? "" : $("#total-pay-scholarship-hidden").val());        
         TextboxDisable("#total-pay-scholarship");
         $("#all-actual-day").val($("#actual-day-hidden").val());
@@ -167,10 +174,29 @@ function ValidateLawyer() {
     var _msg;
     var _focus;
 
-    if (_error == false && (($("#lawyer-fullname").val().length == 0) || (($("#lawyer-phonenumber").val().length == 0) && ($("#lawyer-mobilenumber").val().length == 0)) || ($("#lawyer-email").val().length == 0))) { _error = true; _msg = "กรุณาใส่นิติกรผูู้รับผิดชอบให้ครบถ้วน"; _focus = "#lawyer-fullname"; }
-    if (_error == false && (($("#lawyer-phonenumber").val().length > 0) && ($("#lawyer-phonenumber").inputmask("isComplete") == false))) { _error = true; _msg = "กรุณาใส่หมายเลขโทรศัพท์ของนิติกรผู้รับผิดชอบให้ถูกต้อง"; _focus = "#lawyer-phonenumber"; }
-    if (_error == false && (($("#lawyer-mobilenumber").val().length > 0) && ($("#lawyer-mobilenumber").inputmask("isComplete") == false))) { _error = true; _msg = "กรุณาใส่หมายโทรศัพท์มือถือของนิติกรผู้รับผิดชอบให้ถูกต้อง"; _focus = "#lawyer-mobilenumber"; }
-    if (_error == false && ($("#lawyer-email").inputmask("isComplete") == false)) { _error = true; _msg = "กรุณาใส่อีเมล์ของนิติกรผู้รับผิดชอบให้ถูกต้อง"; _focus = "#lawyer-email"; }
+    if (_error == false && (($("#lawyer-fullname").val().length == 0) || (($("#lawyer-phonenumber").val().length == 0) && ($("#lawyer-mobilenumber").val().length == 0)) || ($("#lawyer-email").val().length == 0))) {
+        _error = true;
+        _msg = "กรุณาใส่นิติกรผูู้รับผิดชอบให้ครบถ้วน";
+        _focus = "#lawyer-fullname";
+    }
+
+    if (_error == false && (($("#lawyer-phonenumber").val().length > 0) && ($("#lawyer-phonenumber").inputmask("isComplete") == false))) {
+        _error = true;
+        _msg = "กรุณาใส่หมายเลขโทรศัพท์ของนิติกรผู้รับผิดชอบให้ถูกต้อง";
+        _focus = "#lawyer-phonenumber";
+    }
+
+    if (_error == false && (($("#lawyer-mobilenumber").val().length > 0) && ($("#lawyer-mobilenumber").inputmask("isComplete") == false))) {
+        _error = true;
+        _msg = "กรุณาใส่หมายโทรศัพท์มือถือของนิติกรผู้รับผิดชอบให้ถูกต้อง";
+        _focus = "#lawyer-mobilenumber";
+    }
+
+    if (_error == false && ($("#lawyer-email").inputmask("isComplete") == false)) {
+        _error = true;
+        _msg = "กรุณาใส่อีเมล์ของนิติกรผู้รับผิดชอบให้ถูกต้อง";
+        _focus = "#lawyer-email";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -192,14 +218,53 @@ function ValidateCPTransRequireContract() {
     var _indemnitorCash = $("#indemnitor-cash").val();
     var _allActualMonthScholarship = (_caseGraduate == "1" ? $("#all-actual-month-scholarship").val() : "");
   
-    if (_error == false && (_setAmtIndemnitorYear == "Y") && (_indemnitorYear.length == 0 || _indemnitorYear == "0")) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ต้องปฏิบัติงานชดใช้"; _focus = "#indemnitor-year"; }
-    if (_error == false && (_caseGraduate == "2") && (_indemnitorCash.length == 0 || _indemnitorCash == "0")) { _error = true; _msg = "กรุณาใส่จำนวนเงินต้องชดใช้ตามสัญญา"; _focus = "#indemnitor-cash"; }
-    if (_error == false && (_indemnitorCash.length == 0 || _indemnitorCash == "0")) { _error = true; _msg = "กรุณาใส่จำนวนเงินต้องชดใช้ตามสัญญา"; _focus = "#indemnitor-cash"; }
-    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#indemnitor-address").val().length == 0) || (ComboboxGetSelectedValue("province") == "0") || ($("input[name=study-leave-yesno]:checked").length == 0))) { _error = true; _msg = "กรุณาใส่รายละเอียดข้อมูลการทำงานชดใช้ให้ครบถ้วน"; _focus = "#indemnitor-address"; }
-    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("input[name=study-leave-yesno]:checked").val() == "N") && (($("#require-date").val().length == 0) || ($("#approve-date").val().length == 0)))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีไม่มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ครบถ้วน"; _focus = "#require-date"; }    
-    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("input[name=study-leave-yesno]:checked").val() == "Y") && (($("#before-study-leave-start-date").val().length == 0) || ($("#before-study-leave-end-date").val().length == 0) || ($("#study-leave-start-date").val().length == 0) || ($("#study-leave-end-date").val().length == 0) || ($("#after-study-leave-start-date").val().length == 0) || ($("#after-study-leave-end-date").val().length == 0)))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีมีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ครบถ้วน"; _focus = "#before-study-leave-start-date"; }    
-    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#study-leave-start-date").datepicker("getDate") < $("#before-study-leave-end-date").datepicker("getDate")) || ($("#after-study-leave-start-date").datepicker("getDate") < $("#study-leave-end-date").datepicker("getDate")))) { _error = true; _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีมีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ถูกต้อง"; _focus = "#before-study-leave-start-date"; }    
-    if (_error == false && (_scholar == "1") && (_caseGraduate == "1") && (_allActualMonthScholarship.length == 0 || _allActualMonthScholarship == "0")) { _error = true; _msg = "กรุณาใส่ระยะเวลาที่ชดใช้ทุนการศึกษา"; _focus = "#all-actual-month-scholarship"; }
+    if (_error == false && (_setAmtIndemnitorYear == "Y") && (_indemnitorYear.length == 0 || _indemnitorYear == "0")) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาที่ต้องปฏิบัติงานชดใช้";
+        _focus = "#indemnitor-year";
+    }
+
+    if (_error == false && (_caseGraduate == "2") && (_indemnitorCash.length == 0 || _indemnitorCash == "0")) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินต้องชดใช้ตามสัญญา";
+        _focus = "#indemnitor-cash";
+    }
+
+    if (_error == false && (_indemnitorCash.length == 0 || _indemnitorCash == "0")) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินต้องชดใช้ตามสัญญา";
+        _focus = "#indemnitor-cash";
+    }
+
+    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#indemnitor-address").val().length == 0) || (ComboboxGetSelectedValue("province") == "0") || ($("input[name=study-leave-yesno]:checked").length == 0))) {
+        _error = true;
+        _msg = "กรุณาใส่รายละเอียดข้อมูลการทำงานชดใช้ให้ครบถ้วน";
+        _focus = "#indemnitor-address";
+    }
+
+    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("input[name=study-leave-yesno]:checked").val() == "N") && (($("#require-date").val().length == 0) || ($("#approve-date").val().length == 0)))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีไม่มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ครบถ้วน";
+        _focus = "#require-date";
+    }
+
+    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("input[name=study-leave-yesno]:checked").val() == "Y") && (($("#before-study-leave-start-date").val().length == 0) || ($("#before-study-leave-end-date").val().length == 0) || ($("#study-leave-start-date").val().length == 0) || ($("#study-leave-end-date").val().length == 0) || ($("#after-study-leave-start-date").val().length == 0) || ($("#after-study-leave-end-date").val().length == 0)))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีมีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ครบถ้วน";
+        _focus = "#before-study-leave-start-date";
+    }
+
+    if (_error == false && (_caseGraduate == "2") && (_civil == "1") && (($("#study-leave-start-date").datepicker("getDate") < $("#before-study-leave-end-date").datepicker("getDate")) || ($("#after-study-leave-start-date").datepicker("getDate") < $("#study-leave-end-date").datepicker("getDate")))) {
+        _error = true;
+        _msg = "กรุณาใส่ช่วงวันที่ทำงานชดใช้ กรณีมีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุนให้ถูกต้อง";
+        _focus = "#before-study-leave-start-date";
+    }  
+    
+    if (_error == false && (_scholar == "1") && (_caseGraduate == "1") && (_allActualMonthScholarship.length == 0 || _allActualMonthScholarship == "0")) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาที่ชดใช้ทุนการศึกษา";
+        _focus = "#all-actual-month-scholarship";
+    }
 
     if (_error == true) {
         FillCalPayScholarshipPenalty("");
@@ -266,16 +331,35 @@ function CalculatePayScholarshipAndPenalty() {
 function FillCalPayScholarshipPenalty(_result) {
     var _setAmtIndemnitorYear = $("#set-amt-indemnitor-year").val();
 
-    if (($("#all-actual-month-scholarship").length > 0) && ($("#all-actual-month-scholarship").val() == "0")) $("#all-actual-month-scholarship").val("");
-    if ($("#all-actual-scholarship").length > 0) $("#all-actual-scholarship").val("");
-    if ($("#total-pay-scholarship").length > 0) $("#total-pay-scholarship").val("");
-    if ($("#all-actual-month").length > 0) $("#all-actual-month").val("");
-    if ($("#all-actual-day").length > 0) $("#all-actual-day").val("");
-    if ($("#all-actual-date").length > 0) $("#all-actual-date").val("");
-    if ($("#actual-date").length > 0) $("#actual-date").val("");
-    if ($("#remain-date").length > 0) $("#remain-date").val("");
-    if ($("#subtotal-penalty").length > 0) $("#subtotal-penalty").val("");
-    if ($("#total-penalty").length > 0) $("#total-penalty").val("");
+    if (($("#all-actual-month-scholarship").length > 0) && ($("#all-actual-month-scholarship").val() == "0"))
+        $("#all-actual-month-scholarship").val("");
+
+    if ($("#all-actual-scholarship").length > 0)
+        $("#all-actual-scholarship").val("");
+
+    if ($("#total-pay-scholarship").length > 0)
+        $("#total-pay-scholarship").val("");
+
+    if ($("#all-actual-month").length > 0)
+        $("#all-actual-month").val("");
+
+    if ($("#all-actual-day").length > 0)
+        $("#all-actual-day").val("");
+
+    if ($("#all-actual-date").length > 0)
+        $("#all-actual-date").val("");
+
+    if ($("#actual-date").length > 0)
+        $("#actual-date").val("");
+
+    if ($("#remain-date").length > 0)
+        $("#remain-date").val("");
+
+    if ($("#subtotal-penalty").length > 0)
+        $("#subtotal-penalty").val("");
+
+    if ($("#total-penalty").length > 0)
+        $("#total-penalty").val("");
 
     if (_result.length > 0) {
         var _dataActualScholarship = _result.split("<allactualscholarship>");
@@ -288,17 +372,32 @@ function FillCalPayScholarshipPenalty(_result) {
         var _dataSubtotal = _result.split("<totalpenalty>");
         var _dataTotal = _result.split("<total>");
 
-        if (($("#all-actual-month-scholarship").length > 0) && ($("#all-actual-month-scholarship").val().length == 0)) $("#all-actual-month-scholarship").val("");
-        if ($("#all-actual-scholarship").length > 0) $("#all-actual-scholarship").val(_dataActualScholarship[1] == "0.00" ? "" : _dataActualScholarship[1]);
-        if ($("#total-pay-scholarship").length > 0) $("#total-pay-scholarship").val(_dataTotalPayScholarship[1] == "0.00" ? "" : _dataTotalPayScholarship[1]);
-        if ($("#all-actual-month").length > 0) $("#all-actual-month").val(_dataMonth[1]);
-        if ($("#all-actual-day").length > 0) $("#all-actual-day").val(_dataDay[1]);
+        if (($("#all-actual-month-scholarship").length > 0) && ($("#all-actual-month-scholarship").val().length == 0))
+            $("#all-actual-month-scholarship").val("");
+
+        if ($("#all-actual-scholarship").length > 0)
+            $("#all-actual-scholarship").val(_dataActualScholarship[1] == "0.00" ? "" : _dataActualScholarship[1]);
+
+        if ($("#total-pay-scholarship").length > 0)
+            $("#total-pay-scholarship").val(_dataTotalPayScholarship[1] == "0.00" ? "" : _dataTotalPayScholarship[1]);
+
+        if ($("#all-actual-month").length > 0)
+            $("#all-actual-month").val(_dataMonth[1]);
+
+        if ($("#all-actual-day").length > 0)
+            $("#all-actual-day").val(_dataDay[1]);
+
         if ($("#case-graduate-break-contract-hidden").val() == "2") {
             if (_setAmtIndemnitorYear == "Y") {
                 if (_dataAllActual[1] == "0" && _dataActual[1] == "0" && _dataRemain[1] == "0") {
-                    if ($("#all-actual-date").length > 0) $("#all-actual-date").val("");
-                    if ($("#actual-date").length > 0) $("#actual-date").val("");
-                    if ($("#remain-date").length > 0) $("#remain-date").val("");
+                    if ($("#all-actual-date").length > 0)
+                        $("#all-actual-date").val("");
+
+                    if ($("#actual-date").length > 0)
+                        $("#actual-date").val("");
+
+                    if ($("#remain-date").length > 0)
+                        $("#remain-date").val("");
                 }
                 else {
                     if (parseInt(_dataRemain[1]) <= 0) {
@@ -306,19 +405,31 @@ function FillCalPayScholarshipPenalty(_result) {
                         return;
                     }
 
-                    if ($("#all-actual-date").length > 0) $("#all-actual-date").val(_dataAllActual[1]);
-                    if ($("#actual-date").length > 0) $("#actual-date").val(_dataActual[1]);
-                    if ($("#remain-date").length > 0) $("#remain-date").val(_dataRemain[1]);
+                    if ($("#all-actual-date").length > 0)
+                        $("#all-actual-date").val(_dataAllActual[1]);
+
+                    if ($("#actual-date").length > 0)
+                        $("#actual-date").val(_dataActual[1]);
+
+                    if ($("#remain-date").length > 0)
+                        $("#remain-date").val(_dataRemain[1]);
                 }
             }
 
             if (_setAmtIndemnitorYear == "N") {
-                if ($("#all-actual-day").length > 0) $("#all-actual-day").val(_dataAllActual[1]);
-                if ($("#actual-date").length > 0) $("#actual-date").val(_dataActual[1]);
+                if ($("#all-actual-day").length > 0)
+                    $("#all-actual-day").val(_dataAllActual[1]);
+
+                if ($("#actual-date").length > 0)
+                    $("#actual-date").val(_dataActual[1]);
             }
         }
-        if ($("#subtotal-penalty").length > 0) $("#subtotal-penalty").val(_dataSubtotal[1]);
-        if ($("#total-penalty").length > 0) $("#total-penalty").val(_dataTotal[1]);
+
+        if ($("#subtotal-penalty").length > 0)
+            $("#subtotal-penalty").val(_dataSubtotal[1]);
+
+        if ($("#total-penalty").length > 0)
+            $("#total-penalty").val(_dataTotal[1]);
     }
 }
 
@@ -420,6 +531,7 @@ function ConfirmActionCPTransRequireContract(_action) {
                                         _send1[_send1.length] = "actualdate=" + DelCommas("actual-date");
                                         _send1[_send1.length] = "remaindate=" + DelCommas("remain-date");
                                     }
+
                                     if (_setAmtIndemnitorYear == "N") {
                                         _send1[_send1.length] = "actualday=" + DelCommas("all-actual-day");
                                         _send1[_send1.length] = "actualdate=" + DelCommas("actual-date");
@@ -433,7 +545,7 @@ function ConfirmActionCPTransRequireContract(_action) {
                                         DialogMessage("ปฏิบัติงานชดใช้ครบตามสัญญาแล้ว", "#require-date", false, "");
                                         return;
                                     }
-                                }                
+                                }
                             }
                             else {
                                 if (_setAmtIndemnitorYear == "N") {
@@ -508,11 +620,22 @@ function ChkRepayStatusViewTransRequireContract(_cp1id, _callbackFunc) {
 
 function ViewRepayStatusViewTransRequireContract(_cp1id, _cp2id, _trackingStatus, _action) {
     ChkRepayStatusViewTransRequireContract(_cp1id, function (_result) {
-        if ((_result == "0") && (_action == "e")) OpenTab("link-tab3-cp-trans-require-contract", "#tab3-cp-trans-require-contract", "ปรับปรุงรายการรับแจ้ง", false, "update", _cp1id, _trackingStatus);
-        if ((_result == "1") && (_action == "e")) LoadForm(1, "detailcptransrequirecontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
-        if ((_result == "2") && (_action == "e")) LoadForm(1, "detailcptransrequirecontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
-        if ((_result == "0") && (_action == "r")) LoadForm(1, "repaycptransrequirecontract", true, "", _cp1id, "repay" + _cp2id);
-        if ((_result == "1") && (_action == "r")) LoadForm(1, "repaycptransrequirecontract", true, "", _cp1id, "repay" + _cp2id);
-        if ((_result == "2") && (_action == "r")) LoadForm(1, "repaycptransrequirecontract", true, "", _cp1id, "repay" + _cp2id);
+        if ((_result == "0") && (_action == "e"))
+            OpenTab("link-tab3-cp-trans-require-contract", "#tab3-cp-trans-require-contract", "ปรับปรุงรายการรับแจ้ง", false, "update", _cp1id, _trackingStatus);
+
+        if ((_result == "1") && (_action == "e"))
+            LoadForm(1, "detailcptransrequirecontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
+
+        if ((_result == "2") && (_action == "e"))
+            LoadForm(1, "detailcptransrequirecontract", true, "", _cp1id, "trans-break-contract" + _cp1id);
+
+        if ((_result == "0") && (_action == "r"))
+            LoadForm(1, "repaycptransrequirecontract", true, "", _cp1id, "repay" + _cp2id);
+
+        if ((_result == "1") && (_action == "r"))
+            LoadForm(1, "repaycptransrequirecontract", true, "", _cp1id, "repay" + _cp2id);
+
+        if ((_result == "2") && (_action == "r"))
+            LoadForm(1, "repaycptransrequirecontract", true, "", _cp1id, "repay" + _cp2id);
     });
 }

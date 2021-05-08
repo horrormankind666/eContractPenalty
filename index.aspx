@@ -64,8 +64,11 @@
         $(SetPositionDialogForm("2"));
         $(SetPositionDialogForm("3"));
 
-        if ($(".ui-autocomplete.ui-menu").is(":visible")) $(".ui-autocomplete.ui-menu").hide();
-        if ($(".ui-datepicker").is(":visible")) $(".ui-datepicker").hide();
+        if ($(".ui-autocomplete.ui-menu").is(":visible"))
+            $(".ui-autocomplete.ui-menu").hide();
+
+        if ($(".ui-datepicker").is(":visible"))
+            $(".ui-datepicker").hide();
 
         $(RemoveSticky());
     });

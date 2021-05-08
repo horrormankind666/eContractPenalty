@@ -1,7 +1,9 @@
-﻿//eCPDB.cs              : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
-//Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๐๘/๐๕/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Collections.Generic;
@@ -113,7 +115,7 @@ public class eCPUtil
             { "2122", "v1" },
             { "2211", "v2" },
             { "2212", "v2" }
-        },                                                      
+        },
         {
             { "1111", "v1" },
             { "1112", "v1" },
@@ -180,14 +182,13 @@ public class eCPUtil
         "ได้รับทุนการศึกษา",
         "ไม่ได้รับทุนการศึกษา"
     };
-    //ปรับปรุงเมื่อ ๐๓/๐๔/๒๕๖๒
-    //---------------------------------------------------------------------------------------------------
+    
     public static string[] _studyLeave = new string[]
     {
         "ไม่มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุน",
         "มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุน"
     };
-    //---------------------------------------------------------------------------------------------------
+    
     public static string[,] _trackingStatusORAA = new string[,]
     {
         { "รอส่งรายการแจ้ง", "1" },
@@ -283,7 +284,6 @@ public class eCPUtil
         { "จำนวนงวดที่ต้องการชำระ", "2" }
     };
 
-    //สำหรับแสดงเมนู
     public static string MenuBar(bool _loginResult)
     {
         string _html = String.Empty;
@@ -395,7 +395,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงส่วนหัวของหน้าเว็บ
     public static string Head()
     {
         string _html = String.Empty;
@@ -403,9 +402,14 @@ public class eCPUtil
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
-        if (_eCPCookie["UserSection"].Equals("1")) _title = "orla";
-        if (_eCPCookie["UserSection"].Equals("2")) _title = "oraa";
-        if (_eCPCookie["UserSection"].Equals("3")) _title = "orfa";
+        if (_eCPCookie["UserSection"].Equals("1"))
+            _title = "orla";
+
+        if (_eCPCookie["UserSection"].Equals("2"))
+            _title = "oraa";
+
+        if (_eCPCookie["UserSection"].Equals("3"))
+            _title = "orfa";
         
         _html += "<div class='head-title-main'>" +
                  "  <div class='head-title-" + _title + "'>" +
@@ -416,7 +420,6 @@ public class eCPUtil
         return _html;
     }
         
-    //สำหรับแสดงหน้าเข้าระบบ
     public static string Signin()
     {
         string _html = String.Empty;
@@ -441,7 +444,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สร้างแสดงเมนู
     public static string Manual()
     {
         string _html = String.Empty;
@@ -457,7 +459,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้าเว็บตามเงื่อนไขที่รับเข้ามา
     public string GenPage(bool _loginResult, int _pid)
     {
         int _order = 0;
@@ -465,9 +466,14 @@ public class eCPUtil
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
-        if (_eCPCookie["UserSection"].Equals("1")) _order = 0;
-        if (_eCPCookie["UserSection"].Equals("2")) _order = 1;
-        if (_eCPCookie["UserSection"].Equals("3")) _order = 2;
+        if (_eCPCookie["UserSection"].Equals("1"))
+            _order = 0;
+
+        if (_eCPCookie["UserSection"].Equals("2"))
+            _order = 1;
+
+        if (_eCPCookie["UserSection"].Equals("3"))
+            _order = 2;
 
         Type _thisType = this.GetType();
         MethodInfo _theMethod = _thisType.GetMethod(_pageOrder[_order, _pid]);
@@ -479,8 +485,7 @@ public class eCPUtil
         
         return _result;
     }
-
-    //สำหรับแสดงหน้าแรก
+    
     public string Home()
     {
         string _html = String.Empty;
@@ -490,7 +495,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดง Title ของฟอร์มที่เป็น Dialog
     public static string ContentTitle(string _content)
     {
         string _html = String.Empty;
@@ -502,7 +506,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้าหลักบัญชีผู้ใช้งาน
     public string CPTabUser()
     {
         string _html = String.Empty;
@@ -512,7 +515,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ากำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public string CPTabProgram()
     {
         string _html = String.Empty;
@@ -522,7 +524,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้าเงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
     public string CPTabCalDate()
     {
         string _html = String.Empty;
@@ -532,7 +533,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ากำหนดดอกเบี้ยจากการผิดนัดชำระ
     public string CPTabInterest()
     {
         string _html = String.Empty;
@@ -542,7 +542,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้าเกณฑ์การชดใช้ตามสัญญา
     public string CPTabPayBreakContract()
     {
         string _html = String.Empty;
@@ -552,7 +551,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ากำหนดทุนการศึกษาแต่ละหลักสูตร
     public string CPTabScholarship()
     {
         string _html = String.Empty;
@@ -562,7 +560,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้าแจ้งผู้ผิดสัญญา
     public string CPTransBreakContract()
     {
         string _html = String.Empty;
@@ -572,7 +569,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารับแจ้งผู้ผิดสัญญา / แจ้งชำระหนี้
     public string CPTransRequireContract()
     {
         string _html = String.Empty;
@@ -582,7 +578,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้าชำระหนี้ / ดอกเบี้ย
     public string CPTransPayment()
     {
         string _html = String.Empty;
@@ -592,7 +587,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานสถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา
     public string CPReportStepOfWork()
     {
         string _html = String.Empty;
@@ -602,7 +596,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานตารางคำนวณเงินต้นและดอกเบี้ย
     public string CPReportTableCalCapitalAndInterest()
     {
         string _html = String.Empty;
@@ -612,7 +605,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานสถิติการผิดสัญญาและการชำระหนี้
     public string CPReportStatisticRepay()
     {
         string _html = String.Empty;
@@ -622,7 +614,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานสถิติการทำสัญญาและการผิดสัญญา
     public string CPReportStatisticContract()
     {
         string _html = String.Empty;
@@ -631,8 +622,7 @@ public class eCPUtil
 
         return _html;
     }
-
-    //สำหรับแสดงหน้ารายงานหนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
+    
     public string CPReportNoticeRepayComplete()
     {
         string _html = String.Empty;
@@ -642,7 +632,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
     public string CPReportNoticeClaimDebt()
     {
         string _html = String.Empty;
@@ -652,7 +641,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานสถิติการชำระหนี้ตามช่วงวันที่
     public string CPReportStatisticPaymentByDate()
     {
         string _html = String.Empty;
@@ -662,7 +650,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานเอกสารการเป็นนักศึกษา
     public string CPReportEContract()
     {
         string _html = String.Empty;
@@ -672,7 +659,6 @@ public class eCPUtil
         return _html;
     }
     
-    //สำหรับแสดงหน้ารายงานลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
     public string CPReportDebtorContract()
     {
         string _html = String.Empty;
@@ -682,7 +668,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานการรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
     public string CPReportDebtorContractPaid()
     {
         string _html = String.Empty;
@@ -692,7 +677,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงหน้ารายงานลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
     public string CPReportDebtorContractRemain()
     {
         string _html = String.Empty;
@@ -702,7 +686,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงคำนำหน้าชื่อ
     public static string ListTitleName(string _id)
     {
         string _html = String.Empty;
@@ -728,7 +711,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงรายชื่อคณะ
     public static string ListFaculty(bool _cpTabProgram, string _id)
     {
         string _html = String.Empty;
@@ -754,7 +736,6 @@ public class eCPUtil
         return _html;
     }
 
-    //สำหรับแสดงรายชื่อหลักสูตร
     public static string ListProgram(bool _cpTabProgram, string _id, string _dlevel, string _faculty)
     {
         string _html = String.Empty;
@@ -785,7 +766,6 @@ public class eCPUtil
         return "<list>" + _html + "<list>";
     }
 
-    //สำหรับแสดงเงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
     public static string ListCalDate(string _id)
     {
         string _html = String.Empty;
@@ -814,7 +794,6 @@ public class eCPUtil
         return "<list>" + _html + "<list>";
     }
 
-    //สำหรับแสดงรายชื่อจังหวัด
     public static string ListProvince(string _id)
     {
         string _html = String.Empty;
@@ -843,7 +822,6 @@ public class eCPUtil
         return "<list>" + _html + "<list>";
     }
 
-    //สำหรับคำนวณทุนการศึกษาที่ต้องชดใช้ กรณีนักศึกษารับทุน
     public static double[] CalPayScholarship(string _scholar, string _caseGraduate, string _civil, string _scholarshipMoney, string _scholarshipYear, string _scholarshipMonth, string _allActualMonthScholarship)
     {
         double[] _result = new double[2];
@@ -879,8 +857,7 @@ public class eCPUtil
 
         return _result;
     }
-
-    //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา
+    
     public static double[] CalPenalty(string _scholar, string _caseGraduate, string _educationDate, string _graduateDate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition, double _addDays)
     {
         double _actual;
@@ -974,7 +951,6 @@ public class eCPUtil
         return _result;
     }
 
-    //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา สูตรที่ 1
     private static double CalPenaltyFormular1(double _indemnitorCash, double _educationDate)
     {
         double _total;
@@ -984,7 +960,6 @@ public class eCPUtil
         return _total;
     }
 
-    //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา สูตรที่ 2
     private static double CalPenaltyFormular2(double _indemnitorCash, double _educationMonth, double _educationDay, int _dayLastMonth)
     {
         double _total;
@@ -994,7 +969,6 @@ public class eCPUtil
         return _total;
     }
 
-    //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา สูตรที่ 3
     private static double CalPenaltyFormular3(double _indemnitorCash, double _allActual, double _actual)
     {
         double _total;
@@ -1004,7 +978,6 @@ public class eCPUtil
         return _total;
     }
 
-    //สำหรับคำนวณเงินที่ต้องชดใช้ตามสัญญา สูตรที่ 4
     private static double CalPenaltyFormular4(double _indemnitorCash, double _educationActual, double _actual)
     {
         double _total;
@@ -1014,7 +987,6 @@ public class eCPUtil
         return _total;
     }
 
-    //สำหรับแสดงวันที่ครบกำหนดชำระหนี้
     public static string[] RepayDate(string _replyDate)
     {
         string[] _repayDate = new string[3];
@@ -1027,8 +999,13 @@ public class eCPUtil
         {
             //_dow = DateTime.Parse(_repayDate[0], new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST).DayOfWeek.ToString();
             _dow = DateTime.Parse(_replyDate, new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST).DayOfWeek.ToString();
-            //if (_dow.Equals("Saturday")) _ad = 2;
-            //if (_dow.Equals("Sunday")) _ad = 1;
+            /*
+            if (_dow.Equals("Saturday"))
+                _ad = 2;
+            
+            if (_dow.Equals("Sunday"))
+            _ad = 1;
+            */
 
             //_repayDate[1] = Util.ConvertDateTH((DateTime.Parse(_repayDate[0], new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST + _ad)).ToString());
             _repayDate[1] = Util.ConvertDateTH((DateTime.Parse(_replyDate, new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST + _ad)).ToString());
@@ -1041,7 +1018,6 @@ public class eCPUtil
         return _repayDate;
     }
 
-    //สำหรับคำนวณดอกเบี้ยผิดนัดชำระ
     public static double CalInterestOverpayment(string _capital, string _overpaymentYear, string _overpaymentDay, string _overpaymentInterest, string _overpaymentDateEnd)
     {
         double _opCapital = double.Parse(_capital);
@@ -1071,7 +1047,6 @@ public class eCPUtil
         return _totalInterestOverpayment;
     }
 
-    //สำหรับแสดงอัตราดอกเบี้ยผิดนัดชำระที่กำหนดไว้ในสัญญาและที่ไม่ได้กำหนดไว้ในสัญญา
     public static string[] GetContractInterest()
     {
         string[,] _data;
@@ -1090,7 +1065,6 @@ public class eCPUtil
         return _contractInterest;
     }
 
-    //สำหรับแสดงยอดคงเหลือ
     public static string[] CalChkBalance(string _capital, string _totalInterest, string _totalAccruedInterest, string _totalPayment, string _pay)
     {
         string[] _result = new string[5];
@@ -1240,5 +1214,15 @@ public class eCPUtil
         }
 
         return _fileExtension;
+    }
+
+    public static int GetStartRow(string startRow)
+    {
+        return (!String.IsNullOrEmpty(startRow) ? int.Parse(startRow) : 1);
+    }
+
+    public static int GetEndRow(string endRow)
+    {
+        return (!String.IsNullOrEmpty(endRow) ? int.Parse(endRow) : ROW_PER_PAGE);
     }
 }

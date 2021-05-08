@@ -1,14 +1,15 @@
-﻿//eCPDataConfiguration.cs   : สำหรับการตั้งค่าระบบ
-//Date Created              : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified        : ๐๙/๐๔/๒๕๖๔
-//Create By                 : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการตั้งค่าระบบ
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
 
 public class eCPDataConfiguration
 {
-    //สำหรับเพิ่มและแก้ไขหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string AddUpdateCPTabProgram(string _action, string[,] _data)
     {
         string _html = String.Empty;
@@ -92,7 +93,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string AddCPTabProgram()
     {
         string _html = String.Empty;
@@ -103,20 +103,19 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแก้ไขหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string UpdateCPTabProgram(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListCPTabProgram(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTabProgram("update", _data);
 
         return _html;
     }
 
-    //สำหรับแสดงหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string ListCPTabProgram(string[,] _data)
     {
         string _html = String.Empty;
@@ -151,7 +150,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string ListUpdateCPTabProgram()
     {
         string _html = String.Empty;
@@ -167,7 +165,6 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    //สำหรับแสดงหน้าหลักการกำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา
     public static string TabCPTabProgram()
     {
         string _html = String.Empty;
@@ -238,13 +235,13 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงรายละเอียดเงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
     public static string DetailCPTabCalDate(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListCPTabCalDate(_cp1id);
+
         if (_data.GetLength(0) > 0)
         {
             _html += "<div class='form-content' id='detail-cp-tab-cal-date'>" +
@@ -267,7 +264,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงรายการเงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
     public static string ListCPTabCalDate(string[,] _data)
     {
         string _html = String.Empty;
@@ -298,7 +294,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงรายการเงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
     public static string ListCPTabCalDate()
     {
         string _html = String.Empty;
@@ -342,7 +337,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มและแก้ไขดอกเบี้ยจากการผิดนัดชำระ
     private static string AddUpdateCPTabInterest(string _action, string[,] _data)
     {
         string _html = String.Empty;
@@ -410,7 +404,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มดอกเบี้ยจากการผิดนัดชำระ
     public static string AddCPTabInterest()
     {
         string _html = String.Empty;
@@ -421,20 +414,19 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแก้ไขดอกเบี้ยจากการผิดนัดชำระ
     public static string UpdateCPTabInterest(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListCPTabInterest(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTabInterest("update", _data);
 
         return _html;
     }
 
-    //สำหรับแสดงรายการดอกเบี้ยจากการผิดนัดชำระ
     public static string ListCPTabInterest(string[,] _data)
     {
         string _html = String.Empty;
@@ -470,7 +462,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงรายการดอกเบี้ยจากการผิดนัดชำระ
     public static string ListUpdateCPTabInterest()
     {
         string _html = String.Empty;
@@ -486,7 +477,6 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    //สำหรับแสดงหน้าหลักการกำหนดดอกเบี้ยจากการผิดนัดชำระ
     public static string TabCPTabInterest()
     {
         string _html = String.Empty;
@@ -557,7 +547,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มและแก้ไขเกณฑ์การชดใช้ตามสัญญา
     public static string AddUpdateCPTabPayBreakContract(string _action, string[,] _data)
     {        
         string _html = String.Empty;
@@ -747,7 +736,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มเกณฑ์การชดใช้ตามสัญญา
     public static string AddCPTabPayBreakContract()
     {
         string _html = String.Empty;
@@ -758,20 +746,19 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแก้ไขเกณฑ์การชดใช้ตามสัญญา
     public static string UpdateCPTabPayBreakContract(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListCPTabPayBreakContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTabPayBreakContract("update", _data);
 
         return _html;
     }
 
-    //สำหรับแสดงผลการค้นหาเกณฑ์การชดใช้ตามสัญญา
     public static string ListSearchCPTabPayBreakContract(HttpContext _c)
     {
         string _html = String.Empty;
@@ -793,7 +780,6 @@ public class eCPDataConfiguration
         return "<error>" + _error + "<error><list>" + _html + "<list>";
     }
 
-    //สำหรับแสดงรายการเกณฑ์การชดใช้ตามสัญญา
     public static string ListCPTabPayBreakContract(string[,] _data)
     {
         string _html = String.Empty;
@@ -811,17 +797,17 @@ public class eCPDataConfiguration
 
             for (_i = 0; _i < _recordCount; _i++)
             {
-            _groupNum = !_data[_i, 6].Equals("0") ? " ( กลุ่ม " + _data[_i, 6] + " )" : "";
-            _callFunc = "OpenTab('link-tab3-cp-tab-pay-break-contract','#tab3-cp-tab-pay-break-contract','ปรับปรุงเกณฑ์การชดใช้',false,'update','" + _data[_i, 0] + "','')";
-            _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
-            _html += "<ul class='table-row-content " + _highlight + "' id='pay-break-contract" + _data[_i, 0] + "'>" +
-                     "  <li id='table-content-cp-tab-pay-break-contract-col1' onclick=" + _callFunc + "><div>" + _data[_i, 11] + "</div></li>" +
-                     "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col2' onclick=" + _callFunc + "><div>" + _data[_i, 9] + "</div></li>" +
-                     "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col3' onclick=" + _callFunc + "><div><span class='programcode-col'>" + _data[_i, 3] + "</span>- " + _data[_i, 4] + _groupNum + "</div></li>" +
-                     "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col4' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 7]).ToString("#,##0") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col5' onclick=" + _callFunc + "><div>" + (_data[_i, 15].Equals("0") ? "-" : double.Parse(_data[_i, 15]).ToString("#,##0")) + "</div></li>" +
-                     "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col6' onclick=" + _callFunc + "><div>วิธีคิดที่ " + _data[_i, 12] + "</div></li>" +
-                     "</ul>";
+                _groupNum = !_data[_i, 6].Equals("0") ? " ( กลุ่ม " + _data[_i, 6] + " )" : "";
+                _callFunc = "OpenTab('link-tab3-cp-tab-pay-break-contract','#tab3-cp-tab-pay-break-contract','ปรับปรุงเกณฑ์การชดใช้',false,'update','" + _data[_i, 0] + "','')";
+                _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
+                _html += "<ul class='table-row-content " + _highlight + "' id='pay-break-contract" + _data[_i, 0] + "'>" +
+                         "  <li id='table-content-cp-tab-pay-break-contract-col1' onclick=" + _callFunc + "><div>" + _data[_i, 11] + "</div></li>" +
+                         "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col2' onclick=" + _callFunc + "><div>" + _data[_i, 9] + "</div></li>" +
+                         "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col3' onclick=" + _callFunc + "><div><span class='programcode-col'>" + _data[_i, 3] + "</span>- " + _data[_i, 4] + _groupNum + "</div></li>" +
+                         "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col4' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 7]).ToString("#,##0") + "</div></li>" +
+                         "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col5' onclick=" + _callFunc + "><div>" + (_data[_i, 15].Equals("0") ? "-" : double.Parse(_data[_i, 15]).ToString("#,##0")) + "</div></li>" +
+                         "  <li class='table-col' id='table-content-cp-tab-pay-break-contract-col6' onclick=" + _callFunc + "><div>วิธีคิดที่ " + _data[_i, 12] + "</div></li>" +
+                         "</ul>";
             }
 
             _html += "</div>";
@@ -830,7 +816,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงรายการเกณฑ์การชดใช้ตามสัญญา
     public static string ListUpdateCPTabPayBreakContract()
     {
         string _html = String.Empty;
@@ -846,7 +831,6 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    //สำหรับแสดงหน้าหลักของเกณฑ์การชดใช้ตามสัญญา
     public static string TabCPTabPayBreakContract()
     {
         string _html = String.Empty;
@@ -920,7 +904,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มและแก้ไขทุนการศึกษาแต่ละหลักสูตร
     public static string AddUpdateCPTabScholarship(string _action, string[,] _data)
     {
         string _html = String.Empty;
@@ -1020,7 +1003,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับเพิ่มทุนการศึกษาแต่ละหลักสูตร
     public static string AddCPTabScholarship()
     {
         string _html = String.Empty;
@@ -1031,20 +1013,19 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแก้ไขทุนการศึกษาแต่ละหลักสูตร
     public static string UpdateCPTabScholarship(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListCPTabScholarship(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTabScholarship("update", _data);
 
         return _html;
     }
 
-    //สำหรับแสดงผลการค้นหาทุนการศึกษาแต่ละหลักสูตร
     public static string ListSearchCPTabScholarship(HttpContext _c)
     {
         string _html = String.Empty;
@@ -1066,7 +1047,6 @@ public class eCPDataConfiguration
         return "<error>" + _error + "<error><list>" + _html + "<list>";
     }
 
-    //สำหรับแสดงรายการทุนการศึกษาแต่ละหลักสูตร
     public static string ListCPTabScholarship(string[,] _data)
     {
         string _html = String.Empty;
@@ -1100,8 +1080,7 @@ public class eCPDataConfiguration
 
         return _html;
     }
-
-    //สำหรับแสดงรายการทุนการศึกษาแต่ละหลักสูตร
+    
     public static string ListUpdateCPTabScholarship()
     {
         string _html = String.Empty;
@@ -1117,7 +1096,6 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    //สำหรับแสดงหน้าหลักการกำหนดทุนการศึกษาแต่ละหลักสูตร
     public static string TabCPTabScholarship()
     {
         string _html = String.Empty;
@@ -1189,7 +1167,6 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    //สำหรับแสดงรายการทุนการศึกษาแต่ละหลักสูตรและเกณฑ์การชดใช้ตามสัญญา ในกรณีที่ผู้ผิดสัญญารับทุนการศึกษา และในกรณีที่ผู้ผิดสัญญาไม่สำเร็จการศึกษาหรือสำเร็จการศึกษา
     public static string ListSearchScholarshipAndPayBreakContract(HttpContext _c)
     {
         string _html = String.Empty;

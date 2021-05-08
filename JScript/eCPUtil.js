@@ -71,7 +71,9 @@ function Signout() {
 }
 
 function ShowManual() {
-    if (_oldMenu != 0) $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
+    if (_oldMenu != 0)
+        $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
+
     $("#menu7").removeClass("noactive").addClass("active");
 
     for (var _i = 0; _i < 50; _i++) {
@@ -322,7 +324,8 @@ function LoadPage(_area, _section, _pid) {
     var _error = false;
     var _msg;
     
-    if (_oldMenu != 0) $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
+    if (_oldMenu != 0)
+        $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
   
     SetMsgLoading("กำลังโหลด...");
   
@@ -342,6 +345,7 @@ function LoadPage(_area, _section, _pid) {
         $("#menu-bar-content").html(_dataMenuBar[1]);
         $("#menu" + _dataMenu[1]).removeClass("noactive").addClass("active");
         _oldMenu = _dataMenu[1];
+
         if (_dataHead[1].length > 0) {
             $(".head").show();
             $(".menu-bar-main").show();
@@ -368,7 +372,8 @@ function LoadPage(_area, _section, _pid) {
                     OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
                     break;
                 case 10:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportStepOfWork();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportStepOfWork();
                     break;
                 case 11:
                     OpenTab("link-tab1-cp-report-table-cal-capital-and-interest", "#tab1-cp-report-table-cal-capital-and-interest", "", true, "", "", "");
@@ -377,16 +382,19 @@ function LoadPage(_area, _section, _pid) {
                     OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
                     break;
                 case 13:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportNoticeClaimDebt();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportNoticeClaimDebt();
                     break;
                 case 14:
                     OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
                     break;
                 case 15:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportStatisticPaymentByDate();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportStatisticPaymentByDate();
                     break;
                 case 16:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportEContract();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportEContract();
                     break;
                 case 17:
                 case 18:
@@ -405,22 +413,26 @@ function LoadPage(_area, _section, _pid) {
                     OpenTab("link-tab1-cp-trans-break-contract", "#tab1-cp-trans-break-contract", "", true, "", "", "");
                     break;
                 case 4:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportStepOfWork();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportStepOfWork();
                     break;
                 case 5:
                     OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
                     break;
                 case 6:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportNoticeRepayComplete();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportNoticeRepayComplete();
                     break;
                 case 7:
                     OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
                     break;
                 case 8:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportStatisticPaymentByDate();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportStatisticPaymentByDate();
                     break;
                 case 9:
-                    SetMsgLoading("กำลังโหลด..."); SearchReportEContract();
+                    SetMsgLoading("กำลังโหลด...");
+                    SearchReportEContract();
                     break;
             }
         }
@@ -471,6 +483,7 @@ function LoadList(_listData, _recordCountID, _listID, _navPageID) {
 
         $("#" + _recordCountID).html("ค้นหาพบ " + _dataRecordCount[1] + " รายการ");
         $("#" + _listID).html(_dataList[1]);
+
         if (_navPageID.length > 0) 
             $("#" + _navPageID).html(_dataPageNav[1]);
     });
@@ -539,7 +552,7 @@ function InitTab(_subTab) {
                 }
 
                 OpenSubTab(_dropID, _linkTab, _id);
-            }            
+            }
         });
     });
 }
@@ -554,7 +567,9 @@ function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _tracki
         else
             $(".tab-hidden").show();
 
-        if (_tabTitle.length > 0) $("#" + _dropID).html(_tabTitle);
+        if (_tabTitle.length > 0)
+            $("#" + _dropID).html(_tabTitle);
+
         $(".content-data-tabs ul li a").removeClass("active");
         $("#" + _dropID).addClass("active");
     }
@@ -754,117 +769,117 @@ function SetSelectCombobox(_id, _value) {
         _id == "facultyreportnoticeclaimdebt" ||
         _id == "facultyreportstatisticpaymentbydate" ||
         _id == "facultyreportecontract") {
-    var _dlevel;
-    var _facultyArray;
-    var _faculty;
-    var _program;
-    var _listProgram;
-    var _comboboxWidthInput = 390;
-    var _comboboxWidthList = 415;
+        var _dlevel;
+        var _facultyArray;
+        var _faculty;
+        var _program;
+        var _listProgram;
+        var _comboboxWidthInput = 390;
+        var _comboboxWidthList = 415;
 
-    if (_id == "dlevel") {
-        _dlevel = _value;
+        if (_id == "dlevel") {
+            _dlevel = _value;
 
-        if ($("#faculty").length > 0) {
-            _facultyArray = ComboboxGetSelectedValue("faculty").split(";");
-            _faculty = _facultyArray[0];
-            _program = "program";
-            _listProgram = "list-program";
+            if ($("#faculty").length > 0) {
+                _facultyArray = ComboboxGetSelectedValue("faculty").split(";");
+                _faculty = _facultyArray[0];
+                _program = "program";
+                _listProgram = "list-program";
+            }
+
+            if ($("#facultycptabprogram").length > 0) {
+                _facultyArray = ComboboxGetSelectedValue("facultycptabprogram").split(";");
+                _faculty = _facultyArray[0];
+                _program = "programcptabprogram";
+                _listProgram = "list-program";
+            }
         }
-
-        if ($("#facultycptabprogram").length > 0) {
-            _facultyArray = ComboboxGetSelectedValue("facultycptabprogram").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programcptabprogram";
-            _listProgram = "list-program";
-        }
-    }
         
-    if (_id == "faculty" ||
-        _id == "facultycptabprogram" ||
-        _id == "facultytransbreakcontract" ||
-        _id == "facultytransrepaycontract" ||
-        _id == "facultytranspayment" ||
-        _id == "facultyreporttablecalcapitalandinterest" ||
-        _id == "facultyreportstepofwork" ||
-        _id == "facultysearchstudent" ||
-        _id == "facultyprofilestudent" ||
-        _id == "facultyreportnoticerepaycomplete" ||
-        _id == "facultyreportnoticeclaimdebt" ||
-        _id == "facultyreportstatisticpaymentbydate" ||
-        _id == "facultyreportecontract") {
-        _dlevel = $("#dlevel").length > 0 ? ComboboxGetSelectedValue("dlevel") : "";
-        _faculty = _value;
+        if (_id == "faculty" ||
+            _id == "facultycptabprogram" ||
+            _id == "facultytransbreakcontract" ||
+            _id == "facultytransrepaycontract" ||
+            _id == "facultytranspayment" ||
+            _id == "facultyreporttablecalcapitalandinterest" ||
+            _id == "facultyreportstepofwork" ||
+            _id == "facultysearchstudent" ||
+            _id == "facultyprofilestudent" ||
+            _id == "facultyreportnoticerepaycomplete" ||
+            _id == "facultyreportnoticeclaimdebt" ||
+            _id == "facultyreportstatisticpaymentbydate" ||
+            _id == "facultyreportecontract") {
+            _dlevel = $("#dlevel").length > 0 ? ComboboxGetSelectedValue("dlevel") : "";
+            _faculty = _value;
             
-        if (_id == "faculty") {
-            _program = "program";
-            _listProgram = "list-program";
+            if (_id == "faculty") {
+                _program = "program";
+                _listProgram = "list-program";
+            }
+
+            if (_id == "facultycptabprogram") {
+                _program = "programcptabprogram";
+                _listProgram = "list-program";
+            }
+
+            if (_id == "facultytransbreakcontract") {
+                _program = "programtransbreakcontract";
+                _listProgram = "list-program-trans-break-contract";
+            }
+
+            if (_id == "facultytransrepaycontract") {
+                _program = "programtransrepaycontract";
+                _listProgram = "list-program-trans-repay-contract";
+            }
+
+            if (_id == "facultytranspayment") {
+                _program = "programtranspayment";
+                _listProgram = "list-program-trans-payment";        
+                _comboboxWidthInput = 336;
+                _comboboxWidthList = 361;        
+            }
+
+            if (_id == "facultyreporttablecalcapitalandinterest") {
+                _program = "programreporttablecalcapitalandinterest";
+                _listProgram = "list-program-report-table-cal-capital-and-interest";
+            }
+
+            if (_id == "facultyreportstepofwork") {
+                _program = "programreportstepofwork";
+                _listProgram = "list-program-report-step-of-work";
+            }
+
+            if (_id == "facultysearchstudent") {                
+                _program = "programsearchstudent";
+                _listProgram = "list-program-search-student";
+            }
+
+            if (_id == "facultyprofilestudent") {
+                _program = "programprofilestudent";
+                _listProgram = "list-program-profile-student";
+            }
+
+            if (_id == "facultyreportnoticerepaycomplete") {
+                _program = "programreportnoticerepaycomplete";
+                _listProgram = "list-program-report-notice-repay-complete";
+            }
+
+            if (_id == "facultyreportnoticeclaimdebt") {
+                _program = "programreportnoticeclaimdebt";
+                _listProgram = "list-program-report-notice-claim-debt";
+            }
+
+            if (_id == "facultyreportstatisticpaymentbydate") {
+                _program = "programreportstatisticpaymentbydate";
+                _listProgram = "list-program-report-statistic-payment-by-date";
+            }
+
+            if (_id == "facultyreportecontract") {
+                _program = "programreportecontract";
+                _listProgram = "list-program-report-e-contract";
+            }
         }
 
-        if (_id == "facultycptabprogram") {
-            _program = "programcptabprogram";
-            _listProgram = "list-program";
-        }
-
-        if (_id == "facultytransbreakcontract") {
-            _program = "programtransbreakcontract";
-            _listProgram = "list-program-trans-break-contract";
-        }
-
-        if (_id == "facultytransrepaycontract") {
-            _program = "programtransrepaycontract";
-            _listProgram = "list-program-trans-repay-contract";
-        }
-
-        if (_id == "facultytranspayment") {
-            _program = "programtranspayment";
-            _listProgram = "list-program-trans-payment";        
-            _comboboxWidthInput = 336;
-            _comboboxWidthList = 361;        
-        }
-
-        if (_id == "facultyreporttablecalcapitalandinterest") {
-            _program = "programreporttablecalcapitalandinterest";
-            _listProgram = "list-program-report-table-cal-capital-and-interest";
-        }
-
-        if (_id == "facultyreportstepofwork") {
-            _program = "programreportstepofwork";
-            _listProgram = "list-program-report-step-of-work";
-        }
-
-        if (_id == "facultysearchstudent") {                
-            _program = "programsearchstudent";
-            _listProgram = "list-program-search-student";
-        }
-
-        if (_id == "facultyprofilestudent") {
-            _program = "programprofilestudent";
-            _listProgram = "list-program-profile-student";
-        }
-
-        if (_id == "facultyreportnoticerepaycomplete") {
-            _program = "programreportnoticerepaycomplete";
-            _listProgram = "list-program-report-notice-repay-complete";
-        }
-
-        if (_id == "facultyreportnoticeclaimdebt") {
-            _program = "programreportnoticeclaimdebt";
-            _listProgram = "list-program-report-notice-claim-debt";
-        }
-
-        if (_id == "facultyreportstatisticpaymentbydate") {
-            _program = "programreportstatisticpaymentbydate";
-            _listProgram = "list-program-report-statistic-payment-by-date";
-        }
-
-        if (_id == "facultyreportecontract") {
-            _program = "programreportecontract";
-            _listProgram = "list-program-report-e-contract";
-        }
-    }
-
-    LoadCombobox(_program, "dlevel=" + _dlevel + "&faculty=" + _faculty, _listProgram, "0", _comboboxWidthInput, _comboboxWidthList);
+        LoadCombobox(_program, "dlevel=" + _dlevel + "&faculty=" + _faculty, _listProgram, "0", _comboboxWidthInput, _comboboxWidthList);
     }
 
     if (_id == "case-graduate") {
@@ -1191,8 +1206,11 @@ function InitComboboxOnClick(_id) {
 }
 
 function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
-    if (_idActive.length > 0) $("#" + _idActive).addClass("active");
-    if (_dialogFrm == false) $("#" + _frmID).html("");
+    if (_idActive.length > 0)
+        $("#" + _idActive).addClass("active");
+
+    if (_dialogFrm == false)
+        $("#" + _frmID).html("");
 
     var _send = new Array();
     _send[_send.length] = "action=form";
@@ -1383,11 +1401,15 @@ function AddUpdateData(_action, _cmd, _valueSend, _listUpdate, _recordCount, _li
         var _dataPageNav = _result.split("<pagenav>");
 
         if (_dataError[1] == "0") {
-            if (_closeFrm == true) $("#dialog-form1").dialog("close");
+            if (_closeFrm == true)
+                $("#dialog-form1").dialog("close");
+
             if (_listUpdate == true) {
-            $("#" + _recordCount).html("ค้นหาพบ " + _dataRecordCount[1] + " รายการ");
-            $("#" + _listData).html(_dataList[1]);
-            if (_navPage.length > 0) $("#" + _navPage).html(_dataPageNav[1]);
+                $("#" + _recordCount).html("ค้นหาพบ " + _dataRecordCount[1] + " รายการ");
+                $("#" + _listData).html(_dataList[1]);
+
+                if (_navPage.length > 0)
+                    $("#" + _navPage).html(_dataPageNav[1]);
             }
         }
 
@@ -1397,7 +1419,10 @@ function AddUpdateData(_action, _cmd, _valueSend, _listUpdate, _recordCount, _li
 
 function SearchData(_from, _valueSend, _recordSearch, _listSearch, _navPage) {
     $("#" + _recordSearch).html("");
-    if (_from != "studentwithresult") $("#" + _listSearch).html("");
+
+    if (_from != "studentwithresult")
+        $("#" + _listSearch).html("");
+
     $("#" + _navPage).html("");
 
     var _i;
@@ -1460,6 +1485,7 @@ function PageNav(_pageContent, _currentPage, _startRow, _endRow) {
     if (_pageContent == "studentwithresult") {
         var _faculty = ComboboxGetSelectedValue("facultysearchstudent") != "0" ? ComboboxGetSelectedValue("facultysearchstudent") : "";
         var _program = ComboboxGetSelectedValue("programsearchstudent") != "0" ? ComboboxGetSelectedValue("programsearchstudent") : "";
+
         _faculty = _faculty.length > 0 ? _faculty.split(";") : "";
         _program = _program.length > 0 ? _program.split(";") : "";
 
@@ -1778,10 +1804,28 @@ function ValidateCalInterestOverpayment() {
     if (parseInt(_overpayment) > 0) {
         var _totalInterestOverpayment = DelCommas("total-interest-overpayment");
 
-        if (_error == false && (_totalInterestOverpayment.length == 0 || _totalInterestOverpayment == "0.00")) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระ"; _focus = ""; }
-        if (_error == false && ($("#overpayment-date-start-old").val() != $("#overpayment-date-start").val())) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง"; _focus = ""; }
-        if (_error == false && ($("#overpayment-date-end-old").val() != $("#overpayment-date-end").val())) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง"; _focus = ""; }
-        if (_error == false && ($("#overpayment-interest-old").val() != DelCommas("overpayment-interest"))) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง"; _focus = ""; }
+        if (_error == false && (_totalInterestOverpayment.length == 0 || _totalInterestOverpayment == "0.00")) {
+            _error = true;
+            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระ";
+            _focus = "";
+        }
+
+        if (_error == false && ($("#overpayment-date-start-old").val() != $("#overpayment-date-start").val())) {
+            _error = true;
+            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
+            _focus = "";
+        }
+
+        if (_error == false && ($("#overpayment-date-end-old").val() != $("#overpayment-date-end").val())) {
+            _error = true;
+            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";_focus = "";
+        }
+
+        if (_error == false && ($("#overpayment-interest-old").val() != DelCommas("overpayment-interest"))) {
+            _error = true;
+            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
+            _focus = "";
+        }
     }
 
     if (_error == true) {
@@ -1807,9 +1851,23 @@ function ValidateCalculateInterestOverpayment() {
     var _repayDateEnd = GetDateObject($("#repay-date-end-hidden").val());
     var _overpaymentDateStart = GetDateObject($("#overpayment-date-start").val());
 
-    if (_error == false && (DateDiff(_repayDateEnd, _overpaymentDateStart, "days") <= 0)) { _error = true; _msg = "กรุณาใส่วันที่เริ่มผิดนัดชำระให้ถูกต้อง"; _focus = "#overpayment-date-start"; }
-    if (_error == false && (($("#overpayment-interest").val().length == 0) || ($("#overpayment-interest").val() == "0.00"))) { _error = true; _msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระ"; _focus = "#overpayment-interest"; }
-    if (_error == false && parseFloat($("#overpayment-interest").val()) > 100) { _error = true; _msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระไม่เกิน 100"; _focus = "#overpayment-interest"; }
+    if (_error == false && (DateDiff(_repayDateEnd, _overpaymentDateStart, "days") <= 0)) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่เริ่มผิดนัดชำระให้ถูกต้อง";
+        _focus = "#overpayment-date-start";
+    }
+
+    if (_error == false && (($("#overpayment-interest").val().length == 0) || ($("#overpayment-interest").val() == "0.00"))) {
+        _error = true;
+        _msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระ";
+        _focus = "#overpayment-interest";
+    }
+
+    if (_error == false && parseFloat($("#overpayment-interest").val()) > 100) {
+        _error = true;
+        _msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระไม่เกิน 100";
+        _focus = "#overpayment-interest";
+    }
 
     if (_error == true) {
         FillCalInterestOverpayment("");
@@ -1845,26 +1903,48 @@ function CalculateInterestOverpayment() {
 }
 
 function FillCalInterestOverpayment(_result) {
-    if ($("#overpayment-year").length > 0) $("#overpayment-year").val("");
-    if ($("#overpayment-day").length > 0) $("#overpayment-day").val("");
-    if ($("#total-interest-overpayment").length > 0) $("#total-interest-overpayment").val("");
-    if ($("#total-interest").length > 0) $("#total-interest").val("");
-    if ($("#total-payment").length > 0) $("#total-payment").val("");
-    if ($("#pay").length > 0) $("#pay").val("");
+    if ($("#overpayment-year").length > 0)
+        $("#overpayment-year").val("");
 
-    if (_result.length > 0) {        
+    if ($("#overpayment-day").length > 0)
+        $("#overpayment-day").val("");
+
+    if ($("#total-interest-overpayment").length > 0)
+        $("#total-interest-overpayment").val("");
+
+    if ($("#total-interest").length > 0)
+        $("#total-interest").val("");
+
+    if ($("#total-payment").length > 0)
+        $("#total-payment").val("");
+
+    if ($("#pay").length > 0)
+        $("#pay").val("");
+
+    if (_result.length > 0) {
         var _dataOverpaymentYear = _result.split("<overpaymentyear>");
         var _dataOverpaymentDay = _result.split("<overpaymentday>");
         var _dataTotalInterestOverpayment = _result.split("<totalinterestoverpayment>");
         var _dataTotalInterest = _result.split("<totalinterest>");
         var _dataTotalPayment = _result.split("<totalpayment>");
 
-        if ($("#overpayment-year").length > 0) $("#overpayment-year").val(_dataOverpaymentYear[1]);
-        if ($("#overpayment-day").length > 0) $("#overpayment-day").val(_dataOverpaymentDay[1]);
-        if ($("#total-interest-overpayment").length > 0) $("#total-interest-overpayment").val(_dataTotalInterestOverpayment[1]);
-        if ($("#total-interest").length > 0) $("#total-interest").val(_dataTotalInterest[1]);
-        if ($("#total-payment").length > 0) $("#total-payment").val(_dataTotalPayment[1]);
-        if ($("#pay").length > 0) $("#pay").val(_dataTotalPayment[1]);
+        if ($("#overpayment-year").length > 0)
+            $("#overpayment-year").val(_dataOverpaymentYear[1]);
+
+        if ($("#overpayment-day").length > 0)
+            $("#overpayment-day").val(_dataOverpaymentDay[1]);
+
+        if ($("#total-interest-overpayment").length > 0)
+            $("#total-interest-overpayment").val(_dataTotalInterestOverpayment[1]);
+
+        if ($("#total-interest").length > 0)
+            $("#total-interest").val(_dataTotalInterest[1]);
+
+        if ($("#total-payment").length > 0)
+            $("#total-payment").val(_dataTotalPayment[1]);
+
+        if ($("#pay").length > 0)
+            $("#pay").val(_dataTotalPayment[1]);
     }
 }
 
@@ -1874,9 +1954,23 @@ function ValidateCalInterestPayRepay() {
     var _focus;
     var _totalInterestPayRepay = DelCommas("total-interest-pay-repay");
 
-    if (_error == false && (_totalInterestPayRepay.length == 0 || _totalInterestPayRepay == "0.00")) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระ"; _focus = ""; }
-    if (_error == false && ($("#pay-repay-date-end-old").val() != $("#pay-repay-date-end").val())) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง"; _focus = ""; }
-    if (_error == false && ($("#pay-repay-interest-old").val() != DelCommas("pay-repay-interest"))) { _error = true; _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง"; _focus = ""; }
+    if (_error == false && (_totalInterestPayRepay.length == 0 || _totalInterestPayRepay == "0.00")) {
+        _error = true;
+        _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระ";
+        _focus = "";
+    }
+
+    if (_error == false && ($("#pay-repay-date-end-old").val() != $("#pay-repay-date-end").val())) {
+        _error = true;
+        _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง";
+        _focus = "";
+    }
+
+    if (_error == false && ($("#pay-repay-interest-old").val() != DelCommas("pay-repay-interest"))) {
+        _error = true;
+        _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง";
+        _focus = "";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -1898,8 +1992,17 @@ function ValidateCalculateInterestPayRepay() {
     var _msg;
     var _focus;
 
-    if (_error == false && (($("#pay-repay-interest").val().length == 0) || ($("#pay-repay-interest").val() == "0.00"))) { _error = true; _msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระ"; _focus = "#pay-repay-interest"; }
-    if (_error == false && parseFloat($("#pay-repay-interest").val()) > 100) { _error = true; _msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระไม่เกิน 100"; _focus = "#pay-repay-interest"; }
+    if (_error == false && (($("#pay-repay-interest").val().length == 0) || ($("#pay-repay-interest").val() == "0.00"))) {
+        _error = true;
+        _msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระ";
+        _focus = "#pay-repay-interest";
+    }
+
+    if (_error == false && parseFloat($("#pay-repay-interest").val()) > 100) {
+        _error = true;
+        _msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระไม่เกิน 100";
+        _focus = "#pay-repay-interest";
+    }
 
     if (_error == true) {
         FillCalInterestPayRepay("");
@@ -1935,12 +2038,23 @@ function CalculateInterestPayRepay() {
 }
 
 function FillCalInterestPayRepay(_result) {
-    if ($("#pay-repay-year").length > 0) $("#pay-repay-year").val("");
-    if ($("#pay-repay-day").length > 0) $("#pay-repay-day").val("");
-    if ($("#total-interest-pay-repay").length > 0) $("#total-interest-pay-repay").val("");
-    if ($("#total-interest").length > 0) $("#total-interest").val("");
-    if ($("#total-payment").length > 0) $("#total-payment").val("");
-    if ($("#pay").length > 0) $("#pay").val("");        
+    if ($("#pay-repay-year").length > 0)
+        $("#pay-repay-year").val("");
+
+    if ($("#pay-repay-day").length > 0)
+        $("#pay-repay-day").val("");
+
+    if ($("#total-interest-pay-repay").length > 0)
+        $("#total-interest-pay-repay").val("");
+
+    if ($("#total-interest").length > 0)
+        $("#total-interest").val("");
+
+    if ($("#total-payment").length > 0)
+        $("#total-payment").val("");
+
+    if ($("#pay").length > 0)
+        $("#pay").val("");
 
     if (_result.length > 0) {
         var _dataPayRepayYear = _result.split("<payrepayyear>");
@@ -1949,12 +2063,23 @@ function FillCalInterestPayRepay(_result) {
         var _dataTotalInterest = _result.split("<totalinterest>");
         var _dataTotalPayment = _result.split("<totalpayment>");
 
-        if ($("#pay-repay-year").length > 0) $("#pay-repay-year").val(_dataPayRepayYear[1]);
-        if ($("#pay-repay-day").length > 0) $("#pay-repay-day").val(_dataPayRepayDay[1]);
-        if ($("#total-interest-pay-repay").length > 0) $("#total-interest-pay-repay").val(_dataTotalInterestPayRepay[1]);
-        if ($("#total-interest").length > 0) $("#total-interest").val(_dataTotalInterest[1]);
-        if ($("#total-payment").length > 0) $("#total-payment").val(_dataTotalPayment[1]);
-        if ($("#pay").length > 0) $("#pay").val(_dataTotalPayment[1]);        
+        if ($("#pay-repay-year").length > 0)
+            $("#pay-repay-year").val(_dataPayRepayYear[1]);
+
+        if ($("#pay-repay-day").length > 0)
+            $("#pay-repay-day").val(_dataPayRepayDay[1]);
+
+        if ($("#total-interest-pay-repay").length > 0)
+            $("#total-interest-pay-repay").val(_dataTotalInterestPayRepay[1]);
+
+        if ($("#total-interest").length > 0)
+            $("#total-interest").val(_dataTotalInterest[1]);
+
+        if ($("#total-payment").length > 0)
+            $("#total-payment").val(_dataTotalPayment[1]);
+
+        if ($("#pay").length > 0)
+            $("#pay").val(_dataTotalPayment[1]);
     }
 }
 
@@ -1986,14 +2111,29 @@ function CalculateInterestOverpaymentAndPayRepay() {
 }
 
 function FillCalInterestOverpaymentAndPayRepay(_result) {
-    if ($("#overpayment-year").length > 0) $("#overpayment-year").val("");
-    if ($("#overpayment-day").length > 0) $("#overpayment-day").val("");
-    if ($("#total-interest-overpayment").length > 0) $("#total-interest-overpayment").val("");
-    if ($("#pay-repay-year").length > 0) $("#pay-repay-year").val("");
-    if ($("#pay-repay-day").length > 0) $("#pay-repay-day").val("");
-    if ($("#total-interest-pay-repay").length > 0) $("#total-interest-pay-repay").val("");
-    if ($("#total-interest").length > 0) $("#total-interest").val("");
-    if ($("#total-payment").length > 0) $("#total-payment").val("");
+    if ($("#overpayment-year").length > 0)
+        $("#overpayment-year").val("");
+
+    if ($("#overpayment-day").length > 0)
+        $("#overpayment-day").val("");
+
+    if ($("#total-interest-overpayment").length > 0)
+        $("#total-interest-overpayment").val("");
+
+    if ($("#pay-repay-year").length > 0)
+        $("#pay-repay-year").val("");
+
+    if ($("#pay-repay-day").length > 0)
+        $("#pay-repay-day").val("");
+
+    if ($("#total-interest-pay-repay").length > 0)
+        $("#total-interest-pay-repay").val("");
+
+    if ($("#total-interest").length > 0)
+        $("#total-interest").val("");
+
+    if ($("#total-payment").length > 0)
+        $("#total-payment").val("");
 
     if (_result.length > 0) {
         var _dataOverpaymentYear = _result.split("<overpaymentyear>");
@@ -2005,14 +2145,29 @@ function FillCalInterestOverpaymentAndPayRepay(_result) {
         var _dataTotalInterest = _result.split("<totalinterest>");
         var _dataTotalPayment = _result.split("<totalpayment>");
 
-        if ($("#overpayment-year").length > 0) $("#overpayment-year").val(_dataOverpaymentYear[1]);
-        if ($("#overpayment-day").length > 0) $("#overpayment-day").val(_dataOverpaymentDay[1]);
-        if ($("#total-interest-overpayment").length > 0) $("#total-interest-overpayment").val(_dataTotalInterestOverpayment[1]);
-        if ($("#pay-repay-year").length > 0) $("#pay-repay-year").val(_dataPayRepayYear[1]);
-        if ($("#pay-repay-day").length > 0) $("#pay-repay-day").val(_dataPayRepayDay[1]);
-        if ($("#total-interest-pay-repay").length > 0) $("#total-interest-pay-repay").val(_dataTotalInterestPayRepay[1]);
-        if ($("#total-interest").length > 0) $("#total-interest").val(_dataTotalInterest[1]);
-        if ($("#total-payment").length > 0) $("#total-payment").val(_dataTotalPayment[1]);
+        if ($("#overpayment-year").length > 0)
+            $("#overpayment-year").val(_dataOverpaymentYear[1]);
+
+        if ($("#overpayment-day").length > 0)
+            $("#overpayment-day").val(_dataOverpaymentDay[1]);
+
+        if ($("#total-interest-overpayment").length > 0)
+            $("#total-interest-overpayment").val(_dataTotalInterestOverpayment[1]);
+
+        if ($("#pay-repay-year").length > 0)
+            $("#pay-repay-year").val(_dataPayRepayYear[1]);
+
+        if ($("#pay-repay-day").length > 0)
+            $("#pay-repay-day").val(_dataPayRepayDay[1]);
+
+        if ($("#total-interest-pay-repay").length > 0)
+            $("#total-interest-pay-repay").val(_dataTotalInterestPayRepay[1]);
+
+        if ($("#total-interest").length > 0)
+            $("#total-interest").val(_dataTotalInterest[1]);
+
+        if ($("#total-payment").length > 0)
+            $("#total-payment").val(_dataTotalPayment[1]);
     }
 }
 
@@ -2044,16 +2199,55 @@ function FillCalChkBalance(_result) {
         var _dataAccruedInterest = _result.split("<accruedinterest>");
         var _dataRemainAccruedInterest = _result.split("<remainaccruedinterest>");
 
-        if ($("#chk-balance-capital").length > 0) { $("#chk-balance-capital").html(_dataCapital[1]); $("#chk-balance-capital-unit").show(); }
-        if ($("#chk-balance-total-interest").length > 0) { $("#chk-balance-total-interest").html(_dataTotalInterest[1]); _dataTotalInterest[1].length > 0 ? $("#chk-balance-total-interest-unit").show() : ""; }
-        if ($("#chk-balance-total-accrued-interest").length > 0) { $("#chk-balance-total-accrued-interest").html(_dataTotalAccruedInterest[1]); _dataTotalAccruedInterest[1].length > 0 ? $("#chk-balance-total-accrued-interest-unit").show() : ""; }
-        if ($("#chk-balance-total-payment").length > 0) { $("#chk-balance-total-payment").html(_dataTotalPayment[1]); _dataTotalPayment[1].length > 0 ? $("#chk-balance-total-payment-unit").show() : ""; }
-        if ($("#chk-balance-pay").length > 0) { $("#chk-balance-pay").html(_dataPay[1]); _dataPay[1].length > 0 ? $("#chk-balance-pay-unit").show() : ""; }
-        if ($("#chk-balance-pay-capital").length > 0) { $("#chk-balance-pay-capital").html(_dataPayCapital[1]); _dataPayCapital[1].length > 0 ? $("#chk-balance-pay-capital-unit").show() : ""; }
-        if ($("#chk-balance-pay-interest").length > 0) { $("#chk-balance-pay-interest").html(_dataPayInterest[1]); _dataPayInterest[1].length > 0 ? $("#chk-balance-pay-interest-unit").show() : ""; }
-        if ($("#chk-balance-remain-capital").length > 0) { $("#chk-balance-remain-capital").html(_dataRemainCapital[1]); _dataRemainCapital[1].length > 0 ? $("#chk-balance-remain-capital-unit").show() : ""; }
-        if ($("#chk-balance-accrued-interest").length > 0) { $("#chk-balance-accrued-interest").html(_dataAccruedInterest[1]); _dataAccruedInterest[1].length > 0 ? $("#chk-balance-accrued-interest-unit").show() : ""; }
-        if ($("#chk-balance-remain-accrued-interest").length > 0) { $("#chk-balance-remain-accrued-interest").html(_dataRemainAccruedInterest[1]); _dataRemainAccruedInterest[1].length > 0 ? $("#chk-balance-remain-accrued-interest-unit").show() : ""; }
+        if ($("#chk-balance-capital").length > 0) {
+            $("#chk-balance-capital").html(_dataCapital[1]);
+            $("#chk-balance-capital-unit").show();
+        }
+
+        if ($("#chk-balance-total-interest").length > 0) {
+            $("#chk-balance-total-interest").html(_dataTotalInterest[1]);
+            (_dataTotalInterest[1].length > 0 ? $("#chk-balance-total-interest-unit").show() : "");
+        }
+
+        if ($("#chk-balance-total-accrued-interest").length > 0) {
+            $("#chk-balance-total-accrued-interest").html(_dataTotalAccruedInterest[1]);
+            (_dataTotalAccruedInterest[1].length > 0 ? $("#chk-balance-total-accrued-interest-unit").show() : "");
+        }
+
+        if ($("#chk-balance-total-payment").length > 0) {
+            $("#chk-balance-total-payment").html(_dataTotalPayment[1]);
+            (_dataTotalPayment[1].length > 0 ? $("#chk-balance-total-payment-unit").show() : "");
+        }
+
+        if ($("#chk-balance-pay").length > 0) {
+            $("#chk-balance-pay").html(_dataPay[1]);
+            (_dataPay[1].length > 0 ? $("#chk-balance-pay-unit").show() : "");
+        }
+
+        if ($("#chk-balance-pay-capital").length > 0) {
+            $("#chk-balance-pay-capital").html(_dataPayCapital[1]);
+            (_dataPayCapital[1].length > 0 ? $("#chk-balance-pay-capital-unit").show() : "");
+        }
+
+        if ($("#chk-balance-pay-interest").length > 0) {
+            $("#chk-balance-pay-interest").html(_dataPayInterest[1]);
+            (_dataPayInterest[1].length > 0 ? $("#chk-balance-pay-interest-unit").show() : "");
+        }
+
+        if ($("#chk-balance-remain-capital").length > 0) {
+            $("#chk-balance-remain-capital").html(_dataRemainCapital[1]);
+            (_dataRemainCapital[1].length > 0 ? $("#chk-balance-remain-capital-unit").show() : "");
+        }
+
+        if ($("#chk-balance-accrued-interest").length > 0) {
+            $("#chk-balance-accrued-interest").html(_dataAccruedInterest[1]);
+            (_dataAccruedInterest[1].length > 0 ? $("#chk-balance-accrued-interest-unit").show() : "");
+        }
+
+        if ($("#chk-balance-remain-accrued-interest").length > 0) {
+            $("#chk-balance-remain-accrued-interest").html(_dataRemainAccruedInterest[1]);
+            (_dataRemainAccruedInterest[1].length > 0 ? $("#chk-balance-remain-accrued-interest-unit").show() : "");
+        }
     }
 }
 
@@ -2070,7 +2264,9 @@ function CalculateTotalPayment() {
 
         if ($("#total-payment").length > 0) {
             $("#total-payment").val(_dataTotalPayment[1]);
-            if ($("#pay").length > 0) $("#pay").val($("#total-payment").val());
+
+            if ($("#pay").length > 0)
+                $("#pay").val($("#total-payment").val());
         }
     });
 }
@@ -2084,11 +2280,13 @@ function BoxSearchCondition(_countCondition, _searchValue, _id) {
             _showCondition[_j] = _i;
             _j++;
         }
+
         $("#" + _id + "-order" + (_i + 1)).hide();
     }
 
     if (_showCondition.length > 0) {
         $("#" + _id).show();
+
         for (_i = 0; _i < _showCondition.length; _i++) {
             $("#" + _id + "-order" + (_showCondition[_i] + 1)).show();
             $("#" + _id + "-order" + (_showCondition[_i] + 1) + "-value").html(_searchValue[_showCondition[_i]]);

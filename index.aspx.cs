@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Data;
-using System.Data.SqlClient;
+using System.Web.UI;
 
-public partial class index : System.Web.UI.Page
+public partial class index : Page
 {
     void Page_Load(object sender, EventArgs e)
     {

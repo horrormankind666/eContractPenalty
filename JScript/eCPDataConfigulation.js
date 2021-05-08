@@ -39,9 +39,23 @@ function ValidateCPTabProgram(_action) {
     var _msg;
     var _focus;
 
-    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") { _error = true; _msg = "กรุณาเลือกระดับการศึกษา"; _focus = ".dlevel-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("faculty") == "0") { _error = true; _msg = "กรุณาเลือกคณะ"; _focus = ".faculty-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("program") == "0") { _error = true; _msg = "กรุณาเลือกหลักสูตร"; _focus = ".program-combobox-input"; }
+    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกระดับการศึกษา";
+        _focus = ".dlevel-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("faculty") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกคณะ";
+        _focus = ".faculty-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("program") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกหลักสูตร";
+        _focus = ".program-combobox-input";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -77,9 +91,14 @@ function ValidateCPTabProgram(_action) {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add") ResetFrmCPTabProgram(false);
-                    if (_action == "update") ResetFrmCPTabProgram(true);
-                    if (_action == "del") OpenTab("link-tab1-cp-tab-program", "#tab1-cp-tab-program", "", true, "", "", "");
+                    if (_action == "add")
+                        ResetFrmCPTabProgram(false);
+
+                    if (_action == "update")
+                        ResetFrmCPTabProgram(true);
+
+                    if (_action == "del")
+                        OpenTab("link-tab1-cp-tab-program", "#tab1-cp-tab-program", "", true, "", "", "");
                 }
             }
         });
@@ -126,9 +145,23 @@ function ValidateCPTabInterest(_action) {
     var _msg;
     var _focus;
 
-    if (_error == false && $("#in-contract-interest").val().length == 0) { _error = true; _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่กำหนดไว้ในสัญญา"; _focus = "#in-contract-interest"; }
-    if (_error == false && $("#out-contract-interest").val().length == 0) { _error = true; _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่มิได้กำหนดไว้ในสัญญา"; _focus = "#out-contract-interest"; }
-    if (_error == false && $("#in-contract-interest").val() == "0.00" && $("#out-contract-interest").val() == "0.00") { _error = true; _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระ"; _focus = "#in-contract-interest"; }
+    if (_error == false && $("#in-contract-interest").val().length == 0) {
+        _error = true;
+        _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่กำหนดไว้ในสัญญา";
+        _focus = "#in-contract-interest";
+    }
+
+    if (_error == false && $("#out-contract-interest").val().length == 0) {
+        _error = true;
+        _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่มิได้กำหนดไว้ในสัญญา";
+        _focus = "#out-contract-interest";
+    }
+
+    if (_error == false && $("#in-contract-interest").val() == "0.00" && $("#out-contract-interest").val() == "0.00") {
+        _error = true;
+        _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระ";
+        _focus = "#in-contract-interest";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -154,9 +187,14 @@ function ValidateCPTabInterest(_action) {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add") ResetFrmCPTabInterest(false);
-                    if (_action == "update") ResetFrmCPTabInterest(true);
-                    if (_action == "del") OpenTab("link-tab1-cp-tab-interest", "#tab1-cp-tab-interest", "", true, "", "","");
+                    if (_action == "add")
+                        ResetFrmCPTabInterest(false);
+
+                    if (_action == "update")
+                        ResetFrmCPTabInterest(true);
+
+                    if (_action == "del")
+                        OpenTab("link-tab1-cp-tab-interest", "#tab1-cp-tab-interest", "", true, "", "", "");
                 }
             }
         });
@@ -259,13 +297,47 @@ function ValidateCPTabPayBreakContract(_action) {
     var _msg;
     var _focus;
 
-    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") { _error = true; _msg = "กรุณาเลือกระดับการศึกษา"; _focus = ".dlevel-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("case-graduate") == "0") { _error = true; _msg = "กรุณาเลือกกรณีการชดใช้ตามสัญญา"; _focus = ".case-graduate-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") { _error = true; _msg = "กรุณาเลือกคณะ"; _focus = ".facultycptabprogram-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") { _error = true; _msg = "กรุณาเลือกหลักสูตร"; _focus = ".programcptabprogram-combobox-input"; }
-    if (_error == false && (($("#amount-cash").val().length == 0) || ($("#amount-cash").val() == "0"))) { _error = true; _msg = "กรุณาใส่จำนวนเงินชดใช้"; _focus = "#amount-cash"; }
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate") == "2") && ($("input[name=set-amt-indemnitor-year]:checked").val() == "Y") && (($("#amt-indemnitor-year").val().length == 0) || ($("#amt-indemnitor-year").val() == "0")))) { _error = true; _msg = "กรุณาใส่ระยะเวลาทำงานชดใช้หลังสำเร็จการศึกษา"; _focus = "#amt-indemnitor-year"; }
-    if (_error == false && ComboboxGetSelectedValue("cal-date-condition") == "0") { _error = true; _msg = "กรุณาเลือกวิธีคิดและคำนวณเงินชดใช้"; _focus = ".cal-date-condition-combobox-input"; }
+    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกระดับการศึกษา";
+        _focus = ".dlevel-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("case-graduate") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกกรณีการชดใช้ตามสัญญา";
+        _focus = ".case-graduate-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกคณะ";
+        _focus = ".facultycptabprogram-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกหลักสูตร";
+        _focus = ".programcptabprogram-combobox-input";
+    }
+
+    if (_error == false && (($("#amount-cash").val().length == 0) || ($("#amount-cash").val() == "0"))) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินชดใช้";
+        _focus = "#amount-cash";
+    }
+
+    if (_error == false && ((ComboboxGetSelectedValue("case-graduate") == "2") && ($("input[name=set-amt-indemnitor-year]:checked").val() == "Y") && (($("#amt-indemnitor-year").val().length == 0) || ($("#amt-indemnitor-year").val() == "0")))) {
+        _error = true;
+        _msg = "กรุณาใส่ระยะเวลาทำงานชดใช้หลังสำเร็จการศึกษา";
+        _focus = "#amt-indemnitor-year";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("cal-date-condition") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกวิธีคิดและคำนวณเงินชดใช้";
+        _focus = ".cal-date-condition-combobox-input";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -305,9 +377,14 @@ function ValidateCPTabPayBreakContract(_action) {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add") ResetFrmCPTabPayBreakContract(false);
-                    if (_action == "update") ResetFrmCPTabPayBreakContract(true);
-                    if (_action == "del") OpenTab("link-tab1-cp-tab-pay-break-contract", "#tab1-cp-tab-pay-break-contract", "", true, "", "","");
+                    if (_action == "add")
+                        ResetFrmCPTabPayBreakContract(false);
+
+                    if (_action == "update")
+                        ResetFrmCPTabPayBreakContract(true);
+
+                    if (_action == "del")
+                        OpenTab("link-tab1-cp-tab-pay-break-contract", "#tab1-cp-tab-pay-break-contract", "", true, "", "", "");
                 }
             }
         });
@@ -323,7 +400,7 @@ function ResetFrmCPTabScholarship(_disable) {
         ComboboxDisable("programcptabprogram");
         TextboxDisable("#scholarship-money");
         $("#button-style11").hide();
-        $("#button-style12").show();        
+        $("#button-style12").show();
         return;
     }
 
@@ -357,10 +434,29 @@ function ValidateCPTabScholarship(_action) {
     var _msg;
     var _focus;
 
-    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") { _error = true; _msg = "กรุณาเลือกระดับการศึกษา"; _focus = ".dlevel-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") { _error = true; _msg = "กรุณาเลือกคณะ"; _focus = ".faculty-combobox-input"; }
-    if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") { _error = true; _msg = "กรุณาเลือกหลักสูตร"; _focus = ".program-combobox-input"; }
-    if (_error == false && (($("#scholarship-money").val().length == 0) || ($("#scholarship-money").val() == "0"))) { _error = true; _msg = "กรุณาใส่จำนวนเงินทุนการศึกษา"; _focus = "#scholarship-money"; }
+    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกระดับการศึกษา";
+        _focus = ".dlevel-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกคณะ";
+        _focus = ".faculty-combobox-input";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกหลักสูตร";
+        _focus = ".program-combobox-input";
+    }
+
+    if (_error == false && (($("#scholarship-money").val().length == 0) || ($("#scholarship-money").val() == "0"))) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินทุนการศึกษา";
+        _focus = "#scholarship-money";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -397,9 +493,14 @@ function ValidateCPTabScholarship(_action) {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add") ResetFrmCPTabScholarship(false);
-                    if (_action == "update") ResetFrmCPTabScholarship(true);
-                    if (_action == "del") OpenTab("link-tab1-cp-tab-scholarship", "#tab1-cp-tab-scholarship", "", true, "", "", "");
+                    if (_action == "add")
+                        ResetFrmCPTabScholarship(false);
+
+                    if (_action == "update")
+                        ResetFrmCPTabScholarship(true);
+
+                    if (_action == "del")
+                        OpenTab("link-tab1-cp-tab-scholarship", "#tab1-cp-tab-scholarship", "", true, "", "", "");
                 }
             }
         });

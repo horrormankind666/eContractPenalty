@@ -9,12 +9,16 @@
     $("#pursuant").val($("#pursuant-hidden").val());
     $("#pursuant-book-date").val($("#pursuant-book-date-hidden").val());
     InitCalendar("#pursuant-book-date");
+
     if ($("#action").val() == "update") {
         var _replyResult = $("input[name=reply-result]:radio");
 
         $("#reply-date").val($("#reply-date-hidden").val());        
         InitCalendarFromTo("#repay-date", false, "#reply-date", false);
-        if ($("#previous-reply-date").length > 0) InitCalendarFromTo("#previous-reply-date", true, "#repay-date", false);
+
+        if ($("#previous-reply-date").length > 0)
+            InitCalendarFromTo("#previous-reply-date", true, "#repay-date", false);
+
         _replyResult.attr("checked", false);
         return;
     }
@@ -142,14 +146,38 @@ function ValidateCPTransRepayContract(_action) {
     var _msg;
     var _focus;
 
-    if (_error == false && ($("#repay-date").val().length == 0)) { _error = true; _msg = "กรุณาใส่วันที่แจังให้ผู้ผิดสัญญาชำระหนี้"; _focus = "#repay-date"; }  
+    if (_error == false && ($("#repay-date").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่แจังให้ผู้ผิดสัญญาชำระหนี้";
+        _focus = "#repay-date";
+    }  
+
     if (_action == "update") {
         var _replyResult = $("input[name=reply-result]:checked");
 
-        if (_error == false && (($("#pursuant").val().length > 0 && $("#pursuant-book-date").val().length == 0) || ($("#pursuant").val().length == 0 && $("#pursuant-book-date").val().length > 0))) { _error = true; _msg = "กรุณาใส่ข้อมูลเกี่ยวกับหนังสือขอให้ชดใช้เงินให้ครบถ้วน"; _focus = "#pursuant"; }  
-        if (_error == false && ($("#reply-date").val().length > 0 && _replyResult.length > 0 && $("#pursuant").val().length == 0 && $("#pursuant-book-date").val().length == 0)) { _error = true; _msg = "กรุณาใส่ข้อมูลเกี่ยวกับหนังสือขอให้ชดใช้เงิน"; _focus = "#pursuant"; }
-        if (_error == false && ($("#reply-date").val().length == 0 && _replyResult.length > 0)) { _error = true; _msg = "กรุณาใส่วันที่รับเอกสารตอบกลับจากไปรษณีย์"; _focus = "#reply-date"; }
-        if (_error == false && ($("#reply-date").val().length > 0 && _replyResult.length == 0)) { _error = true; _msg = "กรุณาใส่ผลการรับทราบการแจ้งชำระหนี้"; _focus = "#reply-yes-input"; }
+        if (_error == false && (($("#pursuant").val().length > 0 && $("#pursuant-book-date").val().length == 0) || ($("#pursuant").val().length == 0 && $("#pursuant-book-date").val().length > 0))) {
+            _error = true;
+            _msg = "กรุณาใส่ข้อมูลเกี่ยวกับหนังสือขอให้ชดใช้เงินให้ครบถ้วน";
+            _focus = "#pursuant";
+        }
+
+        if (_error == false && ($("#reply-date").val().length > 0 && _replyResult.length > 0 && $("#pursuant").val().length == 0 && $("#pursuant-book-date").val().length == 0)) {
+            _error = true;
+            _msg = "กรุณาใส่ข้อมูลเกี่ยวกับหนังสือขอให้ชดใช้เงิน";
+            _focus = "#pursuant";
+        }
+
+        if (_error == false && ($("#reply-date").val().length == 0 && _replyResult.length > 0)) {
+            _error = true;
+            _msg = "กรุณาใส่วันที่รับเอกสารตอบกลับจากไปรษณีย์";
+            _focus = "#reply-date";
+        }
+
+        if (_error == false && ($("#reply-date").val().length > 0 && _replyResult.length == 0)) {
+            _error = true;
+            _msg = "กรุณาใส่ผลการรับทราบการแจ้งชำระหนี้";
+            _focus = "#reply-yes-input";
+        }
     }
 
     if (_error == true) {
@@ -209,13 +237,40 @@ function ChkRepayStatusCalInterest(_cp2id, _callbackFunc) {
         var _error = false;
         var _msg;
 
-        if (_error == false && _result == "1") { _error = true; _msg = "ยังไม่ได้แจ้งชำระหนี้"; }
-        if (_error == false && _result == "2") { _error = true; _msg = "อยู่ระหว่างการชำระหนี้"; }
-        if (_error == false && _result == "3") { _error = true; _msg = "ชำระหนี้เรียบร้อยแล้ว"; }
-        if (_error == false && _result == "4") { _error = true; _msg = "กำลังรอเอกสารตอบกลับ"; }
-        if (_error == false && _result == "5") { _error = true; _msg = "ผู้ผิดสัญญาไม่รับทราบให้ชำระหนี้"; }
-        if (_error == false && _result == "6") { _error = true; _msg = "กำลังรอเอกสารตอบกลับ"; }
-        if (_error == false && _result == "7") { _error = true; _msg = "ยังไม่ผิดนัดชำระ"; }        
+        if (_error == false && _result == "1") {
+            _error = true;
+            _msg = "ยังไม่ได้แจ้งชำระหนี้";
+        }
+
+        if (_error == false && _result == "2") {
+            _error = true;
+            _msg = "อยู่ระหว่างการชำระหนี้";
+        }
+
+        if (_error == false && _result == "3") {
+            _error = true;
+            _msg = "ชำระหนี้เรียบร้อยแล้ว";
+        }
+
+        if (_error == false && _result == "4") {
+            _error = true;
+            _msg = "กำลังรอเอกสารตอบกลับ";
+        }
+
+        if (_error == false && _result == "5") {
+            _error = true;
+            _msg = "ผู้ผิดสัญญาไม่รับทราบให้ชำระหนี้";
+        }
+
+        if (_error == false && _result == "6") {
+            _error = true;
+            _msg = "กำลังรอเอกสารตอบกลับ";
+        }
+
+        if (_error == false && _result == "7") {
+            _error = true;
+            _msg = "ยังไม่ผิดนัดชำระ";
+        }        
 
         if (_error == true) {
             DialogMessage(_msg, "", false, "");

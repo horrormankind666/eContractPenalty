@@ -1,14 +1,15 @@
-﻿//eCPDataRepay.cs       : สำหรับการแจ้งชำระหนี้
-//Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๐๙/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการแจ้งชำระหนี้
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
 
 public class eCPDataRepay
 {
-    //สำหรับกำหนดสถานะการแจ้งหนี้ที่จะดำเนินการต่อ
     public static string StatusRepayNext(string _action, string _statusRepay)
     {
         string _nextStatus = String.Empty;
@@ -20,7 +21,6 @@ public class eCPDataRepay
         return _nextStatus;
     }
 
-    //สำหรับกำหนดการทำงานจากสถานะการแจ้งชำระหนี้
     public static string ChkActionRepay(string _statusRepay, string _statusReply)
     {
         string _action;
@@ -35,7 +35,6 @@ public class eCPDataRepay
         return _action;
     }
     
-    //สำหรับแสดงฟอร์มที่ใช้คำนวณดอกเบี้ยผิดนัดชำระ
     private static string DetailCalInterestOverpayment(string[,] _data)
     {
         string _html = String.Empty;
@@ -161,7 +160,6 @@ public class eCPDataRepay
         return _html;
     }
 
-    //สำหรับตรวจสอบการแสดงฟอร์มที่ใช้คำนวณดอกเบี้ยผิดนัดชำระ
     public static string DetailCalInterestOverpayment(string _cp2id)
     {
         string _html = String.Empty;
@@ -170,11 +168,13 @@ public class eCPDataRepay
         string[,] _data2;
 
         _data1 = eCPDB.ListCPTransRepayContract(_cp2id);
+
         if (_data1.GetLength(0) > 0)
         {
             _statusRepay = _data1[0, 2];
 
             _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepay);
+
             if (_data2.GetLength(0) > 0)
                 _data1[0, 8] = _data2[0, 5];
 
@@ -184,7 +184,6 @@ public class eCPDataRepay
         return _html;
     } 
     
-    //สำหรับเพิ่มและแก้ไขการแจ้งชำระหนี้
     private static string AddUpdateCPTransRepayContract(string[,] _data)
     {        
         int _i;
@@ -252,6 +251,7 @@ public class eCPDataRepay
                  "      <input type='hidden' id='pursuant-book-date-hidden' value='" + _pursuantBookDateDefault + "' />";
 
         //_data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
+
         if (_data2.GetLength(0) > 0)
         {
             _html += "  <div>" +
@@ -435,7 +435,8 @@ public class eCPDataRepay
 
                 string _clearBottom = String.Empty;
 
-                if (_statusRepayDefault.Equals("1") && _action.Equals("add")) _clearBottom = "clear-bottom";
+                if ((_action.Equals("add") || _action.Equals("stop")) && _statusPaymentDefault.Equals("1"))
+                    _clearBottom = "clear-bottom";
 
                 _html += "<div class='box3'></div>" +
                          "<div>" + 
@@ -521,7 +522,6 @@ public class eCPDataRepay
         return _html;
     }
 
-    //สำหรับแสดงประวัติการแจ้งชำระหนี้
     private static string ViewCPTransRepayContract(string[,] _data)
     {
         int _i;
@@ -576,7 +576,8 @@ public class eCPDataRepay
         _html += "<div class='form-content' id='view-cp-trans-repay-contract'>" +
                  "  <div>";
 
-        //_data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);       
+        //_data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
+
         if (_data2.GetLength(0) > 0)
         {
             _html += "  <div>" +
@@ -667,33 +668,32 @@ public class eCPDataRepay
         return _html;
     }
 
-    //สำหรับตรวจสอบการแสดงฟอร์มเพิ่มและแก้ไขการแจ้งชำระหนี้
     public static string AddUpdateCPTransRepayContract(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTransRepayContract(_data);
 
         return _html;
     }
 
-    //สำหรับตรวจสอบการแสดงฟอร์มประวัติการแจ้งชำระหนี้
     public static string ViewCPTransRepayContract(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += ViewCPTransRepayContract(_data);
 
         return _html;
     }
 
-    //สำหรับแสดงรายการแจ้งที่ถูกรับแล้ว
     public static string ListRepay(HttpContext _c)
     {
         string _html = String.Empty;
@@ -718,15 +718,16 @@ public class eCPDataRepay
         _recordCount = eCPDB.CountRepay(_c);
         if (_recordCount > 0)
         {
-            _data = eCPDB.ListRepay(_c);
+            _data = eCPDB.ListRepay1(_c);
 
             _html += "<div class='table-content'>";
 
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
                 _overpayment = String.Empty;
+                /*
                 _data1 = eCPDB.ListCPTransRepayContract(_data[_i, 1]);
-        
+
                 if ((_data1.GetLength(0) > 0) && (!String.IsNullOrEmpty(_data1[0, 8])) && (_data1[0, 7].Equals("1")))
                 {
                     _repayDate = eCPUtil.RepayDate(_data1[0, 8]);
@@ -735,7 +736,16 @@ public class eCPDataRepay
                     _overpaymentArray = Util.CalcDate(_dateA, _dateB);
                     _overpayment = !_overpaymentArray[0].Equals(0) ? _overpaymentArray[0].ToString("#,##0") : "-";
                 }
-                                
+                */
+                if ((!String.IsNullOrEmpty(_data[_i, 21])) && (_data[_i, 15].Equals("1")))
+                {
+                    _repayDate = eCPUtil.RepayDate(_data[_i, 21]);
+                    _dateA = DateTime.Parse(_repayDate[2], _provider);
+                    _dateB = DateTime.Parse(Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")), _provider);
+                    _overpaymentArray = Util.CalcDate(_dateA, _dateB);
+                    _overpayment = !_overpaymentArray[0].Equals(0) ? _overpaymentArray[0].ToString("#,##0") : "-";
+                }
+
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _trackingStatus = _data[_i, 10] + _data[_i, 11] + _data[_i, 12] + _data[_i, 13];
                 _callFunc = "ViewRepayStatusViewTransRequireContract('" + _data[_i, 2] + "','" + _data[_i, 1] + "','" + _trackingStatus + "','r')";
@@ -774,7 +784,6 @@ public class eCPDataRepay
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับตรวจสอบสถานะรายการแจ้งเพื่อใช้แสดงฟอร์มคำนวณดอกเบี้ยผิดนัดชำระ
     public static string ListSearchRepayStatusCalInterestOverpayment(string _cp2id)
     {
         string _result = String.Empty;

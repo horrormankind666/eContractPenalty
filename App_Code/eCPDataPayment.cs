@@ -1,59 +1,59 @@
-﻿//eCPDataPayment.cs     : สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง
-//Date Created          : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๑๔/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
 
 public class eCPDataPayment
 {
-    //สำหรับแสดงยอดคงเหลือของเงินที่ต้องชดใช้ตามสัญญา
     public static string ChkBalance()
     {
-    string _html = String.Empty;
+        string _html = String.Empty;
 
-    _html += "<div class='form-content' id='chk-balance'>" +
-             "  <div>" +
-             "      <div class='content-left' id='chk-balance-label'>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>เงินต้นคงเหลือยกมา</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยครั้งนี้</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยค้างจ่ายยกมา</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>ยอดเงินคงเหลือต้องชำระ</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่ได้รับชำระครั้งนี้</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>รับชำระเงินต้นครั้งนี้</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>รับชำระดอกเบี้ยครั้งนี้</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>เงินต้นคงเหลือยกไป</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยค้างจ่ายครั้งนี้</div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'>รวมยอดดอกเบี้ยค้างจ่ายยกไป</div></div>" +
-             "      </div>" +
-             "      <div class='content-left' id='chk-balance-input'>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-capital'></span><span class='chk-balance-unit' id='chk-balance-capital-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-total-interest'></span><span class='chk-balance-unit' id='chk-balance-total-interest-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-total-accrued-interest'></span><span class='chk-balance-unit' id='chk-balance-total-accrued-interest-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-total-payment'></span><span class='chk-balance-unit' id='chk-balance-total-payment-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-pay'></span><span class='chk-balance-unit' id='chk-balance-pay-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-pay-capital'></span><span class='chk-balance-unit' id='chk-balance-pay-capital-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-pay-interest'></span><span class='chk-balance-unit' id='chk-balance-pay-interest-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-remain-capital'></span><span class='chk-balance-unit' id='chk-balance-remain-capital-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-accrued-interest'></span><span class='chk-balance-unit' id='chk-balance-accrued-interest-unit'> บาท</span></div></div>" +
-             "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-remain-accrued-interest'></span><span class='chk-balance-unit' id='chk-balance-remain-accrued-interest-unit'> บาท</span></div></div>" +
-             "      </div>" +
-             "  </div>" +
-             "  <div class='clear'></div>" +
-             "  <div class='button'>" +
-             "      <div class='button-style1'>" +
-             "          <ul>" +
-             "              <li><a href='javascript:void(0)' onclick=CloseFrm(true,'')>ปิด</a></li>" +
-             "          </ul>" +
-             "      </div>" +
-             "  </div>" +
-             "</div>";
+        _html += "<div class='form-content' id='chk-balance'>" +
+                 "  <div>" +
+                 "      <div class='content-left' id='chk-balance-label'>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>เงินต้นคงเหลือยกมา</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยครั้งนี้</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยค้างจ่ายยกมา</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>ยอดเงินคงเหลือต้องชำระ</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่ได้รับชำระครั้งนี้</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>รับชำระเงินต้นครั้งนี้</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>รับชำระดอกเบี้ยครั้งนี้</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>เงินต้นคงเหลือยกไป</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยค้างจ่ายครั้งนี้</div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'>รวมยอดดอกเบี้ยค้างจ่ายยกไป</div></div>" +
+                 "      </div>" +
+                 "      <div class='content-left' id='chk-balance-input'>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-capital'></span><span class='chk-balance-unit' id='chk-balance-capital-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-total-interest'></span><span class='chk-balance-unit' id='chk-balance-total-interest-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-total-accrued-interest'></span><span class='chk-balance-unit' id='chk-balance-total-accrued-interest-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-total-payment'></span><span class='chk-balance-unit' id='chk-balance-total-payment-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-pay'></span><span class='chk-balance-unit' id='chk-balance-pay-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-pay-capital'></span><span class='chk-balance-unit' id='chk-balance-pay-capital-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-pay-interest'></span><span class='chk-balance-unit' id='chk-balance-pay-interest-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-remain-capital'></span><span class='chk-balance-unit' id='chk-balance-remain-capital-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-accrued-interest'></span><span class='chk-balance-unit' id='chk-balance-accrued-interest-unit'> บาท</span></div></div>" +
+                 "          <div class='form-label-discription-style'><div class='form-label-style'><span class='chk-balance-val' id='chk-balance-remain-accrued-interest'></span><span class='chk-balance-unit' id='chk-balance-remain-accrued-interest-unit'> บาท</span></div></div>" +
+                 "      </div>" +
+                 "  </div>" +
+                 "  <div class='clear'></div>" +
+                 "  <div class='button'>" +
+                 "      <div class='button-style1'>" +
+                 "          <ul>" +
+                 "              <li><a href='javascript:void(0)' onclick=CloseFrm(true,'')>ปิด</a></li>" +
+                 "          </ul>" +
+                 "      </div>" +
+                 "  </div>" +
+                 "</div>";
 
-    return _html;
+        return _html;
     }
 
-    //สำหรับเลือกและบันทึกช่องทางหรือวิธีการชำระหนี้
     public static string AddDetailPayChannel(string _payChannel)
     {
         string _html = String.Empty;
@@ -156,7 +156,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับเลือกที่จะคิดหรือไม่คิดดอกเบี้ย
     private static string CalInterestYesNo(string _typeInterest)
     {
         string _html = String.Empty;
@@ -188,7 +187,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงรายละเอียดการคำนวณดอกเบี้ยผิดนัดชำระ
     private static string FrmOverpayment(string _formatPayment, string _statusPayment, string _repayDateStart, string _repayDateEnd, double _overpaymentYear, double _overpaymentDay)
     {
         string _html = String.Empty;
@@ -330,7 +328,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับบันทึกการชำระหนี้
     private static string FrmPayment()
     {
         string _html = String.Empty;
@@ -490,7 +487,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงหน้าหลักการบันทึกการชำระหนี้ โดยชำระแบบผ่อนชำระ
     private static string AddCpTransPaymentPayRepay(string[,] _data)
     {
         string _html = String.Empty;
@@ -607,7 +603,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงหน้าหลักการบันทึกการชำระหนี้ โดยชำระแบบเต็มจำนวน
     private static string AddCpTransPaymentFullRepay(string[,] _data)
     {
         string _html = String.Empty;
@@ -682,13 +677,13 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงรายละเอียดการชำระหนี้ในแต่ละงวด
     public static string DetailTransPayment(string _cp2id)
     {
         string _html = String.Empty;
         string[,] _data;
 
-        _data = eCPDB.ListDetailTransPayment(_cp2id);       
+        _data = eCPDB.ListDetailTransPayment(_cp2id);
+
         if (_data.GetLength(0) > 0)
         {
             string _calInterestYesNoDefault = !String.IsNullOrEmpty(_data[0, 2]) ? eCPUtil._calInterestYesNo[Util.FindIndexArray2D(1, eCPUtil._calInterestYesNo, _data[0, 2]) - 1, 0] : String.Empty;
@@ -904,7 +899,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงตารางการชำระหนี้
     public static string ListTransPayment(string[,] _data)
     {
         int _i;
@@ -955,14 +949,13 @@ public class eCPDataPayment
                      "  <li class='table-col' id='table-content-trans-payment-total-col10'></li>" +
                      "  <li class='table-col' id='table-content-trans-payment-total-col11'></li>" +
                      "</ul>";
-        }            
+        }
         
         _html += "</div>";
 
         return _html;
     }
 
-    //สำหรับแสดงหน้าหลักตารางการชำระหนี้
     private static string DetailCpTransPayment(string[,] _data)
     {
         string _html = String.Empty;
@@ -1012,7 +1005,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงเงินที่ต้องชดใช้และรูปแบบการชำระหนี้
     private static string DetailPenaltyAndFormatPayment(string[,] _data)
     {
         string _html = String.Empty;
@@ -1083,7 +1075,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มการบันทึกการชำระหนี้
     public static string AddDetailCPTransPayment(string _cp2id, string _action)
     {
         string _html = String.Empty;
@@ -1092,11 +1083,13 @@ public class eCPDataPayment
         string[,] _data2;
 
         _data1 = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
+
         if (_data1.GetLength(0) > 0)
         {
             _statusRepay = _data1[0, 6];
 
             _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepay);
+
             if (_data2.GetLength(0) > 0)
                 _data1[0, 24] = _data2[0, 5];
 
@@ -1117,13 +1110,13 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงหน้าหลักการชำระหนี้
     public static string TabAddDetailCPTransPayment(string _cp2id)
     {
         string _html = String.Empty;
         string[,] _data;
                 
         _data = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
+
         if (_data.GetLength(0) > 0)
         {
             string _statusPayment = _data[0, 7];
@@ -1210,7 +1203,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มให้เลือกรูปแบบการชำระหนี้
     public static string SelectFormatPayment(string _cp2id)
     {
         string _html = String.Empty;
@@ -1257,7 +1249,6 @@ public class eCPDataPayment
         return _html;
     }
 
-    //สำหรับแสดงรายการแจ้งที่ผู้ผิดสัญญาได้รับทราบให้ชำระหนี้
     public static string ListPaymentOnCPTransRequireContract(HttpContext _c)
     {
         string _html = String.Empty;
@@ -1280,6 +1271,7 @@ public class eCPDataPayment
             _data = eCPDB.ListPaymentOnCPTransRequireContract(_c);
 
             _html += "<div class='table-content'>";
+
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
@@ -1321,7 +1313,6 @@ public class eCPDataPayment
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงหนัาหลักรายการแจ้งที่ผู้ผิดสัญญาได้รับทราบให้ชำระหนี้
     public static string TabPaymentOnCPTransRequireContract()
     {
         string _html = String.Empty;

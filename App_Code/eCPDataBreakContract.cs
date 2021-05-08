@@ -1,14 +1,15 @@
-﻿//eCPDataBreakContract.cs   : สำหรับการทำรายการแจ้ง
-//Date Created              : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified        : ๐๙/๐๔/๒๕๖๔
-//Create By                 : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการทำรายการแจ้ง
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
 
 public class eCPDataBreakContract
 {
-    //สำหรับบันทึกรายการที่ต้องการแก้ไข เพื่อระบุรายละเอียดสำหรับแก้ไขให้ต้นเรื่องทราบ
     public static string AddCommentBreakContract(string _cp1id, string _action, string _from)
     {
         string _html = String.Empty;
@@ -34,7 +35,6 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    //สำหรับเพิ่มนักศึกษาที่ต้องการแจ้งผิดสัญญา
     public static string AddProfileStudent()
     {
         string _html = String.Empty;
@@ -121,7 +121,6 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    //สำหรับเพิ่มและแก้ไขรายการแจ้ง
     private static string AddUpdateCPTransBreakContract(string _action, string[,] _data)
     {
         string _html = String.Empty;
@@ -540,7 +539,6 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    //สำหรับเพิ่มรายการแจ้ง
     public static string AddCPTransBreakContract()
     {
         string _html = String.Empty;
@@ -551,20 +549,19 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    //สำหรับแก้ไขรายการแจ้ง
     public static string UpdateCPTransBreakContract(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransBreakContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTransBreakContract("update", _data);
 
         return _html;
     }
 
-    //สำหรับแสดงรายละเอียดรายการแจ้ง
     public static string DetailCPTransBreakRequireContract(string _cp1id, string[,] _data, string _status)
     {
         string _html = String.Empty;       
@@ -906,7 +903,6 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    //สำหรับแสดงรายละเอียดรายการแจ้ง
     public static string DetailCPTransBreakContract(string _cp1id, string _status)
     {
         string _html = String.Empty;
@@ -914,6 +910,7 @@ public class eCPDataBreakContract
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransBreakContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
         {
             _html = DetailCPTransBreakRequireContract(_cp1id, _data, _status);
@@ -922,7 +919,6 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    //สำหรับแสดงผลการค้นหารายการแจ้ง
     public static string ListSearchStudentCPTransBreakContract(string _studentid)
     {
         string[,] _data;
@@ -942,7 +938,6 @@ public class eCPDataBreakContract
         return "<error>" + _error + "<error>";
     }
 
-    //สำหรับแสดงผลการค้นหาสถานะรายการแจ้ง
     public static string ListSearchTrackingStatusCPTransBreakContract(string _cp1id)
     {
         string _trackingStatus = String.Empty;
@@ -980,6 +975,7 @@ public class eCPDataBreakContract
             _data = eCPDB.ListCPTransBreakContract(_c);
 
             _html += "<div class='table-content'>";
+
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
                 _groupNum = !_data[_i, 8].Equals("0") ? " ( กลุ่ม " + _data[_i, 8] + " )" : "";
@@ -1026,6 +1022,7 @@ public class eCPDataBreakContract
                              "</ul>";
                 }
             }
+
             _html += "</div>";
 
             _currentPage = String.IsNullOrEmpty(_c.Request["currentpage"]) ? 0 : int.Parse(_c.Request["currentpage"]);
@@ -1039,7 +1036,6 @@ public class eCPDataBreakContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงหน้าหลักของการทำรายการแจ้ง
     public static string TabCPTransBreakContract()
     {
         string _html = String.Empty;
@@ -1161,7 +1157,7 @@ public class eCPDataBreakContract
                  "  </div>" +
                  "  <div class='tab-content' id='tab3-cp-trans-break-contract-content'>" +
                  "      <div class='box1 addupdate-data-trans-break-contract' id='update-data-trans-break-contract'></div>" +
-                 "  </div>" +                 
+                 "  </div>" +
                  "</div>";
 
         return _html;

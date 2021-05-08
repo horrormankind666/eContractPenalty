@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Web.UI;
 
-public partial class FileProcess : System.Web.UI.Page
+public partial class FileProcess : Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {

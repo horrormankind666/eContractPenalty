@@ -1,9 +1,11 @@
 ﻿<%@ WebHandler Language="C#" Class="eCPHandler" %>
 
-//eCPHandler.ashx       : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
-//Date Created          : 06/08/2555
-//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+/*
+Description         : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
+Date Created        : 06/08/2555
+Last Date Modified  : ๑๔/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
@@ -11,7 +13,6 @@ using System.Web.SessionState;
 
 public class eCPHandler : IHttpHandler, IRequiresSessionState
 {
-    //สำหรับส่ง Request ไปตามเงื่อนไข
     public void ProcessRequest (HttpContext _context)
     {
         _context.Response.ContentType = "text/plain";
@@ -85,7 +86,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     private static string _head;
     private static string _content;
 
-    //สำหรับ Set ค่าของหน้าเว็บ เพื่อส่งกลับไปแสดงผล
     private string SetValuePageReturn()
     {
         string _return = "<error>" + _error + "<error><head>" + _head + "<head><menubar>" + _menuBar + "<menubar><menu>" + _menu + "<menu><content>" + _content + "<content>";
@@ -93,7 +93,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         return _return;
     }
 
-    //สำหรับ Set ค่าของหน้าเว็บ ใน Cookies
     private void SetPage(HttpContext _c)
     {
         int _section;
@@ -116,13 +115,13 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write("<section>" + _section + "<section><page>" + _pid + "<page>");
     }
 
-    //สำหรับแสดงหน้าเว็บ
     private void ShowPage(HttpContext _c)
     {
         bool _loginResult;
         eCPUtil _util = new eCPUtil();
 
         _loginResult = eCPDB.ChkLogin();
+
         if (!_loginResult)
         {
             _error = 1;
@@ -143,7 +142,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(SetValuePageReturn());
     }
 
-    //สำหรับตรวจสอบการเข้าระบบ
     private void Signin(HttpContext _c)
     {
         bool _loginResult = eCPDB.Signin(_c.Request["authen"]);
@@ -158,13 +156,11 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(SetValuePageReturn());
     }
 
-    //สำหรับออกจากระบบ
     private void Signout()
     {
         eCPDB.Signout();
     }
 
-    //สำหรับ Set ค่าที่ใช้ในแสดงฟอร์มต่าง ๆ ตามเงื่อนไข
     private void ShowForm(HttpContext _c)
     {
         string _frmOrder = _c.Request["frm"];
@@ -179,123 +175,86 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         switch (_frmOrder)
         {
             case "searchcptabuser":
-            {
                 _frm = eCPDataFormSearch.SearchCPTabUser();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-tab-user";
                 break;
-            }
             case "addcptabuser":
-            {
                 _frm = eCPDataUser.AddCPTabuser();
                 break;
-            }
             case "updatecptabuser":
-            {
                 char[] _separator = new char[] { ':' };
                 string[] _userpass = (_c.Request["id"]).Split(_separator);
 
                 _frm = eCPDataUser.UpdateCPTabUser(_userpass[0], _userpass[1]);
                 break;
-            }
             case "addcptabprogram":
-            {
                 _frm = eCPDataConfiguration.AddCPTabProgram();
                 break;
-            }
             case "updatecptabprogram":
-            {
                 _frm = eCPDataConfiguration.UpdateCPTabProgram(_c.Request["id"]);
                 break;
-            }
             case "detailcptabcaldate":
-            {
                 _frm = eCPDataConfiguration.DetailCPTabCalDate(_c.Request["id"]);
                 _width = 750;
                 _height = 0;
                 _title = "detail-cp-tab-cal-date";
                 break;
-            }
             case "addcptabinterest":
-            {
                 _frm = eCPDataConfiguration.AddCPTabInterest();
                 break;
-            }
             case "updatecptabinterest":
-            {
                 _frm = eCPDataConfiguration.UpdateCPTabInterest(_c.Request["id"]);
                 break;
-            }
             case "addcptabpaybreakcontract":
-            {
                 _frm = eCPDataConfiguration.AddCPTabPayBreakContract();
                 break;
-            }
             case "updatecptabpaybreakcontract":
-            {
                 _frm = eCPDataConfiguration.UpdateCPTabPayBreakContract(_c.Request["id"]);
                 break;
-            }
             case "addcptabscholarship":
-            {
                 _frm = eCPDataConfiguration.AddCPTabScholarship();
                 break;
-            }
             case "updatecptabscholarship":
-            {
                 _frm = eCPDataConfiguration.UpdateCPTabScholarship(_c.Request["id"]);
                 break;
-            }
             case "addprofilestudent":
-            {
                 _frm = eCPDataBreakContract.AddProfileStudent();
                 _width = 831;
                 _height = 0;
                 _title = "add-profile-student";
                 break;
-            }
             case "searchstudentwithresult":
-            {
                 _frm = eCPDataFormSearch.SearchStudentWithResult();
                 _width = 900;
                 _height = 0;
                 _title = "search-student";
                 break;
-            }
             case "addcptransbreakcontract":
-            {
                 _frm = eCPDataBreakContract.AddCPTransBreakContract();
                 break;
-            }
             case "updatecptransbreakcontract":
-            {
                 _frm = eCPDataBreakContract.UpdateCPTransBreakContract(_c.Request["id"]);
                 break;
-            }
             case "searchcptransbreakcontract":
-            {
                 _frm =  eCPDataFormSearch.SearchCPTransBreakContract();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-trans-break-contract";
                 break;
-            }
             case "detailtrackingstatus":
-            {
                 _frm = "<div id='status-tracking-explanation'></div>";
                 _width = 350;
                 _height = 0;
                 _title = "detail-tracking-status";
                 break;
-            }
             case "detailcptransbreakcontract":
             case "detailcptransrequirecontract":
             case "detailcptransrequirerepaycontract":
             case "receivercptransbreakcontract":
             case "repaycptransrequirecontract":
             case "repaycptransrequirecontract1":
-            {
                 _trackingStatus = _frmOrder.Equals("detailcptransbreakcontract") ? "v1" : _trackingStatus;
                 _trackingStatus = _frmOrder.Equals("detailcptransrequirecontract") ? "v2" : _trackingStatus;
                 _trackingStatus = _frmOrder.Equals("detailcptransrequirerepaycontract") ? "v3" : _trackingStatus;
@@ -319,12 +278,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                     _title = (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") ? "detail-cp-trans-require-contract" : "repay-cp-trans-require-contract");
                 }
                 break;
-            }
             case "addcommenteditbreakcontract":
             case "addcommentcancelbreakcontract":
             case "addcommentcancelrequirecontract":
             case "addcommentcancelrepaycontract":
-            {
                 _action = _frmOrder.Equals("addcommenteditbreakcontract") ? "E" : _action;
                 _action = _frmOrder.Equals("addcommentcancelbreakcontract") ? "C" : _action;
                 _action = _frmOrder.Equals("addcommentcancelrequirecontract") ? "C" : _action;
@@ -340,251 +297,185 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                 _height = 0;
                 _title = "add-comment-" + _action + "-break-contract";
                 break;
-            }
             case "addcptransrequirecontract":
-            {
                 _frm = eCPDataRequireContract.AddCPTransRequireContract(_c.Request["id"]);
                 break;
-            }
             case "updatecptransrequirecontract":
-            {
                 _frm = eCPDataRequireContract.UpdateCPTransRequireContract(_c.Request["id"]);
                 break;
-            }
             case "detailrepaystatus":
-            {
                 _frm = "<div id='status-repay-explanation'></div>";
                 _width = 406;
                 _height = 0;
                 _title = "detail-repay-status";
                 break;
-            }
             case "searchcptransrepaycontract":
-            {
                 _frm = eCPDataFormSearch.SearchCPTransRepayContract();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-trans-repay-contract";
                 break;
-            }
             case "addupdaterepaycontract":
-            {
                 _frm = eCPDataRepay.AddUpdateCPTransRepayContract(_c.Request["id"]);
                 _width = 680;
                 _height = 0;
                 _title = "addupdate-repay-contract";
                 break;
-            }
             case "viewrepaycontract":
-            {
                 _frm = eCPDataRepay.ViewCPTransRepayContract(_c.Request["id"]);
                 _width = 680;
                 _height = 0;
                 _title = "addupdate-repay-contract";
                 break;
-            }
             case "calinterest":
-            {
                 _frm = eCPDataRepay.DetailCalInterestOverpayment(_c.Request["id"]);
                 _width = 721;
                 _height = 0;
                 _title = "cal-interest";
                 break;
-            }
             case "detailpaymentstatus":
-            {
                 _frm = "<div id='status-payment-explanation'></div>";
                 _width = 350;
                 _height = 146;
                 _title = "detail-payment-status";
                 break;
-            }
             case "adddetailcptranspayment":
-            {
                 _frm = eCPDataPayment.TabAddDetailCPTransPayment(_c.Request["id"]);
                 _width = 900;
                 _height = 0;
                 _title = "adddetail-cp-trans-payment";
                 break;
-            }
             case "searchcptranspayment":
-            {
                 _frm = eCPDataFormSearch.SearchCPTransPayment();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-trans-payment";
                 break;
-            }
             case "selectformatpayment":
-            {
                 _frm = eCPDataPayment.SelectFormatPayment(_c.Request["id"]);
                 _width = 500;
                 _height = 0;
                 _title = "select-format-payment";
                 break;
-            }
             case "detailcptranspayment":
-            {
                 _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "detail");
                 break;
-            }
             case "detailtranspayment":
-            {
                 _frm = eCPDataPayment.DetailTransPayment(_c.Request["id"]);
                 _width = 650;
                 _height = 0;
                 _title = "detail-trans-payment";
                 break;
-            }
             case "addcptranspaymentfullrepay":
-            {
                 _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addfullrepay");
                 break;
-            }
             case "addcptranspaymentpayrepay":
-            {
                 _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addpayrepay");
                 break;
-            }
             case "adddetailpaychannel":
-            {
                 _frm = eCPDataPayment.AddDetailPayChannel(_c.Request["id"]);
                 _width = 557;
                 _height = 0;
                 _title = "add-detail-pay-channel";
                 break;
-            }
             case "chkbalance":
-            {
                 _frm = eCPDataPayment.ChkBalance();
                 _width = 557;
                 _height = 0;
                 _title = "chk-balance";
                 break;
-            }
             case "searchcpreporttablecalcapitalandinterest":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportTableCalCapitalAndInterest();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-table-cal-capital-and-interest";
                 break;
-            }
             case "calreporttablecalcapitalandinterest":
-            {
                 _frm = eCPDataReportTableCalCapitalAndInterest.CalReportTableCalCapitalAndInterest(_c.Request["id"]);
                 break;
-            }
             case "searchcpreportstepofwork":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportStepOfWork();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-step-of-work";
                 break;
-            }
             case "reportstepofworkonstatisticrepaybyprogram":
-            {
                 _frm = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram();
                 _width = 750;
                 _height = 0;
                 _title = "report-step-of-work-on-statistic-repay-by-program";
                 break;
-            }
             case "reportstudentonstatisticcontractbyprogram":
-            {
                 _frm = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram();
                 _width = 750;
                 _height = 0;
                 _title = "report-student-on-statistic-contract-by-program";
                 break;
-            }
             case "searchcpreportnoticerepaycomplete":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportNoticeRepayComplete();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-notice-repay-complete";
                 break;
-            }
             case "searchcpreportnoticeclaimdebt":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportNoticeClaimDebt();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-notice-claim-debt";
                 break;
-            }
             case "searchcpreportpaymentbydate":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportStatisticPaymentByDate();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-statistic-payment-by-date";
                 break;
-            }
             case "viewtranspaymentbydate":
-            {
                 _frm = eCPDataReportStatisticPaymentByDate.ViewTransPaymentByDate(_c.Request["id"]);
                 _width = 950;
                 _height = 0;
                 _title = "view-trans-payment-by-date";
                 break;
-            }
             case "viewtranspayment":
-            {
                 _frm = eCPDataReportDebtorContract.ViewTransPayment(_c.Request["id"]);
                 _width = 950;
                 _height = 0;
                 _title = "view-trans-payment";
                 break;
-            }
             case "manual":
-            {
                 _frm = eCPUtil.Manual();
                 _width = 570;
                 _height = 0;
                 _title = "manual";
                 break;
-            }
             case "detailecontractstatus":
-            {
                 _frm = "<div id='status-e-contract'></div>";
                 _width = 350;
                 _height = 117;
                 _title = "detail-e-contract-status";
                 break;
-            }
             case "searchcpreportecontract":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportEContract();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-e-contract";
                 break;
-            }
             case "searchcpreportdebtorcontract":
-            {
                 _frm = eCPDataFormSearch.SearchCPReportDebtorContract();
                 _width = 655;
                 _height = 0;
                 _title = "search-cp-report-debtor-contract";
                 break;
-            }
             case "searchstudentdebtorcontractbyprogram":
-            {
                 _frm = eCPDataFormSearch.SearchStudentDebtorContractByProgram();
                 _width = 750;
                 _height = 0;
                 _title = "search-cp-report-debtor-contract-by-program";
                 break;
-            }
         }
 
         _c.Response.Write("<form>" + _frm + "<form><width>" + _width + "<width><height>" + _height + "<height><title>" + _title + "<title>");
     }
 
-    //สำหรับ Insert, Update, Delete 
     private void AddUpdateData(HttpContext _c)
     {
         string _listUpdate = String.Empty;
@@ -595,25 +486,33 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         string _command = String.Empty;
 
         _loginResult = eCPDB.ChkLogin();
+
         if (!_loginResult)
         {
             _error = 1;
         }
         else
         {
-            if (_c.Request["cmd"].Equals("addcptabuser") || _c.Request["cmd"].Equals("updatecptabuser")) _error = eCPDB.CheckRepeatCPTabUser(_c, "username") > 0 ? 2 : (eCPDB.CheckRepeatCPTabUser(_c, "password") > 0 ? 3 : _error);
-            if (_c.Request["cmd"].Equals("addcptabprogram") || _c.Request["cmd"].Equals("updatecptabprogram")) _error = eCPDB.CheckRepeatCPTabProgram(_c) > 0 ? 2 : _error;
-            if (_c.Request["cmd"].Equals("addcptabpaybreakcontract") || _c.Request["cmd"].Equals("updatecptabpaybreakcontract")) _error = eCPDB.CheckRepeatCPTabPayBreakContract(_c) > 0 ? 2 : _error;
-            if (_c.Request["cmd"].Equals("addcptabscholarship") || _c.Request["cmd"].Equals("updatecptabscholarship")) _error = eCPDB.CheckRepeatCPTabScholarship(_c) > 0 ? 2 : _error;
+            if (_c.Request["cmd"].Equals("addcptabuser") || _c.Request["cmd"].Equals("updatecptabuser"))
+                _error = (eCPDB.CheckRepeatCPTabUser(_c, "username") > 0 ? 2 : (eCPDB.CheckRepeatCPTabUser(_c, "password") > 0 ? 3 : _error));
 
-            if (_error == 0) eCPDB.AddUpdateData(_c);
+            if (_c.Request["cmd"].Equals("addcptabprogram") || _c.Request["cmd"].Equals("updatecptabprogram"))
+                _error = (eCPDB.CheckRepeatCPTabProgram(_c) > 0 ? 2 : _error);
+
+            if (_c.Request["cmd"].Equals("addcptabpaybreakcontract") || _c.Request["cmd"].Equals("updatecptabpaybreakcontract"))
+                _error = (eCPDB.CheckRepeatCPTabPayBreakContract(_c) > 0 ? 2 : _error);
+
+            if (_c.Request["cmd"].Equals("addcptabscholarship") || _c.Request["cmd"].Equals("updatecptabscholarship"))
+                _error = (eCPDB.CheckRepeatCPTabScholarship(_c) > 0 ? 2 : _error);
+
+            if (_error == 0)
+                eCPDB.AddUpdateData(_c);
 
         }
 
         _c.Response.Write("<error>" + _error + "<error>" + _listUpdate);
     }
 
-    //สำหรับแสดงรายการที่ใช้แสดงใน List Box
     private void ShowList(HttpContext _c)
     {
         string _listOrder = _c.Request["list"];
@@ -661,7 +560,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_listData);
     }
 
-    //สำหรับแสดงรายการ
     private void ShowSearch(HttpContext _c)
     {
         string _searchFrom = _c.Request["from"];
@@ -752,7 +650,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_listData);
     }
 
-    //สำหรับการคำนวณต่าง ๆ ตามเงื่อนไข
     private void ShowCalculate(HttpContext _c)
     {
         string _cal = _c.Request["cal"];
@@ -783,7 +680,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         }
     }
 
-    //สำหรับคำนวณทุนการศึกษาที่ต้องชดใช้
     private void ShowCalScholarshipPenalty(HttpContext _c)
     {
         string _scholar = _c.Request["scholar"];
@@ -841,7 +737,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับคำนวณดอกเบี้ยผิดนัดชำระ
     private void ShowCalInterestOverpayment(HttpContext _c)
     {
         /*
@@ -879,8 +774,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _totalInterestOverpayment = double.Parse(_totalInterestOverpayment.ToString("#,##0.00"));
         _totalInterest = _totalInterestOverpayment + double.Parse(_totalInterestPayRepay);
         _totalPayment = double.Parse(_capital) + _totalInterest + double.Parse(_totalAccruedInterest);
-        //_totalPayment = Util.RoundStang(_totalPayment);
-        //_totalInterest = Util.RoundStang(_totalInterest);        
+        /*
+        _totalPayment = Util.RoundStang(_totalPayment);
+        _totalInterest = Util.RoundStang(_totalInterest);
+        */
         _totalInterest = double.Parse(_totalInterest.ToString("#,##0.00"));
         _totalPayment = double.Parse(_totalPayment.ToString("#,##0.00"));
 
@@ -893,7 +790,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับคำนวณดอกเบี้ยผ่อนชำระ
     private void ShowCalInterestPayRepay(HttpContext _c)
     {
         /*
@@ -931,8 +827,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _totalInterestPayRepay = double.Parse(_totalInterestPayRepay.ToString("#,##0.00"));
         _totalInterest = _totalInterestPayRepay + double.Parse(_totalInterestOverpayment);
         _totalPayment = double.Parse(_capital) + _totalInterest + double.Parse(_totalAccruedInterest);
-        //_totalPayment = Util.RoundStang(_totalPayment);
-        //_totalInterest = Util.RoundStang(_totalInterest);        
+        /*
+        _totalPayment = Util.RoundStang(_totalPayment);
+        _totalInterest = Util.RoundStang(_totalInterest);
+        */
         _totalInterest = double.Parse(_totalInterest.ToString("#,##0.00"));
         _totalPayment = double.Parse(_totalPayment.ToString("#,##0.00"));
 
@@ -945,7 +843,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับคำนวณดอกเบี้ยผิดนัดชำระและดอกเบี้ยผ่อนชำระ
     private void ShowCalInterestOverpaymentAndPayRepay(HttpContext _c)
     {
         /*
@@ -1001,8 +898,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
 
         _totalInterest = _totalInterestOverpayment + _totalInterestPayRepay;
         _totalPayment = double.Parse(_capital) + _totalInterest;
-        //_totalPayment = Util.RoundStang(_totalPayment);
-        //_totalInterest = Util.RoundStang(_totalInterest);                
+        /*
+        _totalPayment = Util.RoundStang(_totalPayment);
+        _totalInterest = Util.RoundStang(_totalInterest);
+        */
         _totalInterest = double.Parse(_totalInterest.ToString("#,##0.00"));
         _totalPayment = double.Parse(_totalPayment.ToString("#,##0.00"));
 
@@ -1019,7 +918,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับคำนวณยอดคงเหลือ
     private void ShowCalChkBalance(HttpContext _c)
     {
         /*
@@ -1055,7 +953,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับคำนวณเงินที่ต้องชดใช้
     private void ShowCalTotalPayment(HttpContext _c)
     {
         /*
@@ -1076,7 +973,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับคำนวณตารางเงินต้นและดอกเบี้ย
     private void ShowCalReportTableCalCapitalAndInterest(HttpContext _c)
     {
         /*
@@ -1107,7 +1003,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    //สำหรับส่งออกรายงาน
     private void ShowPrint(HttpContext _c)
     {
         //eCPDB.ConnectStoreProcAddUpdate(eCPDB.InsertTransactionLog("EXPORT", "", "SelectReportExport, " + Request.Form["export-order"], Request.Form["export-send"]));

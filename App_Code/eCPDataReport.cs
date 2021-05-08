@@ -1,7 +1,9 @@
-﻿//eCPDataReport.cs      : สำหรับการแสดงรายงาน
-//Date Created          : ๐๙/๐๘/๒๕๕๕
-//Last Date Modified    : ๑๔/๐๔/๒๕๖๔
-//Create By             : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการแสดงรายงาน
+Date Created        : ๐๙/๐๘/๒๕๕๕
+Last Date Modified  : ๑๔/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,6 @@ using System.Web;
 
 public class eCPDataReport
 {
-    //สำหรับแทนค่าให้กับรายชื่อคณะ
     public static string ReplaceFacultyToShortProgram(string _faculty)
     {
         _faculty = _faculty.Replace("คณะ", "");
@@ -18,7 +19,6 @@ public class eCPDataReport
         return _faculty;
     }
 
-    //สำหรับแทนค่าให้กับรายชื่อหลักสูตร
     public static string ReplaceProgramToShortProgram(string _program)
     {
         _program = _program.Replace("ประกาศนียบัตร", "");
@@ -31,7 +31,6 @@ public class eCPDataReport
 
 public class eCPDataReportStatisticRepay
 {
-    //สำหรับแสดงสถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา ในรายงานสถิติการผิดสัญญาและการชำระหนี้ตามหลักสูตร
     public static string ListReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c)
     {
         string _html = String.Empty;
@@ -110,7 +109,6 @@ public class eCPDataReportStatisticRepay
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงฟอร์มค้นหาและผลการค้นหาสถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา ในรายงานสถิติการผิดสัญญาและการชำระหนี้ตามหลักสูตร
     public static string ListReportStepOfWorkOnStatisticRepayByProgram()
     {
         string _html = String.Empty;
@@ -184,7 +182,6 @@ public class eCPDataReportStatisticRepay
         return _html;
     }
 
-    //สำหรับแสดงสถิติการผิดสัญญาและการชำระหนี้ตามหลักสูตร
     public static string ListCPReportStatisticRepayByProgram(string _acadamicyear)
     {
         string _html = String.Empty;
@@ -226,7 +223,6 @@ public class eCPDataReportStatisticRepay
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav><pagenav>";
     }
 
-    //สำหรับแสดงสถิติการผิดสัญญาและการชำระหนี้
     public static string ListCPReportStatisticRepay(string[,] _data)
     {
         string _html = String.Empty;
@@ -266,7 +262,6 @@ public class eCPDataReportStatisticRepay
         return _html;
     }
 
-    //สำหรับแสดงสถิติการผิดสัญญาและการชำระหนี้
     public static string ListUpdateCPReportStatisticRepay()
     {
         string _html = String.Empty;
@@ -282,7 +277,6 @@ public class eCPDataReportStatisticRepay
         return _return;
     }
 
-    //สำหรับแสดงหน้าหลักสถิติการผิดสัญญาและการชำระหนี้
     public static string TabCPReportStatisticRepay()
     {
         string _html = String.Empty;
@@ -380,7 +374,6 @@ public class eCPDataReportStatisticRepay
 
 public class eCPDataReportStatisticContract
 {
-    //สำหรับแสดงนักศึกษาที่ทำ e-Contract
     private static string ListReportStudentSignContract(HttpContext _c)
     {
         string _html = String.Empty;
@@ -427,7 +420,6 @@ public class eCPDataReportStatisticContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงนักศึกษาที่ผิดสัญญา
     private static string ListReportStudentContractPenalty(HttpContext _c)
     {
         string _html = String.Empty;
@@ -504,7 +496,6 @@ public class eCPDataReportStatisticContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับตรวจสอบการแสดงนักศึกษาที่ทำสัญญาและนักศึกษาที่ผิดสัญญาตามหลักสูตร
     public static string ListReportStudentOnStatisticContractByProgram(HttpContext _c)
     {
         string _result = String.Empty;
@@ -516,7 +507,6 @@ public class eCPDataReportStatisticContract
         return _result;
     }
 
-    //สำหรับแสดงหน้าหลักการแสดงนักศึกษาที่ทำสัญญาและนักศึกษาที่ผิดสัญญาตามหลักสูตร
     public static string ListReportStudentOnStatisticContractByProgram()
     {
         string _html = String.Empty;
@@ -635,9 +625,8 @@ public class eCPDataReportStatisticContract
                  "</div>";
 
         return _html;
-    }            
+    }
 
-    //สำหรับแสดงสถิติการทำสัญญาและการผิดสัญญาของนักศึกษาตามหลักสูตร
     public static string ListCPReportStatisticContractByProgram(string _acadamicyear)
     {
         string _html = String.Empty;
@@ -675,7 +664,6 @@ public class eCPDataReportStatisticContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav><pagenav>";
     }
 
-    //สำหรับแสดงสถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
     public static string ListCPReportStatisticContract(string[,] _data)
     {
         string _html = String.Empty;
@@ -710,7 +698,6 @@ public class eCPDataReportStatisticContract
         return _html;
     }
 
-    //สำหรับแสดงสถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
     public static string ListUpdateCPReportStatisticContract()
     {
         string _html = String.Empty;
@@ -726,7 +713,6 @@ public class eCPDataReportStatisticContract
         return _return;
     }
 
-    //สำหรับแสดงหน้าหลักสถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
     public static string TabCPReportStatisticContract()
     {
         string _html = String.Empty;
@@ -815,7 +801,6 @@ public class eCPDataReportStatisticContract
 
 public class eCPDataReportStepOfWork
 {
-    //สำหรับแสดงสถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา
     public static string ListCPReportStepOfWork(HttpContext _c)
     {
         string _html = String.Empty;
@@ -895,7 +880,6 @@ public class eCPDataReportStepOfWork
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงสถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา
     public static string ListCPReportStepOfWork()
     {
         string _html = String.Empty;
@@ -980,7 +964,6 @@ public class eCPDataReportStepOfWork
 
 public class eCPDataReportTableCalCapitalAndInterest
 {
-    //สำหรับส่งออกตารางคำนวณเงินต้นและดอกเบี้ยออกเป็นไฟล์ PDF
     public static void ExportCPReportTableCalCapitalAndInterest(string _exportSend)
     {
         char[] _separator = new char[] { '&', '.' };
@@ -1107,7 +1090,6 @@ public class eCPDataReportTableCalCapitalAndInterest
         _exportToPdf.ExportToPdfDisconnect();
     }
     
-    //สำหรับแสดงตารางคำนวณเงินต้นและดอกเบี้ย
     public static string ListTableCalCapitalAndInterest(string[,] _data)
     {
         int _i;
@@ -1135,7 +1117,6 @@ public class eCPDataReportTableCalCapitalAndInterest
         return _html;
     }
 
-    //สำหรับแสดงฟอร์มคำนวณเงินต้นและดอกเบี้ย
     public static string CalReportTableCalCapitalAndInterest(string _cp2id)
     {
         string _html = String.Empty;
@@ -1317,7 +1298,6 @@ public class eCPDataReportTableCalCapitalAndInterest
         return _html;
     }
 
-    //สำหรับแสดงรายการชำระหนี้ เพื่อนำมาคำนวณตารางเงินต้นและดอกเบี้ย
     public static string ListCPReportTableCalCapitalAndInterest(HttpContext _c)
     {
         string _html = String.Empty;
@@ -1368,7 +1348,6 @@ public class eCPDataReportTableCalCapitalAndInterest
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
     
-    //สำหรับแสดงหนัาหลักรายการชำระหนี้ ในการคำนวณตารางเงินต้นและดอกเบี้ย
     public static string TabCPReportTableCalCapitalAndInterest()
     {
         string _html = String.Empty;
@@ -1466,7 +1445,6 @@ public class eCPDataReportTableCalCapitalAndInterest
 
 public class eCPDataReportNoticeRepayComplete
 {
-    //สำหรับส่งออกหนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณาเป็นไฟล์ PDF
     private static string ExportCPReportNoticeRepayCompleteSection(int _section, string _font, string[,] _data)
     {
         string _html = String.Empty;
@@ -1558,7 +1536,6 @@ public class eCPDataReportNoticeRepayComplete
         return _html;
     }
 
-    //สำหรับส่งออกหนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณาเป็นไฟล์ PDF
     public static void ExportCPReportNoticeRepayComplete(string _exportSend)
     {
         string _html = String.Empty;
@@ -1762,7 +1739,6 @@ public class eCPDataReportNoticeRepayComplete
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงหน้าหลักรายการแจ้งที่ผู้ผิดสัญญาชำระหนี้เรียบร้อยแล้ว เพื่อออกหนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
     public static string ListCPReportNoticeRepayComplete()
     {
         string _html = String.Empty;
@@ -1846,7 +1822,6 @@ public class eCPDataReportNoticeRepayComplete
 
 public class eCPDataReportNoticeClaimDebt
 {
-    //สำหรับส่งออกหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกันเป็นไฟล์ PDF
     private static string ExportCPReportNoticeClaimDebtSection(int _section, string _font, Dictionary<string, string> _lawyer)
     {        
         string _html = String.Empty;
@@ -1969,8 +1944,7 @@ public class eCPDataReportNoticeClaimDebt
 
         return _html;
     }
-
-    //สำหรับส่งออกหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกันครั้งที่ 1 เป็นไฟล์ PDF
+    
     private static string ExportCPReportNoticeClaimDebtTime1(string[,] _data)
     {
         string _html = String.Empty;
@@ -1978,13 +1952,16 @@ public class eCPDataReportNoticeClaimDebt
         string _font = "TH SarabunPSK, TH Sarabun New";
         string _resignationDate = String.Empty;
    
-        if (_data[0, 19].Equals("N")) _resignationDate = _data[0, 16];
-        if (_data[0, 19].Equals("Y")) _resignationDate = _data[0, 20];
+        if (_data[0, 19].Equals("N"))
+            _resignationDate = _data[0, 16];
+
+        if (_data[0, 19].Equals("Y"))
+            _resignationDate = _data[0, 20];
 
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
-        _lawyer.Add("Fullname",     (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
-        _lawyer.Add("PhoneNumber",  (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
-        _lawyer.Add("Email",        (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
+        _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
+        _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
+        _lawyer.Add("Email", (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
 
         _html += "<table align='center' border='0' cellpadding='0' cellspacing='0'>" +
                  "  <tr>" +
@@ -2099,11 +2076,12 @@ public class eCPDataReportNoticeClaimDebt
         string _pursuantBookDate = String.Empty;
 
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
-        _lawyer.Add("Fullname",     (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
-        _lawyer.Add("PhoneNumber",  (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
-        _lawyer.Add("Email",        (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
+        _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
+        _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
+        _lawyer.Add("Email", (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
 
         _data1 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
+
         if (_data1.GetLength(0) > 0)
         {
             _replyDate = _data1[0, 5];
@@ -2329,7 +2307,6 @@ public class eCPDataReportNoticeClaimDebt
         return _html;
     }
 
-    //สำหรับส่งออกหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกันเป็นไฟล์ PDF
     public static void ExportCPReportNoticeClaimDebt(string _exportSend)
     {
         string _html = String.Empty;
@@ -2366,7 +2343,6 @@ public class eCPDataReportNoticeClaimDebt
         HttpContext.Current.Response.Write(_html);
     }
 
-    //สำหรับแสดงรายการแจ้งที่อยู่ในขั้นตอนแจ้งชำระหนี้ เพื่อออกหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
     public static string ListCPReportNoticeClaimDebt(HttpContext _c)
     {
         string _html = String.Empty;
@@ -2427,7 +2403,6 @@ public class eCPDataReportNoticeClaimDebt
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงหน้าหลักรายการแจ้งที่อยู่ในขั้นตอนแจ้งชำระหนี้ เพื่อออกหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
     public static string ListCPReportNoticeClaimDebt()
     {
         string _html = String.Empty;
@@ -2509,7 +2484,6 @@ public class eCPDataReportNoticeClaimDebt
 
 public class eCPDataReportNoticeCheckForReimbursement
 {
-    //สำหรับส่งออกแบบตรวจสอบการขอชดใช้เงินแทนการทำงานชดใช้ทุนในส่วนของกองบริหารการศึกษาเป็นไฟล์ PDF
     private static void ExportCPReportNoticeCheckForReimbursementV1(string _cp1id)
     {
         string _pdfFont = "Font/Angsima.ttf";
@@ -2541,7 +2515,6 @@ public class eCPDataReportNoticeCheckForReimbursement
         _exportToPdf.ExportToPdfDisconnect();
     }
 
-    //สำหรับส่งออกแบบตรวจสอบการขอชดใช้เงินแทนการทำงานชดใช้ทุนในส่วนของกองกฏหมายเป็นไฟล์ PDF
     public static void ExportCPReportNoticeCheckForReimbursementV2(string _cp1id)
     {
         string _pdfFont = "Font/THSarabun.ttf";
@@ -2575,15 +2548,10 @@ public class eCPDataReportNoticeCheckForReimbursement
         {
             _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 3], 275, 493, 270, 0);
             _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 5], 75, 471, 155, 0);
-            //_exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 6])), 276, 471, 118, 0);
-            //_exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 7])), 427, 471, 118, 0);
             /*
-            ก่อนปรับปรุง
-            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 6]), 276, 471, 118, 0);
-            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 7]), 427, 471, 118, 0);
+            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 6])), 276, 471, 118, 0);
+            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 7])), 427, 471, 118, 0);
             */
-            //ปรับปรุงเมื่อ ๐๙/๐๔/๒๕๖๒
-            //---------------------------------------------------------------------------------------------------
             if (_data[0, 66].Equals("N"))
             {
                 _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 6]), 276, 471, 118, 0);
@@ -2596,7 +2564,7 @@ public class eCPDataReportNoticeCheckForReimbursement
                 _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 68]), 427, 471, 118, 0);
                 _exportToPdf.FillForm(_pdfFont, 13, 0, (eCPUtil._studyLeave[1] + " และกลับเข้าปฏิบัติงาน ตั้งแต่วันที่ " + Util.LongDateTH(_data[0, 71]) + " ถึงวันที่ " + Util.LongDateTH(_data[0, 72])), 43, 449, 507, 0);
             }
-            //---------------------------------------------------------------------------------------------------
+
             _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 14]).ToString("#,##0"), 201, 428, 45, 0);
             _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 15]).ToString("#,##0"), 459, 428, 45, 0);
 
@@ -2608,8 +2576,10 @@ public class eCPDataReportNoticeCheckForReimbursement
         }
 
         _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 354, 406, 192, 0);
-        //_exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 17]).ToString("#,##0.00"), 318, 383, 168, 0);
-        //_exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 17]), 48, 334, 496, 0);
+        /*
+        _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 17]).ToString("#,##0.00"), 318, 383, 168, 0);
+        _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 17]), 48, 334, 496, 0);
+        */
         _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 16]).ToString("#,##0.00"), 318, 383, 168, 0);
         _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 16]), 48, 334, 496, 0);
 
@@ -2621,34 +2591,28 @@ public class eCPDataReportNoticeCheckForReimbursement
 
         _exportToPdf.ExportToPdfDisconnect();
     }
-
-    //สำหรับตรวจสอบการส่งออกแบบตรวจสอบการขอชดใช้เงินแทนการทำงานชดใช้ทุนเป็นไฟล์ PDF
+    
     public static void ExportCPReportNoticeCheckForReimbursement(string _exportSend)
     {
         char[] _separator = new char[] { ':' };
         string[] _cp1idAction = _exportSend.Split(_separator);
         string _cp1id = _cp1idAction[0];
-        string _action = _cp1idAction[1];                            
+        string _action = _cp1idAction[1];
         
         switch (_action)
         {
             case "v1":
-            {
                 ExportCPReportNoticeCheckForReimbursementV1(_cp1id);
                 break;
-            }
             case "v2":
-            {
                 ExportCPReportNoticeCheckForReimbursementV2(_cp1id);
                 break;
-            }
         }
     }
 }
 
 public class eCPDataReportStatisticPaymentByDate
 {
-    //สำหรับแสดงตารางการชำระหนี้ของผู้ผิดสัญญา ในสถิติการชำระหนี้ตามช่วงวันที่
     public static string ViewTransPaymentByDate(string _cp2idDate)
     {
         string _html = String.Empty;
@@ -2661,6 +2625,7 @@ public class eCPDataReportStatisticPaymentByDate
         int _recordCount;
 
         _data = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
+
         if (_data.GetLength(0) > 0)
         {
             string _statusPayment = _data[0, 7];
@@ -2737,7 +2702,6 @@ public class eCPDataReportStatisticPaymentByDate
         return _html;
     }
     
-    //สำหรับแสดงรายการแจ้งที่อยู่ในขั้นตอนการชำระหนี้ตามช่วงวันที่ชำระหนี้
     public static string ListCPReportStatisticPaymentByDate(HttpContext _c)
     {
         string _html = String.Empty;
@@ -2788,7 +2752,6 @@ public class eCPDataReportStatisticPaymentByDate
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงหน้าหลักรายการแจ้งที่อยู่ในขั้นตอนการชำระหนี้ตามช่วงวันที่ชำระหนี้
     public static string ListCPReportStatisticPaymentByDate()
     {
         string _html = String.Empty;
@@ -2880,7 +2843,6 @@ public class eCPDataReportStatisticPaymentByDate
 
 public class eCPDataReportEContract
 {    
-    //สำหรับแสดงนักศึกษาที่ทำสัญญาการเป็นนักศึกษาในระบบ e-Contract
     public static string ListCPReportEContract(HttpContext _c)
     {
         string _html = String.Empty;
@@ -2953,7 +2915,6 @@ public class eCPDataReportEContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงนักศึกษาที่ทำสัญญาการเป็นนักศึกษาในระบบ e-Contract
     public static string ListCPReportEContract()
     {
         string _html = String.Empty;
@@ -3036,8 +2997,7 @@ public class eCPDataReportEContract
 }
 
 public class eCPDataReportDebtorContract
-{
-    //สำหรับส่งออกรายงานลูกหนี้ผิดสัญญาตามเงื่อนไขการค้นหา
+{    
     private static string ExportCPReportDebtorContractSearchCondition(string _exportSend, string _reportOrder)
     {
         string _html = String.Empty;
@@ -3060,20 +3020,14 @@ public class eCPDataReportDebtorContract
         switch (_reportOrder)
         {
             case "reportdebtorcontract":
-            {
                 _colSpan = 18;
                 break;
-            }
             case "reportdebtorcontractpaid":
-            { 
                 _colSpan = 19;
                 break;
-            }
             case "reportdebtorcontractremain":
-            {
                 _colSpan = 21;
                 break; 
-            }
         }
 
         _html += "<table align='center' border='0' cellpadding='0' cellspacing='0'>";
@@ -3129,7 +3083,6 @@ public class eCPDataReportDebtorContract
         return _html;
     }
 
-    //สำหรับส่งออกรายงานลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้เป็นรูปแบบไฟล์ Excel
     public static void ExportCPReportDebtorContractRemain(string _exportSend)
     {
         string _html = String.Empty;
@@ -3352,7 +3305,6 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.Write(_html);
     }
 
-    //สำหรับส่งออกรายงานการรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้เป็นรูปแบบไฟล์ Excel
     public static void ExportCPReportDebtorContractPaid(string _exportSend)
     {
         string _html = String.Empty;
@@ -3557,7 +3509,6 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.Write(_html);
     }
 
-    //สำหรับส่งออกรายงานลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้เป็นรูปแบบไฟล์ Excel
     public static void ExportCPReportDebtorContract(string _exportSend)
     {
         string _html = String.Empty;
@@ -3766,7 +3717,6 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.Write(_html);
     }
  
-    //สำหรับแสดงรายการชำระหนี้ของลูกหนี้
     public static string ViewTransPayment(string _cp2idDate)
     {
         string _html = String.Empty;
@@ -3817,7 +3767,6 @@ public class eCPDataReportDebtorContract
         return _html;
     }
 
-    //สำหรับแสดงรายการลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้ตามหลักสูตร
     public static string ListCPReportDebtorContractByProgram(HttpContext _c)
     {
         string _html = String.Empty;
@@ -3870,7 +3819,6 @@ public class eCPDataReportDebtorContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    //สำหรับแสดงรายการลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
     public static string ListCPReportDebtorContract(HttpContext _c)
     {
         string _html = String.Empty;
@@ -3911,7 +3859,6 @@ public class eCPDataReportDebtorContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav><pagenav>";
     }
 
-    //สำหรับแสดงหน้าหลักของรายงานลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
     public static string TabCPReportDebtorContract(string _reportOrder)
     {
         string _html = String.Empty;
@@ -3921,23 +3868,17 @@ public class eCPDataReportDebtorContract
         switch (_reportOrder)
         {
             case "reportdebtorcontract":
-            {
                 _tabName = "ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้";
                 _title = "cp-report-debtor-contract";
                 break;
-            }
             case "reportdebtorcontractpaid":
-            {
                 _tabName = "การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้";
                 _title = "cp-report-debtor-contract-paid";
                 break;
-            }
             case "reportdebtorcontractremain":
-            { 
                 _tabName = "ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้";
                 _title = "cp-report-debtor-contract-remain";
                 break;
-            }
         }
 
         _html += "<div id='cp-report-debtor-contract-head'>" +
@@ -4086,7 +4027,6 @@ public class eCPDataReportDebtorContract
 
 public class eCPDataReportCertificateReimbursement
 {
-    //สำหรับส่งออกหนังสือรับรองการชำระหนี้เรียบร้อยไฟล์ Word
     private static string ExportCPReportCertificateReimbursementSection(int _section, string _font, Dictionary<string, string> _lawyer)
     {
         string _html = String.Empty;
@@ -4232,7 +4172,6 @@ public class eCPDataReportCertificateReimbursement
         return _html;
     }
 
-    //สำหรับส่งออกหนังสือรับรองการชำระหนี้เรียบร้อยเป็นไฟล์ Word
     public static void ExportCPReportCertificateReimbursement(string _exportSend)
     {
         string _html = String.Empty;
@@ -4246,9 +4185,9 @@ public class eCPDataReportCertificateReimbursement
         _data1 = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
     
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
-        _lawyer.Add("Fullname",     (!String.IsNullOrEmpty(_data1[0, 29]) ? _data1[0, 29] : String.Empty));
-        _lawyer.Add("PhoneNumber",  (!String.IsNullOrEmpty(_data1[0, 30]) ? _data1[0, 30] : _data1[0, 31]));
-        _lawyer.Add("Email",        (!String.IsNullOrEmpty(_data1[0, 32]) ? _data1[0, 32] : String.Empty));
+        _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data1[0, 29]) ? _data1[0, 29] : String.Empty));
+        _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data1[0, 30]) ? _data1[0, 30] : _data1[0, 31]));
+        _lawyer.Add("Email", (!String.IsNullOrEmpty(_data1[0, 32]) ? _data1[0, 32] : String.Empty));
 
         _html += "<table align='center' border='0' cellpadding='0' cellspacing='0'>" +
                  "  <tr>" +
@@ -4319,6 +4258,7 @@ public class eCPDataReportCertificateReimbursement
         string[,] _data4;
 
         _data3 = eCPDB.ListTransPayment(_cp2id, "", "");
+
         if (_data3.GetLength(0) > 0)
         {
             _html += "<tr>" +
@@ -4348,6 +4288,7 @@ public class eCPDataReportCertificateReimbursement
                          "              </div>";                 
 
                 _data4 = eCPDB.ListDetailTransPayment(_data3[0, 1]);
+
                 if (_data4.GetLength(0) > 0)
                 {
                     _overpayment = (!String.IsNullOrEmpty(_data4[0, 8]) ? true : false);
@@ -4425,6 +4366,7 @@ public class eCPDataReportCertificateReimbursement
             for (_i = 0; _i < _data3.GetLength(0); _i++)
             {
                 _data4 = eCPDB.ListDetailTransPayment(_data3[_i, 1]);
+
                 if (_data4.GetLength(0) > 0)
                 {
                     _receiptNo = (!String.IsNullOrEmpty(_data4[0, 28]) ? _data4[0, 28] : String.Empty);

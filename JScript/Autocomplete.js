@@ -22,6 +22,7 @@
 							var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
 							response(select.children("option").map(function () {
 								var text = $(this).text();
+
 								if (this.value && (!request.term || matcher.test(text)))
 									return {
 										label: text.replace(
@@ -53,6 +54,7 @@
 										return false;
 									}
 								});
+
 								if (!valid) {
 									// remove invalid value, as it didn't match anything
 									$(this).val("");
@@ -92,6 +94,7 @@
 
 					// work around a bug (likely same cause as #5265)
 					$(this).blur();
+
 					if (input.is(":disabled") == false)
 						input.select();
 

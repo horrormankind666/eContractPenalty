@@ -44,16 +44,65 @@ function ValidateCalCPReportTableCalCapitalAndInterest() {
     var _payLeast = DelCommas("pay-least-hidden");
     var _periodLeast = DelCommas("period-least-hidden");
 
-    if (_error == false && (_capital.length == 0 || _capital == "0.00")) { _error = true; _msg = "กรุณาใส่จำนวนเงินต้นคงเหลือยกมา"; _focus = "#capital"; }
-    if (_error == false && (_interest.length == 0 || _interest == "0.00")) { _error = true; _msg = "กรุณาใส่อัตราดอกเบี้ย"; _focus = "#interest"; }
-    if (_error == false && parseFloat(_interest) > 100) { _error = true; _msg = "กรุณาใส่อัตราดอกเบี้ยไม่เกิน 100"; _focus = "#interest"; }
-    if (_error == false && ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "0") { _error = true; _msg = "กรุณาเลือกเงื่อนไขที่ใช้คำนวณ"; _focus = "#condition-tablecalcapitalandinterest"; }
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (_pay.length == 0 || _pay == "0.00"))) { _error = true; _msg = "กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือน"; _focus = "#pay"; }
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" && (_period.length == 0 || _period == "0"))) { _error = true; _msg = "กรุณาใส่จำนวนงวดที่ต้องการชำระ"; _focus = "#pay"; }
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (parseFloat(_capital) - parseFloat(_pay)) < 0)) { _error = true; _msg = "<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนให้น้อยกว่าหรือเท่ากับ</div><div>จำนวนเงินต้นคงเหลือยกมา</div>"; _focus = "#pay"; }
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (parseFloat(_pay) < parseFloat(_payLeast)))) { _error = true; _msg = "<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนไม่น้อยกว่า<div><div>" + $("#pay-least-hidden").val() + " บาท</div>"; _focus = "#pay"; }
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" && (parseInt(_period) > parseInt(_periodLeast)))) { _error = true; _msg = "<div>กรุณาใส่จำนวนงวดที่ต้องการชำระให้น้อยกว่าหรือเท่ากับ<div><div>" + $("#period-least-hidden").val() + " งวด</div>"; _focus = "#period"; }
-    if (_error == false && _paymentDate.length == 0) { _error = true; _msg = "กรุณาใส่วันที่เริ่มชำระ"; _focus = "#payment-date"; }
+    if (_error == false && (_capital.length == 0 || _capital == "0.00")) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินต้นคงเหลือยกมา";
+        _focus = "#capital";
+    }
+
+    if (_error == false && (_interest.length == 0 || _interest == "0.00")) {
+        _error = true;
+        _msg = "กรุณาใส่อัตราดอกเบี้ย";
+        _focus = "#interest";
+    }
+
+    if (_error == false && parseFloat(_interest) > 100) {
+        _error = true;
+        _msg = "กรุณาใส่อัตราดอกเบี้ยไม่เกิน 100";
+        _focus = "#interest";
+    }
+
+    if (_error == false && ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "0") {
+        _error = true;
+        _msg = "กรุณาเลือกเงื่อนไขที่ใช้คำนวณ";
+        _focus = "#condition-tablecalcapitalandinterest";
+    }
+
+    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (_pay.length == 0 || _pay == "0.00"))) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือน";
+        _focus = "#pay";
+    }
+
+    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" && (_period.length == 0 || _period == "0"))) {
+        _error = true;
+        _msg = "กรุณาใส่จำนวนงวดที่ต้องการชำระ";
+        _focus = "#pay";
+    }
+
+    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (parseFloat(_capital) - parseFloat(_pay)) < 0)) {
+        _error = true;
+        _msg = "<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนให้น้อยกว่าหรือเท่ากับ</div><div>จำนวนเงินต้นคงเหลือยกมา</div>";
+        _focus = "#pay";
+    }
+
+    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (parseFloat(_pay) < parseFloat(_payLeast)))) {
+        _error = true;
+        _msg = ("<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนไม่น้อยกว่า<div><div>" + $("#pay-least-hidden").val() + " บาท</div>");
+        _focus = "#pay";
+
+    }
+    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" && (parseInt(_period) > parseInt(_periodLeast)))) {
+        _error = true;
+        _msg = ("<div>กรุณาใส่จำนวนงวดที่ต้องการชำระให้น้อยกว่าหรือเท่ากับ<div><div>" + $("#period-least-hidden").val() + " งวด</div>");
+        _focus = "#period";
+    }
+
+    if (_error == false && _paymentDate.length == 0) {
+        _error = true;
+        _msg = "กรุณาใส่วันที่เริ่มชำระ";
+        _focus = "#payment-date";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -101,11 +150,35 @@ function ValidateExportCPReportTableCalCapitalAndInterest() {
     var _msg;
     var _focus;
 
-    if (_error == false && $("#list-table-cal-capital-and-interest").html().length == 0) { _error = true; _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ย"; _focus = ""; }
-    if (_error == false && ($("#capital-old").val() != DelCommas("capital"))) { _error = true; _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง"; _focus = ""; }
-    if (_error == false && ($("#interest-old").val() != DelCommas("interest"))) { _error = true; _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง"; _focus = ""; }
-    if (_error == false && ($("#pay-old").val() != DelCommas("pay"))) { _error = true; _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง"; _focus = ""; }
-    if (_error == false && ($("#payment-date-old").val() != $("#payment-date").val())) { _error = true; _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง"; _focus = ""; }    
+    if (_error == false && $("#list-table-cal-capital-and-interest").html().length == 0) {
+        _error = true;
+        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ย";
+        _focus = "";
+    }
+
+    if (_error == false && ($("#capital-old").val() != DelCommas("capital"))) {
+        _error = true;
+        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        _focus = "";
+    }
+
+    if (_error == false && ($("#interest-old").val() != DelCommas("interest"))) {
+        _error = true;
+        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        _focus = "";
+    }
+
+    if (_error == false && ($("#pay-old").val() != DelCommas("pay"))) {
+        _error = true;
+        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        _focus = "";
+    }
+
+    if (_error == false && ($("#payment-date-old").val() != $("#payment-date").val())) {
+        _error = true;
+        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        _focus = "";
+    }    
 
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
@@ -240,8 +313,15 @@ function PrintDebtorContract(_tabOrder) {
     var _error = false;
     var _msg;
 
-    if (_error == false && _tabOrder == 1 && $("#list-data-report-debtor-contract").html().length == 0) { _error = true; _msg = "ไม่พบรายการที่ต้องการพิมพ์"; }
-    if (_error == false && _tabOrder == 2 && $("#list-data-report-debtor-contract-by-program").html().length == 0) { _error = true; _msg = "ไม่พบรายการที่ต้องการพิมพ์"; }
+    if (_error == false && _tabOrder == 1 && $("#list-data-report-debtor-contract").html().length == 0) {
+        _error = true;
+        _msg = "ไม่พบรายการที่ต้องการพิมพ์";
+    }
+
+    if (_error == false && _tabOrder == 2 && $("#list-data-report-debtor-contract-by-program").html().length == 0) {
+        _error = true;
+        _msg = "ไม่พบรายการที่ต้องการพิมพ์";
+    }
 
     if (_error == true) {
         DialogMessage(_msg, "", false, "");

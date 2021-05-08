@@ -1,14 +1,15 @@
-﻿//eCPDataRequireContract.cs : สำหรับการรับรายการแจ้ง
-//Date Created              : ๐๖/๐๘/๒๕๕๕
-//Last Date Modified        : ๐๙/๐๔/๒๕๖๔
-//Create By                 : Yutthaphoom Tawana
+﻿/*
+Description         : สำหรับการรับรายการแจ้ง
+Date Created        : ๐๖/๐๘/๒๕๕๕
+Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Create By           : Yutthaphoom Tawana
+*/
 
 using System;
 using System.Web;
 
 public class eCPDataRequireContract
 {
-    //สำหรับแสดงฟอร์มเพิ่มและแก้ไขรายละเอียดการรับรายการแจ้ง
     private static string AddUpdateCPTransRequireContract(string _action, string[,] _data)
     {
         string _html = String.Empty;
@@ -566,14 +567,14 @@ public class eCPDataRequireContract
         return _html;
     }
 
-    //สำหรับตรวจสอบการแสดงรายละเอียดการรับรายการแจ้ง
     public static string DetailCPTransRequireContract(string _cp1id, string _status)
     {
         string _html = String.Empty;
         string _trackingStatus = String.Empty;
         string[,] _data;
 
-        _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);        
+        _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
         {
             _html += eCPDataBreakContract.DetailCPTransBreakRequireContract(_cp1id, _data, _status);
@@ -582,33 +583,32 @@ public class eCPDataRequireContract
         return _html;
     }
     
-    //สำหรับตรวจสอบการเพิ่มรายละเอียดการรับรายการแจ้ง
     public static string AddCPTransRequireContract(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransBreakContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTransRequireContract("add", _data);
 
         return _html;
     }
 
-    //สำหรับตรวจสอบการแก้ไขรายละเอียดการรับรายการแจ้ง
     public static string UpdateCPTransRequireContract(string _cp1id)
     {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
+
         if (_data.GetLength(0) > 0)
             _html += AddUpdateCPTransRequireContract("update", _data);
 
         return _html;
     }
 
-    //สำหรับตรวจสอบสถานะการแจ้งชำระหนี้ของรายการแจ้ง
     public static string ListSearchRepayStatusCPTransRequireContract(string _cp1id)
     {
         string _repayStatus = String.Empty;
@@ -618,7 +618,6 @@ public class eCPDataRequireContract
         return "<repaystatus>" + _repayStatus + "<repaystatus>";
     }
 
-    //สำหรับแสดงหน้าหลักการรับรายการแจ้ง
     public static string TabCPTransRequireContract()
     {
         string _html = String.Empty;
