@@ -1,12 +1,14 @@
 ﻿/*
 Description         : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๐๘/๐๕/๒๕๖๔
+Last Date Modified  : ๑๐/๐๕/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -378,9 +380,9 @@ public class eCPUtil
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
             _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
-            Dictionary<string, string> _auth = GetUsername();
+            string _userid = GetUserID();
 
-            _data = eCPDB.ListDetailCPTabUser(_auth["Username"], _auth["Password"], "");
+            _data = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
 
             _html += "      <li><div id='whois'>ผู้ใช้งาน : " + _data[0, 3] + " ( " + eCPDB._userSection[int.Parse(_eCPCookie["UserSection"]) - 1] + " )&nbsp;</div></li>" +
                      "      <li class='have-link'><a class='link-msg' id='menu7' href='javascript:void(0)' onclick='ShowManual()'>คู่มือ</a></li>" +
@@ -1129,6 +1131,25 @@ public class eCPUtil
         return _result;
     }
 
+    public static string EncodeToBase64(string _str)
+    {
+        try
+        {
+            string _strEncode = String.Empty;
+            byte[] _encDataByte = new byte[_str.Length];
+
+            _encDataByte = Encoding.UTF8.GetBytes(_str);
+            _strEncode = Convert.ToBase64String(_encDataByte);
+
+            return _strEncode;
+        }
+        catch
+        {
+            return String.Empty;
+        }
+    }
+
+
     public static string DecodeFromBase64(string _strEncode)
     {
         string _strDecode = String.Empty;
@@ -1178,16 +1199,41 @@ public class eCPUtil
         string _username = String.Empty;
         string _password = String.Empty;
 
-        if (_auth.Length.Equals(4))
+        try
         {
-            _username = eCPUtil.DecodeFromBase64(new String(_auth[1].Reverse().ToArray()));
-            _password = eCPUtil.DecodeFromBase64(new String(_auth[2].Reverse().ToArray()));
+            if (_auth.Length.Equals(4))
+            {
+                _username = eCPUtil.DecodeFromBase64(new String(_auth[1].Reverse().ToArray()));
+                _password = eCPUtil.DecodeFromBase64(new String(_auth[2].Reverse().ToArray()));
+            }
+        }
+        catch
+        {
         }
 
         _result.Add("Username", _username);
         _result.Add("Password", _password);
 
         return _result;
+    }
+
+    public static string GetUserID()
+    {
+        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+        _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+
+        string _userid = String.Empty;
+
+        try
+        {
+            if (!String.IsNullOrEmpty(_eCPCookie["Authen"]))
+                _userid = eCPUtil.DecodeFromBase64(new String(eCPUtil.DecodeFromBase64(_eCPCookie["Authen"]).Reverse().ToArray()));
+        }
+        catch
+        {
+        }
+
+        return _userid;
     }
 
     public static string GetFileExtension(string _contentType)

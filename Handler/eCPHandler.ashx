@@ -3,7 +3,7 @@
 /*
 Description         : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
 Date Created        : 06/08/2555
-Last Date Modified  : ๑๔/๐๔/๒๕๖๔
+Last Date Modified  : ๑๐/๐๕/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -184,10 +184,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                 _frm = eCPDataUser.AddCPTabuser();
                 break;
             case "updatecptabuser":
-                char[] _separator = new char[] { ':' };
-                string[] _userpass = (_c.Request["id"]).Split(_separator);
-
-                _frm = eCPDataUser.UpdateCPTabUser(_userpass[0], _userpass[1]);
+                _frm = eCPDataUser.UpdateCPTabUser(_c.Request["id"]);
                 break;
             case "addcptabprogram":
                 _frm = eCPDataConfiguration.AddCPTabProgram();

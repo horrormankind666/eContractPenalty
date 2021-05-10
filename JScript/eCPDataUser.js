@@ -1,10 +1,19 @@
-﻿function ResetFrmCPTabUser(_disable) {
+﻿function InitCPTabUser() {
+    $("#phonenumber").inputmask("9 9999 9999");
+    $("#mobilenumber").inputmask("99 9999 9999");
+    $("#email").inputmask("email");
+}
+
+function ResetFrmCPTabUser(_disable) {
     GoToElement("top-page");
 
     if (_disable == true) {
         TextboxDisable("#username");
         TextboxDisable("#password");
         TextboxDisable("#name");
+        TextboxDisable("#phonenumber");
+        TextboxDisable("#mobilenumber");
+        TextboxDisable("#email");
         $("#button-style11").hide();
         $("#button-style12").show();
         return;
@@ -13,6 +22,9 @@
     $("#username").val($("#username-hidden").val());
     $("#password").val($("#password-hidden").val());
     $("#name").val($("#name-hidden").val());
+    $("#phonenumber").val($("#phonenumber-hidden").val());
+    $("#mobilenumber").val($("#mobilenumber-hidden").val());
+    $("#email").val($("#email-hidden").val());
     $("#button-style11").show();
     $("#button-style12").hide();
 
@@ -66,17 +78,51 @@ function ValidateCPTabUser(_action) {
         _focus = "#name";
     }
 
+    if (_error == false && (($("#phonenumber").val().length == 0) && ($("#mobilenumber").val().length == 0))) {
+        _error = true;
+        _msg = "กรุณาใส่หมายเลขโทรศัพท์";
+        _focus = "#phonenumber";
+    }
+
+    if (_error == false && (($("#phonenumber").val().length > 0) && ($("#phonenumber").inputmask("isComplete") == false))) {
+        _error = true;
+        _msg = "กรุณาใส่หมายเลขโทรศัพท์ให้ถูกต้อง";
+        _focus = "#phonenumber";
+    }
+
+    if (_error == false && (($("#mobilenumber").val().length > 0) && ($("#mobilenumber").inputmask("isComplete") == false))) {
+        _error = true;
+        _msg = "กรุณาใส่หมายโทรศัพท์มือถือให้ถูกต้อง";
+        _focus = "#mobilenumber";
+    }
+
+    if (_error == false && ($("#email").val().length == 0)) {
+        _error = true;
+        _msg = "กรุณาใส่อีเมล์";
+        _focus = "#email";
+    }
+
+    if (_error == false && ($("#email").inputmask("isComplete") == false)) {
+        _error = true;
+        _msg = "กรุณาใส่อีเมล์ให้ถูกต้อง";
+        _focus = "#email";
+    }
+
     if (_error == true) {
         DialogMessage(_msg, _focus, false, "");
         return;
     }
-
+    
     var _send = new Array();
+    _send[_send.length] = "userid=" + $("#userid-hidden").val();
     _send[_send.length] = "usernameold=" + $("#username-hidden").val();
     _send[_send.length] = "passwordold=" + $("#password-hidden").val();
     _send[_send.length] = "username=" + $("#username").val();
     _send[_send.length] = "password=" + $("#password").val();
     _send[_send.length] = "name=" + $("#name").val();
+    _send[_send.length] = "phonenumber=" + $("#phonenumber").val();
+    _send[_send.length] = "mobilenumber=" + $("#mobilenumber").val();
+    _send[_send.length] = "email=" + $("#email").val();
 
     AddUpdateData(_action, _action + "cptabuser", _send, false, "", "", "", false, function (_result) {        
         if (_result == "1") {

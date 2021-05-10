@@ -1,13 +1,14 @@
 ﻿/*
 Description         : สำหรับจัดการฐานข้อมูล
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๐๘/๐๕/๒๕๖๔
+Last Date Modified  : ๑๐/๐๕/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Web;
 using System.Data;
 using System.Data.SqlClient;
@@ -136,12 +137,10 @@ public class eCPDB
         string _command = String.Empty;
         string _whoIs = String.Empty;
         string _name = String.Empty;
-        string[,] _data;
+        string _userid = eCPUtil.GetUserID();
+        string[,] _data = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
 
-        Dictionary<string, string> _auth = eCPUtil.GetUsername();
-        _whoIs = _auth["Username"];
-
-        _data = eCPDB.ListDetailCPTabUser(_auth["Username"], _auth["Password"], "");
+        _whoIs = _data[0, 1];
         _name = _data[0, 3];
 
         _command += "INSERT INTO ecpTransLog " +
@@ -190,15 +189,11 @@ public class eCPDB
             }
             else
             {
-                Dictionary<string, string> _authen = eCPUtil.GetUsername();
 
-                DataSet _ds = ExecuteCommandStoredProcedure(
-                    new SqlParameter("@ordertable", 1),
-                    new SqlParameter("@username", _authen["Username"]),
-                    new SqlParameter("@password", _authen["Password"])
-                );
+                string _userid = eCPUtil.GetUserID();
+                string[,] _data = ListDetailCPTabUser(_userid, "", "", "");
 
-                _rowCount = _ds.Tables[0].Rows.Count;
+                _rowCount = _data.GetLength(0);
 
                 if (_rowCount <= 0)
                 {
@@ -207,13 +202,9 @@ public class eCPDB
                 }
                 else
                 {
-                    DataRow _dr = _ds.Tables[0].Rows[0];
-
-                    if (!(_dr["Username"].ToString()).Equals(_authen["Username"]) ||
-                        !(_dr["Password"].ToString()).Equals(_authen["Password"]) ||
-                        //!(_dr["Name"].ToString()).Equals(HttpContext.Current.Server.UrlDecode(_eCPCookie["Name"])) ||
-                        !(_dr["UserSection"].ToString()).Equals(_eCPCookie["UserSection"]) ||
-                        !(_dr["UserLevel"].ToString()).Equals(_eCPCookie["UserLevel"]))
+                    if (!_data[0, 9].Equals(_userid) ||
+                        !_data[0, 4].Equals(_eCPCookie["UserSection"]) ||
+                        !_data[0, 5].Equals(_eCPCookie["UserLevel"]))
                     {
                         Signout();
                         _loginResult = false;
@@ -268,7 +259,7 @@ public class eCPDB
                 _eCPCookie.Values.Add("Password", _dr["Password"].ToString());
                 _eCPCookie.Values.Add("Name", HttpContext.Current.Server.UrlEncode(_dr["Name"].ToString()));
                 */
-                _eCPCookie.Values.Add("Authen", _authen);
+                _eCPCookie.Values.Add("Authen", eCPUtil.EncodeToBase64(new string(eCPUtil.EncodeToBase64(_dr["ID"].ToString()).Reverse().ToArray())));
                 _eCPCookie.Values.Add("UserSection", _dr["UserSection"].ToString());
                 _eCPCookie.Values.Add("UserLevel", _dr["UserLevel"].ToString());
                 _eCPCookie.Values.Add("Pid", "0");
@@ -346,7 +337,7 @@ public class eCPDB
             new SqlParameter("@name", (!String.IsNullOrEmpty(_c.Request["name"]) ? _c.Request["name"] : null))
         );
 
-        string[,] _data = new string[_ds.Tables[1].Rows.Count, 6];
+        string[,] _data = new string[_ds.Tables[1].Rows.Count, 10];
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
@@ -356,6 +347,10 @@ public class eCPDB
             _data[_i, 3] = _dr["Name"].ToString();
             _data[_i, 4] = _dr["UserSection"].ToString();
             _data[_i, 5] = _dr["UserLevel"].ToString();
+            _data[_i, 6] = _dr["PhoneNumber"].ToString();
+            _data[_i, 7] = _dr["MobileNumber"].ToString();
+            _data[_i, 8] = _dr["Email"].ToString();
+            _data[_i, 9] = _dr["ID"].ToString();
 
             _i++;
         }
@@ -363,7 +358,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailCPTabUser(string _username, string _password, string _userlevel)
+    public static string[,] ListDetailCPTabUser(string _userid, string _username, string _password, string _userlevel)
     {
         int _section;
         int _i = 0;
@@ -375,12 +370,13 @@ public class eCPDB
         DataSet _ds = ExecuteCommandStoredProcedure(
             new SqlParameter("@ordertable", 36),
             new SqlParameter("@section", _section),
+            new SqlParameter("@userid", _userid),
             new SqlParameter("@username", (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password) ? _username : null)),
             new SqlParameter("@password", (!String.IsNullOrEmpty(_username) && !String.IsNullOrEmpty(_password) ? _password : null)),
             new SqlParameter("@userlevel", (!String.IsNullOrEmpty(_userlevel) ? _userlevel : null))
         );
 
-        string[,] _data = new string[_ds.Tables[1].Rows.Count, 6];
+        string[,] _data = new string[_ds.Tables[1].Rows.Count, 10];
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
@@ -390,6 +386,10 @@ public class eCPDB
             _data[_i, 3] = _dr["Name"].ToString();
             _data[_i, 4] = _dr["UserSection"].ToString();
             _data[_i, 5] = _dr["UserLevel"].ToString();
+            _data[_i, 6] = _dr["PhoneNumber"].ToString();
+            _data[_i, 7] = _dr["MobileNumber"].ToString();
+            _data[_i, 8] = _dr["Email"].ToString();
+            _data[_i, 9] = _dr["ID"].ToString();
         }
 
         return _data;
@@ -3244,12 +3244,16 @@ public class eCPDB
             _where = "ecpTabUser";
             _function = "AddUpdateData, addcptabuser";
             _command += "INSERT INTO ecpTabUser " +
-                        "(Username, Password, Name, UserSection, UserLevel) " +
+                        "(ID, Username, Password, Name, PhoneNumber, MobileNumber, Email, UserSection, UserLevel) " +
                         "VALUES " +
                         "(" +
+                        "newid(), " +
                         "'" + _c.Request["username"] + "', " +
                         "'" + _c.Request["password"] + "', " +
                         "'" + _c.Request["name"] + "', " +
+                        "'" + _c.Request["phonenumber"] + "', " +
+                        "'" + _c.Request["mobilenumber"] + "', " +
+                        "'" + _c.Request["email"] + "', " +
                         "'" + _eCPCookie["UserSection"] + "', " +
                         "'User'" +
                         ")";
@@ -3263,8 +3267,11 @@ public class eCPDB
             _command += "UPDATE ecpTabUser SET " +
                         "Username = '" + _c.Request["username"] + "', " +
                         "Password = '" + _c.Request["password"] + "', " +
-                        "Name = '" + _c.Request["name"] + "' " +
-                        "WHERE (Username = '" + _c.Request["usernameold"] + "') AND (Password = '" + _c.Request["passwordold"] + "')";
+                        "Name = '" + _c.Request["name"] + "', " +
+                        "PhoneNumber = '" + _c.Request["phonenumber"] + "', " +
+                        "MobileNumber = '" + _c.Request["mobilenumber"] + "'," +
+                        "Email = '" + _c.Request["email"] + "' " +
+                        "WHERE (ID = '" + _c.Request["userid"] + "')";
         }
 
         if (_c.Request["cmd"].Equals("delcptabuser"))
@@ -3272,7 +3279,7 @@ public class eCPDB
             _what = "DELETE";
             _where = "ecpTabUser";
             _function = "AddUpdateData, ecpTabUser";
-            _command += "DELETE FROM ecpTabUser WHERE (Username = '" + _c.Request["usernameold"] + "') AND (Password = '" + _c.Request["passwordold"] + "')";
+            _command += "DELETE FROM ecpTabUser WHERE (ID = '" + _c.Request["userid"] + "')";
         }
 
         if (_c.Request["cmd"].Equals("addcptabprogram"))

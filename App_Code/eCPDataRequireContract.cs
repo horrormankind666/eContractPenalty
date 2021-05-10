@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการรับรายการแจ้ง
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Last Date Modified  : ๑๐/๐๕/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -66,11 +66,23 @@ public class eCPDataRequireContract
         string _remainDateDefault = _action.Equals("update") ? (!String.IsNullOrEmpty(_data[0, 15]) ? double.Parse(_data[0, 15]).ToString("#,##0") : String.Empty) : String.Empty;
         string _subtotalPenaltyDefault = _action.Equals("update") ? (!String.IsNullOrEmpty(_data[0, 16]) ? double.Parse(_data[0, 16]).ToString("#,##0.00") : String.Empty) : String.Empty;
         string _totalPenaltyDefault = _action.Equals("update") ? (!String.IsNullOrEmpty(_data[0, 17]) ? double.Parse(_data[0, 17]).ToString("#,##0.00") : String.Empty) : String.Empty;
-        string _lawyerFullname = _action.Equals("update") ? _data[0, 73] : String.Empty;
-        string _lawyerPhoneNumber = _action.Equals("update") ? _data[0, 74] : String.Empty;
-        string _lawyerMobileNumber = _action.Equals("update") ? _data[0, 75] : String.Empty;
-        string _lawyerEmail = _action.Equals("update") ? _data[0, 76] : String.Empty;
+        string _lawyerFullnameDefault = _action.Equals("update") ? _data[0, 73] : String.Empty;
+        string _lawyerPhoneNumberDefault = _action.Equals("update") ? _data[0, 74] : String.Empty;
+        string _lawyerMobileNumberDefault = _action.Equals("update") ? _data[0, 75] : String.Empty;
+        string _lawyerEmailDefault = _action.Equals("update") ? _data[0, 76] : String.Empty;
         string _statusRepay = _action.Equals("update") ? _data[0, 18] : String.Empty;
+
+        if (_action.Equals("add"))
+        {
+            string _userid = eCPUtil.GetUserID();
+            string[,] _data1 = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
+
+            _lawyerFullnameDefault = _data1[0, 3];
+            _lawyerPhoneNumberDefault = _data1[0, 6];
+            _lawyerMobileNumberDefault = _data1[0, 7];
+            _lawyerEmailDefault = _data1[0, 8];
+        }
+
 
         _html += "<div class='form-content' id='" + _action + "-cp-trans-require-contract'>" +
                  "  <div id='addupdate-cp-trans-require-contract'>" +
@@ -110,10 +122,10 @@ public class eCPDataRequireContract
                  "      <input type='hidden' id='remain-date-hidden' value='" + _remainDateDefault + "' />" +
                  "      <input type='hidden' id='subtotal-penalty-hidden' value='" + _subtotalPenaltyDefault + "' />" +
                  "      <input type='hidden' id='total-penalty-hidden' value='" + _totalPenaltyDefault + "' />" +
-                 "      <input type='hidden' id='lawyer-fullname-hidden' value='" + _lawyerFullname + "' />" +
-                 "      <input type='hidden' id='lawyer-phonenumber-hidden' value='" + _lawyerPhoneNumber + "' />" +
-                 "      <input type='hidden' id='lawyer-mobilenumber-hidden' value='" + _lawyerMobileNumber + "' />" +
-                 "      <input type='hidden' id='lawyer-email-hidden' value='" + _lawyerEmail + "' />" +
+                 "      <input type='hidden' id='lawyer-fullname-hidden' value='" + _lawyerFullnameDefault + "' />" +
+                 "      <input type='hidden' id='lawyer-phonenumber-hidden' value='" + _lawyerPhoneNumberDefault + "' />" +
+                 "      <input type='hidden' id='lawyer-mobilenumber-hidden' value='" + _lawyerMobileNumberDefault + "' />" +
+                 "      <input type='hidden' id='lawyer-email-hidden' value='" + _lawyerEmailDefault + "' />" +
                  "      <input type='hidden' id='repaystatus' value='" + _statusRepay + "' />" +
                  "      <div>" +
                  "          <div id='profile-student'>" +
@@ -508,7 +520,7 @@ public class eCPDataRequireContract
                  "                          <div>" +
                  "                              <div class='content-left' id='fullname-label'>ชื่อ - นามสกุล</div>" +
                  "                              <div class='content-left' id='fullname-input'>" +
-                 "                                  <input class='inputbox' type='text' id='lawyer-fullname' value='" + _lawyerFullname + "' style='width:254px' />" +
+                 "                                  <input class='inputbox' type='text' id='lawyer-fullname' value='" + _lawyerFullnameDefault + "' style='width:254px' />" +
                  "                                  <div class='form-discription-style'>" +
                  "                                      <div class='form-discription-line1-style'>ไม่ต้องระบุคำนำหน้าชื่อ</div>" +
                  "                                  </div>" +
@@ -517,19 +529,19 @@ public class eCPDataRequireContract
                  "                          <div class='clear'></div>" +
                  "                          <div>" +
                  "                              <div class='content-left' id='phonenumber-label'>หมายเลขโทรศัพท์</div>" +
-                 "                              <div class='content-left' id='phonenumber-input'><input class='inputbox' type='text' id='lawyer-phonenumber' value='" + _lawyerPhoneNumber + "' style='width:120px' /></div>" +
+                 "                              <div class='content-left' id='phonenumber-input'><input class='inputbox' type='text' id='lawyer-phonenumber' value='" + _lawyerPhoneNumberDefault + "' style='width:120px' /></div>" +
                  "                          </div>" +
                  "                          <div class='clear'></div>" +
                  "                          <div>" +
                  "                              <div class='content-left' id='mobilenumber-label'>หมายเลขโทรศัพท์มือถือ</div>" +
-                 "                              <div class='content-left' id='mobilenumber-input'><input class='inputbox' type='text' id='lawyer-mobilenumber' value='" + _lawyerMobileNumber + "' style='width:120px' /></div>" +            
+                 "                              <div class='content-left' id='mobilenumber-input'><input class='inputbox' type='text' id='lawyer-mobilenumber' value='" + _lawyerMobileNumberDefault + "' style='width:120px' /></div>" +
                  "                          </div>" +
                  "                          <div class='clear'></div>" +
                  "                          <div>" +
                  "                              <div class='content-left' id='email-label'>อีเมล์</div>" +
-                 "                              <div class='content-left' id='email-input'><input class='inputbox' type='text' id='lawyer-email' value='" + _lawyerEmail + "' style='width:254px' /></div>" +
+                 "                              <div class='content-left' id='email-input'><input class='inputbox' type='text' id='lawyer-email' value='" + _lawyerEmailDefault + "' style='width:254px' /></div>" +
                  "                          </div>" +
-                 "                          <div class='clear'></div>" +            
+                 "                          <div class='clear'></div>" +
                  "                      </div>" +
                  "                  </div>" +
                  "              </div>" +

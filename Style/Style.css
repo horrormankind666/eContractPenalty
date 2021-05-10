@@ -672,26 +672,38 @@ a.link-disable:hover {
 }
 .table-head ul #tab1-table-head-cp-tab-user-col2,
 .table-content ul #tab1-table-content-cp-tab-user-col2 {
-    width: 306px;
+    width: 180px;
 }
 .table-head ul #tab1-table-head-cp-tab-user-col3,
 .table-content ul #tab1-table-content-cp-tab-user-col3 {
-    width: 307px;
+    width: 200px;
 }
 .table-head ul #tab1-table-head-cp-tab-user-col4,
 .table-content ul #tab1-table-content-cp-tab-user-col4 {
-    width: 307px;
+    width: 122px;
+}
+.table-head ul #tab1-table-head-cp-tab-user-col5,
+.table-content ul #tab1-table-content-cp-tab-user-col5 {
+    width: 229px;
+}
+.table-head ul #tab1-table-head-cp-tab-user-col6,
+.table-content ul #tab1-table-content-cp-tab-user-col6 {
+    width: 187px;
 }
 .table-head ul #tab1-table-head-cp-tab-user-col1, 
 .table-head ul #tab1-table-head-cp-tab-user-col2,
 .table-head ul #tab1-table-head-cp-tab-user-col3,
-.table-head ul #tab1-table-head-cp-tab-user-col4 {
+.table-head ul #tab1-table-head-cp-tab-user-col4,
+.table-head ul #tab1-table-head-cp-tab-user-col5,
+.table-head ul #tab1-table-head-cp-tab-user-col6 {
     height: 55px;
     line-height: 20px;
 }
 .table-content ul #tab1-table-content-cp-tab-user-col2 div,
 .table-content ul #tab1-table-content-cp-tab-user-col3 div,
-.table-content ul #tab1-table-content-cp-tab-user-col4 div {
+.table-content ul #tab1-table-content-cp-tab-user-col4 div,
+.table-content ul #tab1-table-content-cp-tab-user-col5 div,
+.table-content ul #tab1-table-content-cp-tab-user-col6 div {
     text-align: left;
 }
 
@@ -2967,12 +2979,18 @@ a.link-disable:hover {
 }
 #addupdate-cp-tab-user #username-label,
 #addupdate-cp-tab-user #password-label,
-#addupdate-cp-tab-user #name-label {
+#addupdate-cp-tab-user #name-label,
+#addupdate-cp-tab-user #phonenumber-label,
+#addupdate-cp-tab-user #mobilenumber-label,
+#addupdate-cp-tab-user #email-label {
     height: 41px;
 }
 #addupdate-cp-tab-user #username-input,
 #addupdate-cp-tab-user #password-input,
-#addupdate-cp-tab-user #name-input {
+#addupdate-cp-tab-user #name-input,
+#addupdate-cp-tab-user #phonenumber-input,
+#addupdate-cp-tab-user #mobilenumber-input,
+#addupdate-cp-tab-user #email-input {
     height: 35px;
     margin-top: 12px;
 }

@@ -37,8 +37,8 @@ function ResetFrmStudyLeaveYesNo() {
 }
 
 function InitCPTransRequireContract() {
-    $("#lawyer-phonenumber").inputmask("9-9999-9999");
-    $("#lawyer-mobilenumber").inputmask("999-9999999");
+    $("#lawyer-phonenumber").inputmask("9 9999 9999");
+    $("#lawyer-mobilenumber").inputmask("99 9999 9999");
     $("#lawyer-email").inputmask("email");
 }
 
@@ -114,7 +114,7 @@ function ResetFrmCPTransRequireContract(_disable) {
         TextboxDisable("#all-actual-scholarship");
         $("#total-pay-scholarship").val($("#total-pay-scholarship-hidden").val() == "0.00" ? "" : $("#total-pay-scholarship-hidden").val());        
         TextboxDisable("#total-pay-scholarship");
-        $("#all-actual-month").val($("#actual-month-hidden").val());        
+        $("#all-actual-month").val($("#actual-month-hidden").val());
         TextboxDisable("#all-actual-month");
         $("#all-actual-day").val($("#actual-day-hidden").val());
         TextboxDisable("#all-actual-day");

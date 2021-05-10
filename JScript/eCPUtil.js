@@ -1257,6 +1257,7 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
                 break;
             case "addcptabuser":
             case "updatecptabuser":
+                InitCPTabUser();
                 ResetFrmCPTabUser(false);
                 break;
             case "addcptabprogram":

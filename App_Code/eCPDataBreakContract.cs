@@ -947,7 +947,6 @@ public class eCPDataBreakContract
         return "<trackingstatus>" + _trackingStatus + "<trackingstatus>";
     }
 
-    //สำหรับแสดงรายการแจ้งที่บันทึกทั้งหมด
     public static string ListCPTransBreakContract(HttpContext _c)
     {
         string _html = String.Empty;

@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการแสดงรายงาน
 Date Created        : ๐๙/๐๘/๒๕๕๕
-Last Date Modified  : ๑๔/๐๔/๒๕๖๔
+Last Date Modified  : ๑๐/๐๕/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -1456,10 +1456,10 @@ public class eCPDataReportNoticeRepayComplete
                      "</tr>" +
                      "<tr>" +
                      "  <td width='100%' align='right'>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>มหาวิทยาลัยมหิดล กองบริหารการศึกษา</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>สำนักงานอธิการบดี มหาวิทยาลัยมหิดล</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>๙๙๙ ถ.พุทธมณฑลสาย ๔ ต.ศาลายา</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>อ.พุทธมณฑล จ.นครปฐม ๗๓๑๗๐</div>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. ๐-๒๘๔๙-๔๕๗๓ โทรสาร ๐-๒๘๔๙-๔๕๕๘</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. ๐ ๒๘๔๙ ๔๕๗๓ โทรสาร ๐ ๒๘๔๙ ๔๕๕๘</div>" +
                      "  </td>" +
                      "</tr>" +
                      "<tr>" +
@@ -1841,10 +1841,10 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>" +
                      "<tr>" +
                      "  <td width='100%' align='right'>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>มหาวิทยาลัยมหิดล กองกฎหมาย</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>สำนักงานอธิการบดี มหาวิทยาลัยมหิดล</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>๙๙๙ ถ.พุทธมณฑลสาย ๔ ต.ศาลายา</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>อ.พุทธมณฑล จ.นครปฐม ๗๓๑๗๐</div>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐-๒๘๔๙-๖๒๖๕</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐ ๒๘๔๙ ๖๒๖๕</div>" +
                      "  </td>" +
                      "</tr>" +
                      "<tr>" +
@@ -1907,7 +1907,7 @@ public class eCPDataReportNoticeClaimDebt
                      "<tr>" +
                      "  <td width='100%' align='right'>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>กองกฏหมาย สำนักงานอธิการบดี</div>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐-๒๘๔๙-๖๒๖๕</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐ ๒๘๔๙ ๖๒๖๕</div>" +
                      "  </td>" +
                      "</tr>" +
                      "<tr>" +
@@ -2036,7 +2036,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                  "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๓. กรณีมีความจำเป็นที่ไม่อาจดำเนินการตามข้อ ๑. และ ๒ ได้</strong> ให้ท่านติดต่อขอชำระเงินสด " +
-                 "                          ผ่านกองกฏหมาย สำนักงานอธิการบดี มหาวิทยาลัยมหิดล ภายในเวลา ๑๕.๐๐ น. ในวันราชการ" +
+                 "                          ผ่านกองกฏหมาย สำนักงานอธิการบดี มหาวิทยาลัยมหิดล ภายในเวลา ๑๕.๐๐ น. ในวันทำการ" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2044,7 +2044,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                  "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ให้ท่านจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร (Fax) " +
-                 "                          หมายเลข ๐-๒๘๔๙-๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] + " หากล่วงเลย " +
+                 "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] + " หากล่วงเลย " +
                  "                          ระยะเวลาดังกล่าว มหาวิทยาลัยจำต้องคิดดอกเบี้ยผิดนัด และดำเนินการตามกฏหมายต่อไป" +
                  "                      </p>" +
                  "                  </td>" +
@@ -2146,7 +2146,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                          ไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
                  "                          หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี " +
                  "                          ๐๑๖-๒-๑๐๓๒๒-๓ และจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร(Fax) " +
-                 "                          หมายเลข ๐-๒๘๔๙-๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
+                 "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2225,7 +2225,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                          ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
                  "                          หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี ๐๑๖-๒-๑๐๓๒๒-๓ " +
                  "                          และจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร(Fax) " +
-                 "                          หมายเลข ๐-๒๘๔๙-๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
+                 "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2583,9 +2583,9 @@ public class eCPDataReportNoticeCheckForReimbursement
         _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 16]).ToString("#,##0.00"), 318, 383, 168, 0);
         _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 16]), 48, 334, 496, 0);
 
-        Dictionary<string, string> _auth = eCPUtil.GetUsername();
-
-        _data1 = eCPDB.ListDetailCPTabUser(_auth["Username"], _auth["Password"], "");
+        string _userid = eCPUtil.GetUserID();
+        
+        _data1 = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
 
         _exportToPdf.FillForm(_pdfFont, 15, 1, _data1[0, 3], 335, 107, 150, 0);
 
@@ -4047,7 +4047,7 @@ public class eCPDataReportCertificateReimbursement
                      "<tr>" +
                      "  <td width='100%' align='right'>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>กองกฎหมาย สำนักงานอธิการบดี</div>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐-๒๘๔๙-๖๒๖๕</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐ ๒๘๔๙ ๖๒๖๕</div>" +
                      "  </td>" +
                      "</tr>" +
                      "<tr>" +
@@ -4111,7 +4111,7 @@ public class eCPDataReportCertificateReimbursement
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>สำนักงานอธิการบดี มหาวิทยาลัยมหิดล</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>๙๙๙ ถ.พุทธมณฑลสาย ๔ ต.ศาลายา</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>อ.พุทธมณฑล จ.นครปฐม ๗๓๑๗๐</div>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐-๒๘๔๙-๖๒๖๕</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐ ๒๘๔๙ ๖๒๖๕</div>" +
                      "  </td>" +
                      "</tr>" +
                      "<tr>" +
