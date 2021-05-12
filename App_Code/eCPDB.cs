@@ -275,6 +275,8 @@ public class eCPDB
             }
         }
 
+        _ds.Dispose();
+
         return _loginResult;
     }
 
@@ -316,6 +318,8 @@ public class eCPDB
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountCPTabUser"].ToString());
 
+        _ds.Dispose();
+
         return _recordCount;
     }
 
@@ -355,6 +359,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -392,6 +398,8 @@ public class eCPDB
             _data[_i, 9] = _dr["ID"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -408,6 +416,8 @@ public class eCPDB
         );
 
         _recordCount = _ds.Tables[0].Rows.Count;
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -439,6 +449,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -457,6 +469,8 @@ public class eCPDB
         );
         
         _recordCount = _ds.Tables[0].Rows.Count;
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -480,6 +494,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -505,6 +521,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -526,6 +544,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -563,6 +583,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -582,6 +604,8 @@ public class eCPDB
         );
         
         _recordCount = _ds.Tables[0].Rows.Count;
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -609,6 +633,8 @@ public class eCPDB
             _data[_i, 2] = _dr["AmtIndemnitorYear"].ToString();
             _data[_i, 3] = _dr["AmountCash"].ToString();
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -640,6 +666,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -658,6 +686,8 @@ public class eCPDB
         );
 
         _recordCount = _ds.Tables[0].Rows.Count;
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -683,6 +713,8 @@ public class eCPDB
             _data[_i, 1] = _dr["ScholarshipMoney"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -706,6 +738,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -726,6 +760,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -754,6 +790,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -774,7 +812,9 @@ public class eCPDB
 
             _i++;
         }
-        
+
+        _ds.Dispose();
+
         return _data;
     }
     
@@ -793,6 +833,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountStudent"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -834,6 +876,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -883,6 +927,8 @@ public class eCPDB
             _data[_i, 25] = _dr["FolderName"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -904,6 +950,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -935,6 +983,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountCPTransBreakContract"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -990,6 +1040,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1011,6 +1063,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
             _trackingStatus = _dr["StatusSend"].ToString() + _dr["StatusReceiver"].ToString() + _dr["StatusEdit"].ToString() + _dr["StatusCancel"].ToString();
+
+        _ds.Dispose();
 
         return _trackingStatus;
     }
@@ -1095,6 +1149,8 @@ public class eCPDB
             _data[_i, 51] = _dr["SetAmtIndemnitorYear"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
     
@@ -1119,6 +1175,8 @@ public class eCPDB
         
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountRepay"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -1210,6 +1268,8 @@ public class eCPDB
                         }
                     }
                 }
+
+                _ds.Dispose();
             }
         }
         else
@@ -1274,6 +1334,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1327,6 +1389,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -1430,6 +1494,8 @@ public class eCPDB
             _data[_i, 77] = _dr["SetAmtIndemnitorYear"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1444,6 +1510,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
             _repayStatus = _dr["StatusRepay"].ToString();
+
+        _ds.Dispose();
 
         return _repayStatus;
     }
@@ -1492,6 +1560,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1517,6 +1587,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -1605,6 +1677,8 @@ public class eCPDB
 
                 _i++;
             }
+
+            _ds.Dispose();
         }
 
         return _data;
@@ -1628,6 +1702,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountPayment"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -1685,6 +1761,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -1747,7 +1825,9 @@ public class eCPDB
             _data[_i, 31] = _dr["LawyerMobileNumber"].ToString();
             _data[_i, 32] = _dr["LawyerEmail"].ToString();
         }
-        
+
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1784,6 +1864,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -1846,6 +1928,8 @@ public class eCPDB
             _data[_i, 42] = _dr["ReceiptCopy"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1868,6 +1952,8 @@ public class eCPDB
             _data[_i, 3] = _dr["RemainAccruedInterest"].ToString();            
             _data[_i, 4] = _dr["TotalRemain"].ToString();
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -1894,6 +1980,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1912,6 +2000,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportTableCalCapitalAndInterest"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -1970,6 +2060,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -1991,6 +2083,8 @@ public class eCPDB
             _data[_i, 2] = _dr["SumPayInterest"].ToString();
             _data[_i, 3] = _dr["SumTotalPay"].ToString();
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -2038,6 +2132,8 @@ public class eCPDB
                 _data[_i, 21] = _data1[0, 4];
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2074,6 +2170,8 @@ public class eCPDB
             _data[_i, 8] = _dr1["SumPayTotal"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2103,6 +2201,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2128,6 +2228,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStepOfWork"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2179,6 +2281,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2198,6 +2302,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStepOfWork"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2243,6 +2349,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2275,6 +2383,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -2315,6 +2425,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
     
@@ -2339,6 +2451,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2358,7 +2472,9 @@ public class eCPDB
         
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStudentSignContract"].ToString());
-        
+
+        _ds.Dispose();
+
         return _recordCount;
     }
 
@@ -2396,6 +2512,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2427,6 +2545,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2445,6 +2565,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportNoticeRepayComplete"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2484,6 +2606,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2518,6 +2642,8 @@ public class eCPDB
             _data[_i, 15] = _dr["StatusPayment"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2536,6 +2662,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportNoticeClaimDebt"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2574,6 +2702,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -2620,6 +2750,8 @@ public class eCPDB
             _data[_i, 26] = _dr["StatusPayment"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2641,6 +2773,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportStatisticPaymentByDate"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2685,6 +2819,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2704,6 +2840,8 @@ public class eCPDB
 
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportEContract"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2786,6 +2924,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2814,6 +2954,8 @@ public class eCPDB
         );
 
         _recordCount = _ds.Tables[0].Rows.Count;
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2868,6 +3010,8 @@ public class eCPDB
             _i++;
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -2903,6 +3047,8 @@ public class eCPDB
         
         foreach (DataRow _dr in _ds.Tables[0].Rows)
             _recordCount = int.Parse(_dr["CountReportDebtorContractByProgram"].ToString());
+
+        _ds.Dispose();
 
         return _recordCount;
     }
@@ -2973,6 +3119,8 @@ public class eCPDB
 
             _i++;
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -3045,6 +3193,8 @@ public class eCPDB
         {
             _data[_i, 28] = _dr["TotalPenalty"].ToString();
         }
+
+        _ds.Dispose();
 
         return _data;
     }
@@ -3135,6 +3285,8 @@ public class eCPDB
             _data[_i, 45] = _dr["TotalRemain"].ToString();
         }
 
+        _ds.Dispose();
+
         return _data;
     }
 
@@ -3223,6 +3375,8 @@ public class eCPDB
             _data[_i, 35] = _totalRemainAccruedInterest.ToString();
             _data[_i, 36] = _totalTotalRemain.ToString();
         }
+
+        _ds.Dispose();
 
         return _data;
     }
