@@ -139,11 +139,11 @@ function InitReceiptCopy() {
                         },
                         async: true,
                         type: "POST",
-                        url: "../FileProcess.aspx",
+                        url: "FileProcess.aspx",
                         data: _fd,
                         contentType: false,
                         processData: false,
-                        success: function (_result) {                            
+                        success: function (_result) {
                             $("#receipt-copy").val("data:" + _files.type + ";base64," + _result);
 
                             try {

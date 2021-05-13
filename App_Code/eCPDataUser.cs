@@ -192,6 +192,8 @@ public class eCPDataUser
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
                 _j = 0;
+                Array.Clear(_phoneNumber, 0, _phoneNumber.Length);
+
                 if (!String.IsNullOrEmpty(_data[_i, 6]))
                 {
                     _phoneNumber[_j] = _data[_i, 6];

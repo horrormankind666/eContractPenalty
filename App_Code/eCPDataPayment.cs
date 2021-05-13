@@ -454,7 +454,7 @@ public class eCPDataPayment
                  "              <div class='content-left' id='receipt-copy-input'>" +
                  "                  <input type='hidden' id='receipt-copy' value=''>" +
                  "                  <div class='uploadfile-container'>" +
-                 "                      <img class='preloading-inline hidden' src='../Image/PreloadingInline.gif' />" +
+                 "                      <img class='preloading-inline hidden' src='Image/PreloadingInline.gif' />" +
                  "                      <form class='uploadfile-form' method='post' enctype='multipart/form-data'>" +
                  "                          <div class='uploadfile-button browse'>" +
                  "                              <span><a class='text-underline' href='javascript:void(0)'>เลือกเอกสาร<input type='file' id='receipt-copy-file' /></a></span>" +
@@ -469,7 +469,7 @@ public class eCPDataPayment
                  "                      <div class='hidden' id='receipt-copy-nopreview'>ไม่สามารถแสดงตัวอย่างเอกสาร</div>" +
                  "                      <div class='hidden' id='receipt-copy-linkpreview'>" +
                  "                          <a class='text-underline' href='javascript:void(0)'>ดูเอกสาร</a>" +
-                 "                          <form id='download-receiptcopy-form' action='../FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
+                 "                          <form id='download-receiptcopy-form' action='FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
                  "                              <input type='hidden' id='action' name='action' value='download' />" +
                  "                              <input type='hidden' id='file' name='file' value='' />" +
                  "                           </form>" +
