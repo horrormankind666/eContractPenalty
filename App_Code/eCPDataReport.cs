@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการแสดงรายงาน
 Date Created        : ๐๙/๐๘/๒๕๕๕
-Last Date Modified  : ๑๐/๐๕/๒๕๖๔
+Last Date Modified  : ๑๘/๐๕/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -2486,109 +2486,115 @@ public class eCPDataReportNoticeCheckForReimbursement
 {
     private static void ExportCPReportNoticeCheckForReimbursementV1(string _cp1id)
     {
-        string _pdfFont = "Font/Angsima.ttf";
-        string _template = "ExportTemplate/NoticeCheckForReimbursement.pdf";
+        string _pdfFont = "Font/THSarabunBold.ttf";
+        string _template = String.Empty;
         string _saveFile = "NoticeCheckForReimbursement.pdf";
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransBreakContract(_cp1id);
-                
+
+        string _caseGraduate = _data[0, 33];
+        string _civil = _data[0, 34];
+
+        if (_caseGraduate.Equals("1"))
+            _template = "ExportTemplate/NoticeCheckForReimbursement.NotGraduate.pdf";
+
+        if (_caseGraduate.Equals("2") && _civil.Equals("1"))
+            _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.Work.Resign.pdf";
+
+        if (_caseGraduate.Equals("2") && _civil.Equals("2"))
+            _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.NotWorking.pdf";
+
         ExportToPdf _exportToPdf = new ExportToPdf();
         _exportToPdf.ExportToPdfConnect(_template, "pdf", _saveFile);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 18], 85, 820, 238, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 19], 331, 820, 120, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 20])), 472, 820, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 21], 90, 798, 70, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 22])), 182, 798, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 23], 391, 798, 60, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 24])), 472, 798, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 5] + _data[0, 8] + " " + _data[0, 9], 58, 708, 181, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 2], 300, 708, 83, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceProgramToShortProgram(_data[0, 11]), 62, 687, 155, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceFacultyToShortProgram(_data[0, 14]), 238, 687, 144, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 25])), 45, 665, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 26], 209, 665, 143, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, (int.Parse(DateTime.Parse(Util.ConvertDateEN(_data[0, 31])).ToString("yyyy")) + 543).ToString(), 469, 665, 51, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 32])), 122, 643, 87, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, (!_data[0, 36].Equals("0") ? _data[0, 36] : " "), 319, 643, 25, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 37]).ToString("#,##0.00"), 449, 643, 76, 0);
+        _exportToPdf.FillForm(_pdfFont, 11, 0, _data[0, 18], 105, 809, 190, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 19], 309, 811, 138, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 20])), 470, 811, 80, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 21], 154, 791, 45, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 22])), 221, 791, 77, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 23], 404, 791, 45, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 24])), 470, 791, 80, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 5] + _data[0, 8] + " " + _data[0, 9], 63, 698, 158, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 2], 281, 698, 115, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceProgramToShortProgram(_data[0, 11]), 67, 678, 120, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceFacultyToShortProgram(_data[0, 14]), 210, 678, 114, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 25])), 471, 678, 82, 0);
+        _exportToPdf.FillForm(_pdfFont, 11, 0, _data[0, 26], 107, 656, 92, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, (int.Parse(DateTime.Parse(Util.ConvertDateEN(_data[0, 31])).ToString("yyyy")) + 543).ToString(), 313, 658, 48, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 32])), 460, 658, 94, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, (_civil.Equals("1") && !_data[0, 36].Equals("0") ? (_data[0, 36] + " ปี") : String.Empty), 150, 638, 132, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, (double.Parse(_data[0, 37]).ToString("#,##0.00") + " บาท"), 366, 638, 187, 0);
         _exportToPdf.ExportToPdfDisconnect();
     }
 
     public static void ExportCPReportNoticeCheckForReimbursementV2(string _cp1id)
     {
-        string _pdfFont = "Font/THSarabun.ttf";
-        string _template = "ExportTemplate/NoticeCheckForReimbursement.pdf";
+        string _pdfFont = "Font/THSarabunBold.ttf";
+        string _template = String.Empty;
         string _saveFile = "NoticeCheckForReimbursement.pdf";
-        string[,] _data, _data1;
-        
+        string[,] _data;
+
         _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
+
+        string _caseGraduate = _data[0, 46];
+        string _civil = _data[0, 47];
+
+        if (_caseGraduate.Equals("1"))
+            _template = "ExportTemplate/NoticeCheckForReimbursement.NotGraduate.pdf";
+
+        if (_caseGraduate.Equals("2") && _civil.Equals("1"))
+            _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.Work.Resign.pdf";
+
+        if (_caseGraduate.Equals("2") && _civil.Equals("2"))
+            _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.NotWorking.pdf";
 
         ExportToPdf _exportToPdf = new ExportToPdf();
         _exportToPdf.ExportToPdfConnect(_template, "pdf", _saveFile);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 31], 85, 820, 238, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 32], 331, 820, 120, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 33])), 472, 820, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 34], 90, 798, 70, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 35])), 182, 798, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 36], 391, 798, 60, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 37])), 472, 798, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 58, 708, 181, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 19], 300, 708, 83, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceProgramToShortProgram(_data[0, 24]), 62, 687, 155, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceFacultyToShortProgram(_data[0, 27]), 238, 687, 144, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 38])), 43, 665, 100, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 39], 209, 665, 143, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, (int.Parse(DateTime.Parse(Util.ConvertDateEN(_data[0, 44])).ToString("yyyy")) + 543).ToString(), 469, 665, 51, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 45])), 122, 643, 87, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, (!_data[0, 49].Equals("0") ? _data[0, 49] : " "), 319, 643, 25, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 50]).ToString("#,##0.00"), 449, 643, 76, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 31], 105, 811, 190, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 32], 309, 811, 138, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 33])), 470, 811, 80, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 34], 154, 791, 45, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 35])), 221, 791, 77, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 36], 404, 791, 45, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 37])), 470, 791, 80, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 63, 698, 158, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 19], 281, 698, 115, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceProgramToShortProgram(_data[0, 24]), 67, 678, 120, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, eCPDataReport.ReplaceFacultyToShortProgram(_data[0, 27]), 210, 678, 114, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 38])), 471, 678, 82, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 39], 107, 658, 92, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, (int.Parse(DateTime.Parse(Util.ConvertDateEN(_data[0, 44])).ToString("yyyy")) + 543).ToString(), 313, 658, 48, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 45])), 460, 658, 94, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, (_civil.Equals("1") && !_data[0, 49].Equals("0") ? (_data[0, 49] + " ปี") : String.Empty), 150, 638, 132, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, (double.Parse(_data[0, 50]).ToString("#,##0.00") + " บาท"), 366, 638, 187, 0);
 
-        if (_data[0, 47].Equals("1"))
-        {
-            _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 3], 275, 493, 270, 0);
-            _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 5], 75, 471, 155, 0);
-            /*
-            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 6])), 276, 471, 118, 0);
-            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 7])), 427, 471, 118, 0);
-            */
-            if (_data[0, 66].Equals("N"))
-            {
-                _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 6]), 276, 471, 118, 0);
-                _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 7]), 427, 471, 118, 0);
-            }
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 44])), 261, 479, 87, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(_data[0, 45])), 461, 479, 91, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, ((!String.IsNullOrEmpty(_data[0, 11]) && !_data[0, 11].Equals("0") ? (_data[0, 11] + " เดือน") : String.Empty) + " " + (!String.IsNullOrEmpty(_data[0, 12]) && !_data[0, 12].Equals("0") ? _data[0, 12] : String.Empty)), 203, 459, 80, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 13]) ? double.Parse(_data[0, 13]).ToString("#,##0") : String.Empty), 458, 459, 80, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 3], 209, 438, 344, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 5], 100, 418, 105, 0);
 
-            if (_data[0, 66].Equals("Y"))
-            {
-                _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 67]), 276, 471, 118, 0);
-                _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 68]), 427, 471, 118, 0);
-                _exportToPdf.FillForm(_pdfFont, 13, 0, (eCPUtil._studyLeave[1] + " และกลับเข้าปฏิบัติงาน ตั้งแต่วันที่ " + Util.LongDateTH(_data[0, 71]) + " ถึงวันที่ " + Util.LongDateTH(_data[0, 72])), 43, 449, 507, 0);
-            }
-
-            _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 14]).ToString("#,##0"), 201, 428, 45, 0);
-            _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 15]).ToString("#,##0"), 459, 428, 45, 0);
-
-            _data[0, 50] = _data[0, 40].Equals("1") ? (double.Parse(_data[0, 41]) + double.Parse(_data[0, 50])).ToString() : _data[0, 50];
-
-            _exportToPdf.FillForm(_pdfFont, 13, 1, double.Parse(_data[0, 50]).ToString("#,##0.00"), 123, 383, 89, 0);
-            _exportToPdf.FillForm(_pdfFont, 13, 1, double.Parse(_data[0, 15]).ToString("#,##0"), 219, 383, 84, 0);
-            _exportToPdf.FillForm(_pdfFont, 13, 1, double.Parse(_data[0, 13]).ToString("#,##0"), 123, 363, 180, 0);
+        if (_data[0, 66].Equals("N"))
+        {            
+            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 6]), 248, 418, 125, 0);
+            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 7]), 408, 418, 145, 0);
         }
 
-        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 354, 406, 192, 0);
-        /*
-        _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 17]).ToString("#,##0.00"), 318, 383, 168, 0);
-        _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 17]), 48, 334, 496, 0);
-        */
-        _exportToPdf.FillForm(_pdfFont, 13, 0, double.Parse(_data[0, 16]).ToString("#,##0.00"), 318, 383, 168, 0);
-        _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 16]), 48, 334, 496, 0);
-
-        string _userid = eCPUtil.GetUserID();
+        if (_data[0, 66].Equals("Y"))
+        {
+            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 67]), 248, 418, 125, 0);
+            _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 68]), 408, 418, 145, 0);
+        }
         
-        _data1 = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
-
-        _exportToPdf.FillForm(_pdfFont, 15, 1, _data1[0, 3], 335, 107, 150, 0);
-
+        _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 14]) ? double.Parse(_data[0, 14]).ToString("#,##0") : String.Empty), 212, 398, 58, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 15]) ? double.Parse(_data[0, 15]).ToString("#,##0") : String.Empty), 465, 398, 73, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 258, 379, 296, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, ("สูตรที่ " + _data[0, 48]), 139, 359, 186, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 16]) ? double.Parse(_data[0, 16]).ToString("#,##0.00") : String.Empty), 335, 359, 195, 0);
+        _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 16]), 78, 320, 465, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 144, 298, 275, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, _data[0, 73], 322, 138, 136, 0);
         _exportToPdf.ExportToPdfDisconnect();
     }
     
