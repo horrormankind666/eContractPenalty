@@ -2536,17 +2536,48 @@ public class eCPDataReportNoticeCheckForReimbursement
 
         _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
 
+        string _scholar = _data[0, 40];
+        string _scholarshipMoney = _data[0, 41];
+        string _scholarshipYear = _data[0, 42];
+        string _scholarshipMonth = _data[0, 43];
+        string _allActualMonthScholarship = _data[0, 8];
         string _caseGraduate = _data[0, 46];
+        string _educationDate = _data[0, 44];
+        string _graduateDate = _data[0, 45];
         string _civil = _data[0, 47];
-
+        string _dateStart = String.Empty;
+        string _dateEnd = String.Empty;
+        string _indemnitorYear = _data[0, 49];
+        string _indemnitorCash = _data[0, 50];
+        string _calDateCondition = _data[0, 48];
+        string _studyLeave = _data[0, 66];
+        string _beforeStudyLeaveStartDate = _data[0, 67];
+        string _beforeStudyLeaveEndDate = _data[0, 68];
+        string _studyLeaveStartDate = _data[0, 69];
+        string _studyLeaveEndDate = _data[0, 70];
+        string _afterStudyLeaveStartDate = _data[0, 71];
+        string _afterStudyLeaveEndDate = _data[0, 72];
+        
         if (_caseGraduate.Equals("1"))
+        {
             _template = "ExportTemplate/NoticeCheckForReimbursement.NotGraduate.pdf";
+            _dateStart = _data[0, 62];
+            _dateEnd = _data[0, 63];
+        }
 
         if (_caseGraduate.Equals("2") && _civil.Equals("1"))
+        {
             _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.Work.Resign.pdf";
+            _dateStart = _data[0, 6];
+            _dateEnd = _data[0, 7];
+        }
 
         if (_caseGraduate.Equals("2") && _civil.Equals("2"))
+        {
             _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.NotWorking.pdf";
+            _dateStart = _data[0, 44];
+            _dateEnd = _data[0, 45];
+        }
 
         ExportToPdf _exportToPdf = new ExportToPdf();
         _exportToPdf.ExportToPdfConnect(_template, "pdf", _saveFile);
@@ -2590,7 +2621,68 @@ public class eCPDataReportNoticeCheckForReimbursement
         _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 14]) ? double.Parse(_data[0, 14]).ToString("#,##0") : String.Empty), 212, 398, 58, 0);
         _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 15]) ? double.Parse(_data[0, 15]).ToString("#,##0") : String.Empty), 465, 398, 73, 0);
         _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 258, 379, 296, 0);
-        _exportToPdf.FillForm(_pdfFont, 13, 1, ("สูตรที่ " + _data[0, 48]), 139, 359, 186, 0);
+
+        double[] _resultPayScholarship;
+        double[] _resultPenalty;        
+        double _iCash = 0;
+        double _allActual = 0;
+        double _actual = 0;
+        double _actualMonth = 0;
+        double _educationActual = 0;
+        double _educationMonth = 0;
+        double _educationDay = 0;
+        int _dayLastMonth = 0;
+        int _formular = int.Parse(_calDateCondition);
+        string[] _penaltyFormularString = new string[3];
+
+        _resultPayScholarship = eCPUtil.CalPayScholarship(_scholar, _caseGraduate, _civil, _scholarshipMoney, _scholarshipYear, _scholarshipMonth, _allActualMonthScholarship);
+        _resultPenalty = eCPUtil.GetCalPenalty(_studyLeave, _beforeStudyLeaveStartDate, _beforeStudyLeaveEndDate, _afterStudyLeaveStartDate, _afterStudyLeaveEndDate, _scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition);
+
+        if (_formular.Equals(1))
+        {
+            _iCash = _resultPenalty[8];
+            _actualMonth = _resultPenalty[9];
+            _penaltyFormularString = eCPUtil.PenaltyFormular1ToString(_iCash, _actualMonth).Split(';');
+
+            _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[0], 139, 359, 186, 0);
+        }
+
+        if (_formular.Equals(2))
+        {
+            _iCash = _resultPenalty[8];
+            _educationMonth = _resultPenalty[10];
+            _educationDay = _resultPenalty[11];
+            _dayLastMonth = int.Parse(_resultPenalty[12].ToString());
+            _penaltyFormularString = eCPUtil.PenaltyFormular2ToString(_iCash, _educationMonth, _educationDay, _dayLastMonth).Split(';');
+
+            _exportToPdf.FillForm(_pdfFont, 12, 1, _penaltyFormularString[0], 139, 367, 98, 0);
+            _exportToPdf.FillForm(_pdfFont, 12, 1, _penaltyFormularString[1], 237, 367, 87, 0);
+            _exportToPdf.CreateTable(237, 351, 87, 1, 0, 1, 0, 0);
+            _exportToPdf.FillForm(_pdfFont, 12, 1, _penaltyFormularString[2], 237, 357, 87, 0);
+        }
+
+        if (_formular.Equals(3))
+        {
+            _iCash = _resultPenalty[8];
+            _allActual = _resultPenalty[2];
+            _actual = _resultPenalty[13];
+            _penaltyFormularString = eCPUtil.PenaltyFormular3ToString(_iCash, _allActual, _actual).Split(';');
+
+            _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[0], 139, 359, 186, 0);
+            _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[1], 139, 347, 186, 0);
+        }
+
+        if (_formular.Equals(4))
+        {
+            _iCash = _resultPenalty[8];
+            _educationActual = _resultPenalty[14];
+            _actual = _resultPenalty[3];
+            _penaltyFormularString = eCPUtil.PenaltyFormular4ToString(_iCash, _educationActual, _actual).Split(';');
+
+            _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[0], 139, 359, 186, 0);
+            _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[1], 139, 347, 186, 0);
+        }
+
         _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 16]) ? double.Parse(_data[0, 16]).ToString("#,##0.00") : String.Empty), 335, 359, 195, 0);
         _exportToPdf.FillForm(_pdfFont, 15, 1, Util.ThaiBaht(_data[0, 16]), 78, 320, 465, 0);
         _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 144, 298, 275, 0);

@@ -245,7 +245,7 @@ public class eCPDataRequireContract
                      "                      <div class='form-discription-style'>" +
                      "                          <div class='form-discription-line1-style'>กรุณากดปุ่มคำนวณเพื่อทำการคำนวณเงินทุนการศึกษาที่</div>" +
                      "                          <div class='form-discription-line2-style'>ต้องชดใช้กรณีนักศึกษารับทุนการศึกษา และคำนวณเงิน</div>" +
-                     "                          <div class='form-discription-line3-style'>ที่ต้องชดใช้ตามระยะเวลาที่เข้าศึกษา</div>" +      
+                     "                          <div class='form-discription-line3-style'>ที่ต้องชดใช้ตามระยะเวลาที่เข้าศึกษา</div>" +
                      "                      </div>" +
                      "                  </div>" +
                      "              </div>" +
@@ -257,7 +257,7 @@ public class eCPDataRequireContract
                      "                          </ul>" +
                      "                      </div>" +
                      "                  </div>" +
-                     "                  <div class='form-label-discription-style' id='cal-contract-penalty-scholarship'>" +                 
+                     "                  <div class='form-label-discription-style' id='cal-contract-penalty-scholarship'>" +
                      "                      <div>" +
                      "                          <div class='content-left' id='all-actual-month-scholarship-label'>ระยะเวลาที่ชดใช้ทุนการศึกษา</div>" +
                      "                          <div class='content-left' id='all-actual-month-scholarship-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-month-scholarship' onblur=Trim('all-actual-month-scholarship');AddCommas('all-actual-month-scholarship',0) onkeyup='ExtractNumber(this,0,false)' onkeypress='return BlockNonNumbers(this,event,false,false)' value='' style='width:120px' /></div>" +

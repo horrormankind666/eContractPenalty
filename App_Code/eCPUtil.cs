@@ -859,7 +859,29 @@ public class eCPUtil
 
         return _result;
     }
-    
+
+    public static double[] GetCalPenalty(string _studyLeave, string _beforeStudyLeaveStartDate, string _beforeStudyLeaveEndDate, string _afterStudyLeaveStartDate, string _afterStudyLeaveEndDate, string _scholar, string _caseGraduate, string _educationDate, string _graduateDate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition)
+    {
+        double[] _result = new double[15];
+
+        if (!_studyLeave.Equals("Y"))
+            _result = CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _totalPayScholarship, _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, 0);
+        else
+        {
+            _dateStart = _beforeStudyLeaveStartDate;
+            _dateEnd = _beforeStudyLeaveEndDate;
+
+            IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
+            DateTime _dateA = DateTime.Parse(_afterStudyLeaveStartDate, _provider);
+            DateTime _dateB = DateTime.Parse(_afterStudyLeaveEndDate, _provider);
+            double[] _totalDaysAfterStudyLeave = Util.CalcDate(_dateA, _dateB);
+
+            _result = CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _totalPayScholarship, _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, _totalDaysAfterStudyLeave[0]);
+        }
+
+        return _result;
+    }
+
     public static double[] CalPenalty(string _scholar, string _caseGraduate, string _educationDate, string _graduateDate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition, double _addDays)
     {
         double _actual;
@@ -869,7 +891,7 @@ public class eCPUtil
         double _allActual;
         double _educationActual = 0;
         double _totalPenalty = 0;
-        double[] _result = new double[8];
+        double[] _result = new double[15];
         int _sYear = !String.IsNullOrEmpty(_scholarshipYear) ? int.Parse(_scholarshipYear) : 0;
         int _sMonth = !String.IsNullOrEmpty(_scholarshipMonth) ? int.Parse(_scholarshipMonth) : 0;
         int _iYear = !String.IsNullOrEmpty(_indemnitorYear) ? int.Parse(_indemnitorYear) : 0;
@@ -881,7 +903,7 @@ public class eCPUtil
         if (_scholar.Equals("1") && _caseGraduate.Equals("2") && _civil.Equals("1"))
         {
             _iCash = _sPayScholarship + _iCash;
-            _sPayScholarship = 0;                        
+            _sPayScholarship = 0;
         }
 
         if (!String.IsNullOrEmpty(_educationDate) && !String.IsNullOrEmpty(_graduateDate))
@@ -937,6 +959,13 @@ public class eCPUtil
             _result[5] = _sPayScholarship;
             _result[6] = _totalPenalty;
             _result[7] = Util.RoundStang(_sPayScholarship + _totalPenalty);
+            _result[8] = _iCash;
+            _result[9] = _resultCalcDate[3];
+            _result[10] = _resultCalcDate[1];
+            _result[11] = _resultCalcDate[2];
+            _result[12] = _dayLastMonth;
+            _result[13] = _resultCalcDate[0];
+            _result[14] = _educationActual;
 
             return _result;
         }
@@ -949,6 +978,13 @@ public class eCPUtil
         _result[5] = _sPayScholarship;
         _result[6] = _iCash;
         _result[7] = Util.RoundStang(_sPayScholarship + _iCash);
+        _result[8] = _iCash;
+        _result[9] = 0;
+        _result[10] = 0;
+        _result[11] = 0;
+        _result[12] = 0;
+        _result[13] = 0;
+        _result[14] = _educationActual;
 
         return _result;
     }
@@ -962,6 +998,15 @@ public class eCPUtil
         return _total;
     }
 
+    public static string PenaltyFormular1ToString(double _indemnitorCash, double _educationDate)
+    {
+        string _result = String.Empty;
+
+        _result = (_indemnitorCash.ToString("#,##0.00") + " X " + _educationDate.ToString("#,###0"));
+
+        return _result;
+    }
+
     private static double CalPenaltyFormular2(double _indemnitorCash, double _educationMonth, double _educationDay, int _dayLastMonth)
     {
         double _total;
@@ -970,6 +1015,16 @@ public class eCPUtil
 
         return _total;
     }
+
+    public static string PenaltyFormular2ToString(double _indemnitorCash, double _educationMonth, double _educationDay, int _dayLastMonth)
+    {
+        string _result = String.Empty;
+
+        _result = ("( " + _indemnitorCash.ToString("#,##0.00") + " X " + _educationMonth.ToString("#,##0") + " ) + ;( " + _indemnitorCash.ToString("#,##0.00") + " X " + _educationDay.ToString("#,##0") + " );" + _dayLastMonth.ToString("#,##0"));
+
+        return _result;
+    }
+
 
     private static double CalPenaltyFormular3(double _indemnitorCash, double _allActual, double _actual)
     {
@@ -980,6 +1035,15 @@ public class eCPUtil
         return _total;
     }
 
+    public static string PenaltyFormular3ToString(double _indemnitorCash, double _allActual, double _actual)
+    {
+        string _result = String.Empty;
+
+        _result = (_indemnitorCash.ToString("#,##0.00") + " X " + "( " + _allActual.ToString("#,##0") + " - " + _actual.ToString("#,##0") + " );" + _allActual.ToString("#,##0"));
+
+        return _result;
+    }
+
     private static double CalPenaltyFormular4(double _indemnitorCash, double _educationActual, double _actual)
     {
         double _total;
@@ -987,6 +1051,15 @@ public class eCPUtil
         _total = (_indemnitorCash * ((2 * _educationActual) - _actual)) / (2 * _educationActual);
 
         return _total;
+    }
+
+    public static string PenaltyFormular4ToString(double _indemnitorCash, double _educationActual, double _actual)
+    {
+        string _result = String.Empty;
+
+        _result = (_indemnitorCash.ToString("#,##0.00") + " X " + "(( 2 X " + _educationActual.ToString("#,##0") + " ) - " + _actual.ToString("#,##0") + " );( 2 X " + _educationActual.ToString("#,##0") + " )");
+
+        return _result;
     }
 
     public static string[] RepayDate(string _replyDate)

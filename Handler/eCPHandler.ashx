@@ -705,21 +705,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         double[] _resultPenalty;
 
         _resultPayScholarship = eCPUtil.CalPayScholarship(_scholar, _caseGraduate, _civil, _scholarshipMoney, _scholarshipYear, _scholarshipMonth, _allActualMonthScholarship);
-
-        if (!_studyLeave.Equals("Y"))
-            _resultPenalty = eCPUtil.CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, 0);
-        else
-        {
-            _dateStart = _beforeStudyLeaveStartDate;
-            _dateEnd = _beforeStudyLeaveEndDate;
-
-            IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
-            DateTime _dateA = DateTime.Parse(_afterStudyLeaveStartDate, _provider);
-            DateTime _dateB = DateTime.Parse(_afterStudyLeaveEndDate, _provider);
-            double[] _totalDaysAfterStudyLeave  = Util.CalcDate(_dateA, _dateB);
-
-            _resultPenalty = eCPUtil.CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, _totalDaysAfterStudyLeave[0]);
-        }
+        _resultPenalty = eCPUtil.GetCalPenalty(_studyLeave, _beforeStudyLeaveStartDate, _beforeStudyLeaveEndDate, _afterStudyLeaveStartDate, _afterStudyLeaveEndDate, _scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition);
 
         _result += "<allactualscholarship>" + _resultPayScholarship[0].ToString("#,##0.00") + "<allactualscholarship>" +
                     "<totalpayscholarship>" + _resultPenalty[5].ToString("#,##0.00") + "<totalpayscholarship>" +
