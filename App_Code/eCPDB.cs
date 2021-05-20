@@ -20,7 +20,7 @@ public class eCPDB
     //public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=MUStudent;User ID=MUstudent53;Password=oydL7dKk53;Asynchronous Processing=true;";
     //public const string CONNECTION_STRING = "Server=.\\SQLEXPRESS;Database=eContractPenalty;User ID=sa;Password=123456;Asynchronous Processing=true;";
     private const string STORE_PROC = "sp_ecpEContractPenalty";
-    public static string[] _userSection = new string[] {"กองกฏหมาย", "กองบริหารการศึกษา", "กองคลัง"};
+    public static string[] _userSection = new string[] {"กองกฎหมาย", "กองบริหารการศึกษา", "กองคลัง"};
     public static string _username;
     public static string _password;
 

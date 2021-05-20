@@ -1890,7 +1890,7 @@ public class eCPDataReportNoticeClaimDebt
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>(นายคณพศ เฟื่องฟุ้ง)</div>" +
-                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฏหมาย</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ปฏิบัติหน้าที่แทนอธิการบดีมหาวิทยาลัยมหิดล</div>" +
                      "              </td>" +
                      "          </tr>" +
@@ -1906,7 +1906,7 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>" +
                      "<tr>" +
                      "  <td width='100%' align='right'>" +
-                     "      <div align='right' style='font:normal 15pt " + _font + ";'>กองกฏหมาย สำนักงานอธิการบดี</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>กองกฎหมาย สำนักงานอธิการบดี</div>" +
                      "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. " + Util.NumberArabicToThai(_lawyerPhoneNumber) + " โทรสาร ๐ ๒๘๔๙ ๖๒๖๕</div>" +
                      "  </td>" +
                      "</tr>" +
@@ -2036,7 +2036,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                  "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๓. กรณีมีความจำเป็นที่ไม่อาจดำเนินการตามข้อ ๑. และ ๒ ได้</strong> ให้ท่านติดต่อขอชำระเงินสด " +
-                 "                          ผ่านกองกฏหมาย สำนักงานอธิการบดี มหาวิทยาลัยมหิดล ภายในเวลา ๑๕.๐๐ น. ในวันทำการ" +
+                 "                          ผ่านกองกฎหมาย สำนักงานอธิการบดี มหาวิทยาลัยมหิดล ภายในเวลา ๑๕.๐๐ น. ในวันทำการ" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2045,7 +2045,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                  "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ให้ท่านจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร (Fax) " +
                  "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] + " หากล่วงเลย " +
-                 "                          ระยะเวลาดังกล่าว มหาวิทยาลัยจำต้องคิดดอกเบี้ยผิดนัด และดำเนินการตามกฏหมายต่อไป" +
+                 "                          ระยะเวลาดังกล่าว มหาวิทยาลัยจำต้องคิดดอกเบี้ยผิดนัด และดำเนินการตามกฎหมายต่อไป" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2254,7 +2254,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                          <table border='0' cellpadding='0' cellspacing='0'>" +
                  "                              <tr>" +
                  "                                  <td width='50'><div style='font:normal 15pt " + _font + ";'>เรียน</div></td>" +
-                 "                                  <td width='550'><div style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฏหมาย</div></td>" +
+                 "                                  <td width='550'><div style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div></td>" +
                  "                              </tr>" +
                  "                          </table>" +
                  "                      </div>" +
@@ -2276,9 +2276,9 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;งานกฏหมายและนิติกรรมสัญญา ขอเรียนว่า หนังสือดังกล่าวมีผู้รับไว้โดยชอบแล้วเมื่อวันที่ " + (!String.IsNullOrEmpty(_replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_replyDate)) : "") + " " +
+                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;งานกฎหมายและนิติกรรมสัญญา ขอเรียนว่า หนังสือดังกล่าวมีผู้รับไว้โดยชอบแล้วเมื่อวันที่ " + (!String.IsNullOrEmpty(_replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_replyDate)) : "") + " " +
                  "                          รายละเอียดปรากฏตามใบตอบรับไปรษณีย์ลงทะเบียนในประเทศ บัดนี้ได้ล่วงเลยกำหนดระยะเวลาการชำระเงินแล้ว ยังไม่ปรากฏว่า" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
-                 "                          ได้ชำระเงินให้แก่มหาวิทยาลัยแต่อย่างใด ในการนี้ งานกฏหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยมีหนังสือทวงถามถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " (ครั้งที่ ๒) และ" + _data[0, 14] + " ในฐานะผู้ค้ำประกัน " +
+                 "                          ได้ชำระเงินให้แก่มหาวิทยาลัยแต่อย่างใด ในการนี้ งานกฎหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยมีหนังสือทวงถามถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " (ครั้งที่ ๒) และ" + _data[0, 14] + " ในฐานะผู้ค้ำประกัน " +
                  "                          เพื่อดำเนินการชำระเงินจำนวนดังกล่าวพร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงิน นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " " +
                  "                          ซึ่งเป็นวันผิดนัดจนถึงวันที่ชำระเสร็จสิ้น ให้แก่มหาวิทยาลัยมหิดลโดยเร็ว" +
                  "                      </p>" +
@@ -4258,7 +4258,7 @@ public class eCPDataReportCertificateReimbursement
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>(นายคณพศ เฟื่องฟุ้ง)</div>" +
-                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฏหมาย</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ปฏิบัติหน้าที่แทนอธิการบดีมหาวิทยาลัยมหิดล</div>" +
                      "              </td>" +
                      "          </tr>" +
@@ -4298,7 +4298,7 @@ public class eCPDataReportCertificateReimbursement
                  "                          <table border='0' cellpadding='0' cellspacing='0'>" +
                  "                              <tr>" +
                  "                                  <td width='50'><div style='font:normal 15pt " + _font + ";'>เรียน</div></td>" +
-                 "                                  <td width='550'><div style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฏหมาย</div></td>" +
+                 "                                  <td width='550'><div style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div></td>" +
                  "                              </tr>" +
                  "                          </table>" +
                  "                      </div>" +
@@ -4319,7 +4319,7 @@ public class eCPDataReportCertificateReimbursement
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในการนี้ งานกฏหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยออกหนังสือเพื่อเป็นหลักฐานการพ้นภาระผูกพันตามสัญญาฯ " +
+                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ในการนี้ งานกฎหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยออกหนังสือเพื่อเป็นหลักฐานการพ้นภาระผูกพันตามสัญญาฯ " +
                  "                          ให้แก่บุคคลดังกล่าวด้วย" +
                  "                      </p>" +
                  "                  </td>" +
