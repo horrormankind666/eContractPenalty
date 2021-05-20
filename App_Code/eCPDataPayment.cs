@@ -872,7 +872,7 @@ public class eCPDataPayment
 
             if (!String.IsNullOrEmpty(_receiptCopyDefault))
             {
-                _html += "                      <form id='download-receiptcopy-form' action='../FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
+                _html += "                      <form id='download-receiptcopy-form' action='FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
                          "                          <input type='hidden' id='action' name='action' value='download' />" +
                          "                          <input type='hidden' id='file' name='file' value='' />" +
                          "                      </form>" +
