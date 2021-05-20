@@ -504,7 +504,6 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
 
             if (_error == 0)
                 eCPDB.AddUpdateData(_c);
-
         }
 
         _c.Response.Write("<error>" + _error + "<error>" + _listUpdate);

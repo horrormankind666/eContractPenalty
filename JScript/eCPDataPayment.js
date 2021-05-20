@@ -689,7 +689,7 @@ function ConfirmActionCPTransPaymentFullRepay() {
                         _send[_send.length] = "cashbank=" + $("#cash-bank-hidden").val();
                         _send[_send.length] = "cashbankbranch=" + $("#cash-bank-branch-hidden").val();
                         _send[_send.length] = "cashbankaccount=" + $("#cash-bank-account-hidden").val();
-                        _send[_send.length5] = "cashbankaccountno=" + $("#cash-bank-account-no-hidden").val();
+                        _send[_send.length] = "cashbankaccountno=" + $("#cash-bank-account-no-hidden").val();
                         _send[_send.length] = "cashbankdate=" + $("#cash-bank-date-hidden").val();
                     }
 
@@ -867,7 +867,7 @@ function ConfirmActionCPTransPaymentPayRepay() {
 
                         _send[_send.length] = "overpayment=" + _overpayment;
 
-                        if (parseInt(_overpayment) > 0) {                                                                                    
+                        if (parseInt(_overpayment) > 0) {
                             _send[_send.length] = "calinterestyesno=" + _calInterestYesNo;
 
                             if (_calInterestYesNo == "Y") {
