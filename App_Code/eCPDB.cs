@@ -4017,7 +4017,7 @@ public class eCPDB
                     break;
                 case 3:
                     _channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', '" + _c.Request["cashbankaccountno"] + "', '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', " + (String.IsNullOrEmpty(_c.Request["cashbankaccountno"]) ? "NULL" : ("'" + _c.Request["cashbankaccountno"] + "'")) + ", '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
             }
 
@@ -4133,7 +4133,7 @@ public class eCPDB
                     break;
                 case 3:
                     _channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', '" + _c.Request["cashbankaccountno"] + "', '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', " + (String.IsNullOrEmpty(_c.Request["cashbankaccountno"]) ? "NULL" : ("'" + _c.Request["cashbankaccountno"] + "'")) + ", '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
             }
 
