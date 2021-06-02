@@ -657,7 +657,7 @@ public class eCPDataBreakContract
                  "              <div class='content-left' id='location-detail-input'><span>" + _locationDefault + "</span></div>" +
                  "              <div class='content-left' id='input-date-detail-label'>วันที่</div>" +
                  "              <div class='content-left' id='input-date-detail-input'><span>" + Util.LongDateTH(_inputDateDefault) + "</span></div>" +
-                 "              <div class='content-left' id='state-location-detail-label'>กองบริหารการศึกษารับที่</div>" +
+                 "              <div class='content-left' id='state-location-detail-label'>กบศ. รับที่</div>" +
                  "              <div class='content-left' id='state-location-detail-input'><span>" + _stateLocationDefault + "</span></div>" +
                  "              <div class='content-left' id='state-location-date-detail-label'>วันที่</div>" +
                  "              <div class='content-left' id='state-location-date-input'><span>" + Util.LongDateTH(_stateLocationDateDefault) + "</span></div>" +
