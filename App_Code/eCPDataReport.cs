@@ -1960,6 +1960,7 @@ public class eCPDataReportNoticeClaimDebt
 
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
         _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
+        _lawyer.Add("FullnameWithoutNamePrefix", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21].Replace("นาย", "").Replace("นาง", "").Replace("นางสาว", "") : String.Empty));
         _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
         _lawyer.Add("Email", (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
 
@@ -2028,7 +2029,7 @@ public class eCPDataReportNoticeClaimDebt
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                  "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๒. กรณีชำระเงินเกินกำหนดระยะเวลาดังกล่าว</strong> (มีดอกเบี้ยผิดนัดชำระ) ให้ท่านติดต่อนิติกร " +
-                 "                          ผู้รับผิดชอบ: คุณ" + _lawyer["Fullname"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ก่อนแล้วจึงชำระเงิน" + 
+                 "                          ผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ก่อนแล้วจึงชำระเงิน" + 
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2077,6 +2078,7 @@ public class eCPDataReportNoticeClaimDebt
 
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
         _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
+        _lawyer.Add("FullnameWithoutNamePrefix", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21].Replace("นาย", "").Replace("นาง", "").Replace("นางสาว", "") : String.Empty));
         _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
         _lawyer.Add("Email", (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
 
@@ -2141,7 +2143,7 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["Fullname"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
+                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
                  "                          เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ให้แก่มหาวิทยาลัยมหิดล แล้วจึงชำระเงินจำนวนดังกล่าวโดยนำฝากเงินเข้าบัญชีธนาคาร " +
                  "                          ไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
                  "                          หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี " +
@@ -2220,7 +2222,7 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["Fullname"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
+                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
                  "                          เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ให้แก่มหาวิทยาลัยมหิดล แล้วจึงชำระเงินจำนวนดังกล่าวโดยนำฝากเงินเข้าบัญชีธนาคารไทยพาณิชย์ " + 
                  "                          ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
                  "                          หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี ๐๑๖-๒-๑๐๓๒๒-๓ " +
