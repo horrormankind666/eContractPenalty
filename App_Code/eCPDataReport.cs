@@ -1960,7 +1960,7 @@ public class eCPDataReportNoticeClaimDebt
 
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
         _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
-        _lawyer.Add("FullnameWithoutNamePrefix", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21].Replace("นาย", "").Replace("นาง", "").Replace("นางสาว", "") : String.Empty));
+        _lawyer.Add("FullnameWithoutNamePrefix", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21].Replace("นาย", "").Replace("นางสาว", "").Replace("นาง", "") : String.Empty));
         _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
         _lawyer.Add("Email", (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
 
@@ -2078,7 +2078,7 @@ public class eCPDataReportNoticeClaimDebt
 
         Dictionary<string, string> _lawyer = new Dictionary<string, string>();
         _lawyer.Add("Fullname", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21] : String.Empty));
-        _lawyer.Add("FullnameWithoutNamePrefix", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21].Replace("นาย", "").Replace("นาง", "").Replace("นางสาว", "") : String.Empty));
+        _lawyer.Add("FullnameWithoutNamePrefix", (!String.IsNullOrEmpty(_data[0, 21]) ? _data[0, 21].Replace("นาย", "").Replace("นางสาว", "").Replace("นาง", "") : String.Empty));
         _lawyer.Add("PhoneNumber", (!String.IsNullOrEmpty(_data[0, 22]) ? _data[0, 22] : _data[0, 23]));
         _lawyer.Add("Email", (!String.IsNullOrEmpty(_data[0, 24]) ? _data[0, 24] : String.Empty));
 
