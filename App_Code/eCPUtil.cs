@@ -916,7 +916,7 @@ public class eCPUtil
         }
 
         if (!String.IsNullOrEmpty(_dateStart) && !String.IsNullOrEmpty(_dateEnd))
-        {            
+        {
             IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
             DateTime _dateA = DateTime.Parse(_dateStart, _provider);
             DateTime _dateB = DateTime.Parse(_dateEnd, _provider);
@@ -938,13 +938,24 @@ public class eCPUtil
                     _totalPenalty = CalPenaltyFormular2(_iCash, _resultCalcDate[1], _resultCalcDate[2], _dayLastMonth);
                     break;
                 case 3:
-                    _totalPenalty = CalPenaltyFormular3(_iCash, _allActual, _resultCalcDate[0]);
+                    if (_caseGraduate.Equals("2") && _civil.Equals("2"))
+                    {
+                        _resultCalcDate[0] = 0;
+                        _allActual = 0;
+                        _actual = 0;
+                        _month = 0;
+                        _day = 0;
+                        _totalPenalty = _iCash;
+                    }
+                    else
+                        _totalPenalty = CalPenaltyFormular3(_iCash, _allActual, _resultCalcDate[0]);
+                    
                     break;
                 case 4:
-                    _month        = 0;
-                    _day          = 0;
-                    _allActual    = _educationActual;
-                    _actual       = (_civil.Equals("1") ? _actual : 0);
+                    _month = 0;
+                    _day = 0;
+                    _allActual = _educationActual;
+                    _actual = (_civil.Equals("1") ? _actual : 0);
                     _totalPenalty = CalPenaltyFormular4(_iCash, _educationActual, _actual);
                     break;
             }

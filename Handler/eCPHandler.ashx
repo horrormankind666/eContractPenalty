@@ -707,14 +707,14 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _resultPenalty = eCPUtil.GetCalPenalty(_studyLeave, _beforeStudyLeaveStartDate, _beforeStudyLeaveEndDate, _afterStudyLeaveStartDate, _afterStudyLeaveEndDate, _scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition);
 
         _result += "<allactualscholarship>" + _resultPayScholarship[0].ToString("#,##0.00") + "<allactualscholarship>" +
-                    "<totalpayscholarship>" + _resultPenalty[5].ToString("#,##0.00") + "<totalpayscholarship>" +
-                    "<month>" + _resultPenalty[0].ToString("#,##0") + "<month>" +
-                    "<day>" + _resultPenalty[1].ToString("#,##0") + "<day>" +
-                    "<allactual>" + _resultPenalty[2].ToString("#,##0") + "<allactual>" +
-                    "<actual>" + _resultPenalty[3].ToString("#,##0") + "<actual>" +
-                    "<remain>" + _resultPenalty[4].ToString("#,##0") + "<remain>" +
-                    "<totalpenalty>" + _resultPenalty[6].ToString("#,##0.00") + "<totalpenalty>" +
-                    "<total>" + _resultPenalty[7].ToString("#,##0.00") + "<total>";
+                   "<totalpayscholarship>" + _resultPenalty[5].ToString("#,##0.00") + "<totalpayscholarship>" +
+                   "<month>" + _resultPenalty[0].ToString("#,##0") + "<month>" +
+                   "<day>" + _resultPenalty[1].ToString("#,##0") + "<day>" +
+                   "<allactual>" + _resultPenalty[2].ToString("#,##0") + "<allactual>" +
+                   "<actual>" + _resultPenalty[3].ToString("#,##0") + "<actual>" +
+                   "<remain>" + _resultPenalty[4].ToString("#,##0") + "<remain>" +
+                   "<totalpenalty>" + _resultPenalty[6].ToString("#,##0.00") + "<totalpenalty>" +
+                   "<total>" + _resultPenalty[7].ToString("#,##0.00") + "<total>";
 
         _c.Response.Write(_result);
     }

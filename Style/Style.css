@@ -4370,7 +4370,8 @@ a.link-disable:hover {
     height: 96px;
     padding-top: 10px;
 }
-#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-1-set-y #cal-contract-penalty-actual {
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-1-set-y #cal-contract-penalty-actual,
+#addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-2-set-y #cal-contract-penalty-actual {
     height: 156px;
     padding-top: 10px;
 }

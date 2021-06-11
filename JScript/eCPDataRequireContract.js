@@ -293,12 +293,12 @@ function CalculatePayScholarshipAndPenalty() {
             _dateStartID  = "require-date";
             _dateEndID    = "approve-date";
         }
-
+        
         if (_caseGraduate == "2" && _civil == "2") {
             _dateStartID  = "education-date-start-hidden";
             _dateEndID    = "education-date-end-hidden";
         }
-
+        
         var _send = new Array();
         _send[_send.length] = "scholar=" + $("#scholar-hidden").val();
         _send[_send.length] = "scholarshipmoney=" + DelCommas("scholarship-money");
