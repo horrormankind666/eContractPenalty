@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการแสดงรายงาน
 Date Created        : ๐๙/๐๘/๒๕๕๕
-Last Date Modified  : ๑๘/๐๕/๒๕๖๔
+Last Date Modified  : ๒๔/๐๖/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -2620,7 +2620,7 @@ public class eCPDataReportNoticeCheckForReimbursement
             _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 68]), 408, 418, 145, 0);
         }
         
-        _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 14]) ? double.Parse(_data[0, 14]).ToString("#,##0") : String.Empty), 212, 398, 58, 0);
+        _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 14]) && !_data[0, 14].Equals("0") ? double.Parse(_data[0, 14]).ToString("#,##0") : String.Empty), 212, 398, 58, 0);
         _exportToPdf.FillForm(_pdfFont, 13, 1, (!String.IsNullOrEmpty(_data[0, 15]) ? double.Parse(_data[0, 15]).ToString("#,##0") : String.Empty), 465, 398, 73, 0);
         _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 20] + _data[0, 21] + " " + _data[0, 22], 258, 379, 296, 0);
 
@@ -4192,7 +4192,7 @@ public class eCPDataReportCertificateReimbursement
                      "          <tr>" +
                      "              <td width='98'></td>" +
                      "              <td width='502' style='text-align: center'>" +
-                     "                  <div style='font:normal 15pt " + _font + ";'>(นาย/นาง/นางสาว" + _lawyerFullname + ")</div>" +
+                     "                  <div style='font:normal 15pt " + _font + ";'>(" + _lawyerFullname + ")</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>นิติกร</div></td>" +
                      "              </td>" +
                      "          </tr>" +

@@ -548,6 +548,12 @@ function ConfirmActionCPTransRequireContract(_action) {
                                 }
                             }
                             else {
+                                if (_setAmtIndemnitorYear == "Y") {
+                                    _send1[_send1.length] = "allactualdate=" + DelCommas("all-actual-date");
+                                    _send1[_send1.length] = "actualdate=" + DelCommas("actual-date");
+                                    _send1[_send1.length] = "remaindate=" + DelCommas("remain-date");
+                                }
+
                                 if (_setAmtIndemnitorYear == "N") {
                                     _send1[_send1.length] = "actualday=" + DelCommas("all-actual-day");
                                 }

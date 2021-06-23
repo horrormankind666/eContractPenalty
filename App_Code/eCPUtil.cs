@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๑๐/๐๕/๒๕๖๔
+Last Date Modified  : ๒๔/๐๖/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -941,7 +941,6 @@ public class eCPUtil
                     if (_caseGraduate.Equals("2") && _civil.Equals("2"))
                     {
                         _resultCalcDate[0] = 0;
-                        _allActual = 0;
                         _actual = 0;
                         _month = 0;
                         _day = 0;

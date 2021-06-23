@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับจัดการฐานข้อมูล
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๑๐/๐๕/๒๕๖๔
+Last Date Modified  : ๒๔/๐๖/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -3856,11 +3856,14 @@ public class eCPDB
                 }
                 else
                 {
-                    _command += "(BCID, TotalPayScholarship, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
+                    _command += "(BCID, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                                 "VALUES " +
                                 "(" +
                                 _c.Request["cp1id"] + ", " +
                                 _c.Request["totalpayscholarship"] + ", " +
+                                (String.IsNullOrEmpty(_c.Request["allactualdate"]) ? "NULL" : _c.Request["allactualdate"]) + ", " +
+                                (String.IsNullOrEmpty(_c.Request["actualdate"]) ? "NULL" : _c.Request["actualdate"]) + ", " +
+                                (String.IsNullOrEmpty(_c.Request["remaindate"]) ? "NULL" : _c.Request["remaindate"]) + ", " +
                                 (String.IsNullOrEmpty(_c.Request["actualday"]) ? "NULL" : _c.Request["actualday"]) + ", " +
                                 _c.Request["subtotalpenalty"] + ", " +
                                 _c.Request["totalpenalty"] + ", " +
