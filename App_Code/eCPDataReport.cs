@@ -3313,7 +3313,7 @@ public class eCPDataReportDebtorContract
                 {
                     _allActualDate = _data[_i, 14];
                     _workDateStart = _data[_i, 16];
-                    _workDateEnd = DateTime.Parse(_workDateStart, _provider).AddDays(double.Parse(_allActualDate)).ToString();
+                    _workDateEnd = (!String.IsNullOrEmpty(_workDateStart) ? DateTime.Parse(_workDateStart, _provider).AddDays(double.Parse(_allActualDate)).ToString() : String.Empty);
                     _requireDate = _data[_i, 16];
                     _approveDate = _data[_i, 17];
                     _actualDate = _data[_i, 18];
@@ -3732,7 +3732,7 @@ public class eCPDataReportDebtorContract
                 {
                     _allActualDate = _data[_i, 14];
                     _workDateStart = _data[_i, 16];
-                    _workDateEnd = DateTime.Parse(_workDateStart, _provider).AddDays(double.Parse(_allActualDate)).ToString();
+                    _workDateEnd = (!String.IsNullOrEmpty(_workDateStart) ? DateTime.Parse(_workDateStart, _provider).AddDays(double.Parse(_allActualDate)).ToString() : String.Empty);
                     _requireDate = _data[_i, 16];
                     _approveDate = _data[_i, 17];
                     _actualDate = _data[_i, 18];
