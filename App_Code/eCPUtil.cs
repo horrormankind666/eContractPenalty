@@ -1148,6 +1148,11 @@ public class eCPUtil
         return _contractInterest;
     }
 
+    public static string DoubleToString2Decimal(double _d)
+    {
+        return _d.ToString("#.00");
+    }
+
     public static string[] CalChkBalance(string _capital, string _totalInterest, string _totalAccruedInterest, string _totalPayment, string _pay)
     {
         string[] _result = new string[5];
@@ -1183,7 +1188,7 @@ public class eCPUtil
             _remainCapital = _capitalAll - _payCapital; //เงินต้นคงเหลือ
             _remainAccruedInterest = (_totalRemain > 0) ? (_totalAccruedInterestAll - _totalRemain) + _accruedInterest : (_totalAccruedInterestAll + _accruedInterest); //ดอกเบี้ยจ่ายรวม
             */
-
+            /*
             _payAccruedInterest = (_totalAccruedInterestAll <= _payAll) ? _totalAccruedInterestAll : _payAll; //ดอกเบี้ยรับชำระ
             _remainAccruedInterest = _totalAccruedInterestAll - _payAccruedInterest; //ดอกเบี้ยค้างจ่าย
             _remainPayAll = _payAll - _payAccruedInterest; //เงินที่ต้องชำระเหลือจากหักดอกเบี้ยค้างจ่าย
@@ -1193,12 +1198,23 @@ public class eCPUtil
             _payCapital = (_capitalAll == _remainPayAll) ? _capitalAll : (_capitalAll > _remainPayAll ? _remainPayAll : _capitalAll); //เงินต้นรับชำระ
             _remainCapital = _capitalAll - _payCapital; //เงินต้นคงเหลือ
             _remainAccruedInterest = _remainAccruedInterest + _accruedInterest; //ดอกเบี้ยค้างจ่าย
+            */
+
+            _payAccruedInterest = (double.Parse(DoubleToString2Decimal(_totalAccruedInterestAll)) <= double.Parse(DoubleToString2Decimal(_payAll))) ? double.Parse(DoubleToString2Decimal(_totalAccruedInterestAll)) : double.Parse(DoubleToString2Decimal(_payAll)); //ดอกเบี้ยรับชำระ
+            _remainAccruedInterest = double.Parse(DoubleToString2Decimal(_totalAccruedInterestAll)) - double.Parse(DoubleToString2Decimal(_payAccruedInterest)); //ดอกเบี้ยค้างจ่าย
+            _remainPayAll = double.Parse(DoubleToString2Decimal(_payAll)) - double.Parse(DoubleToString2Decimal(_payAccruedInterest)); //เงินที่ต้องชำระเหลือจากหักดอกเบี้ยค้างจ่าย
+            _payInterest = (double.Parse(DoubleToString2Decimal(_totalInterestAll)) <= double.Parse(DoubleToString2Decimal(_remainPayAll))) ? double.Parse(DoubleToString2Decimal(_totalInterestAll)) : double.Parse(DoubleToString2Decimal(_remainPayAll)); //ดอกเบี้ยรับชำระ
+            _accruedInterest = double.Parse(DoubleToString2Decimal(_totalInterestAll)) - double.Parse(DoubleToString2Decimal(_payInterest)); //ดอกเบี้ยค้างจ่ายงวดปัจจุบัน
+            _remainPayAll = double.Parse(DoubleToString2Decimal(_remainPayAll)) - double.Parse(DoubleToString2Decimal(_payInterest)); //เงินที่ต้องชำระเหลือจากหักดอกเบี้ยรับชำระ            
+            _payCapital = (double.Parse(DoubleToString2Decimal(_capitalAll)) == double.Parse(DoubleToString2Decimal(_remainPayAll))) ? double.Parse(DoubleToString2Decimal(_capitalAll)) : (double.Parse(DoubleToString2Decimal(_capitalAll)) > double.Parse(DoubleToString2Decimal(_remainPayAll)) ? double.Parse(DoubleToString2Decimal(_remainPayAll)) : double.Parse(DoubleToString2Decimal(_capitalAll))); //เงินต้นรับชำระ            
+            _remainCapital = double.Parse(DoubleToString2Decimal(_capitalAll)) - double.Parse(DoubleToString2Decimal(_payCapital)); //เงินต้นคงเหลือ
+            _remainAccruedInterest = double.Parse(DoubleToString2Decimal(_remainAccruedInterest)) + double.Parse(DoubleToString2Decimal(_accruedInterest)); //ดอกเบี้ยค้างจ่าย
 
             _result[0] = _payCapital.ToString();
-            _result[1] = (_payAccruedInterest + _payInterest).ToString();            
+            _result[1] = (double.Parse(DoubleToString2Decimal(_payAccruedInterest)) + double.Parse(DoubleToString2Decimal(_payInterest))).ToString();
             _result[2] = _remainCapital.ToString();
             _result[3] = _accruedInterest.ToString();
-            _result[4] = _remainAccruedInterest < 0 ? "0" : _remainAccruedInterest.ToString();
+            _result[4] = double.Parse(DoubleToString2Decimal(_remainAccruedInterest)) < 0 ? "0" : _remainAccruedInterest.ToString();
         }
         else
         {
