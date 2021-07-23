@@ -2867,7 +2867,7 @@ public class eCPDB
             new SqlParameter("@groupnum", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["groupnum"] : null))
         );
 
-        string[,] _data = new string[_ds.Tables[1].Rows.Count, 15];
+        string[,] _data = new string[_ds.Tables[1].Rows.Count, 18];
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
         {
@@ -2879,7 +2879,7 @@ public class eCPDB
             _data[_i, 5] = _dr["ProgramCode"].ToString();
             _data[_i, 6] = _dr["ProgTName"].ToString();
             _data[_i, 7] = _dr["GroupNum"].ToString();
-
+            /*
             if (_dr["operationType"].Equals("S") || _dr["operationType"].Equals("M"))
             {
                 _data[_i, 8] = "1";
@@ -2908,13 +2908,23 @@ public class eCPDB
                         break;
                 }
             }
-
+            
             _yearFolder = DateTime.Parse(_dr["contractDateSignByStudent"].ToString()).Month >= 5 ? DateTime.Parse(_dr["contractDateSignByStudent"].ToString()).ToString("yyyy", new CultureInfo("th-TH")) : (DateTime.Parse(_dr["contractDateSignByStudent"].ToString()).AddYears(-1)).ToString("yyyy", new CultureInfo("th-TH"));
 
             _path = _pathEContract + _yearFolder + "/" + _p + "/";
             _fileDocA = _data[_i, 1] + _data[_i, 5] + "_A.pdf";
             _fileDocB = _data[_i, 1] + _data[_i, 5] + "_B.pdf";
             _fileDocC = _data[_i, 1] + _data[_i, 5] + "_C.pdf";
+            */
+
+            _data[_i, 8] = (!String.IsNullOrEmpty(_dr["contractPath"].ToString()) ? "1" : "0");
+            _data[_i, 9] = (!String.IsNullOrEmpty(_dr["garranteePath"].ToString()) ? "1" : "0");
+            _data[_i, 10] = (!String.IsNullOrEmpty(_dr["warranPath"].ToString()) ? "1" : "0");
+
+            _path = _pathEContract;
+            _fileDocA = _dr["contractPath"].ToString();
+            _fileDocB = _dr["garranteePath"].ToString();
+            _fileDocC = _dr["warranPath"].ToString();
 
             _data[_i, 11] = _path;
             _data[_i, 12] = _fileDocA;
