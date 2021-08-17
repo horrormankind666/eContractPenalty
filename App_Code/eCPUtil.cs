@@ -68,10 +68,10 @@ public class eCPUtil
         },
         {
             "Home",
+            "CPTabUser",
             "CPReportDebtorContract",
             "CPReportDebtorContractPaid",
             "CPReportDebtorContractRemain",
-            "",
             "",
             "",
             "",
@@ -93,7 +93,7 @@ public class eCPUtil
     {
         { 1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
         { 1, 2, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        { 1, 2, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     public static string[,,] _actionTrackingStatus = new string[,,]
@@ -355,9 +355,9 @@ public class eCPUtil
             {
                 _html += "  <li class='have-link' id='submenu21'><div class='link-msg' id='menu2'>รายงาน</div>" +
                          "      <ul>" +
-                         "          <li><a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",2)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
-                         "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",3)'>การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
-                         "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",4)'>ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้</a></li>" +
+                         "          <li><a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",3)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
+                         "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",4)'>การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
+                         "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",5)'>ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้</a></li>" +
                          "      </ul>" +
                          "  </li>";
             }

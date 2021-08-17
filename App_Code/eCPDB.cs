@@ -3415,9 +3415,9 @@ public class eCPDB
                         "'" + _c.Request["username"] + "', " +
                         "'" + _c.Request["password"] + "', " +
                         "'" + _c.Request["name"] + "', " +
-                        "'" + _c.Request["phonenumber"] + "', " +
-                        "'" + _c.Request["mobilenumber"] + "', " +
-                        "'" + _c.Request["email"] + "', " +
+                        (String.IsNullOrEmpty(_c.Request["phonenumber"]) ? "NULL" : ("'" + _c.Request["phonenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["mobilenumber"]) ? "NULL" : ("'" + _c.Request["mobilenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["email"]) ? "NULL" : ("'" + _c.Request["email"] + "'")) + ", " +
                         "'" + _eCPCookie["UserSection"] + "', " +
                         "'User'" +
                         ")";
@@ -3432,9 +3432,9 @@ public class eCPDB
                         "Username = '" + _c.Request["username"] + "', " +
                         "Password = '" + _c.Request["password"] + "', " +
                         "Name = '" + _c.Request["name"] + "', " +
-                        "PhoneNumber = '" + _c.Request["phonenumber"] + "', " +
-                        "MobileNumber = '" + _c.Request["mobilenumber"] + "'," +
-                        "Email = '" + _c.Request["email"] + "' " +
+                        "PhoneNumber = " + (String.IsNullOrEmpty(_c.Request["phonenumber"]) ? "NULL" : ("'" + _c.Request["phonenumber"] + "'")) + ", " +
+                        "MobileNumber = " + (String.IsNullOrEmpty(_c.Request["mobilenumber"]) ? "NULL" : ("'" + _c.Request["mobilenumber"] + "'")) + ", " +
+                        "Email = " + (String.IsNullOrEmpty(_c.Request["email"]) ? "NULL" : ("'" + _c.Request["email"] + "'")) + " " +
                         "WHERE (ID = '" + _c.Request["userid"] + "')";
         }
 

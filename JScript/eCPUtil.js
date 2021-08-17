@@ -261,19 +261,24 @@ function GoToPage(_section, _order) {
                 _pid = 1;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
+            //บัญชีผู้ใช้งาน
             case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            //รายงาน - การรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
+            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
             case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
+            //รายงาน - การรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
             case 4:
                 _pid = 4;
+                _area = "sec";
+                break;
+            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
+            case 5:
+                _pid = 5;
                 _area = "sec";
                 break;
         }
@@ -440,8 +445,11 @@ function LoadPage(_area, _section, _pid) {
         if (_section == 3) {
             switch (_pid) {
                 case 2:
+                    OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
+                    break;
                 case 3:
                 case 4:
+                case 5:
                     OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
                     break;
             }
