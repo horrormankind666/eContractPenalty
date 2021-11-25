@@ -5,7 +5,7 @@
 }
 
 function ResetFrmCPTabUser(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         TextboxDisable("#username");

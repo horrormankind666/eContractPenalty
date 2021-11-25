@@ -1,4 +1,6 @@
 ﻿function ResetFrmCalReportTableCalCapitalAndInterest() {
+    GoToTopElement("html, body");
+
     $("#capital").val($("#capital-hidden").val());
     $("#interest").val($("#interest-hidden").val());
     InitCombobox("condition-tablecalcapitalandinterest", "0", "0", 180, 205);
@@ -315,12 +317,12 @@ function PrintDebtorContract(_tabOrder) {
 
     if (_error == false && _tabOrder == 1 && $("#list-data-report-debtor-contract").html().length == 0) {
         _error = true;
-        _msg = "ไม่พบรายการที่ต้องการพิมพ์";
+        _msg = "ไม่พบรายการที่ต้องการส่งออก";
     }
 
     if (_error == false && _tabOrder == 2 && $("#list-data-report-debtor-contract-by-program").html().length == 0) {
         _error = true;
-        _msg = "ไม่พบรายการที่ต้องการพิมพ์";
+        _msg = "ไม่พบรายการที่ต้องการส่งออก";
     }
 
     if (_error == true) {
@@ -348,4 +350,37 @@ function PrintCertificateReimbursement(_cp2id) {
     _send[_send.length] = _cp2id;
 
     Printing(_send.join(":"), "reportcertificatereimbursement", "word", "eCPPrinting.aspx", "export-target");
+}
+
+function PrintFormRequestCreateAndUpdateDebtor(_cp1id) {
+    var _send = new Array();
+    _send[_send.length] = _cp1id;
+
+    Printing(_send.join(":"), "reportformrequestcreateandupdatedebtor", "excel", "eCPPrinting.aspx", "export-target");
+}
+
+function PrintDebtorContractBreakRequireRepayPayment() {
+    var _error = false;
+    var _msg;
+
+    if (_error == false && $("#list-data-trans-payment").html().length == 0) {
+        _error = true;
+        _msg = "ไม่พบรายการที่ต้องการส่งออก";
+    }
+
+    if (_error == true) {
+        DialogMessage(_msg, "", false, "");
+        return;
+    }
+    
+    var _send = new Array();
+    _send[_send.length] = $("#paymentstatus-trans-payment-hidden").val();
+    _send[_send.length] = $("#paymentrecordstatus-trans-payment-hidden").val();
+    _send[_send.length] = $("#id-name-trans-payment-hidden").val();
+    _send[_send.length] = $("#faculty-trans-payment-hidden").val();
+    _send[_send.length] = $("#program-trans-payment-hidden").val();
+    _send[_send.length] = $("#date-start-trans-repay1-reply-hidden").val();
+    _send[_send.length] = $("#date-end-trans-repay1-reply-hidden").val();
+
+    Printing(_send.join(":"), "reportdebtorcontractbreakrequirerepaypayment", "excel", "eCPPrinting.aspx", "export-target");
 }

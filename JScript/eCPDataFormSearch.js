@@ -36,9 +36,9 @@ function SearchCPTabUser() {
     SearchData("tabuser", _send, "record-count-cp-tab-user", "list-data-tab-user", "nav-page-tab-user");
 }
 
-function ResetFrmSearchStudentWithResult() {    
+function ResetFrmSearchStudentWithResult() {
     $("#id-name-search-student").val("");
-    InitCombobox("facultysearchstudent", "0", "0", 390, 415);    
+    InitCombobox("facultysearchstudent", "0", "0", 390, 415);
 
     $("#record-count-student-with-result").html("ค้นหาพบ 0 รายการ");
     $("#list-data-search-student-with-result").html("");
@@ -86,7 +86,7 @@ function SearchStudentWithResult() {
 }
 
 function ViewStudent(_profileStudent) {
-    CloseFrm(true, "");    
+    CloseFrm(true, "");
     ViewStudentInAddProfileStudent(_profileStudent);
 }
 
@@ -253,6 +253,7 @@ function SearchRepay() {
 
 function ResetFrmSearchCPTransPayment(_action) {
     var _paymentStatusTransPaymentDefault = (_action != "clear") ? ($("#paymentstatus-trans-payment-hidden").val().length > 0 ? $("#paymentstatus-trans-payment-hidden").val() : "0") : "0";
+    var _paymentRecordStatusTransPaymentDefault = (_action != "clear") ? ($("#paymentrecordstatus-trans-payment-hidden").val().length > 0 ? $("#paymentrecordstatus-trans-payment-hidden").val() : "0") : "0";
     var _idNameTransPaymentDefault = (_action != "clear") ? ($("#id-name-trans-payment-hidden").val().length > 0 ? $("#id-name-trans-payment-hidden").val() : "") : "";
     var _facultyTransPaymentDefault = (_action != "clear") ? ($("#faculty-trans-payment-hidden").val().length > 0 ? $("#faculty-trans-payment-hidden").val() : "0") : "0";
     var _programTransPaymentDefault = (_action != "clear") ? ($("#program-trans-payment-hidden").val().length > 0 ? $("#program-trans-payment-hidden").val() : "") : "";
@@ -260,6 +261,7 @@ function ResetFrmSearchCPTransPayment(_action) {
     var _dateEndTransRepay1ReplyDefault = (_action != "clear") ? ($("#date-end-trans-repay1-reply-hidden").val().length > 0 ? $("#date-end-trans-repay1-reply-hidden").val() : "") : "";
 
     InitCombobox("paymentstatus-trans-payment", "0", _paymentStatusTransPaymentDefault, 336, 361);
+    InitCombobox("paymentrecordstatus-trans-payment", "0", _paymentRecordStatusTransPaymentDefault, 336, 361);
     $("#id-name-trans-payment").val(_idNameTransPaymentDefault);
     InitCombobox("facultytranspayment", "0", _facultyTransPaymentDefault, 336, 361);
     $("#program-trans-payment-hidden").val(_programTransPaymentDefault);    
@@ -287,6 +289,8 @@ function ValidateSearchCPTransPayment() {
     $("#search-trans-payment").val("search");
     $("#paymentstatus-trans-payment-hidden").val(ComboboxGetSelectedValue("paymentstatus-trans-payment") != "0" ? ComboboxGetSelectedValue("paymentstatus-trans-payment") : "");
     $("#paymentstatus-trans-payment-text-hidden").val(ComboboxGetSelectedValue("paymentstatus-trans-payment") != "0" ? $("#paymentstatus-trans-payment option:selected").text() : "");
+    $("#paymentrecordstatus-trans-payment-hidden").val(ComboboxGetSelectedValue("paymentrecordstatus-trans-payment") != "0" ? ComboboxGetSelectedValue("paymentrecordstatus-trans-payment") : "");
+    $("#paymentrecordstatus-trans-payment-text-hidden").val(ComboboxGetSelectedValue("paymentrecordstatus-trans-payment") != "0" ? $("#paymentrecordstatus-trans-payment option:selected").text() : "");
     $("#id-name-trans-payment-hidden").val($("#id-name-trans-payment").val());
     $("#faculty-trans-payment-hidden").val(ComboboxGetSelectedValue("facultytranspayment") != "0" ? ComboboxGetSelectedValue("facultytranspayment") : "");
     $("#program-trans-payment-hidden").val(ComboboxGetSelectedValue("programtranspayment") != "0" ? ComboboxGetSelectedValue("programtranspayment") : "");
@@ -311,11 +315,13 @@ function SearchPayment() {
     _searchValue[_searchValue.length] = (_faculty[0] != null ? _faculty[0] + " - " + _faculty[1] : "");
     _searchValue[_searchValue.length] = (_program[0] != null ? _program[0] + " - " + _program[1] + _groupNum : "");
     _searchValue[_searchValue.length] = (($("#date-start-trans-repay1-reply-hidden").val().length > 0) && ($("#date-end-trans-repay1-reply-hidden").val().length > 0) ? $("#date-start-trans-repay1-reply-hidden").val() + " - " + $("#date-end-trans-repay1-reply-hidden").val() : "");
+    _searchValue[_searchValue.length] = $("#paymentrecordstatus-trans-payment-text-hidden").val();
 
-    BoxSearchCondition(5, _searchValue, "search-trans-payment-condition");
+    BoxSearchCondition(6, _searchValue, "search-trans-payment-condition");
 
     var _send = new Array();
     _send[_send.length] = "statuspayment=" + $("#paymentstatus-trans-payment-hidden").val();
+    _send[_send.length] = "statuspaymentrecord=" + $("#paymentrecordstatus-trans-payment-hidden").val();
     _send[_send.length] = "studentid=" + $("#id-name-trans-payment-hidden").val();
     _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
     _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");

@@ -1,5 +1,5 @@
 ﻿function ResetFrmCPTabProgram(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         ComboboxDisable("dlevel");
@@ -106,7 +106,7 @@ function ValidateCPTabProgram(_action) {
 }
 
 function ResetFrmCPTabInterest(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         TextboxDisable("#in-contract-interest");
@@ -232,7 +232,7 @@ function ResetSetAmtIndemnitorYear() {
 }
 
 function ResetFrmCPTabPayBreakContract(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         ComboboxDisable("dlevel");
@@ -392,7 +392,7 @@ function ValidateCPTabPayBreakContract(_action) {
 }
 
 function ResetFrmCPTabScholarship(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         ComboboxDisable("dlevel");

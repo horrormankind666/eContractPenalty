@@ -52,6 +52,12 @@
             case "reportdebtorcontractremain":
                 eCPDataReportDebtorContract.ExportCPReportDebtorContractRemain(Request.Form["export-send"]);
                 break;
+            case "reportdebtorcontractbreakrequirerepaypayment":
+                eCPDataReportDebtorContract.ExportCPReportDebtorContractBreakRequireRepayPayment(Request.Form["export-send"]);
+                break;
+            case "reportformrequestcreateandupdatedebtor":
+                eCPDataReportFormRequestCreateAndUpdateDebtor.ExportCPReportFormRequestCreateAndUpdateDebtor(Request.Form["export-send"]);
+                break;
         }
     }
 %>

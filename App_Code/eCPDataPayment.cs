@@ -1,11 +1,12 @@
 ﻿/*
 Description         : สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๑๔/๐๔/๒๕๖๔
+Last Date Modified  : ๒๒/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
+using System.Collections;
 using System.Web;
 
 public class eCPDataPayment
@@ -471,6 +472,7 @@ public class eCPDataPayment
                  "                          <a class='text-underline' href='javascript:void(0)'>ดูเอกสาร</a>" +
                  "                          <form id='download-receiptcopy-form' action='FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
                  "                              <input type='hidden' id='action' name='action' value='download' />" +
+                 "                              <input type='hidden' id='filename' name='filename' value='ReceiptCopy' />" +
                  "                              <input type='hidden' id='file' name='file' value='' />" +
                  "                           </form>" +
                  "                          <iframe class='export-target' id='download-receiptcopy' name='download-receiptcopy'></iframe>" +
@@ -583,7 +585,7 @@ public class eCPDataPayment
                  "      <input type='hidden' id='payment-date-hidden' value='" + _paymentDateDefault + "' />" +
                  "      <input type='hidden' id='pay-repay-least-hidden' value='" + eCPUtil.PAY_REPAY_LEAST.ToString("#,##0") + "' />" +
 
-                        DetailPenaltyAndFormatPayment(_data) +
+                        DetailPenaltyAndFormatPayment(_data, false) +
                         FrmOverpayment("2", _statusPayment, _repayDateStartDefault, _repayDateEndDefault, _overpaymentYear, _overpaymentDay) +
                         FrmPayment() +
 
@@ -657,7 +659,7 @@ public class eCPDataPayment
                  "      <input type='hidden' id='total-payment-hidden' value='" + _totalPaymentDefault + "' />" +
                  "      <input type='hidden' id='payment-date-hidden' value='" + Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")) + "' />" +
                         
-                        DetailPenaltyAndFormatPayment(_data) +
+                        DetailPenaltyAndFormatPayment(_data, false) +
                         FrmOverpayment("1", _statusPayment, _repayDateStartDefault, _repayDateEndDefault, _overpaymentYear, _overpaymentDay) +
                         FrmPayment() +
                  
@@ -962,16 +964,35 @@ public class eCPDataPayment
         string _cp2id = _data[0, 1];
         string _statusRepay = _data[0, 6];
         string _statusPayment = _data[0, 7];
-        string _formatPayment = _data[0, 8];        
-        string[,] _data1;
+        string _formatPayment = _data[0, 8];
+        string _statusPaymentRecord = _data[0, 33];
+        string _statusPaymentrecordLawyerDefault = _data[0, 34];
+        string _statusPaymentrecordLawyerFullname = String.Empty;
+        string _statusPaymentrecordLawyerPhoneNumber = String.Empty;
+        string _statusPaymentrecordLawyerMobileNumber = String.Empty;
+        string _statusPaymentrecordLawyerEmail = String.Empty;
+        string[,] _data1, _data2;
         int _recordCount;
 
-        _data1 = eCPDB.ListTransPayment(_cp2id, "", "");
-        _recordCount = _data1.GetLength(0);
+        string _userid = eCPUtil.GetUserID();
+        _data1 = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
+        _statusPaymentrecordLawyerFullname = _data1[0, 3];
+        _statusPaymentrecordLawyerPhoneNumber = _data1[0, 6];
+        _statusPaymentrecordLawyerMobileNumber = _data1[0, 7];
+        _statusPaymentrecordLawyerEmail = _data1[0, 8];
+        
+        _data2 = eCPDB.ListTransPayment(_cp2id, "", "");
+        _recordCount = _data2.GetLength(0);
 
         _html += "<div class='form-content' id='detail-cp-trans-payment'>" +
                  "  <input type='hidden' id='statuspayment-hidden' value='" + _statusPayment + "' />" +
-                    DetailPenaltyAndFormatPayment(_data) +
+                 "  <input type='hidden' id='statuspaymentrecord-hidden' value='" + _statusPaymentRecord + "' />" +
+                 "  <input type='hidden' id='statuspaymentrecord-lawyer-hidden' value='" + (!String.IsNullOrEmpty(_statusPaymentrecordLawyerDefault) ? _statusPaymentrecordLawyerDefault : _statusPaymentrecordLawyerFullname) + "' />" +
+                 "  <input type='hidden' id='statuspaymentrecord-lawyer-fullname-hidden' value='" + _statusPaymentrecordLawyerFullname + "' />" +
+                 "  <input type='hidden' id='statuspaymentrecord-lawyer-phonenumber-hidden' value='" + _statusPaymentrecordLawyerPhoneNumber + "' />" +
+                 "  <input type='hidden' id='statuspaymentrecord-lawyer-mobilenumber-hidden' value='" + _statusPaymentrecordLawyerMobileNumber + "' />" +
+                 "  <input type='hidden' id='statuspaymentrecord-lawyer-email-hidden' value='" + _statusPaymentrecordLawyerEmail + "' />" +
+                    DetailPenaltyAndFormatPayment(_data, true) +
                  "  <div id='list-cp-trans-payment'>" +
                  "      <div class='tab-line'></div>" +
                  "      <div class='content-data-tab-content'>" +
@@ -998,14 +1019,14 @@ public class eCPDataPayment
                  "          </div>" +
                  "          <div class='clear'></div>" +
                  "      </div>" +
-                 "      <div id='box-list-trans-payment'><div id='list-trans-payment'>" + ListTransPayment(_data1) + "</div></div>" +
+                 "      <div id='box-list-trans-payment'><div id='list-trans-payment'>" + ListTransPayment(_data2) + "</div></div>" +
                  "  </div>" +
                  "</div>";
 
         return _html;
     }
 
-    private static string DetailPenaltyAndFormatPayment(string[,] _data)
+    private static string DetailPenaltyAndFormatPayment(string[,] _data, bool _showStatusPaymentRecord)
     {
         string _html = String.Empty;
         string _cp2id = _data[0, 1];
@@ -1039,13 +1060,44 @@ public class eCPDataPayment
                  "  <div class='clear'></div>" +
                  "  <div>" +
                  "      <div class='content-left' id='status-payment-label'>" +
-                 "          <div class='form-label-discription-style" + (!_statusPayment.Equals("3") ? " clear-bottom" : "") + "'><div class='form-label-style'>สถานะการชำระหนี้</div></div>" +
+                 "          <div class='form-label-discription-style" + (!_statusPayment.Equals("3") && _showStatusPaymentRecord.Equals(false) ? " clear-bottom" : String.Empty) + "'><div class='form-label-style'>สถานะการชำระหนี้</div></div>" +
                  "      </div>" +
                  "      <div class='content-left' id='status-payment-input'>" +
-                 "          <div class='form-input-style" + (!_statusPayment.Equals("3") ? " clear-bottom" : "") + "'><div class='form-input-content'><span>" + eCPUtil._paymentStatus[int.Parse(_statusPayment) - 1] + "</span></div></div>" +
+                 "          <div class='form-input-style" + (!_statusPayment.Equals("3") && _showStatusPaymentRecord.Equals(false) ? " clear-bottom" : String.Empty) + "'><div class='form-input-content'><span>" + eCPUtil._paymentStatus[int.Parse(_statusPayment) - 1] + "</span></div></div>" +
                  "      </div>" +
                  "  </div>" +
                  "  <div class='clear'></div>";
+
+        if (!_statusPayment.Equals("3") && _showStatusPaymentRecord.Equals(true))
+        {
+            _html += "<div id='status-payment-record'>" +
+                     "  <div class='content-left' id='status-payment-record-label'>" +
+                     "      <div class='form-label-discription-style clear-bottom'>" +
+                     "          <div class='form-label-style'>สถานะการบันทึกข้อมูลการชำระหนี้</div>" +
+                     "          <div class='form-discription-style'>" +
+                     "              <div class='form-discription-line1-style'>นิติกรผู้รับผิดชอบ คุณ<span id='status-payment-record-lawyer'></span></div>" +
+                     "          </div>" +
+                     "      </div>" +
+                     "  </div>" +
+                     "  <div class='content-left' id='status-payment-record-input'>" +
+                     "      <div class='form-input-style clear-bottom'>" +
+                     "          <div class='form-input-content'>" +
+                     "              <div>" +
+                     "                  <div class='content-left input'><input class='radio' type='radio' checked name='status-payment-record' value='" + eCPUtil._paymentRecordStatus[0, 1] + "' /></div>" +
+                     "                  <div class='content-left label'>" + eCPUtil._paymentRecordStatus[0, 0] + " เนื่องจากอยู่ระหว่างการฟ้องร้องบังคับคดี</div>" +
+                     "              </div>" +
+                     "              <div class='clear'></div>" +
+                     "              <div>" +
+                     "                  <div class='content-left input'><input class='radio' type='radio' checked name='status-payment-record' value='" + eCPUtil._paymentRecordStatus[1, 1] + "' /></div>" +
+                     "                  <div class='content-left label'>" + eCPUtil._paymentRecordStatus[1, 0] + "</div>" +
+                     "              </div>" +
+                     "              <div class='clear'></div>" +
+                     "          </div>" +
+                     "      </div>" +
+                     "  </div>" +
+                     "</div>" +
+                     "<div class='clear'></div>";
+        }
 
         if (_statusPayment.Equals("3"))
         {
@@ -1133,6 +1185,25 @@ public class eCPDataPayment
             string _dlevelDefault = _data[0, 20];
             string _pictureFileNameDefault = _data[0, 21];
             string _pictureFolderNameDefault = _data[0, 22];
+            string _lawyerFullnameDefault = _data[0, 29];
+            string _lawyerPhoneNumberDefault = _data[0, 30];
+            string _lawyerMobileNumberDefault = _data[0, 31];
+            string _lawyerEmailDefault = _data[0, 32];
+            string _lawyerDefault = String.Empty;
+
+            ArrayList _lawyerPhoneNumber = new ArrayList();
+
+            if (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerPhoneNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
+            {
+                _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
+                                  " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
+            }
 
             _html += "<div class='form-content' id='adddetail-cp-trans-payment-head'>" +
                      "  <input type='hidden' id='cp2id' value='" + _cp2id + "'>" +
@@ -1145,23 +1216,27 @@ public class eCPDataPayment
                      "          <div class='form-label-discription-style'><div class='form-label-style'>ชื่อ - นามสกุล</div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>ระดับการศึกษา</div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>คณะ</div></div>" +
-                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หลักสูตร</div></div>" +
+                     "          <div class='form-label-discription-style'><div class='form-label-style'>หลักสูตร</div></div>" +
+                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>" +
                      "      </div>" +
                      "      <div class='content-left' id='profile-student-input'>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _studentIDDefault + "&nbsp;" + _programCodeDefault.Substring(0, 4) + " / " + _programCodeDefault.Substring(4, 1) + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _titleNameDefault + _firstNameDefault + " " + _lastNameDefault + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _dlevelDefault + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _facultyCodeDefault + " - " + _facultyNameDefault + "</span></div></div>" +
-                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
+                     "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
+                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>" + _lawyerDefault + "</div></div>" +
                      "      </div>" +
                      "  </div>" +
                      "  <div class='clear'></div>" +
+                     "  <div class='box3'></div>" +
                      "  <div class='content-data-head'>" +
                      "      <div class='content-data-tabs content-data-subtabs' id='tabs-adddetail-cp-trans-payment'>" +
                      "          <div class='content-data-tabs-content'>" +
                      "              <ul>" +
                      "                  <li class='first-tab'><a class='active' id='link-tab1-adddetail-cp-trans-payment' alt='#tab1-adddetail-cp-trans-payment' href='javascript:void(0)'>รายละเอียด</a></li>" +
                      "                  <li id='tab2-adddetail-cp-trans-payment'><a id='link-tab2-adddetail-cp-trans-payment' alt='#tab2-adddetail-cp-trans-payment' href='javascript:void(0)'>ทำรายการ</a></li>" +
+                     "                  <li id='tab3-adddetail-cp-trans-payment'><a id='link-tab3-adddetail-cp-trans-payment' alt='#tab3-adddetail-cp-trans-payment' href='javascript:void(0)'>การฟ้องคดี</a></li>" +
                      "              </ul>" +
                      "          </div>" +
                      "      </div>" +
@@ -1172,19 +1247,23 @@ public class eCPDataPayment
                      "      </div>";
 
             if (!_statusPayment.Equals("3"))
-            {                                
+            {
                 _html += "  <div class='subtab-content' id='tab2-adddetail-cp-trans-payment-head'>" +
                          "      <div class='tab-line'></div>" +
                          "  </div>";
             }
 
-            _html += "  </div>" +
+            _html += "      <div class='subtab-content' id='tab3-adddetail-cp-trans-payment-head'>" +
+                     "          <div class='tab-line'></div>" +
+                     "      </div>" +
+                     "  </div>" +
                      "  <div class='subtab-content' id='tab1-adddetail-cp-trans-payment-contents'></div>";
 
             if (!_statusPayment.Equals("3"))
                 _html += "<div class='subtab-content' id='tab2-adddetail-cp-trans-payment-contents'></div>";
-
-            _html += "</div>" +
+            
+            _html += "  <div class='subtab-content' id='tab3-adddetail-cp-trans-payment-contents'></div>" +
+                     "</div>" +
                      "<div id='adddetail-cp-trans-payment-content'>" +
                      "  <div class='subtab-content' id='tab1-adddetail-cp-trans-payment-content'>" +
                      "      <div class='adddetail-cp-trans-payment-content' id='detail-data-trans-payment'>" + DetailCpTransPayment(_data) + "</div>" +
@@ -1197,7 +1276,10 @@ public class eCPDataPayment
                          "</div>";
             }
 
-            _html += "</div>";
+            _html += "  <div class='subtab-content' id='tab3-adddetail-cp-trans-payment-content'>" +
+                     "      <div class='adddetail-cp-trans-payment-content' id='addupdate-data-trans-prosecution'></div>" +
+                     "  </div>" +
+                     "</div>";
         }
 
         return _html;
@@ -1270,15 +1352,22 @@ public class eCPDataPayment
         {            
             _data = eCPDB.ListPaymentOnCPTransRequireContract(_c);
 
+            HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+            _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+            int _pid = int.Parse(_eCPCookie["Pid"]);
+            
             _html += "<div class='table-content'>";
 
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
-                _callFunc = "ChkSelectFormatPayment('" + _data[_i, 1] + "','" + _data[_i, 15] + "','" + _data[_i, 16] + "')";
+
+                if (!_pid.Equals(20) && !_pid.Equals(6))
+                    _callFunc = "ChkSelectFormatPayment('" + _data[_i, 1] + "','" + _data[_i, 15] + "','" + _data[_i, 16] + "')";
+
                 _iconStatus = eCPUtil._iconPaymentStatus[int.Parse(_data[_i, 15]) - 1];
-                _html += "<ul class='table-row-content " + _highlight + "' id='trans-payment" + _data[_i, 1] + "'>" +
+                _html += "<ul class='table-row-content " + _highlight + (String.IsNullOrEmpty(_callFunc) ? " noclick" : String.Empty) + "' id='trans-payment" + _data[_i, 1] + "'>" +
                          "  <li id='table-content-cp-trans-payment-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
                          "  <li class='table-col' id='table-content-cp-trans-payment-col2' onclick=" + _callFunc + "><div>" + _data[_i, 3] + "</div></li>" +
                          "  <li class='table-col' id='table-content-cp-trans-payment-col3' onclick=" + _callFunc + "><div>" + _data[_i, 4] + _data[_i, 5] + " " + _data[_i, 6] + "</div></li>" +
@@ -1316,10 +1405,20 @@ public class eCPDataPayment
     public static string TabPaymentOnCPTransRequireContract()
     {
         string _html = String.Empty;
+        string _title = "cp-trans-payment";
+        int _pid;
+
+        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+        _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+        _pid = int.Parse(_eCPCookie["Pid"]);
+
+        if (_pid.Equals(20) || _pid.Equals(6))
+            _title = "cp-report-debtor-contract-break-require-repay-payment";
+
 
         _html += "<div id='cp-trans-payment-head'>" +
                  "  <div class='content-data-head'>" +
-                        eCPUtil.ContentTitle("cp-trans-payment") +
+                        eCPUtil.ContentTitle(_title) +
                  "      <div class='content-data-tabs' id='tabs-cp-trans-payment'>" +
                  "          <div class='content-data-tabs-content'>" +
                  "              <ul>" +
@@ -1337,6 +1436,8 @@ public class eCPDataPayment
                  "                  <input type='hidden' id='search-trans-payment' value=''>" +
                  "                  <input type='hidden' id='paymentstatus-trans-payment-hidden' value=''>" +
                  "                  <input type='hidden' id='paymentstatus-trans-payment-text-hidden' value=''>" +
+                 "                  <input type='hidden' id='paymentrecordstatus-trans-payment-hidden' value=''>" +
+                 "                  <input type='hidden' id='paymentrecordstatus-trans-payment-text-hidden' value=''>" +
                  "                  <input type='hidden' id='id-name-trans-payment-hidden' value=''>" +
                  "                  <input type='hidden' id='faculty-trans-payment-hidden' value=''>" +
                  "                  <input type='hidden' id='program-trans-payment-hidden' value=''>" +
@@ -1345,6 +1446,7 @@ public class eCPDataPayment
                  "                  <div class='button-style2'>" +
                  "                      <ul>" +
                  "                          <li><a href='javascript:void(0)' onclick=LoadForm(1,'searchcptranspayment',true,'','','')>ค้นหา</a></li>" +
+                 "                          <li><a href='javascript:void(0)' onclick=PrintDebtorContractBreakRequireRepayPayment()>ส่งออก</a></li>" +
                  "                      </ul>" +
                  "                  </div>" +
                  "              </div>" +
@@ -1360,6 +1462,12 @@ public class eCPDataPayment
                  "                  <div class='box-search-condition-order-title'>สถานะการชำระหนี้</div>" +
                  "                  <div class='box-search-condition-split-title-value'>:</div>" +
                  "                  <div class='box-search-condition-order-value' id='search-trans-payment-condition-order1-value'></div>" +
+                 "                  <div class='clear'></div>" +
+                 "              </div>" +
+                 "              <div class='box-search-condition-order search-trans-payment-condition-order' id='search-trans-payment-condition-order6'>" +
+                 "                  <div class='box-search-condition-order-title'>สถานะการบันทึกข้อมูลการชำระหนี้</div>" +
+                 "                  <div class='box-search-condition-split-title-value'>:</div>" +
+                 "                  <div class='box-search-condition-order-value' id='search-trans-payment-condition-order6-value'></div>" +
                  "                  <div class='clear'></div>" +
                  "              </div>" +
                  "              <div class='box-search-condition-order search-trans-payment-condition-order' id='search-trans-payment-condition-order2'>" +
@@ -1423,7 +1531,13 @@ public class eCPDataPayment
                  "  <div class='tab-content' id='tab2-cp-trans-payment-content'>" +
                  "      <div class='box1' id='adddetail-data-trans-payment'></div>" +
                  "  </div>" +
-                 "</div>";
+                 "</div>" +
+                 "<iframe class='export-target' id='export-target' name='export-target'></iframe>" +
+                 "<form id='export-setvalue' method='post' target='export-target'>" +
+                 "  <input id='export-send' name='export-send' value='' type='hidden' />" +
+                 "  <input id='export-order' name='export-order' value='' type='hidden' />" +
+                 "  <input id='export-type' name='export-type' value='' type='hidden' />" +
+                 "</form>";
 
         return _html;
     }   

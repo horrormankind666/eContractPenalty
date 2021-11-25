@@ -1,22 +1,23 @@
 ﻿/*
 Description         : สำหรับจัดการฐานข้อมูล
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๒๔/๐๖/๒๕๖๔
+Last Date Modified  : ๒๓/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Data;
 using System.Data.SqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class eCPDB
 {
-    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
-    //public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=Infinity;User ID=MUstudent53;Password=oydL7dKk53;Connect Timeout=600;Asynchronous Processing=true;";
+    //public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
+    public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=Infinity;User ID=MUstudent53;Password=oydL7dKk53;Connect Timeout=600;Asynchronous Processing=true;";
     //public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=MUStudent;User ID=MUstudent53;Password=oydL7dKk53;Asynchronous Processing=true;";
     //public const string CONNECTION_STRING = "Server=.\\SQLEXPRESS;Database=eContractPenalty;User ID=sa;Password=123456;Asynchronous Processing=true;";
     private const string STORE_PROC = "sp_ecpEContractPenalty";
@@ -362,6 +363,25 @@ public class eCPDB
         _ds.Dispose();
 
         return _data;
+    }
+
+    public static DataSet ListCPTabUser()
+    {
+        int _section;
+
+        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+        _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+        _section = int.Parse(_eCPCookie["UserSection"]);
+
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 36),
+            new SqlParameter("@section", _section),
+            new SqlParameter("@userlevel", "User")
+        );
+
+        _ds.Dispose();
+
+        return _ds;
     }
 
     public static string[,] ListDetailCPTabUser(string _userid, string _username, string _password, string _userlevel)
@@ -1691,6 +1711,7 @@ public class eCPDB
         DataSet _ds = ExecuteCommandStoredProcedure(
             new SqlParameter("@ordertable", 19),
             new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@statuspaymentrecord", (!String.IsNullOrEmpty(_c.Request["statuspaymentrecord"]) ? _c.Request["statuspaymentrecord"] : null)),
             new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
             new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
             new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
@@ -1717,6 +1738,7 @@ public class eCPDB
             new SqlParameter("@startrow", eCPUtil.GetStartRow(_c.Request["startrow"])),
             new SqlParameter("@endrow", eCPUtil.GetEndRow(_c.Request["endrow"])),
             new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_c.Request["statuspayment"]) ? _c.Request["statuspayment"] : null)),
+            new SqlParameter("@statuspaymentrecord", (!String.IsNullOrEmpty(_c.Request["statuspaymentrecord"]) ? _c.Request["statuspaymentrecord"] : null)),
             new SqlParameter("@studentid", (!String.IsNullOrEmpty(_c.Request["studentid"]) ? _c.Request["studentid"] : null)),
             new SqlParameter("@faculty", (!String.IsNullOrEmpty(_c.Request["faculty"]) ? _c.Request["faculty"] : null)),
             new SqlParameter("@program", (!String.IsNullOrEmpty(_c.Request["programcode"]) && !String.IsNullOrEmpty(_c.Request["majorcode"]) && !String.IsNullOrEmpty(_c.Request["groupnum"]) ? _c.Request["programcode"] : null)),
@@ -1776,7 +1798,7 @@ public class eCPDB
             new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
         );
 
-        string[,] _data = new string[_ds.Tables[1].Rows.Count, 33];
+        string[,] _data = new string[_ds.Tables[1].Rows.Count, 38];
         string[,] _data1;
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
@@ -1803,7 +1825,7 @@ public class eCPDB
             _data[_i, 19] = _dr["DLevel"].ToString();
             _data[_i, 20] = _dr["DLevelName"].ToString();
             _data[_i, 21] = _dr["FileName"].ToString();
-            _data[_i, 22] = _dr["FolderName"].ToString();            
+            _data[_i, 22] = _dr["FolderName"].ToString();
             _data[_i, 23] = _dr["StatusReply"].ToString();
             _data[_i, 24] = _dr["ReplyDate"].ToString();
             _data[_i, 25] = String.Empty;
@@ -1824,6 +1846,11 @@ public class eCPDB
             _data[_i, 30] = _dr["LawyerPhoneNumber"].ToString();
             _data[_i, 31] = _dr["LawyerMobileNumber"].ToString();
             _data[_i, 32] = _dr["LawyerEmail"].ToString();
+            _data[_i, 33] = _dr["StatusPaymentRecord"].ToString();
+            _data[_i, 34] = _dr["StatusPaymentRecordLawyerFullname"].ToString();
+            _data[_i, 35] = _dr["StatusPaymentRecordLawyerPhoneNumber"].ToString();
+            _data[_i, 36] = _dr["StatusPaymentRecordLawyerMobileNumber"].ToString();
+            _data[_i, 37] = _dr["StatusPaymentRecordLawyerEmail"].ToString();
         }
 
         _ds.Dispose();
@@ -1949,7 +1976,7 @@ public class eCPDB
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["RCID"].ToString();
             _data[_i, 2] = _dr["DateTimePayment"].ToString();
-            _data[_i, 3] = _dr["RemainAccruedInterest"].ToString();            
+            _data[_i, 3] = _dr["RemainAccruedInterest"].ToString();
             _data[_i, 4] = _dr["TotalRemain"].ToString();
         }
 
@@ -1957,7 +1984,209 @@ public class eCPDB
 
         return _data;
     }
-                
+    
+    public static string ListCPTransProsecution(string _cp2id)
+    {
+        JArray jsonArray = new JArray();
+
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 54),
+            new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
+        );
+
+        string[,] _data = ListLastTransPayment(_cp2id);
+        string _dateTimePayment = String.Empty;
+        string _remainAccruedInterest = String.Empty;
+        string _totalRemain = String.Empty;
+
+        if (_data.GetLength(0) > 0)
+        {
+            _dateTimePayment = _data[0, 2];
+            _remainAccruedInterest = _data[0, 3];
+            _totalRemain = _data[0, 4];
+        }
+
+        foreach (DataRow _dr in _ds.Tables[0].Rows)
+        {
+            jsonArray.Add(new JObject()
+            {
+                {
+                    "eCPTransRequireContract", new JObject()
+                    {
+                        { "ID", _dr["ID"].ToString() },
+                        { "BCID", _dr["BCID"].ToString() },
+                        { "subtotalPenalty", _dr["SubtotalPenalty"].ToString() },
+                        { "totalPenalty", _dr["TotalPenalty"].ToString() },
+                        { "statusPayment", _dr["StatusPayment"].ToString() },
+                        {
+                            "lawyer", new JObject()
+                            {
+                                { "fullName", _dr["LawyerFullname"].ToString() },
+                                { "phoneNumber", _dr["LawyerPhoneNumber"].ToString() },
+                                { "mobileNumber", _dr["LawyerMobileNumber"].ToString() },
+                                { "email", _dr["LawyerEmail"].ToString() }
+                            }
+                        }
+                    }
+                },
+                {
+                    "eCPTransProsecution", new JObject()
+                    {
+                        { "RCID", _dr["RCID"].ToString() },
+                        {
+                            "complaint", new JObject()
+                            {
+                                {
+                                    "lawyer", new JObject()
+                                    {
+                                        { "fullName", _dr["ComplaintLawyerFullname"].ToString() },
+                                        { "phoneNumber", _dr["ComplaintLawyerPhoneNumber"].ToString() },
+                                        { "mobileNumber", _dr["ComplaintLawyerMobileNumber"].ToString() },
+                                        { "email", _dr["ComplaintLawyerEmail"].ToString() }
+                                    }
+                                },
+                                { "blackCaseNo", _dr["ComplaintBlackCaseNo"].ToString() },
+                                { "capital", _dr["ComplaintCapital"].ToString() },
+                                { "interest", _dr["ComplaintInterest"].ToString() },
+                                { "actionDate", eCPUtil.ThaiLongDate(_dr["ComplaintActionDate"].ToString()) }
+                            }
+                        },
+                        {
+                            "judgment", new JObject()
+                            {
+                                {
+                                    "lawyer", new JObject()
+                                    {
+                                        { "fullName", _dr["JudgmentLawyerFullname"].ToString() },
+                                        { "phoneNumber", _dr["JudgmentLawyerPhoneNumber"].ToString() },
+                                        { "mobileNumber", _dr["JudgmentLawyerMobileNumber"].ToString() },
+                                        { "email", _dr["JudgmentLawyerEmail"].ToString() }
+                                    }
+                                },
+                                { "redCaseNo", _dr["JudgmentRedCaseNo"].ToString() },
+                                { "verdict", _dr["JudgmentVerdict"].ToString() },
+                                { "copy", (!String.IsNullOrEmpty(_dr["JudgmentCopy"].ToString()) ? eCPUtil.DecodeFromBase64(_dr["JudgmentCopy"].ToString()) : _dr["JudgmentCopy"].ToString()) },
+                                { "remark", _dr["JudgmentRemark"].ToString() },
+                                { "actionDate", eCPUtil.ThaiLongDate(_dr["JudgmentActionDate"].ToString()) }
+                            }
+                        },
+                        {
+                            "execution", new JObject()
+                            {
+                                {
+                                    "lawyer", new JObject()
+                                    {
+                                        { "fullName", _dr["ExecutionLawyerFullname"].ToString() },
+                                        { "phoneNumber", _dr["ExecutionLawyerPhoneNumber"].ToString() },
+                                        { "mobileNumber", _dr["ExecutionLawyerMobileNumber"].ToString() },
+                                        { "email", _dr["ExecutionLawyerEmail"].ToString() }
+                                    }
+                                },
+                                { "date", _dr["ExecutionDate"].ToString() },
+                                { "copy", (!String.IsNullOrEmpty(_dr["ExecutionCopy"].ToString()) ? eCPUtil.DecodeFromBase64(_dr["ExecutionCopy"].ToString()) : _dr["ExecutionCopy"].ToString()) },
+                                { "actionDate", eCPUtil.ThaiLongDate(_dr["ExecutionActionDate"].ToString()) }
+                            }
+                        },
+                        {
+                            "executionWithdraw", new JObject()
+                            {
+                                {
+                                    "lawyer", new JObject()
+                                    {
+                                        { "fullName", _dr["ExecutionWithdrawLawyerFullname"].ToString() },
+                                        { "phoneNumber", _dr["ExecutionWithdrawLawyerPhoneNumber"].ToString() },
+                                        { "mobileNumber", _dr["ExecutionWithdrawLawyerMobileNumber"].ToString() },
+                                        { "email", _dr["ExecutionWithdrawLawyerEmail"].ToString() }
+                                    }
+                                },
+                                { "date", _dr["ExecutionWithdrawDate"].ToString() },
+                                { "reason", _dr["ExecutionWithdrawReason"].ToString() },
+                                { "copy", (!String.IsNullOrEmpty(_dr["ExecutionWithdrawCopy"].ToString()) ? eCPUtil.DecodeFromBase64(_dr["ExecutionWithdrawCopy"].ToString()) : _dr["ExecutionWithdrawCopy"].ToString()) },
+                                { "actionDate", eCPUtil.ThaiLongDate(_dr["ExecutionWithdrawActionDate"].ToString()) }
+                            }
+                        }
+                    }
+                },
+                {
+                    "eCPTransPayment", new JObject()
+                    {
+                        {
+                            "lastPayment", new JObject()
+                            {
+                                { "dateTimePayment", _dateTimePayment },
+                                { "remainAccruedInterest", _remainAccruedInterest },
+                                { "totalRemain", _totalRemain }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        _ds.Dispose();
+
+        return JsonConvert.SerializeObject(jsonArray);
+    }
+
+    public static string GetPersonRecordsAddress(string _studentCode)
+    {
+        JArray jsonArray = new JArray();
+
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 55),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_studentCode) ? _studentCode : null))
+        );
+
+        foreach (DataRow _dr in _ds.Tables[0].Rows)
+        {
+            jsonArray.Add(new JObject()
+            {
+                { "perPersonID", _dr["id"].ToString() },
+                { "idCard", _dr["idCard"].ToString() },
+                {
+                    "addressTypePermanent", new JObject()
+                    {
+                        { "address", _dr["addressPermanent"].ToString() },
+                        { "country", _dr["thCountryNamePermanent"].ToString() },
+                        { "village", _dr["villagePermanent"].ToString() },
+                        { "no", _dr["noPermanent"].ToString() },
+                        { "moo", _dr["mooPermanent"].ToString() },
+                        { "soi", _dr["soiPermanent"].ToString() },
+                        { "road", _dr["roadPermanent"].ToString() },
+                        { "subdistrict", _dr["thSubdistrictNamePermanent"].ToString() },
+                        { "district", _dr["thDistrictNamePermanent"].ToString() },
+                        { "province", _dr["thPlaceNamePermanent"].ToString() },
+                        { "zipCode", _dr["zipCodePermanent"].ToString() },
+                        { "phoneNumber", _dr["phoneNumberPermanent"].ToString() },
+                        { "mobileNumber", _dr["mobileNumberPermanent"].ToString() }
+                    }
+                },
+                {
+                    "addressTypeCurrent", new JObject()
+                    {
+                        { "address", _dr["addressCurrent"].ToString() },
+                        { "country", _dr["thCountryNameCurrent"].ToString() },
+                        { "village", _dr["villageCurrent"].ToString() },
+                        { "no", _dr["noCurrent"].ToString() },
+                        { "moo", _dr["mooCurrent"].ToString() },
+                        { "soi", _dr["soiCurrent"].ToString() },
+                        { "road", _dr["roadCurrent"].ToString() },
+                        { "subdistrict", _dr["thSubdistrictNameCurrent"].ToString() },
+                        { "district", _dr["thDistrictNameCurrent"].ToString() },
+                        { "province", _dr["thPlaceNameCurrent"].ToString() },
+                        { "zipCode", _dr["zipCodeCurrent"].ToString() },
+                        { "phoneNumber", _dr["phoneNumberCurrent"].ToString() },
+                        { "mobileNumber", _dr["mobileNumberCurrent"].ToString() }
+                    }
+                }
+            });
+        }
+
+        _ds.Dispose();
+
+        return JsonConvert.SerializeObject(jsonArray);
+    }
+
     public static string[,] ListLastCommentOnCPTransBreakContract(string _cpid, string _action)
     {
         int _i = 0;
@@ -2098,7 +2327,7 @@ public class eCPDB
             new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
         );
 
-        string[,] _data = new string[_ds.Tables[1].Rows.Count, 22];
+        string[,] _data = new string[_ds.Tables[1].Rows.Count, 26];
         string[,] _data1;
 
         foreach (DataRow _dr in _ds.Tables[1].Rows)
@@ -2130,6 +2359,11 @@ public class eCPDB
 
             if (_data1.GetLength(0) > 0)
                 _data[_i, 21] = _data1[0, 4];
+
+            _data[_i, 22] = _dr["LawyerFullname"].ToString();
+            _data[_i, 23] = _dr["LawyerPhoneNumber"].ToString();
+            _data[_i, 24] = _dr["LawyerMobileNumber"].ToString();
+            _data[_i, 25] = _dr["LawyerEmail"].ToString();
         }
 
         _ds.Dispose();
@@ -3390,7 +3624,76 @@ public class eCPDB
 
         return _data;
     }
-    
+
+    public static string ListExportReportDebtorContractBreakRequireRepayPayment(string _exportSend)
+    {
+        char[] _separator;
+
+        _separator = new char[] { ':' };
+        string[] _exportSendValue = _exportSend.Split(_separator);
+        string _statusPayment = _exportSendValue[0];
+        string _statusPaymentRecord = _exportSendValue[1];
+        string _idName = _exportSendValue[2];
+
+        _separator = new char[] { ';' };
+        string[] _faculty = (!String.IsNullOrEmpty(_exportSendValue[3]) ? _exportSendValue[3].Split(_separator) : new string[0]);
+        string[] _program = (!String.IsNullOrEmpty(_exportSendValue[4]) ? _exportSendValue[4].Split(_separator) : new string[0]);
+
+        string _dateStart = _exportSendValue[5];
+        string _dateEnd = _exportSendValue[6];
+
+        JArray jsonArray = new JArray();
+
+        DataSet _ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 19),
+            new SqlParameter("@statuspayment", (!String.IsNullOrEmpty(_statusPayment) ? _statusPayment : null)),
+            new SqlParameter("@statuspaymentrecord", (!String.IsNullOrEmpty(_statusPaymentRecord) ? _statusPaymentRecord : null)),
+            new SqlParameter("@studentid", (!String.IsNullOrEmpty(_idName) ? _idName : null)),
+            new SqlParameter("@faculty", (_faculty.GetLength(0) > 0 && !String.IsNullOrEmpty(_faculty[0]) ? _faculty[0] : null)),
+            new SqlParameter("@program", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[0] : null)),
+            new SqlParameter("@major", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[2] : null)),
+            new SqlParameter("@groupnum", (_program.GetLength(0) > 0 && !String.IsNullOrEmpty(_program[0]) && !String.IsNullOrEmpty(_program[2]) && !String.IsNullOrEmpty(_program[3]) ? _program[3] : null)),
+            new SqlParameter("@datestart", (!String.IsNullOrEmpty(_dateStart) ? _dateStart : null)),
+            new SqlParameter("@dateend", (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : null))
+        );
+
+        foreach (DataRow _dr in _ds.Tables[1].Rows)
+        {
+            jsonArray.Add(new JObject()
+            {
+                { "ID", _dr["ID"].ToString() },
+                { "BCID", _dr["BCID"].ToString() },
+                { "studentCode", _dr["StudentID"].ToString() },
+                { "titleName", _dr["TitleTName"].ToString() },
+                { "firstName", _dr["FirstTName"].ToString() },
+                { "lastName", _dr["LastTName"].ToString() },
+                { "facultyCode", _dr["FacultyCode"].ToString() },
+                { "facultyName", _dr["FacultyName"].ToString() },
+                { "programCode", _dr["ProgramCode"].ToString() },
+                { "programName", _dr["ProgramName"].ToString() },
+                { "majorCode", _dr["MajorCode"].ToString() },
+                { "groupNum", _dr["GroupNum"].ToString() },
+                { "contractDate", _dr["ContractDate"].ToString() },
+                { "sendDate", _dr["DateTimeSend"].ToString() },
+                { "receiverDate", _dr["DateTimeReceiver"].ToString() },
+                { "replyDateHistory", _dr["ReplyDateHistory"].ToString() },
+                { "subtotalPenalty", _dr["SubtotalPenalty"].ToString() },
+                { "totalPenalty", _dr["TotalPenalty"].ToString() },
+                { "totalPayCapital", (!String.IsNullOrEmpty(_dr["TotalPayCapital"].ToString()) ? _dr["TotalPayCapital"].ToString() : "0") },
+                { "totalPayInterest", (!String.IsNullOrEmpty(_dr["TotalPayInterest"].ToString()) ? _dr["TotalPayInterest"].ToString() : "0") },
+                { "totalPay", (!String.IsNullOrEmpty(_dr["TotalPay"].ToString()) ? _dr["TotalPay"].ToString() : "0") },
+                { "totalRemain", (!String.IsNullOrEmpty(_dr["TotalRemain"].ToString()) ? _dr["TotalRemain"].ToString() : "0") },
+                { "remainAccruedInterest", (!String.IsNullOrEmpty(_dr["RemainAccruedInterest"].ToString()) ? _dr["RemainAccruedInterest"].ToString() : "0") },
+                { "statusPayment", _dr["StatusPayment"].ToString() },
+                { "statusPaymentRecord", _dr["StatusPaymentRecord"].ToString() }
+            });
+        }
+
+        _ds.Dispose();
+
+        return JsonConvert.SerializeObject(jsonArray);
+    }
+
     public static void AddUpdateData(HttpContext _c)
     {
         string _command = String.Empty;
@@ -4006,6 +4309,20 @@ public class eCPDB
                         "WHERE (RCID = " + _c.Request["cp2id"] + ") AND (StatusRepay = " + _c.Request["statusrepay"] + ")";
         }
 
+        if (_c.Request["cmd"].Equals("updatestatuspaymentrecord"))
+        {
+            _what = "UPDATE";
+            _where = "ecpTransRequireContract";
+            _function = "UpdateData, updatestatuspaymentrecord";
+            _command += "UPDATE ecpTransRequireContract SET " +
+                        "StatusPaymentRecord = " + (String.IsNullOrEmpty(_c.Request["statuspaymentrecord"]) ? "NULL" : ("'" + _c.Request["statuspaymentrecord"]) + "'") + ", " +
+                        "StatusPaymentRecordLawyerFullname = '" + _c.Request["statuspaymentrecordlawyerfullname"] + "', " +
+                        "StatusPaymentRecordLawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request["statuspaymentrecordlawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["statuspaymentrecordlawyerphonenumber"] + "'")) + ", " +
+                        "StatusPaymentRecordLawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request["statuspaymentrecordlawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["statuspaymentrecordlawyermobilenumber"] + "'")) + ", " +
+                        "StatusPaymentRecordLawyerEmail = '" + _c.Request["statuspaymentrecordlawyeremail"] + "' " +
+                        "WHERE ID = " + _c.Request["cp2id"];
+        }
+
         if (_c.Request["cmd"].Equals("addcptranspaymentfullrepay"))
         {                                    
             string _capital = _c.Request["capital"];
@@ -4271,6 +4588,147 @@ public class eCPDB
                                 _channelDetail[1] + ")";
                 }
             } 
+        }
+
+        if (_c.Request["cmd"].Equals("addcptransprosecution"))
+        {
+            HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+            _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+
+            string _userid = eCPUtil.GetUserID();
+            string[] _documentetail = new string[2];
+
+            switch (_c.Request["document"])
+            {
+                case "complaint":
+                    _documentetail[0] = "ComplaintLawyerFullname, ComplaintLawyerPhoneNumber, ComplaintLawyerMobileNumber, ComplaintLawyerEmail, ComplaintBlackCaseNo, ComplaintCapital, ComplaintInterest, ComplaintActionDate, ComplaintActionBy, ComplaintActionIP";
+                    _documentetail[1] = 
+                        (String.IsNullOrEmpty(_c.Request["complaintblackcaseno"]) ? "NULL" : ("'" + _c.Request["complaintblackcaseno"] + "'")) + ", " + 
+                        (String.IsNullOrEmpty(_c.Request["complaintcapital"]) ? "NULL" : _c.Request["complaintcapital"]) + ", " + 
+                        (String.IsNullOrEmpty(_c.Request["complaintinterest"]) ? "NULL" : _c.Request["complaintinterest"]) + ", " +
+                        "GETDATE(), " +
+                        "'" + _userid + "', " +
+                        "dbo.fnc_GetIP()";
+                    break;
+                case "judgment":
+                    _documentetail[0] = "JudgmentLawyerFullname, JudgmentLawyerPhoneNumber, JudgmentLawyerMobileNumber, JudgmentLawyerEmail, JudgmentRedCaseNo, JudgmentVerdict, JudgmentCopy, JudgmentRemark, JudgmentActionDate, JudgmentActionBy, JudgmentActionIP";
+                    _documentetail[1] =
+                        (String.IsNullOrEmpty(_c.Request["judgmentredcaseno"]) ? "NULL" : ("'" + _c.Request["judgmentredcaseno"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["judgmentverdict"]) ? "NULL" : ("'" + _c.Request["judgmentverdict"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["judgmentcopy"]) ? "NULL" : ("'" + _c.Request["judgmentcopy"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["judgmentremark"]) ? "NULL" : ("'" + _c.Request["judgmentremark"] + "'")) + ", " +
+                        "GETDATE(), " +
+                        "'" + _userid + "', " +
+                        "dbo.fnc_GetIP()";
+                    break;
+                case "execution":
+                    _documentetail[0] = "ExecutionLawyerFullname, ExecutionLawyerPhoneNumber, ExecutionLawyerMobileNumber, ExecutionLawyerEmail, ExecutionDate, ExecutionCopy, ExecutionActionDate, ExecutionActionBy, ExecutionActionIP";
+                    _documentetail[1] =
+                        (String.IsNullOrEmpty(_c.Request["executiondate"]) ? "NULL" : ("'" + _c.Request["executiondate"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["executioncopy"]) ? "NULL" : ("'" + _c.Request["executioncopy"] + "'")) + ", " +
+                        "GETDATE(), " +
+                        "'" + _userid + "', " +
+                        "dbo.fnc_GetIP()";
+                    break;
+                case "executionwithdraw":
+                    _documentetail[0] = "ExecutionWithdrawLawyerFullname, ExecutionWithdrawLawyerPhoneNumber, ExecutionWithdrawLawyerMobileNumber, ExecutionWithdrawLawyerEmail, ExecutionWithdrawDate, ExecutionWithdrawReason, ExecutionWithdrawCopy, ExecutionWithdrawActionDate, ExecutionWithdrawActionBy, ExecutionWithdrawActionIP";
+                    _documentetail[1] =
+                        (String.IsNullOrEmpty(_c.Request["executionwithdrawdate"]) ? "NULL" : ("'" + _c.Request["executionwithdrawdate"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["executionwithdrawreason"]) ? "NULL" : ("'" + _c.Request["executionwithdrawreason"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["executionwithdrawcopy"]) ? "NULL" : ("'" + _c.Request["executionwithdrawcopy"] + "'")) + ", " +
+                        "GETDATE(), " +
+                        "'" + _userid + "', " +
+                        "dbo.fnc_GetIP()";
+                    break;
+            }
+
+            _what = "INSERT";
+            _where = "ecpTransProsecution";
+            _function = "AddUpdateData, addcptransprosecution";
+            _command += "INSERT INTO ecpTransProsecution " +
+                        "(RCID, " + _documentetail[0] + ") " +
+                        "VALUES " +
+                        "(" +
+                        _c.Request["cp2id"] + ", " +
+                        "'" + _c.Request[_c.Request["document"] + "lawyerfullname"] + "', " +
+                        (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyerphonenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyermobilenumber"] + "'")) + ", " +
+                        "'" + _c.Request[_c.Request["document"] + "lawyeremail"] + "', " +
+                        _documentetail[1] +
+                        ")";
+        }
+
+
+        if (_c.Request["cmd"].Equals("updatecptransprosecution"))
+        {
+            HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+            _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+
+            string _userid = eCPUtil.GetUserID();
+            string _documentetail = String.Empty;
+
+            switch (_c.Request["document"])
+            {
+                case "complaint":
+                    _documentetail =
+                        "ComplaintLawyerFullname = '" + _c.Request[_c.Request["document"] + "lawyerfullname"] + "', " +
+                        "ComplaintLawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyerphonenumber"] + "'")) + ", " +
+                        "ComplaintLawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyermobilenumber"] + "'")) + ", " +
+                        "ComplaintLawyerEmail = '" + _c.Request[_c.Request["document"] + "lawyeremail"] + "', " +
+                        "ComplaintBlackCaseNo = " + (String.IsNullOrEmpty(_c.Request["complaintblackcaseno"]) ? "NULL" : ("'" + _c.Request["complaintblackcaseno"] + "'")) + ", " +
+                        "ComplaintCapital = " + (String.IsNullOrEmpty(_c.Request["complaintcapital"]) ? "NULL" : _c.Request["complaintcapital"]) + ", " +
+                        "ComplaintInterest = " + (String.IsNullOrEmpty(_c.Request["complaintinterest"]) ? "NULL" : _c.Request["complaintinterest"]) + ", " +
+                        "ComplaintActionDate = GETDATE(), " +
+                        "ComplaintActionBy = '" + _userid + "', " +
+                        "ComplaintActionIP = dbo.fnc_GetIP()";
+                    break;
+                case "judgment":
+                    _documentetail =
+                        "JudgmentLawyerFullname = '" + _c.Request[_c.Request["document"] + "lawyerfullname"] + "', " +
+                        "JudgmentLawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyerphonenumber"] + "'")) + ", " +
+                        "JudgmentLawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyermobilenumber"] + "'")) + ", " +
+                        "JudgmentLawyerEmail = '" + _c.Request[_c.Request["document"] + "lawyeremail"] + "', " +
+                        "JudgmentRedCaseNo = " + (String.IsNullOrEmpty(_c.Request["judgmentredcaseno"]) ? "NULL" : ("'" + _c.Request["judgmentredcaseno"] + "'")) + ", " +
+                        "JudgmentVerdict = " + (String.IsNullOrEmpty(_c.Request["judgmentverdict"]) ? "NULL" : ("'" + _c.Request["judgmentverdict"] + "'")) + ", " +
+                        "JudgmentCopy = " + (String.IsNullOrEmpty(_c.Request["judgmentcopy"]) ? "NULL" : ("'" + _c.Request["judgmentcopy"] + "'")) + ", " +
+                        "JudgmentRemark = " + (String.IsNullOrEmpty(_c.Request["judgmentremark"]) ? "NULL" : ("'" + _c.Request["judgmentremark"] + "'")) + ", " +
+                        "JudgmentActionDate = GETDATE(), " +
+                        "JudgmentActionBy = '" + _userid + "', " +
+                        "JudgmentActionIP = dbo.fnc_GetIP()";
+                    break;
+                case "execution":
+                    _documentetail =
+                        "ExecutionLawyerFullname = '" + _c.Request[_c.Request["document"] + "lawyerfullname"] + "', " +
+                        "ExecutionLawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyerphonenumber"] + "'")) + ", " +
+                        "ExecutionLawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyermobilenumber"] + "'")) + ", " +
+                        "ExecutionLawyerEmail = '" + _c.Request[_c.Request["document"] + "lawyeremail"] + "', " +
+                        "ExecutionDate = " + (String.IsNullOrEmpty(_c.Request["executiondate"]) ? "NULL" : ("'" + _c.Request["executiondate"] + "'")) + ", " +
+                        "ExecutionCopy = " + (String.IsNullOrEmpty(_c.Request["executioncopy"]) ? "NULL" : ("'" + _c.Request["executioncopy"] + "'")) + ", " +
+                        "ExecutionActionDate = GETDATE(), " +
+                        "ExecutionActionBy = '" + _userid + "', " +
+                        "ExecutionActionIP = dbo.fnc_GetIP()";
+                    break;
+                case "executionwithdraw":
+                    _documentetail =
+                        "ExecutionWithdrawLawyerFullname = '" + _c.Request[_c.Request["document"] + "lawyerfullname"] + "', " +
+                        "ExecutionWithdrawLawyerPhoneNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyerphonenumber"] + "'")) + ", " +
+                        "ExecutionWithdrawLawyerMobileNumber = " + (String.IsNullOrEmpty(_c.Request[_c.Request["document"] + "lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request[_c.Request["document"] + "lawyermobilenumber"] + "'")) + ", " +
+                        "ExecutionWithdrawLawyerEmail = '" + _c.Request[_c.Request["document"] + "lawyeremail"] + "', " +
+                        "ExecutionWithdrawDate = " + (String.IsNullOrEmpty(_c.Request["executionwithdrawdate"]) ? "NULL" : ("'" + _c.Request["executionwithdrawdate"] + "'")) + ", " +
+                        "ExecutionWithdrawReason = " + (String.IsNullOrEmpty(_c.Request["executionwithdrawreason"]) ? "NULL" : ("'" + _c.Request["executionwithdrawreason"] + "'")) + ", " +
+                        "ExecutionWithdrawCopy = " + (String.IsNullOrEmpty(_c.Request["executionwithdrawcopy"]) ? "NULL" : ("'" + _c.Request["executionwithdrawcopy"] + "'")) + ", " +
+                        "ExecutionWithdrawActionDate = GETDATE(), " +
+                        "ExecutionWithdrawActionBy = '" + _userid + "', " +
+                        "ExecutionWithdrawActionIP = dbo.fnc_GetIP()";
+                    break;
+            }
+
+            _what = "UPDATE";
+            _where = "ecpTransProsecution";
+            _function = "AddUpdateData, updatecptransprosecution";
+            _command += "UPDATE ecpTransProsecution SET " +
+                        _documentetail + " " +
+                        "WHERE RCID = " + _c.Request["cp2id"];
         }
 
         _command = _command + "; " + InsertTransactionLog(_what, _where, _function, _command.Replace("'", "''"));

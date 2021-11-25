@@ -199,6 +199,11 @@ function GoToPage(_section, _order) {
                 _pid = 19;
                 _area = "sec";
                 break;
+            //รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            case 20:
+                _pid = 20;
+                _area = "sec";
+                break;
         }
     }
 
@@ -279,6 +284,11 @@ function GoToPage(_section, _order) {
             //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
             case 5:
                 _pid = 5;
+                _area = "sec";
+                break;
+            //รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            case 6:
+                _pid = 6;
                 _area = "sec";
                 break;
         }
@@ -374,6 +384,7 @@ function LoadPage(_area, _section, _pid) {
                     OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
                     break;
                 case 9:
+                case 20:
                     OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
                     break;
                 case 10:
@@ -452,6 +463,10 @@ function LoadPage(_area, _section, _pid) {
                 case 5:
                     OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
                     break;
+                case 6:
+                    OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
+                    break;
+
             }
         }
         
@@ -539,6 +554,7 @@ function InitTab(_subTab) {
                     case "link-tab2-cp-trans-payment":
                     case "link-tab1-adddetail-cp-trans-payment": 
                     case "link-tab2-adddetail-cp-trans-payment":
+                    case "link-tab3-adddetail-cp-trans-payment":
                     case "link-tab2-cp-report-table-cal-capital-and-interest":
                         _action = "";
                         _id = $("#cp2id").val();
@@ -553,6 +569,7 @@ function InitTab(_subTab) {
                 switch (_dropID) {
                     case "link-tab1-adddetail-cp-trans-payment":
                     case "link-tab2-adddetail-cp-trans-payment":
+                    case "link-tab3-adddetail-cp-trans-payment":
                         _action = "";
                         _id = $("#cp2id").val();
                         _trackingStatus = "";
@@ -714,7 +731,7 @@ function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _tracki
             SearchReportStatisticContractByProgram();
             break;
         case "link-tab1-cp-report-debtor-contract":
-            SetMsgLoading("กำลังโหลด...");                                                                        
+            SetMsgLoading("กำลังโหลด...");
             SearchReportDebtorContract();
             break;
         case "link-tab2-cp-report-debtor-contract":
@@ -745,6 +762,10 @@ function OpenSubTab(_dropID, _linkTab, _id) {
     
             $(".adddetail-cp-trans-payment-content").html("");
             LoadForm(1, "addcptranspayment" + _formatPayment, false, "add-data-trans-payment", _id, "");
+            break;
+        case "link-tab3-adddetail-cp-trans-payment":
+            $(".adddetail-cp-trans-payment-content").html("");
+            LoadForm(1, "addupdatecptransprosecution", false, "addupdate-data-trans-prosecution", _id, "");
             break;
         case "link-tab1-report-student-on-statistic-contract-by-program":
         case "link-tab2-report-student-on-statistic-contract-by-program":
@@ -993,7 +1014,7 @@ function SetSelectCombobox(_id, _value) {
     }
 }
 
-function SetSelectDefaultCombobox(_id) {    
+function SetSelectDefaultCombobox(_id) {
     if (_id == "faculty" ||
         _id == "facultycptabprogram" ||
         _id == "facultytransbreakcontract" ||
@@ -1318,6 +1339,7 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
                 break;
             case "adddetailcptranspayment":
                 InitTab(true);
+                InitStatusPaymentRecord();
                 ResetFormatPayment();
                 ResetListTransPayment();
                 break;
@@ -1326,6 +1348,7 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
                 break;
             case "detailcptranspayment":
                 GoToTopElement("html, body");
+                InitStatusPaymentRecord();
                 ResetListTransPayment();
                 break;
             case "addcptranspaymentfullrepay":
@@ -1334,6 +1357,9 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
                 InitPayChannel();
                 InitReceiptCopy();
                 ResetFrmAddCPTransPayment();
+                break;
+            case "addupdatecptransprosecution":
+                InitCPTransProsecution();
                 break;
             case "detailtranspayment":
                 ResetDetailTransPayment();
@@ -1439,7 +1465,7 @@ function SearchData(_from, _valueSend, _recordSearch, _listSearch, _navPage) {
     var _send = new Array();
     _send[_send.length] = "action=search";
     _send[_send.length] = "from=" + _from;
-
+    
     if (_valueSend.length > 0) {
         for (_i = 0; _i < _valueSend.length; _i++) {
             _send[_j] = _valueSend[_i];

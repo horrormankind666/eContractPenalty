@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการแจ้งชำระหนี้
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Last Date Modified  : ๑๔/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -272,6 +272,9 @@ public class eCPDataRepay
                          "              <div class='form-input-content-line'>รับเอกสารตอบกลับจากไปรษณีย์เมื่อวันที่ <span>" + Util.LongDateTH(_data2[_i, 5]) + "</span></div>" +
                          "              <div class='form-input-content-line'>ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil._resultReply[int.Parse(_data2[_i, 3]) - 1] + "</span></div>" +
                          "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _data2[_i, 1] + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _data2[_i, 1] + "</a></div>";
+
+                if (_data2[_i, 1].Equals("1"))
+                    _html += "          <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintFormRequestCreateAndUpdateDebtor('" + _cp1id + "')>พิมพ์แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้</a></div>";
             }
 
             _html += "              </div>" +
@@ -292,9 +295,14 @@ public class eCPDataRepay
                      "          <div class='form-input-style " + ((_statusRepayDefault.Equals("0") && _action.Equals("add")) ? "clear-bottom" : "") + "'>" +
                      "              <div class='form-input-content'>" +
                      "                  <div><span>" + eCPUtil._repayStatusDetail[int.Parse(_statusRepayCurrent[0])] + "</span></div>";
-                            
+
             if (_action.Equals("update"))
+            {
                 _html += "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>";
+
+                if (_statusRepayDefault.Equals("1"))
+                    _html += "          <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintFormRequestCreateAndUpdateDebtor('" + _cp1id + "')>พิมพ์แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้</a></div>";
+            }
 
             _html += "              </div>" +
                      "          </div>" +
@@ -328,7 +336,7 @@ public class eCPDataRepay
 
         if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop")))
         {
-            _html += "  <div>" +
+            _html += "  <div id='status-repay" + _statusRepayDefault + "-" + _action + "'>" +
                      "      <div class='content-left' id='status-repay23-current-label'>" +
                      "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>สถานะการแจ้งชำระหนี้ปัจจุบัน</div></div>" +
                      "      </div>" +
@@ -337,11 +345,15 @@ public class eCPDataRepay
                      "              <div class='form-input-content'>" +
                      "                  <div><span>" + eCPUtil._repayStatus[int.Parse(_statusRepayDefault)] + "</span></div>" +
                      "                  <div class='form-input-content-line'>แจังให้ผู้ผิดสัญญาชำระหนี้เมื่อวันที่ <span>" + Util.LongDateTH(_repayDateDefault) + "</span></div>" +
-                     "                  <div class='form-input-content-line'>หนังสือขอให้ชดใช้เงินที่ อว 78/<span>" + (!String.IsNullOrEmpty(_pursuantDefault) ? _pursuantDefault : " -")  + "</span> ลงวันที่ <span>" + (!String.IsNullOrEmpty(_pursuantBookDateDefault) ? Util.LongDateTH(_pursuantBookDateDefault) : " -") + "</span></div>" +
+                     "                  <div class='form-input-content-line'>หนังสือขอให้ชดใช้เงินที่ อว 78/<span>" + (!String.IsNullOrEmpty(_pursuantDefault) ? _pursuantDefault : " -") + "</span> ลงวันที่ <span>" + (!String.IsNullOrEmpty(_pursuantBookDateDefault) ? Util.LongDateTH(_pursuantBookDateDefault) : " -") + "</span></div>" +
                      "                  <div class='form-input-content-line'>รับเอกสารตอบกลับจากไปรษณีย์เมื่อวันที่ <span>" + Util.LongDateTH(_replyDateDefault) + "</span></div>" +
                      "                  <div class='form-input-content-line'>ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil._resultReply[int.Parse(_replyResultDefault) - 1] + "</span></div>" +
-                     "                  <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>" +
-                     "              </div>" +
+                     "                  <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>";
+
+            if (_statusRepayDefault.Equals("1") && _action.Equals("add"))
+                _html += "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintFormRequestCreateAndUpdateDebtor('" + _cp1id + "')>พิมพ์แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้</a></div>";
+
+            _html += "              </div>" +
                      "          </div>" +
                      "      </div>" +
                      "  </div>" +
@@ -597,6 +609,9 @@ public class eCPDataRepay
                          "              <div class='form-input-content-line'>รับเอกสารตอบกลับจากไปรษณีย์เมื่อวันที่ <span>" + Util.LongDateTH(_data2[_i, 5]) + "</span></div>" +
                          "              <div class='form-input-content-line'>ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil._resultReply[int.Parse(_data2[_i, 3]) - 1] + "</span></div>" +
                          "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _data2[_i, 1] + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _data2[_i, 1] + "</a></div>";
+
+                if (_data2[_i, 1].Equals("1"))
+                    _html += "          <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintFormRequestCreateAndUpdateDebtor('" + _cp1id + "')>พิมพ์แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้</a></div>";
             }
 
             _html += "              </div>" +
@@ -617,9 +632,14 @@ public class eCPDataRepay
                      "          <div class='form-input-style'>" +
                      "              <div class='form-input-content'>" +
                      "                  <div><span>" + eCPUtil._repayStatusDetail[int.Parse(_statusRepayCurrent[0])] + "</span></div>";
-                            
+
             if (_action.Equals("update"))
+            {
                 _html += "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>";
+
+                if (_statusRepayDefault.Equals("1"))
+                    _html += "          <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintFormRequestCreateAndUpdateDebtor('" + _cp1id + "')>พิมพ์แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้</a></div>";
+            }
 
             _html += "              </div>" +
                      "          </div>" +
@@ -630,7 +650,7 @@ public class eCPDataRepay
 
         if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop")))
         {
-            _html += "  <div>" +
+            _html += "  <div id='status-repay" + _statusRepayDefault + "-" + _action + "'>" +
                      "      <div class='content-left' id='status-repay23-current-label'>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>สถานะการแจ้งชำระหนี้ปัจจุบัน</div></div>" +
                      "      </div>" +
@@ -641,8 +661,12 @@ public class eCPDataRepay
                      "                  <div class='form-input-content-line'>แจังให้ผู้ผิดสัญญาชำระหนี้เมื่อวันที่ <span>" + Util.LongDateTH(_repayDateDefault) + "</span></div>" +
                      "                  <div class='form-input-content-line'>รับเอกสารตอบกลับจากไปรษณีย์เมื่อวันที่ <span>" + Util.LongDateTH(_replyDateDefault) + "</span></div>" +
                      "                  <div class='form-input-content-line'>ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil._resultReply[int.Parse(_replyResultDefault) - 1] + "</span></div>" +
-                     "                  <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>" +
-                     "              </div>" +
+                     "                  <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>";
+
+            if (_statusRepayDefault.Equals("1") && _action.Equals("add"))
+                _html += "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintFormRequestCreateAndUpdateDebtor('" + _cp1id + "')>พิมพ์แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้</a></div>";
+
+            _html += "              </div>" +
                      "          </div>" +
                      "      </div>" +
                      "  </div>" +

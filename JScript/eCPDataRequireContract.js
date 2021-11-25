@@ -43,7 +43,7 @@ function InitCPTransRequireContract() {
 }
 
 function ResetFrmCPTransRequireContract(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         TextboxDisable("#contract-date");
@@ -441,7 +441,7 @@ function ConfirmActionCPTransRequireContract(_action) {
         buttons: {
             "ตกลง": function () {
                 $(this).dialog("close");
-
+                
                 if (ValidateCPTransRequireContract() == true && ValidateLawyer() == true) {
                     var _caseGraduate = $("#case-graduate-break-contract-hidden").val();
                     var _civil = $("#civil-hidden").val();
@@ -585,13 +585,13 @@ function ConfirmActionCPTransRequireContract(_action) {
 
 function AddUpdateCPTransRequireContract(_action, _send) {
     var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
-
+    
     AddUpdateData(_action, _action + "cptransrequirecontract", _send, false, "", "", "", false, function (_result) {
         if (_result == "1") {
             GotoSignin();
             return;
         }
-
+    
         DialogConfirm(_actionMsg + "ข้อมูลเรียบร้อย");
         $("#dialog-confirm").dialog({
             buttons: {

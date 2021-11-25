@@ -3,7 +3,7 @@
 /*
 Description         : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
 Date Created        : 06/08/2555
-Last Date Modified  : ๑๐/๐๕/๒๕๖๔
+Last Date Modified  : ๑๓/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -262,7 +262,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                 if (_trackingStatus.Equals("v1") || _trackingStatus.Equals("a"))
                 {
                     _frm = eCPDataBreakContract.DetailCPTransBreakContract(_c.Request["id"], _trackingStatus);
-                    _width = 800;
+                    _width = 900;
                     _height = 0;
                     _title = "detail-cp-trans-break-contract";
                 }
@@ -270,7 +270,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                 if (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") || _trackingStatus.Equals("r") || _trackingStatus.Equals("r1"))
                 {
                     _frm = eCPDataRequireContract.DetailCPTransRequireContract(_c.Request["id"], _trackingStatus);
-                    _width = 800;
+                    _width = 900;
                     _height = 0;
                     _title = (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") ? "detail-cp-trans-require-contract" : "repay-cp-trans-require-contract");
                 }
@@ -368,6 +368,9 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                 break;
             case "addcptranspaymentpayrepay":
                 _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addpayrepay");
+                break;
+            case "addupdatecptransprosecution":
+                _frm = eCPDataProsecution.AddUpdateCPTransProsecution(_c.Request["id"]);
                 break;
             case "adddetailpaychannel":
                 _frm = eCPDataPayment.AddDetailPayChannel(_c.Request["id"]);

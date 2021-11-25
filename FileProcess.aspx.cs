@@ -22,6 +22,7 @@ public partial class FileProcess : Page
 
             if (_action.Equals("download"))
             {
+                string _fName = Request.Form["filename"];
                 string _fEncode = Request.Form["file"];
                 string _fDecode = Encoding.UTF8.GetString(Convert.FromBase64String(_fEncode));
                 string[] _fDecodeArray = (_fDecode.Trim()).Split(';');
@@ -30,7 +31,7 @@ public partial class FileProcess : Page
                 byte[] _bytes = Convert.FromBase64String(_fBase64.Trim());
                 MemoryStream _ms = new MemoryStream(_bytes);
 
-                Response.AddHeader("Content-Disposition", "attachment; filename=ReceiptCopy." + eCPUtil.GetFileExtension(_fContentType));
+                Response.AddHeader("Content-Disposition", "attachment; filename=" + _fName + "." + eCPUtil.GetFileExtension(_fContentType));
                 Response.AddHeader("Content-Length", _ms.Length.ToString());
                 Response.ContentType = _fContentType;
                 Response.BinaryWrite(_ms.ToArray());

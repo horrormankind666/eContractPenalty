@@ -7,7 +7,7 @@
 function CaptionFormatPayment() {
     var _send = new Array();
     _send[_send.length] = "formatpayment=" + $("#format-payment-hidden").val();
-
+    
     SetMsgLoading("");
 
     ViewData("formatpayment", _send, function (_result) {
@@ -15,7 +15,7 @@ function CaptionFormatPayment() {
     });
 }
 
-function ResetFormatPayment() {    
+function ResetFormatPayment() {
     if (($("#format-payment-hidden").val().length == 0) || ($("#format-payment-hidden").val() == "0")) {
         var _formatPayment = $("input[name=format-payment]:checked");
         var _valCheck;
@@ -28,7 +28,57 @@ function ResetFormatPayment() {
     }
 }
 
-function ResetListTransPayment() {    
+function InitStatusPaymentRecord() {
+    if ($("#status-payment-record").length > 0) {
+        $("input[name=status-payment-record]:radio").click(function () {            
+            var _statusPaymentRecord = $(this).val();
+            var _send = new Array();
+            _send[_send.length] = "cp2id=" + $("#cp2id").val();
+            _send[_send.length] = "statuspaymentrecord=" + (_statusPaymentRecord == "C" ? "" : _statusPaymentRecord);
+            _send[_send.length] = "statuspaymentrecordlawyerfullname=" + $("#statuspaymentrecord-lawyer-fullname-hidden").val();
+            _send[_send.length] = "statuspaymentrecordlawyerphonenumber=" + $("#statuspaymentrecord-lawyer-phonenumber-hidden").val();
+            _send[_send.length] = "statuspaymentrecordlawyermobilenumber=" + $("#statuspaymentrecord-lawyer-mobilenumber-hidden").val();
+            _send[_send.length] = "statuspaymentrecordlawyeremail=" + $("#statuspaymentrecord-lawyer-email-hidden").val();
+
+            ResetTabAddDetailTransPayment(_statusPaymentRecord);
+            AddUpdateStatusPaymentRecord(_send);
+        });
+
+        ResetFrmStatusPaymentRecord();
+    }
+}
+
+function ResetFrmStatusPaymentRecord() {
+    var _statusPaymentRecord = ($("#statuspaymentrecord-hidden").val().length > 0 ? $("#statuspaymentrecord-hidden").val() : "C");
+    
+    if ($("input[name=status-payment-record]:radio").filter("[value=" + _statusPaymentRecord + "]").length > 0)
+        $("input[name=status-payment-record][value=" + _statusPaymentRecord + "]").prop("checked", true);
+
+    $("#status-payment-record-lawyer").html($("#statuspaymentrecord-lawyer-hidden").val());
+    ResetTabAddDetailTransPayment(_statusPaymentRecord);
+}
+
+function ResetTabAddDetailTransPayment(_statusPaymentRecord) {
+    if (_statusPaymentRecord == "P")
+        $("#tab2-adddetail-cp-trans-payment").hide();
+    else
+        $("#tab2-adddetail-cp-trans-payment").show();
+}
+
+function AddUpdateStatusPaymentRecord(_send) {
+    AddUpdateData("update", "updatestatuspaymentrecord", _send, false, "", "", "", false, function (_result) {
+        if (_result == "1") {
+            GotoSignin();
+            return;
+        }
+        
+        $("#statuspaymentrecord-hidden").val($("input[name=status-payment-record]:checked").val());
+        $("#statuspaymentrecord-lawyer-hidden").val($("#statuspaymentrecord-lawyer-fullname-hidden").val());
+        ResetFrmStatusPaymentRecord();
+    });
+}
+
+function ResetListTransPayment() {
     if ($("#statuspayment-hidden").val() == "3") $("#tab2-adddetail-cp-trans-payment").hide();
 
     CaptionFormatPayment();
@@ -212,7 +262,7 @@ function InitReceiptCopy() {
 }
 
 function ResetFrmAddCPTransPayment() {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     var _statusPayment = $("#statuspayment-hidden").val();
     var _overpayment = $("#overpayment-hidden").val();
@@ -971,8 +1021,6 @@ function ShowDetailTransPayment(_cp2id, _period) {
 }
 
 function ResetDetailTransPayment() {
-    GoToTopElement("#box-detail-trans-payment")
-    
     $("#period").html($("#period-hidden").val());
     $("#button-style11").show();
     $("#button-style12").hide();

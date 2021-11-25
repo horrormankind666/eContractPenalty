@@ -1,14 +1,21 @@
 ﻿/*
 Description         : สำหรับการแสดงรายงาน
 Date Created        : ๐๙/๐๘/๒๕๕๕
-Last Date Modified  : ๒๔/๐๖/๒๕๖๔
+Last Date Modified  : ๒๑/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Text;
 using System.Web;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OfficeOpenXml;
+using NExport2PDF;
 
 public class eCPDataReport
 {
@@ -1139,7 +1146,26 @@ public class eCPDataReportTableCalCapitalAndInterest
             string _dlevelDefault = _data[0, 14];
             string _pictureFileNameDefault = _data[0, 15];
             string _pictureFolderNameDefault = _data[0, 16];
-            string _capital = (!String.IsNullOrEmpty(_data[0, 21]) ? double.Parse(_data[0, 21]).ToString("#,##0.00") : double.Parse(_data[0, 20]).ToString("#,##0.00")); 
+            string _capital = (!String.IsNullOrEmpty(_data[0, 21]) ? double.Parse(_data[0, 21]).ToString("#,##0.00") : double.Parse(_data[0, 20]).ToString("#,##0.00"));
+            string _lawyerFullnameDefault = _data[0, 22];
+            string _lawyerPhoneNumberDefault = _data[0, 23];
+            string _lawyerMobileNumberDefault = _data[0, 24];
+            string _lawyerEmailDefault = _data[0, 25];
+            string _lawyerDefault = String.Empty;
+
+            ArrayList _lawyerPhoneNumber = new ArrayList();
+
+            if (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerPhoneNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
+            {
+                _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
+                                  " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
+            }
 
             _contractInterest = eCPUtil.GetContractInterest();
 
@@ -1161,14 +1187,16 @@ public class eCPDataReportTableCalCapitalAndInterest
                      "          <div class='form-label-discription-style'><div class='form-label-style'>ชื่อ - นามสกุล</div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>ระดับการศึกษา</div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>คณะ</div></div>" +
-                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หลักสูตร</div></div>" +
+                     "          <div class='form-label-discription-style'><div class='form-label-style'>หลักสูตร</div></div>" +
+                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>" +
                      "      </div>" +
                      "      <div class='content-left' id='profile-student-input'>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _studentIDDefault + "&nbsp;" + _programCodeDefault.Substring(0, 4) + " / " + _programCodeDefault.Substring(4, 1) + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _titleNameDefault + _firstNameDefault + " " + _lastNameDefault + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _dlevelDefault + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _facultyCodeDefault + " - " + _facultyNameDefault + "</span></div></div>" +
-                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
+                     "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
+                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>" + _lawyerDefault + "</div></div>" +
                      "      </div>" +
                      "  </div>" +
                      "  <div class='clear'></div>" +
@@ -1493,9 +1521,9 @@ public class eCPDataReportNoticeRepayComplete
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                     "          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บัดนี้ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ซึ่งสำเร็จการศึกษาจาก" + _data[0, 7] + " เมื่อวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 11])) + " " +
-                     "          ได้ชดใช้เงินแทนการปฏิบัติงานตามสัญญาฯ ซึ่งมหาวิทยาลัยคิดคำนวณแล้วเป็นเงินทั้งสิ้น " + Util.NumberArabicToThai(double.Parse(_data[0, 14]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 14]) + ") " +
-                     "          โดย" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้นำเงินดังกล่าวมาชำระให้กับมหาวิทยาลัยมหิดลเรียบร้อยแล้ว" +
+                     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บัดนี้ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ซึ่งสำเร็จการศึกษาจาก" + _data[0, 7] + " เมื่อวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 11])) + " " +
+                     "ได้ชดใช้เงินแทนการปฏิบัติงานตามสัญญาฯ ซึ่งมหาวิทยาลัยคิดคำนวณแล้วเป็นเงินทั้งสิ้น " + Util.NumberArabicToThai(double.Parse(_data[0, 14]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 14]) + ") " +
+                     "โดย" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้นำเงินดังกล่าวมาชำระให้กับมหาวิทยาลัยมหิดลเรียบร้อยแล้ว" +
                      "      </p>" +
                      "  </td>" +
                      "</tr>";
@@ -1506,7 +1534,7 @@ public class eCPDataReportNoticeRepayComplete
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                     "          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดทราบ" +
+                     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดทราบ" +
                      "      </p>" +
                      "  </td>" +
                      "</tr>" +
@@ -1592,9 +1620,9 @@ public class eCPDataReportNoticeRepayComplete
                      "              <tr>" +
                      "                  <td width='100%'>" +
                      "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                     "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง " + _data[0, 13] + " แจ้งการลาออกจากการปฏิบัติงานในระหว่างปฏิบัติงาน" +
-                     "                          ชดใช้ทุนของ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้ทำสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + "ไว้กับมหาวิทยาลัยมหิดล ตามสัญญาฯ เมื่อสำเร็จการศึกษาหลักสูตร" + _data[0, 9] + "แล้ว " +
-                     "                          ต้องปฏิบัติงานชดใช้ทุนเป็นเวลา " + (!String.IsNullOrEmpty(_data[0, 12]) && !_data[0, 12].Equals("0") ? Util.NumberArabicToThai(_data[0, 12]) : String.Empty) + " ปี นั้น" +
+                     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง " + _data[0, 13] + " แจ้งการลาออกจากการปฏิบัติงานในระหว่างปฏิบัติงาน" +
+                     "ชดใช้ทุนของ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้ทำสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + "ไว้กับมหาวิทยาลัยมหิดล ตามสัญญาฯ เมื่อสำเร็จการศึกษาหลักสูตร" + _data[0, 9] + "แล้ว " +
+                     "ต้องปฏิบัติงานชดใช้ทุนเป็นเวลา " + (!String.IsNullOrEmpty(_data[0, 12]) && !_data[0, 12].Equals("0") ? Util.NumberArabicToThai(_data[0, 12]) : String.Empty) + " ปี นั้น" +
                      "                      </p>" +
                      "                  </td>" +
                      "              </tr>" +
@@ -1642,8 +1670,8 @@ public class eCPDataReportNoticeRepayComplete
                      "              <tr>" +
                      "                  <td width='100%'>" +
                      "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                     "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้ทำสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + "ไว้กับมหาวิทยาลัยมหิดล " +
-                     "                          ซึ่งตามสัญญาฯ เมื่อสำเร็จการศึกษาหลักสูตร" + _data[0, 9] + "แล้ว ต้องปฏิบัติงานชดใช้ทุนเป็นเวลา " + (!String.IsNullOrEmpty(_data[0, 12]) && !_data[0, 12].Equals("0") ? Util.NumberArabicToThai(_data[0, 12]) : String.Empty) + " ปี นั้น" +
+                     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้ทำสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + "ไว้กับมหาวิทยาลัยมหิดล " +
+                     "ซึ่งตามสัญญาฯ เมื่อสำเร็จการศึกษาหลักสูตร" + _data[0, 9] + "แล้ว ต้องปฏิบัติงานชดใช้ทุนเป็นเวลา " + (!String.IsNullOrEmpty(_data[0, 12]) && !_data[0, 12].Equals("0") ? Util.NumberArabicToThai(_data[0, 12]) : String.Empty) + " ปี นั้น" +
                      "                      </p>" +
                      "                  </td>" +
                      "              </tr>" +
@@ -1663,7 +1691,7 @@ public class eCPDataReportNoticeRepayComplete
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=NoticeRepayComplete.doc");
         HttpContext.Current.Response.ContentType = "application/msword";
-        HttpContext.Current.Response.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
         /*
         HttpContext.Current.Response.Write("<html>");
@@ -1826,11 +1854,13 @@ public class eCPDataReportNoticeClaimDebt
     {        
         string _html = String.Empty;
         string _lawyerFullname = String.Empty;
+        string _lawyerFullnameWithoutNamePrefix = String.Empty;
         string _lawyerPhoneNumber = String.Empty;
 
         if (_lawyer != null)
         {
             _lawyerFullname = _lawyer["Fullname"];
+            _lawyerFullnameWithoutNamePrefix = _lawyer["FullnameWithoutNamePrefix"];
             _lawyerPhoneNumber = _lawyer["PhoneNumber"];
         }
 
@@ -1875,7 +1905,7 @@ public class eCPDataReportNoticeClaimDebt
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                     "          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดดำเนินการ" +
+                     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดดำเนินการ" +
                      "      </p>" +
                      "  </td>" +
                      "</tr>" +
@@ -1942,6 +1972,77 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>";
         }
 
+        if (_section.Equals(5))
+        {
+            _html += "<tr>" +
+                     "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
+                     "</tr>" +
+                     "<tr>" +
+                     "  <td width='100%' align='right'>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>งานกฎหมายและนิติกรรมสัญญา</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>กองกฎหมาย สำนักงานอธิการบดี</div>" +
+                     "      <div align='right' style='font:normal 15pt " + _font + ";'>โทร. ๐ ๒๘๔๙ ๖๒๖๐ โทรสาร ๐ ๒๘๔๙ ๖๒๖๕</div>" +
+                     "  </td>" +
+                     "</tr>" +
+                     "<tr>" +
+                     "  <td width='100%'>" +
+                     "      <div style='font:normal 15pt " + _font + ";'>ที่&nbsp;&nbsp;&nbsp;อว ๗๘.๐๑๙/</div>" +
+                     "      <div>" +
+                     "          <table border='0' cellpadding='0' cellspacing='0'>" +
+                     "              <tr>" +
+                     "                  <td width='50'><div style='font:normal 15pt " + _font + ";'>วันที่</div></td>" +
+                     "                  <td width='550'><div style='font:normal 15pt " + _font + ";'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + "&nbsp;&nbsp;" + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString()) + "</div></td>" +
+                     "              </tr>" +
+                     "          </table>" +
+                     "      </div>" +
+                     "      <div>" +
+                     "          <table border='0' cellpadding='0' cellspacing='0'>" +
+                     "              <tr>" +
+                     "                  <td width='50'><div style='font:normal 15pt " + _font + ";'>เรื่อง</div></td>" +
+                     "                  <td width='550'><div style='font:normal 15pt " + _font + ";'>ขอความอนุเคราะห์บันทึกบัญชีลูกหนี้ผิดสัญญา</div></td>" +
+                     "              </tr>" +
+                     "          </table>" +
+                     "      </div>" +
+                     "  </td>" +
+                     "</tr>";
+        }
+
+        if (_section.Equals(6))
+        {
+            _html += "<tr>" +
+                     "  <td width='100%'>" +
+                     "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
+                     "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดพิจารณาและดำเนินการในส่วนที่เกี่ยวข้องต่อไป" +
+                     "      </p>" +
+                     "  </td>" +
+                     "</tr>" +
+                     "<tr>" +
+                     "  <td width='100%'>" +
+                     "      <table border='0' cellpadding='0' cellspacing='0'>" +
+                     "          <tr>" +
+                     "              <td width='200'></td>" +
+                     "              <td width='400'>" +
+                     "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
+                     "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
+                     "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(นายคณพศ เฟื่องฟุ้ง)</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div>" +
+                     "              </td>" +
+                     "          </tr>" +
+                     "      </table>" +
+                     "  </td>" +
+                     "</tr>" +
+                     "<tr>" +
+                     "  <td width='100%'><div style='font:normal 15pt " + _font + ";'>&nbsp;</div></td>" +
+                     "</tr>" +
+                     "<tr>" +
+                     "  <td width='100%' style='text-align: right;'>" +
+                     "      <div style='font:normal 12pt " + _font + ";'>ผู้รับผิดชอบ : " + _lawyerFullnameWithoutNamePrefix + "</div>" +
+                     "      <div style='font:normal 12pt " + _font + ";'>ผู้ตรวจ : พัศนาภรณ์</div></td>" +
+                     "  </td>" +
+                     "</tr>";
+        }
+
         return _html;
     }
     
@@ -1995,58 +2096,58 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่ท่านได้ทำสัญญาที่อ้างถึงผูกพันไว้กับมหาวิทยาลัยมหิดลว่าภายหลังจากสำเร็จการศึกษาตามหลักสูตร " +
-                 "                          ท่านยินยอมปฏิบัติตามคำสั่งของสำนักงานคณะกรรมการข้าราชการพลเรือนและหรือ " +
-                 "                          คณะกรรมการพิจารณาจัดสรรนักศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + "ผู้สำเร็จการศึกษาไปปฏิบัติงานในส่วนราชการหรือ " +
-                 "                          องค์การของรัฐบาลต่าง ๆ ได้สั่งให้เข้ารับราชการหรือทำงาน และจะรับราชการหรือทำงานอยู่ต่อไปเป็นเวลา " +
-                 "                          ไม่น้อยกว่า" + Util.ThaiNum(_data[0, 11]) + "ปีติดต่อกันไปนับตั้งแต่วันที่ได้กำหนดในคำสั่ง หากท่านไม่รับราชการหรือทำงาน ท่านยินยอม " +
-                 "                          รับผิดชดใช้เงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 12]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 12]) + ") หากรับราชการหรือทำงานไม่ครบตามกำหนดเวลา " +
-                 "                          ท่านยินยอมรับผิดชดใช้เงินให้แก่มหาวิทยาลัยตามระยะเวลาที่ขาดโดยคิดคำนวณลดลงตามส่วนเฉลี่ยจากเงิน " +
-                 "                          ที่ต้องชดใช้ดังกล่าว นั้น" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่ท่านได้ทำสัญญาที่อ้างถึงผูกพันไว้กับมหาวิทยาลัยมหิดลว่าภายหลังจากสำเร็จการศึกษาตามหลักสูตร " +
+                 "ท่านยินยอมปฏิบัติตามคำสั่งของสำนักงานคณะกรรมการข้าราชการพลเรือนและหรือ" +
+                 "คณะกรรมการพิจารณาจัดสรรนักศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + "ผู้สำเร็จการศึกษาไปปฏิบัติงานในส่วนราชการหรือ" +
+                 "องค์การของรัฐบาลต่าง ๆ ได้สั่งให้เข้ารับราชการหรือทำงาน และจะรับราชการหรือทำงานอยู่ต่อไปเป็นเวลา" +
+                 "ไม่น้อยกว่า" + Util.ThaiNum(_data[0, 11]) + "ปีติดต่อกันไปนับตั้งแต่วันที่ได้กำหนดในคำสั่ง หากท่านไม่รับราชการหรือทำงาน ท่านยินยอม" +
+                 "รับผิดชดใช้เงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 12]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 12]) + ") หากรับราชการหรือทำงานไม่ครบตามกำหนดเวลา " +
+                 "ท่านยินยอมรับผิดชดใช้เงินให้แก่มหาวิทยาลัยตามระยะเวลาที่ขาดโดยคิดคำนวณลดลงตามส่วนเฉลี่ยจากเงิน" +
+                 "ที่ต้องชดใช้ดังกล่าว นั้น" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า การที่ท่านขอลาออกจากราชการ/การปฏิบัติงานตั้งแต่วันที่ " +
-                                            (!String.IsNullOrEmpty(_resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(_resignationDate)).AddDays(1).ToString()) : "") + " ถือว่าเป็นการปฏิบัติราชการ/ปฏิบัติงานไม่ครบกำหนดตามสัญญาที่ให้ไว้ เป็นเหตุให้ท่าน " +
-                 "                          ต้องรับผิดชอบชดใช้เงินแก่มหาวิทยาลัยมหิดลเป็นจำนวนทั้งสิ้น <strong>" + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ")</strong> " +
-                 "                          ดังนั้นจึงขอให้ท่านนำเงินจำนวนดังกล่าวมาชำระภายใน ๓๐ วัน นับถัดจากวันที่ได้รับหนังสือฉบับนี้ โดยดำเนินการ ดังนี้" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า การที่ท่านขอลาออกจากราชการ/การปฏิบัติงานตั้งแต่วันที่ " +
+                  (!String.IsNullOrEmpty(_resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(_resignationDate)).AddDays(1).ToString()) : "") + " ถือว่าเป็นการปฏิบัติราชการ/ปฏิบัติงานไม่ครบกำหนดตามสัญญาที่ให้ไว้ เป็นเหตุให้ท่าน" +
+                 "ต้องรับผิดชอบชดใช้เงินแก่มหาวิทยาลัยมหิดลเป็นจำนวนทั้งสิ้น <strong>" + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ")</strong> " +
+                 "ดังนั้นจึงขอให้ท่านนำเงินจำนวนดังกล่าวมาชำระภายใน ๓๐ วัน นับถัดจากวันที่ได้รับหนังสือฉบับนี้ โดยดำเนินการ ดังนี้" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๑. ชำระเงิน โดยนำฝากเงินเข้าบัญชี</strong>ธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" " +
-                 "                          ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ หรือ<strong>โอนเงินเข้าบัญชี</strong>ธนาคารไทยพาณิชย์ " +
-                 "                          ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี ๐๑๖-๒-๑๐๓๒๒-๓" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๑. ชำระเงิน โดยนำฝากเงินเข้าบัญชี</strong>ธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" " +
+                 "ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ หรือ<strong>โอนเงินเข้าบัญชี</strong>ธนาคารไทยพาณิชย์ " +
+                 "ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี ๐๑๖-๒-๑๐๓๒๒-๓" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๒. กรณีชำระเงินเกินกำหนดระยะเวลาดังกล่าว</strong> (มีดอกเบี้ยผิดนัดชำระ) ให้ท่านติดต่อนิติกร " +
-                 "                          ผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ก่อนแล้วจึงชำระเงิน" + 
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๒. กรณีชำระเงินเกินกำหนดระยะเวลาดังกล่าว</strong> (มีดอกเบี้ยผิดนัดชำระ) ให้ท่านติดต่อนิติกร" +
+                 "ผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ก่อนแล้วจึงชำระเงิน" + 
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๓. กรณีมีความจำเป็นที่ไม่อาจดำเนินการตามข้อ ๑. และ ๒ ได้</strong> ให้ท่านติดต่อขอชำระเงินสด " +
-                 "                          ผ่านกองกฎหมาย สำนักงานอธิการบดี มหาวิทยาลัยมหิดล ภายในเวลา ๑๕.๐๐ น. ในวันทำการ" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>๓. กรณีมีความจำเป็นที่ไม่อาจดำเนินการตามข้อ ๑. และ ๒ ได้</strong> ให้ท่านติดต่อขอชำระเงินสด " +
+                 "ผ่านกองกฎหมาย สำนักงานอธิการบดี มหาวิทยาลัยมหิดล ภายในเวลา ๑๕.๐๐ น. ในวันทำการ" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ให้ท่านจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร (Fax) " +
-                 "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] + " หากล่วงเลย " +
-                 "                          ระยะเวลาดังกล่าว มหาวิทยาลัยจำต้องคิดดอกเบี้ยผิดนัด และดำเนินการตามกฎหมายต่อไป" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ให้ท่านจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร (Fax) " +
+                 "หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] + " หากล่วงเลย" +
+                 "ระยะเวลาดังกล่าว มหาวิทยาลัยจำต้องคิดดอกเบี้ยผิดนัด และดำเนินการตามกฎหมายต่อไป" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2054,6 +2155,55 @@ public class eCPDataReportNoticeClaimDebt
                  "                  <td width='100%'><div style='font:normal 15pt " + _font + ";'>&nbsp;</div></td>" +
                  "              </tr>" +
                                 ExportCPReportNoticeClaimDebtSection(2, _font, null) +
+                 "          </table>" +
+                 "      </td>" +
+                 "  </tr>" +
+                 "  <tr>" +
+                 "      <td width='" + _width + "' valign='top'>" +
+                 "          <table width='100%' border='0' cellpadding='0' cellspacing='0'>" +
+                                ExportCPReportNoticeClaimDebtSection(5, _font, null) +
+                 "              <tr>" +
+                 "                  <td width='100%'>" +
+                 "                      <div>" +
+                 "                          <table border='0' cellpadding='0' cellspacing='0'>" +
+                 "                              <tr>" +
+                 "                                  <td width='50'><div style='font:normal 15pt " + _font + ";'>เรียน</div></td>" +
+                 "                                  <td width='550'><div style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองคลัง</div></td>" +
+                 "                              </tr>" +
+                 "                          </table>" +
+                 "                      </div>" +
+                 "                  </td>" +
+                 "              </tr>" +
+                 "              <tr>" +
+                 "                  <td width='100%'><div style='font:normal 15pt " + _font + ";'>&nbsp;</div></td>" +
+                 "              </tr>" +
+                 "              <tr>" +
+                 "                  <td width='100%'>" +
+                 "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ด้วยมหาวิทยาลัยได้ดำเนินการตรวจสอบข้อผูกพันและเรียกให้ " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ซึ่งเป็น" +
+                 "ผู้ผิดสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " +  Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " ที่ได้ทำไว้กับมหาวิทยาลัย ชดใช้เงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท ให้แก่" +
+                 "มหาวิทยาลัย" +
+                 "                      </p>" +
+                 "                  </td>" +
+                 "              </tr>" +
+                 "              <tr>" +
+                 "                  <td width='100%'><div style='font:normal 15pt " + _font + ";'>&nbsp;</div></td>" +
+                 "              </tr>" +
+                 "              <tr>" +
+                 "                  <td width='100%'>" +
+                 "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;กองกฎหมายขอเรียนว่า เพื่อให้การบันทึกบัญชีลูกหนี้ผิดสัญญาเป็นไปตามเกณฑ์คงค้างที่มหาวิทยาลัย" +
+                 "กำหนดไว้ในนโยบายบัญชี และเพื่อให้การแสดงสินทรัพย์ที่ควรได้รับในงบทางการเงินของมหาวิทยาลัยเป็นไปอย่างถูกต้อง " +
+                 "ในการนี้ กองกฎหมายจึงขอความอนุเคราะห์มายังกองคลังเพื่อดำเนินการบันทึกบัญชีลูกหนี้ผิดสัญญารายนี้ โดยได้จัดทำ" +
+                 "แบบขอสร้างและปรับปรุงข้อมูลหลักลูกหนี้ พร้อมแนบเอกสารหลักฐานที่เกี่ยวข้องเรียบร้อยแล้ว รายละเอียดปรากฏตาม" +
+                 "เอกสารที่แนบมานี้" +
+                 "                      </p>" +
+                 "                  </td>" +
+                 "              </tr>" +
+                 "              <tr>" +
+                 "                  <td width='100%'><div style='font:normal 15pt " + _font + ";'>&nbsp;</div></td>" +
+                 "              </tr>" +
+                                ExportCPReportNoticeClaimDebtSection(6, _font, _lawyer) +
                  "          </table>" +
                  "      </td>" +
                  "  </tr>" +
@@ -2122,33 +2272,33 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง มหาวิทยาลัยมหิดลแจ้งให้ท่านชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษา " +
-                 "                          เพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท " +
-                 "                          (" + Util.ThaiBaht(_data[0, 18]) + ") ให้แก่มหาวิทยาลัยมหิดล ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือ " +
-                 "                          ดังกล่าว และท่านได้รับหนังสือดังกล่าวแล้วเมื่อวันที่ " + (!String.IsNullOrEmpty(_replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_replyDate)) : "") + " ความละเอียดทราบแล้ว นั้น" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง มหาวิทยาลัยมหิดลแจ้งให้ท่านชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษา " +
+                 "เพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท " +
+                 "(" + Util.ThaiBaht(_data[0, 18]) + ") ให้แก่มหาวิทยาลัยมหิดล ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือ" +
+                 "ดังกล่าว และท่านได้รับหนังสือดังกล่าวแล้วเมื่อวันที่ " + (!String.IsNullOrEmpty(_replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_replyDate)) : "") + " ความละเอียดทราบแล้ว นั้น" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า บัดนี้ได้ล่วงเลยระยะเวลาตามที่กำหนดแล้ว ท่านยังมิได้ชำระเงินดังกล่าวแต่อย่างใด " +
-                 "                          ในการนี้ จึงขอให้ท่านเร่งนำเงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
-                 "                          พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงินจำนวนข้างต้น " +
-                 "                          นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
-                 "                          มิเช่นนั้นมหาวิทยาลัยมหิดลจำต้องดำเนินการตามกฎหมายต่อไป" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า บัดนี้ได้ล่วงเลยระยะเวลาตามที่กำหนดแล้ว ท่านยังมิได้ชำระเงินดังกล่าวแต่อย่างใด " +
+                 "ในการนี้ จึงขอให้ท่านเร่งนำเงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
+                 "พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงินจำนวนข้างต้น " +
+                 "นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
+                 "มิเช่นนั้นมหาวิทยาลัยมหิดลจำต้องดำเนินการตามกฎหมายต่อไป" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
-                 "                          เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ให้แก่มหาวิทยาลัยมหิดล แล้วจึงชำระเงินจำนวนดังกล่าวโดยนำฝากเงินเข้าบัญชีธนาคาร " +
-                 "                          ไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
-                 "                          หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี " +
-                 "                          ๐๑๖-๒-๑๐๓๒๒-๓ และจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร(Fax) " +
-                 "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
+                 "เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ให้แก่มหาวิทยาลัยมหิดล แล้วจึงชำระเงินจำนวนดังกล่าวโดยนำฝากเงินเข้าบัญชีธนาคาร" +
+                 "ไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
+                 "หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี " +
+                 "๐๑๖-๒-๑๐๓๒๒-๓ และจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร(Fax) " +
+                 "หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2197,37 +2347,37 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามสัญญาที่อ้างถึง ท่านได้ทำสัญญาค้ำประกันผูกพันไว้ต่อมหาวิทยาลัยมหิดลว่า " +
-                 "                          ถ้า" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ต้องรับผิดชดใช้เงินตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " " + 
-                 "                          แก่มหาวิทยาลัยแล้ว ท่านยินยอมชดใช้เงินตามจำนวนที่" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
-                 "                          ต้องรับผิดจนครบถ้วน ความละเอียดทราบแล้ว นั้น" +  
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามสัญญาที่อ้างถึง ท่านได้ทำสัญญาค้ำประกันผูกพันไว้ต่อมหาวิทยาลัยมหิดลว่า " +
+                 "ถ้า" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ต้องรับผิดชดใช้เงินตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " " + 
+                 "แก่มหาวิทยาลัยแล้ว ท่านยินยอมชดใช้เงินตามจำนวนที่" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
+                 "ต้องรับผิดจนครบถ้วน ความละเอียดทราบแล้ว นั้น" +  
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้ปฏิบัติงานไม่ครบกำหนดตามสัญญาการเป็นนักศึกษาฯ " +
-                 "                          เป็นเหตุให้ต้องรับผิดชดใช้เงินให้แก่มหาวิทยาลัยมหิดล เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
-                 "                          และมหาวิทยาลัยมหิดลได้มีหนังสือทวงถามให้" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
-                 "                          ชดใช้เงินภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือ รายละเอียดปรากฏตามสิ่งที่ส่งมาด้วย ซึ่ง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
-                 "                          ได้รับหนังสือแล้วแต่กลับเพิกเฉยไม่ชำระเงินภายในกำหนด เป็นเหตุให้ท่านซึ่งเป็นผู้ค้ำประกันต้องรับผิดชดใช้เงินให้แก่มหาวิทยาลัยมหิดล " + 
-                 "                          ในการนี้ จึงขอให้ท่านนำเงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
-                 "                          พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงินจำนวนดังกล่าว นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " " +
-                 "                          ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
-                 "                          มิเช่นนั้นมหาวิทยาลัยมหิดลจำต้องดำเนินการตามกฎหมายต่อไป" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า " + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " ได้ปฏิบัติงานไม่ครบกำหนดตามสัญญาการเป็นนักศึกษาฯ " +
+                 "เป็นเหตุให้ต้องรับผิดชดใช้เงินให้แก่มหาวิทยาลัยมหิดล เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
+                 "และมหาวิทยาลัยมหิดลได้มีหนังสือทวงถามให้" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
+                 "ชดใช้เงินภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือ รายละเอียดปรากฏตามสิ่งที่ส่งมาด้วย ซึ่ง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
+                 "ได้รับหนังสือแล้วแต่กลับเพิกเฉยไม่ชำระเงินภายในกำหนด เป็นเหตุให้ท่านซึ่งเป็นผู้ค้ำประกันต้องรับผิดชดใช้เงินให้แก่มหาวิทยาลัยมหิดล " + 
+                 "ในการนี้ จึงขอให้ท่านนำเงินจำนวน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
+                 "พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงินจำนวนดังกล่าว นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " " +
+                 "ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
+                 "มิเช่นนั้นมหาวิทยาลัยมหิดลจำต้องดำเนินการตามกฎหมายต่อไป" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
-                 "                          เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ให้แก่มหาวิทยาลัยมหิดล แล้วจึงชำระเงินจำนวนดังกล่าวโดยนำฝากเงินเข้าบัญชีธนาคารไทยพาณิชย์ " + 
-                 "                          ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
-                 "                          หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี ๐๑๖-๒-๑๐๓๒๒-๓ " +
-                 "                          และจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร(Fax) " +
-                 "                          หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ทั้งนี้ ขอให้ท่านติดต่อนิติกรผู้รับผิดชอบ: คุณ" + _lawyer["FullnameWithoutNamePrefix"] + " (" + Util.NumberArabicToThai(_lawyer["PhoneNumber"]) + ") " +
+                 "เพื่อคำนวณจำนวนเงินที่ต้องชดใช้ให้แก่มหาวิทยาลัยมหิดล แล้วจึงชำระเงินจำนวนดังกล่าวโดยนำฝากเงินเข้าบัญชีธนาคารไทยพาณิชย์ " + 
+                 "ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทกระแสรายวัน สาขาศิริราช เลขที่บัญชี ๐๑๖-๓-๐๐๓๒๕-๖ " +
+                 "หรือโอนเงินเข้าบัญชีธนาคารไทยพาณิชย์ ชื่อบัญชี \"มหาวิทยาลัยมหิดล\" ประเภทออมทรัพย์ เลขที่บัญชี ๐๑๖-๒-๑๐๓๒๒-๓ " +
+                 "และจัดส่งใบนำฝากเงิน โดยระบุชื่อ-สกุล ที่อยู่ หมายเลขโทรศัพท์ มาที่โทรสาร(Fax) " +
+                 "หมายเลข ๐ ๒๘๔๙ ๖๒๖๕ หรือสแกนส่งทางไปรษณีย์อิเล็กทรอนิกส์: " + _lawyer["Email"] +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2268,21 +2418,21 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่มหาวิทยาลัยได้มีหนังสือที่ อว ๗๘/ " + (!String.IsNullOrEmpty(_pursuant) ? Util.NumberArabicToThai(_pursuant) : "") + " ลงวันที่ " + (!String.IsNullOrEmpty(_pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_pursuantBookDate)) : "") + " " +
-                 "                          ถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " เพื่อขอให้ชดใช้เงินกรณีปฏิบัติงานไม่ครบกำหนดตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " " +
-                 "                          เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
-                 "                          ให้แก่มหาวิทยาลัย ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือดังกล่าว นั้น" +  
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่มหาวิทยาลัยได้มีหนังสือที่ อว ๗๘/ " + (!String.IsNullOrEmpty(_pursuant) ? Util.NumberArabicToThai(_pursuant) : "") + " ลงวันที่ " + (!String.IsNullOrEmpty(_pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_pursuantBookDate)) : "") + " " +
+                 "ถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " เพื่อขอให้ชดใช้เงินกรณีปฏิบัติงานไม่ครบกำหนดตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(_data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_data[0, 13])) + " " +
+                 "เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(_data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(_data[0, 18]) + ") " +
+                 "ให้แก่มหาวิทยาลัย ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือดังกล่าว นั้น" +  
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;งานกฎหมายและนิติกรรมสัญญา ขอเรียนว่า หนังสือดังกล่าวมีผู้รับไว้โดยชอบแล้วเมื่อวันที่ " + (!String.IsNullOrEmpty(_replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_replyDate)) : "") + " " +
-                 "                          รายละเอียดปรากฏตามใบตอบรับไปรษณีย์ลงทะเบียนในประเทศ บัดนี้ได้ล่วงเลยกำหนดระยะเวลาการชำระเงินแล้ว ยังไม่ปรากฏว่า" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
-                 "                          ได้ชำระเงินให้แก่มหาวิทยาลัยแต่อย่างใด ในการนี้ งานกฎหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยมีหนังสือทวงถามถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " (ครั้งที่ ๒) และ" + _data[0, 14] + " ในฐานะผู้ค้ำประกัน " +
-                 "                          เพื่อดำเนินการชำระเงินจำนวนดังกล่าวพร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงิน นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " " +
-                 "                          ซึ่งเป็นวันผิดนัดจนถึงวันที่ชำระเสร็จสิ้น ให้แก่มหาวิทยาลัยมหิดลโดยเร็ว" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;งานกฎหมายและนิติกรรมสัญญา ขอเรียนว่า หนังสือดังกล่าวมีผู้รับไว้โดยชอบแล้วเมื่อวันที่ " + (!String.IsNullOrEmpty(_replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_replyDate)) : "") + " " +
+                 "รายละเอียดปรากฏตามใบตอบรับไปรษณีย์ลงทะเบียนในประเทศ บัดนี้ได้ล่วงเลยกำหนดระยะเวลาการชำระเงินแล้ว ยังไม่ปรากฏว่า" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " " +
+                 "ได้ชำระเงินให้แก่มหาวิทยาลัยแต่อย่างใด ในการนี้ งานกฎหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยมีหนังสือทวงถามถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " (ครั้งที่ ๒) และ" + _data[0, 14] + " ในฐานะผู้ค้ำประกัน " +
+                 "เพื่อดำเนินการชำระเงินจำนวนดังกล่าวพร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(_contractInterest[1]) + " ต่อปีของต้นเงิน นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(_overpaymentDateStart)) + " " +
+                 "ซึ่งเป็นวันผิดนัดจนถึงวันที่ชำระเสร็จสิ้น ให้แก่มหาวิทยาลัยมหิดลโดยเร็ว" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2292,8 +2442,8 @@ public class eCPDataReportNoticeClaimDebt
                  "              <tr>" +
                  "                  <td width='100%'>" +
                  "                      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                 "                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดพิจารณา หากเห็นชอบ " +
-                 "                          ขอได้โปรดลงนามในหนังสือถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " และ" + _data[0, 14] + " ตามที่เสนอมาพร้อมนี้" +
+                 "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;จึงเรียนมาเพื่อโปรดพิจารณา หากเห็นชอบ " +
+                 "ขอได้โปรดลงนามในหนังสือถึง" + _data[0, 3] + _data[0, 4] + " " + _data[0, 5] + " และ" + _data[0, 14] + " ตามที่เสนอมาพร้อมนี้" +
                  "                      </p>" +
                  "                  </td>" +
                  "              </tr>" +
@@ -2340,7 +2490,7 @@ public class eCPDataReportNoticeClaimDebt
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=NoticeClaimDebtTime" + _time.ToString() + ".doc");
         HttpContext.Current.Response.ContentType = "application/msword";
-        HttpContext.Current.Response.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
         HttpContext.Current.Response.Write(_html);
     }
@@ -2711,6 +2861,168 @@ public class eCPDataReportNoticeCheckForReimbursement
     }
 }
 
+public class eCPDataReportFormRequestCreateAndUpdateDebtor
+{
+    public static void ExportCPReportFormRequestCreateAndUpdateDebtor(string _exportSend)
+    {
+        /*
+        string _pdfFont = "Font/THSarabunBold.ttf";
+        string _template = "ExportTemplate/FormRequestCreateAndUpdateDebtor.pdf";
+        string _saveFile = "FormRequestCreateAndUpdateDebtor.pdf";
+        */
+        string _fileName = "FormRequestCreateAndUpdateDebtor";
+        char[] _separator = new char[] { ':' };
+        string[] _exportSendValue = _exportSend.Split(_separator);
+        string _cp1id = _exportSendValue[0];
+        string[,] _data1;
+        string _currentDate = (Util.CurrentDate("dd") + " " + Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + (int.Parse(Util.CurrentDate("yyyy")) + 543).ToString());
+        string _studentCode = String.Empty;
+        string _idCard = String.Empty;
+        string _titleName = String.Empty;
+        string _firstName = String.Empty;
+        string _lastName = String.Empty;
+        string _subdistrict = String.Empty;
+        string _district = String.Empty;
+        string _province = String.Empty;
+        string _zipCode = String.Empty;
+        string _lawyerFullname = String.Empty;
+        string _lawyerPhoneNumber = String.Empty;
+        string _lawyerMobileNumber = String.Empty;
+        ArrayList _addressList = new ArrayList();
+        ArrayList _roadSoiList = new ArrayList();
+        ArrayList _phoneNumberList = new ArrayList();
+        ArrayList _lawyerPhoneNumberList = new ArrayList();
+
+        _data1 = eCPDB.ListDetailCPTransRequireContract(_cp1id);
+
+        if (_data1.GetLength(0) > 0)
+        {
+            _studentCode = _data1[0, 19];
+            _titleName = _data1[0, 20];
+            _firstName = _data1[0, 21];
+            _lastName = _data1[0, 22];
+            _lawyerFullname = _data1[0, 73];
+            _lawyerPhoneNumber = _data1[0, 74];
+            _lawyerMobileNumber = _data1[0, 75];
+
+            if (!String.IsNullOrEmpty(_lawyerPhoneNumber))
+                _lawyerPhoneNumberList.Add(_lawyerPhoneNumber);
+
+            if (!String.IsNullOrEmpty(_lawyerMobileNumber))
+                _lawyerPhoneNumberList.Add(_lawyerMobileNumber);
+
+            dynamic _jsonObject = JsonConvert.DeserializeObject<dynamic>(eCPDB.GetPersonRecordsAddress(_studentCode));
+            JArray _data2 = _jsonObject;
+
+            if (_data2.Count > 0)
+            {
+                JObject _dr = _jsonObject[0];
+                dynamic _addressTypePermanent = _dr["addressTypePermanent"];
+
+                string _village = _addressTypePermanent["village"];
+                string _no = _addressTypePermanent["no"];
+                string _moo = _addressTypePermanent["moo"];
+                string _road = _addressTypePermanent["road"];
+                string _soi = _addressTypePermanent["soi"];
+                string _phoneNumber = _addressTypePermanent["phoneNumber"];
+                string _mobileNumber = _addressTypePermanent["mobileNumber"];
+
+                _idCard = _dr["idCard"].ToString();
+
+                if (!String.IsNullOrEmpty(_village))
+                    _addressList.Add("หมู่บ้าน" + _village);
+
+                if (!String.IsNullOrEmpty(_no))
+                    _addressList.Add("บ้านเลขที่ " + _no);
+
+                if (!String.IsNullOrEmpty(_moo))
+                    _addressList.Add("หมู่ที่ " + _moo);
+
+                if (!String.IsNullOrEmpty(_road))
+                    _roadSoiList.Add(_road);
+
+                if (!String.IsNullOrEmpty(_soi))
+                    _roadSoiList.Add("ซ." + _soi);
+
+                _subdistrict = _addressTypePermanent["subdistrict"];
+                _district = _addressTypePermanent["district"];
+                _province = _addressTypePermanent["province"];
+                _zipCode = _addressTypePermanent["zipCode"];
+
+                if (!String.IsNullOrEmpty(_phoneNumber))
+                    _phoneNumberList.Add(_phoneNumber);
+
+                if (!String.IsNullOrEmpty(_mobileNumber))
+                    _phoneNumberList.Add(_mobileNumber);
+            }
+        }
+
+        HttpContext.Current.Response.ClearContent();
+        HttpContext.Current.Response.ClearHeaders();
+        HttpContext.Current.Response.Buffer = true;
+        HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + (_fileName + _studentCode + ".xlsx"));
+        HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
+
+        using (ExcelPackage _xls = new ExcelPackage(new FileInfo(HttpContext.Current.Server.MapPath(@"ExportTemplate/" + _fileName + ".xlsx"))))
+        {
+            ExcelWorksheet _ws = _xls.Workbook.Worksheets[0];
+            MemoryStream _ms = new MemoryStream();
+
+            _ws.Cells["H4"].Value = _currentDate;
+            _ws.Cells["B21"].Value = (_titleName + _firstName + " " + _lastName);
+            _ws.Cells["B29"].Value = String.Join(" ", _addressList.ToArray());
+            _ws.Cells["B31"].Value = String.Join(" ", _roadSoiList.ToArray());
+            _ws.Cells["B33"].Value = _subdistrict;
+            _ws.Cells["B35"].Value = _district;
+            _ws.Cells["B37"].Value = _province;
+            _ws.Cells["I37"].Value = _zipCode;
+            _ws.Cells["B39"].Value = String.Join(", ", _phoneNumberList.ToArray());
+            _ws.Cells["G44"].Value = _idCard;
+            _ws.Cells["B69"].Value = ("(" + _lawyerFullname + ")");
+            _ws.Cells["B70"].Value = "นิติกร";
+            _ws.Cells["B71"].Value = (": " + _currentDate);
+            _ws.Cells["B72"].Value = (": " + String.Join(", ", _lawyerPhoneNumberList.ToArray()));
+            _ws.Cells["H71"].Value = (": " + _currentDate);
+
+            _xls.SaveAs(_ms);
+            _ms.WriteTo(HttpContext.Current.Response.OutputStream);
+
+            _ms.Close();
+            _ms.Dispose();
+        }
+
+        HttpContext.Current.Response.Flush();
+        HttpContext.Current.Response.End();
+
+        /*
+        Export2PDF _export2PDF = new Export2PDF();
+        _export2PDF.ExportToPDFConnect(_saveFile);
+        _export2PDF.PDFConnectTemplate(_template, "pdf");
+
+        _export2PDF.PDFAddTemplate("pdf", 1, 1);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _currentDate, 360, 716, 154, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, (_titleName + _firstName + " " + _lastName), 91, 464, 489, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, String.Join(" ", _addressList.ToArray()), 91, 357, 489, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, String.Join(" ", _roadSoiList.ToArray()), 91, 329, 489, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _subdistrict, 91, 300, 489, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _district, 91, 271, 489, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _province, 91, 243, 260, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _zipCode, 400, 243, 180, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, String.Join(", ", _phoneNumberList.ToArray()), 91, 188, 489, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _idCard, 317, 97, 263, 0);
+
+        _export2PDF.PDFAddTemplate("pdf", 2, 1);
+        _export2PDF.FillForm(_pdfFont, 12, 1, ("(" + _lawyerFullname + ")"), 96, 433, 127, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 1, "นิติกร", 96, 419, 127, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _currentDate, 94, 404, 223, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, String.Join(", ", _lawyerPhoneNumberList.ToArray()), 94, 388, 223, 0);
+        _export2PDF.FillForm(_pdfFont, 12, 0, _currentDate, 362, 404, 223, 0);
+        _export2PDF.ExportToPdfDisconnect();
+        */
+    }
+}
+
 public class eCPDataReportStatisticPaymentByDate
 {
     public static string ViewTransPaymentByDate(string _cp2idDate)
@@ -2742,6 +3054,25 @@ public class eCPDataReportStatisticPaymentByDate
             string _dlevelDefault = _data[0, 20];
             string _pictureFileNameDefault = _data[0, 21];
             string _pictureFolderNameDefault = _data[0, 22];
+            string _lawyerFullnameDefault = _data[0, 29];
+            string _lawyerPhoneNumberDefault = _data[0, 30];
+            string _lawyerMobileNumberDefault = _data[0, 31];
+            string _lawyerEmailDefault = _data[0, 32];
+            string _lawyerDefault = String.Empty;
+
+            ArrayList _lawyerPhoneNumber = new ArrayList();
+
+            if (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerPhoneNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
+            {
+                _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
+                                  " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
+            }
 
             _data1 = eCPDB.ListTransPayment(_cp2id, _dateStart, _dateEnd);
             _recordCount = _data1.GetLength(0);
@@ -2755,14 +3086,16 @@ public class eCPDataReportStatisticPaymentByDate
                      "          <div class='form-label-discription-style'><div class='form-label-style'>ชื่อ - นามสกุล</div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>ระดับการศึกษา</div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>คณะ</div></div>" +
-                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หลักสูตร</div></div>" +
+                     "          <div class='form-label-discription-style'><div class='form-label-style'>หลักสูตร</div></div>" +
+                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>" +
                      "      </div>" +
                      "      <div class='content-left' id='profile-student-input'>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _studentIDDefault + "&nbsp;" + _programCodeDefault.Substring(0, 4) + " / " + _programCodeDefault.Substring(4, 1) + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _titleNameDefault + _firstNameDefault + " " + _lastNameDefault + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _dlevelDefault + "</span></div></div>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _facultyCodeDefault + " - " + _facultyNameDefault + "</span></div></div>" +
-                     "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
+                     "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
+                     "      <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>" + _lawyerDefault + "</div></div>" +
                      "      </div>" +
                      "  </div>" +
                      "  <div class='clear'></div>" +
@@ -3400,7 +3733,7 @@ public class eCPDataReportDebtorContract
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=DebtorContractRemain.xls");
         HttpContext.Current.Response.ContentType = "application/msexcel";
-        HttpContext.Current.Response.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
         HttpContext.Current.Response.Write(_html);
     }
@@ -3604,7 +3937,7 @@ public class eCPDataReportDebtorContract
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=DebtorContractPaid.xls");
         HttpContext.Current.Response.ContentType = "application/msexcel";
-        HttpContext.Current.Response.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
         HttpContext.Current.Response.Write(_html);
     }
@@ -3812,7 +4145,7 @@ public class eCPDataReportDebtorContract
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=DebtorContract.xls");
         HttpContext.Current.Response.ContentType = "application/msexcel";
-        HttpContext.Current.Response.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
         HttpContext.Current.Response.Write(_html);
     }
@@ -3880,7 +4213,7 @@ public class eCPDataReportDebtorContract
         int[] _resultPage = new int[2];
         int _currentPage;
 
-        _recordCount = eCPDB.CountCPReportDebtorContractByProgram(_c);        
+        _recordCount = eCPDB.CountCPReportDebtorContractByProgram(_c);
         
         if (_recordCount > 0)
         {
@@ -3890,7 +4223,7 @@ public class eCPDataReportDebtorContract
 
             for (_i = 0; _i < _data.GetLength(0); _i++)
             {
-                _trackingStatus = _data[_i, 18] + _data[_i, 19] + _data[_i, 20] + _data[_i, 21];                
+                _trackingStatus = _data[_i, 18] + _data[_i, 19] + _data[_i, 20] + _data[_i, 21];
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewTrackingStatusViewTransBreakContract('" + _data[_i, 1] + "','" + _trackingStatus + "','v3')";
                 _html += "<ul class='table-row-content " + _highlight + "' id='trans-break-contract" + _data[_i, 1] + "'>" +
@@ -4119,9 +4452,80 @@ public class eCPDataReportDebtorContract
                  "  <input id='export-send' name='export-send' value='' type='hidden' />" +
                  "  <input id='export-order' name='export-order' value='' type='hidden' />" +
                  "  <input id='export-type' name='export-type' value='' type='hidden' />" +
-                 "</form>";                 
+                 "</form>";
 
         return _html;
+    }
+
+    public static void ExportCPReportDebtorContractBreakRequireRepayPayment(string _exportSend)
+    {
+        string _fileName = "ReportDebtorContractBreakRequireRepayPayment";
+        char[] _separator = new char[] { ':' };
+        string[] _exportSendValue = _exportSend.Split(_separator);
+        string _dateStart = _exportSendValue[5];
+        string _dateEnd = _exportSendValue[6];
+        int _i, _j;
+
+        HttpContext.Current.Response.ClearContent();
+        HttpContext.Current.Response.ClearHeaders();
+        HttpContext.Current.Response.Buffer = true;
+        HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + _fileName + ".xlsx");
+        HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
+
+        using (ExcelPackage _xls = new ExcelPackage(new FileInfo(HttpContext.Current.Server.MapPath(@"ExportTemplate/" + _fileName + ".xlsx"))))
+        {
+            ExcelWorksheet _ws = _xls.Workbook.Worksheets[0];
+            MemoryStream _ms = new MemoryStream();
+
+            dynamic _jsonObject = JsonConvert.DeserializeObject<dynamic>(eCPDB.ListExportReportDebtorContractBreakRequireRepayPayment(_exportSend));
+            JArray _data = _jsonObject;
+
+            string _header = ("&16&\"TH Sarabun New,Bold\"รายงานลูกหนี้ผิดสัญญาคงค้าง (กรณี Z600 ลูกหนี้นักศึกษา)\nประจำเดือน " + Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " พ.ศ. " + (int.Parse(Util.CurrentDate("yyyy")) + 543).ToString());
+
+            _ws.HeaderFooter.OddHeader.CenteredText = _header;
+            _ws.HeaderFooter.EvenHeader.CenteredText = _header;
+            _ws.Cells["A1"].Value = ("ช่วงวันที่รับเอกสารการทวงถามครั้งที่ 1 ตั้งแต่วันที่ " + (!String.IsNullOrEmpty(_dateStart) ? _dateStart : "( ไม่ระบุ )") + " - วันที่ " + (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : "( ไม่ระบุ )"));
+
+            if (_data.Count > 0)
+            {
+                _i = 1;
+                _j = 3;
+
+                foreach (JObject _dr in _jsonObject)
+                {
+                    _ws.Cells["A" + _j.ToString()].Value = _i.ToString("#,##0");
+                    _ws.Cells["B" + _j.ToString()].Value = (_dr["titleName"].ToString() + _dr["firstName"].ToString() + " " + _dr["lastName"].ToString());
+                    _ws.Cells["C" + _j.ToString()].Value = _dr["studentCode"].ToString();
+                    _ws.Cells["D" + _j.ToString()].Value = (_dr["programCode"].ToString() + "-" + _dr["programName"].ToString() + (!_dr["groupNum"].ToString().Equals("0") ? (" ( กลุ่ม " + _dr["groupNum"].ToString() + " )") : ""));
+                    _ws.Cells["E" + _j.ToString()].Value = _dr["facultyName"].ToString();
+                    _ws.Cells["F" + _j.ToString()].Value = ("สัญญาการเป็นนักศึกษา" + eCPDataReport.ReplaceProgramToShortProgram(_dr["programName"].ToString()) + " ฉบับลงวันที่ " + Util.ThaiLongDate(Util.ConvertDateEN(_dr["contractDate"].ToString())));
+                    _ws.Cells["G" + _j.ToString()].Value = Util.ConvertDateTH(_dr["sendDate"].ToString());
+                    _ws.Cells["H" + _j.ToString()].Value = Util.ConvertDateTH(_dr["receiverDate"].ToString());
+                    _ws.Cells["I" + _j.ToString()].Value = (_dr["replyDateHistory"].ToString().Replace(",", "\n"));
+                    _ws.Cells["J" + _j.ToString()].Value = double.Parse(_dr["subtotalPenalty"].ToString()).ToString("#,##0.00");
+                    _ws.Cells["K" + _j.ToString()].Value = double.Parse(_dr["totalPayCapital"].ToString()).ToString("#,##0.00");
+                    _ws.Cells["L" + _j.ToString()].Value = double.Parse(_dr["totalPayInterest"].ToString()).ToString("#,##0.00");
+                    _ws.Cells["M" + _j.ToString()].Value = double.Parse(_dr["totalPay"].ToString()).ToString("#,##0.00");
+                    _ws.Cells["N" + _j.ToString()].Value = double.Parse(_dr["totalRemain"].ToString()).ToString("#,##0.00");
+                    _ws.Cells["O" + _j.ToString()].Value = double.Parse(_dr["remainAccruedInterest"].ToString()).ToString("#,##0.00");
+                    _ws.Cells["P" + _j.ToString()].Value = eCPUtil._paymentStatus[int.Parse(_dr["statusPayment"].ToString()) - 1];
+                    _ws.Cells["Q" + _j.ToString()].Value = (_dr["statusPaymentRecord"].ToString().Equals("P") ? (eCPUtil._paymentRecordStatus[0, 0] + " เนื่องจากอยู่ระหว่างการฟ้องร้องบังคับคดี") : String.Empty);
+
+                    _i++;
+                    _j++;
+                }
+            }
+
+            _xls.SaveAs(_ms);
+            _ms.WriteTo(HttpContext.Current.Response.OutputStream);
+
+            _ms.Close();
+            _ms.Dispose();
+        }
+
+        HttpContext.Current.Response.Flush();
+        HttpContext.Current.Response.End();
     }
 }
 
@@ -4518,8 +4922,9 @@ public class eCPDataReportCertificateReimbursement
 
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=CertificateReimbursement.doc");
         HttpContext.Current.Response.ContentType = "application/msword";
-        HttpContext.Current.Response.ContentEncoding = System.Text.UnicodeEncoding.UTF8;
+        HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
         HttpContext.Current.Response.Write(_html);    
     }
 } 
+

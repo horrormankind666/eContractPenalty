@@ -1,11 +1,12 @@
 ﻿/*
 Description         : สำหรับการทำรายการแจ้ง
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Last Date Modified  : ๑๒/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
+using System.Collections;
 using System.Web;
 
 public class eCPDataBreakContract
@@ -631,11 +632,27 @@ public class eCPDataBreakContract
         string _totalPenaltyDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 17] : String.Empty;
         string _lawyerFullnameDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 73] : String.Empty;
         string _lawyerPhoneNumberDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 74] : String.Empty;
-        string _lawyerMobileNumber = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 75] : String.Empty;
-        string _lawyerEmail = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 76] : String.Empty;
+        string _lawyerMobileNumberDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 75] : String.Empty;
+        string _lawyerEmailDefault = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 76] : String.Empty;
+        string _lawyerDefault = String.Empty;
         string _statusRepay = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 18] : String.Empty;
         string _statusPayment = (_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")) ? _data[0, 58] : String.Empty;
         string[] _statusRepayCurrent;
+
+        ArrayList _lawyerPhoneNumber = new ArrayList();
+
+        if (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault))
+            _lawyerPhoneNumber.Add(_lawyerPhoneNumberDefault);
+
+        if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
+            _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
+
+
+        if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
+        {
+            _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
+                              " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
+        }
 
         _html += "<div class='form-content' id='detail-cp-trans-break-require-contract'>" +
                  "  <input type='hidden' id='trackingstatus' value='" + _trackingStatus + "' />" +
@@ -667,21 +684,29 @@ public class eCPDataBreakContract
                  "  </div>" +
                  "  <div class='box3'></div>" +
                  "  <div id='profile-student'>" +
-                 "      <div class='content-left' id='picture-student'><div><img src='Handler/eCPHandler.ashx?action=resize&file=" + eCPUtil.URL_PICTURE_STUDENT + _pictureFolderNameDefault + "/" + _pictureFileNameDefault + "&width=" + eCPUtil.WIDTH_PICTURE_STUDENT + "&height=" + eCPUtil.HEIGHT_PICTURE_STUDENT + "' /></div></div>" +
-                 "      <div class='content-left' id='profile-student-label'>" +
+                 "      <div class='content-left " + (_status.Equals("a") ? "status-a" : String.Empty) + "' id='picture-student'><div><img src='Handler/eCPHandler.ashx?action=resize&file=" + eCPUtil.URL_PICTURE_STUDENT + _pictureFolderNameDefault + "/" + _pictureFileNameDefault + "&width=" + eCPUtil.WIDTH_PICTURE_STUDENT + "&height=" + eCPUtil.HEIGHT_PICTURE_STUDENT + "' /></div></div>" +
+                 "      <div class='content-left " + (_status.Equals("a") ? "status-a" : String.Empty) + "' id='profile-student-label'>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'>รหัสนักศึกษา</div></div>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'>ชื่อ - นามสกุล</div></div>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'>ระดับการศึกษา</div></div>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'>คณะ</div></div>" +
-                 "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หลักสูตร</div></div>" +
-                 "      </div>" +
+                 "          <div class='form-label-discription-style " + (_status.Equals("a") ? "clear-bottom" : String.Empty) + "'><div class='form-label-style'>หลักสูตร</div></div>";
+
+        if (!_status.Equals("a"))
+            _html += "      <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>";
+
+        _html += "      </div>" +
                  "      <div class='content-left' id='profile-student-input'>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _studentIDDefault + "&nbsp;" + _programCodeDefault.Substring(0, 4) + " / " + _programCodeDefault.Substring(4, 1) + "</span></div></div>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _titleNameDefault + _firstNameDefault + " " + _lastNameDefault + "</span></div></div>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _dlevelDefault + "</span></div></div>" +
                  "          <div class='form-label-discription-style'><div class='form-label-style'><span>" + _facultyCodeDefault + " - " + _facultyNameDefault + "</span></div></div>" +
-                 "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>" +
-                 "      </div>" +
+                 "          <div class='form-label-discription-style " + (_status.Equals("a") ? "clear-bottom" : String.Empty) + "'><div class='form-label-style'><span>" + _programCodeDefault + " - " + _programNameDefault + (!_groupNumDefault.Equals("0") ? " ( กลุ่ม " + _groupNumDefault + " )" : "") + "</span></div></div>";
+
+        if (!_status.Equals("a"))
+            _html += "      <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>" + _lawyerDefault + "</div></div>";
+
+        _html += "      </div>" +
                  "  </div>" +
                  "  <div class='clear'></div>" +
                  "  <div class='box3'></div>" +
@@ -812,26 +837,7 @@ public class eCPDataBreakContract
                          "<div class='clear'></div>";
             }
 
-            _html += "<div id='lawyer'>" +
-                     "  <div class='content-left' id='lawyer-label'>" +
-                     "      <div class='form-label-discription-style'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>" +
-                     "  </div>" +
-                     "  <div class='content-left' id='lawyer-input'>" +
-                     "      <div class='form-input-style'>";
-
-            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumber) && !String.IsNullOrEmpty(_lawyerEmail)))
-            {
-                _html += "      <div class='form-input-content'>" +
-                         "          <div>คุณ<span>" + _lawyerFullnameDefault + "</span> ( <span>" + (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) ? _lawyerPhoneNumberDefault : _lawyerMobileNumber) + "</span> )</div>" +
-                         "          <div class='form-input-content-line'>อีเมล์ <span>" + _lawyerEmail + "</span></div>" +
-                         "      </div>";
-            }
-
-            _html += "      </div>" +
-                     "  </div>" +
-                     "</div>" +
-                     "<div class='clear'></div>" +
-                     "<div id='status-repay'>" +
+            _html += "<div id='status-repay'>" +
                      "  <div class='content-left' id='status-repay-label'>" +
                      "      <div class='form-label-discription-style " + ((_statusCancel.Equals("2") || _statusEdit.Equals("2")) ? "clear-bottom" : "") + "'><div class='form-label-style'>สถานะการแจ้งชำระหนี้</div></div>" +
                      "  </div>" +

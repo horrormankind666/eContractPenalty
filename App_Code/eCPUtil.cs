@@ -1,12 +1,13 @@
 ﻿/*
 Description         : สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๒๔/๐๖/๒๕๖๔
+Last Date Modified  : ๒๓/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -43,7 +44,8 @@ public class eCPUtil
             "CPReportEContract",
             "CPReportDebtorContract",
             "CPReportDebtorContractPaid",
-            "CPReportDebtorContractRemain"
+            "CPReportDebtorContractRemain",
+            "CPReportDebtorContractBreakRequireRepayPayment"
         },
         {
             "Home",
@@ -64,6 +66,7 @@ public class eCPUtil
             "",
             "",
             "",
+            "",
             ""
         },
         {
@@ -72,6 +75,7 @@ public class eCPUtil
             "CPReportDebtorContract",
             "CPReportDebtorContractPaid",
             "CPReportDebtorContractRemain",
+            "CPReportDebtorContractBreakRequireRepayPayment",
             "",
             "",
             "",
@@ -91,9 +95,9 @@ public class eCPUtil
 
     public static int[,] _activeMenu = new int[,] 
     {
-        { 1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
-        { 1, 2, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 1, 2, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        { 1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
+        { 1, 2, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 1, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     public static string[,,] _actionTrackingStatus = new string[,,]
@@ -240,6 +244,12 @@ public class eCPUtil
         "ชำระหนี้เรียบร้อย"
     };
 
+    public static string[,] _paymentRecordStatus = new string[,]
+    {
+        { "หยุดบันทึกข้อมูลการชำระหนี้ชั่วคราว", "P" },
+        { "บันทึกข้อมูลการชำระหนี้ต่อเนื่อง", "C" }
+    };
+
     public static string[] _paymentFormat = new string[]
     {
         "ชำระแบบเต็มจำนวน",
@@ -283,6 +293,39 @@ public class eCPUtil
         { "จำนวนเงินต้นที่ต้องการชำระต่อเดือน", "1" },
         { "จำนวนงวดที่ต้องการชำระ", "2" }
     };
+
+    public static string[,] _longMonth = new string[,]
+    {
+        { "มกราคม", "ม.ค." },
+        { "กุมภาพันธ์", "ก.พ." },
+        { "มีนาคม", "มี.ค." },
+        { "เมษายน", "เม.ย." },
+        { "พฤษภาคม", "พ.ค." },
+        { "มิถุนายน", "มิ.ย." },
+        { "กรกฎาคม", "ก.ค." },
+        { "สิงหาคม", "ส.ค." },
+        { "กันยายน", "ก.ย." },
+        { "ตุลาคม", "ต.ค." },
+        { "พฤศจิกายน", "พ.ย." },
+        { "ธันวาคม", "ธ.ค." }
+    };
+
+    public static string CurrentDate(string _format)
+    {
+        return (DateTime.Today.ToString(_format));
+    }
+
+    public static string ThaiLongDate(string _dateEN)
+    {
+        if (!String.IsNullOrEmpty(_dateEN))
+        {
+            DateTime _dt = DateTime.Parse(_dateEN);
+
+            return ((int.Parse(_dt.ToString("dd"))).ToString() + " " + _longMonth[_dt.Month - 1, 0] + " " + (_dt.Year + 543).ToString());
+        }
+        else
+            return _dateEN;
+    }
 
     public static string MenuBar(bool _loginResult)
     {
@@ -332,6 +375,7 @@ public class eCPUtil
                          "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",17)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
                          "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",18)'>การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
                          "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",19)'>ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้</a></li>" +
+                         "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",20)'>ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )</a></li>" +
                          "      </ul>" +
                          "  </li>";
             }
@@ -358,6 +402,7 @@ public class eCPUtil
                          "          <li><a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",3)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
                          "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",4)'>การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
                          "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",5)'>ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้</a></li>" +
+                         "          <li><a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",6)'>ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )</a></li>" +
                          "      </ul>" +
                          "  </li>";
             }
@@ -475,14 +520,14 @@ public class eCPUtil
         if (_eCPCookie["UserSection"].Equals("3"))
             _order = 2;
 
-        Type _thisType = this.GetType();
-        MethodInfo _theMethod = _thisType.GetMethod(_pageOrder[_order, _pid]);
-        string _result = (string)_theMethod.Invoke(this, null);
-
         _eCPCookie.Values.Remove("Pid");
         _eCPCookie.Values.Add("Pid", (_pid + 1).ToString());
         HttpContext.Current.Response.AppendCookie(_eCPCookie);
-        
+
+        Type _thisType = this.GetType();
+        MethodInfo _theMethod = _thisType.GetMethod(_pageOrder[_order, _pid]);
+        string _result = (string)_theMethod.Invoke(this, null);
+      
         return _result;
     }
     
@@ -682,6 +727,44 @@ public class eCPUtil
         string _html = String.Empty;
 
         _html += eCPDataReportDebtorContract.TabCPReportDebtorContract("reportdebtorcontractremain");
+
+        return _html;
+    }
+
+    public string CPReportDebtorContractBreakRequireRepayPayment()
+    {
+        string _html = String.Empty;
+
+        _html += eCPDataPayment.TabPaymentOnCPTransRequireContract();
+
+        return _html;
+    }
+
+    public static string ListUser(string _id)
+    {        
+        string _html = String.Empty;
+        int _i = 0;
+        int _section;
+
+        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
+        _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+        _section = int.Parse(_eCPCookie["UserSection"]);
+
+        _html += "<div class='combobox'>" +
+                 "  <select id='" + _id + "'>" +
+                 "      <option value='0'>เลือกผู้ใช้งาน</option>";
+
+        DataSet _ds = eCPDB.ListCPTabUser();
+
+        foreach (DataRow _dr in _ds.Tables[1].Rows)
+        {
+            _html += "  <option value='" + (_dr["Name"].ToString() + ";" + _dr["PhoneNumber"].ToString() + ";" + _dr["MobileNumber"].ToString() + ";" + _dr["Email"].ToString())  + "'>" + _dr["Name"].ToString() + "</option>";
+        }
+
+        _ds.Dispose();
+
+        _html += "  </select>" +
+                 "</div>";
 
         return _html;
     }

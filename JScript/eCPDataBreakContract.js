@@ -166,7 +166,7 @@ function ViewStudentInTransBreakContract() {
 }
 
 function ResetFrmCPTransBreakContract(_disable) {
-    GoToElement("top-page");
+    GoToTopElement("html, body");
 
     if (_disable == true) {
         LinkDisable("#link-add-student");

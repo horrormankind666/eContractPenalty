@@ -1,4 +1,5 @@
 ﻿var _msgLoading
+var _monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
 function SetMsgLoading(_val) {
     _msgLoading = _val;
@@ -453,9 +454,11 @@ function GetPageScroll() {
 function GoToElement(_anchor) {
     var _ele = $("#" + _anchor);
     var _offset = _ele.offset();
-
-    if ($("#" + _anchor).length > 0)
-        $(_anchor).animate({ scrollTop: _offset.top }, 500);
+    
+    if (_ele.length > 0)
+        $("html, body").animate({
+            scrollTop: (_offset.top - 154)
+        }, 500);
 }
 
 function GoToTopElement(_anchor) {

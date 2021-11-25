@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการรับรายการแจ้ง
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๑๐/๐๕/๒๕๖๔
+Last Date Modified  : ๒๒/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -82,7 +82,6 @@ public class eCPDataRequireContract
             _lawyerMobileNumberDefault = _data1[0, 7];
             _lawyerEmailDefault = _data1[0, 8];
         }
-
 
         _html += "<div class='form-content' id='" + _action + "-cp-trans-require-contract'>" +
                  "  <div id='addupdate-cp-trans-require-contract'>" +
@@ -520,7 +519,7 @@ public class eCPDataRequireContract
                  "                          <div>" +
                  "                              <div class='content-left' id='fullname-label'>ชื่อ - นามสกุล</div>" +
                  "                              <div class='content-left' id='fullname-input'>" +
-                 "                                  <input class='inputbox' type='text' id='lawyer-fullname' value='" + _lawyerFullnameDefault + "' style='width:254px' />" +
+                 "                                  <input class='inputbox' type='text' id='lawyer-fullname' onblur=Trim('lawyer-fullname') value='" + _lawyerFullnameDefault + "' style='width:254px' />" +
                  "                                  <div class='form-discription-style'>" +
                  "                                      <div class='form-discription-line1-style'>ไม่ต้องระบุคำนำหน้าชื่อ</div>" +
                  "                                  </div>" +
@@ -529,17 +528,23 @@ public class eCPDataRequireContract
                  "                          <div class='clear'></div>" +
                  "                          <div>" +
                  "                              <div class='content-left' id='phonenumber-label'>หมายเลขโทรศัพท์</div>" +
-                 "                              <div class='content-left' id='phonenumber-input'><input class='inputbox' type='text' id='lawyer-phonenumber' value='" + _lawyerPhoneNumberDefault + "' style='width:120px' /></div>" +
+                 "                              <div class='content-left' id='phonenumber-input'>" +
+                 "                                  <input class='inputbox' type='text' id='lawyer-phonenumber' onblur=Trim('lawyer-phonenumber') value='" + _lawyerPhoneNumberDefault + "' style='width:120px' />" +
+                 "                              </div>" +
                  "                          </div>" +
                  "                          <div class='clear'></div>" +
                  "                          <div>" +
                  "                              <div class='content-left' id='mobilenumber-label'>หมายเลขโทรศัพท์มือถือ</div>" +
-                 "                              <div class='content-left' id='mobilenumber-input'><input class='inputbox' type='text' id='lawyer-mobilenumber' value='" + _lawyerMobileNumberDefault + "' style='width:120px' /></div>" +
+                 "                              <div class='content-left' id='mobilenumber-input'>" +
+                 "                                  <input class='inputbox' type='text' id='lawyer-mobilenumber' onblur=Trim('lawyer-mobilenumber')  value='" + _lawyerMobileNumberDefault + "' style='width:120px' />" +
+                 "                              </div>" +
                  "                          </div>" +
                  "                          <div class='clear'></div>" +
                  "                          <div>" +
                  "                              <div class='content-left' id='email-label'>อีเมล์</div>" +
-                 "                              <div class='content-left' id='email-input'><input class='inputbox' type='text' id='lawyer-email' value='" + _lawyerEmailDefault + "' style='width:254px' /></div>" +
+                 "                              <div class='content-left' id='email-input'>" +
+                 "                                  <input class='inputbox' type='text' id='lawyer-email' onblur=Trim('lawyer-email') value='" + _lawyerEmailDefault + "' style='width:254px' />" +
+                 "                              </div>" +
                  "                          </div>" +
                  "                          <div class='clear'></div>" +
                  "                      </div>" +

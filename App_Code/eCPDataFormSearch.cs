@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับการแสดงฟอร์มการค้นหา
 Date Created        : ๐๙/๐๘/๒๕๕๕
-Last Date Modified  : ๐๙/๐๔/๒๕๖๔
+Last Date Modified  : ๑๓/๑๑/๒๕๖๔
 Create By           : Yutthaphoom Tawana
 */
 
@@ -434,8 +434,7 @@ public class eCPDataFormSearch
                  "              <div id='search-cp-trans-payment-keyword1-label'>" +
                  "                  <div class='form-label-style'>สถานะการชำระหนี้</div>" +
                  "                  <div class='form-discription-style'>" +
-                 "                      <div class='form-discription-line1-style'>กรุณาเลือกสถานะการชำระหนี้ที่ต้องการ</div>" +
-                 "                      <div class='form-discription-line2-style'>ค้นหา</div>" +
+                 "                      <div class='form-discription-line1-style'>กรุณาเลือกสถานะการชำระหนี้ที่ต้องการค้นหา</div>" +
                  "                  </div>" +
                  "              </div>" +
                  "          </div>" +
@@ -448,6 +447,33 @@ public class eCPDataFormSearch
         for (_i = 0; _i < eCPUtil._paymentStatus.GetLength(0); _i++)
         {
             _html += "                      <option value='" + (_i + 1) + "'>" + eCPUtil._paymentStatus[_i] + "</option>";
+        }
+
+        _html += "                      </select>" +
+                 "                  </div>" +
+                 "              </div>" +
+                 "          </div>" +
+                 "      </div>" +
+                 "      <div class='clear'></div>" +
+                 "      <div>" +
+                 "          <div class='form-label-discription-style'>" +
+                 "              <div id='search-cp-trans-payment-keyword6-label'>" +
+                 "                  <div class='form-label-style'>สถานะการบันทึกข้อมูลการชำระหนี้</div>" +
+                 "                  <div class='form-discription-style'>" +
+                 "                      <div class='form-discription-line1-style'>กรุณาเลือกสถานะการบันทึกข้อมูลการชำระหนี้ที่ต้องการ</div>" +
+                 "                      <div class='form-discription-line2-style'>ค้นหา</div>" +
+                 "                  </div>" +
+                 "              </div>" +
+                 "          </div>" +
+                 "          <div class='form-input-style'>" +
+                 "              <div class='form-input-content' id='search-cp-trans-payment-keyword6-input'>" +
+                 "                  <div class='combobox'>" +
+                 "                      <select id='paymentrecordstatus-trans-payment'>" +
+                 "                          <option value='0'>เลือกสถานะการบันทึกข้อมูลการชำระหนี้</option>";
+
+        for (_i = 0; _i < eCPUtil._paymentRecordStatus.GetLength(0); _i++)
+        {
+            _html += "                      <option value='" + eCPUtil._paymentRecordStatus[_i, 1] + "'>" + eCPUtil._paymentRecordStatus[_i, 0] + "</option>";
         }
 
         _html += "                      </select>" +
