@@ -1,26 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.539
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32427.441
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "eContractPenalty", "..\eContractPenalty\", "{32D0F272-C75A-4088-BB90-DC8C05A8C885}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "eContractPenalty", ".", "{32D0F272-C75A-4088-BB90-DC8C05A8C885}"
 	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_23274"
-		Debug.AspNetCompiler.PhysicalPath = "D:\Programming\eContractPenalty\"
+		Debug.AspNetCompiler.PhysicalPath = "..\eContractPenalty\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_23274\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_23274"
-		Release.AspNetCompiler.PhysicalPath = "D:\Programming\eContractPenalty\"
+		Release.AspNetCompiler.PhysicalPath = "..\eContractPenalty\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_23274\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "23274"
+		SlnRelativePath = "..\eContractPenalty\"
 	EndProjectSection
 EndProject
 Global
