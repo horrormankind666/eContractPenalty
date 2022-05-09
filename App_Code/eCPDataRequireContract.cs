@@ -8,10 +8,11 @@ Create By           : Yutthaphoom Tawana
 using System;
 using System.Web;
 
-public class eCPDataRequireContract
-{
-    private static string AddUpdateCPTransRequireContract(string _action, string[,] _data)
-    {
+public class eCPDataRequireContract {
+    private static string AddUpdateCPTransRequireContract(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         string _cp1id = _action.Equals("update") ? _data[0, 2] : _data[0, 1];
         string _studentIDDefault = _action.Equals("update") ? _data[0, 19] : _data[0, 2];
@@ -72,8 +73,7 @@ public class eCPDataRequireContract
         string _lawyerEmailDefault = _action.Equals("update") ? _data[0, 76] : String.Empty;
         string _statusRepay = _action.Equals("update") ? _data[0, 18] : String.Empty;
 
-        if (_action.Equals("add"))
-        {
+        if (_action.Equals("add")) {
             string _userid = eCPUtil.GetUserID();
             string[,] _data1 = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
 
@@ -233,8 +233,7 @@ public class eCPDataRequireContract
                  "              <div class='clear'></div>" +
                  "          </div>";
 
-        if (_caseGraduateBreakContractDefault.Equals("1"))
-        {
+        if (_caseGraduateBreakContractDefault.Equals("1")) {
             _html += "      <div class='box3'></div>" +
                      "      <div id='cal-contract-penalty1'>" +
                      "          <div>" +
@@ -313,10 +312,8 @@ public class eCPDataRequireContract
                      "      </div>";
         }
     
-        if (_caseGraduateBreakContractDefault.Equals("2"))
-        {
-            if (_civilDefault.Equals("1"))
-            {
+        if (_caseGraduateBreakContractDefault.Equals("2")) {
+            if (_civilDefault.Equals("1")) {
                 _html += "  <div class='box3'></div>" +
                          "  <div id='indemnitor-work'>" +
                          "      <div>" +
@@ -442,8 +439,7 @@ public class eCPDataRequireContract
                      "                          </div>" +
                      "                      </div>";
 
-            if (_setAmtIndemnitorYear.Equals("Y"))
-            {
+            if (_setAmtIndemnitorYear.Equals("Y")) {
                 _html += "                  <div>" +
                          "                      <div class='content-left' id='all-actual-date-label'>ระยะเวลาที่ต้องปฏิบัติงานชดใช้</div>" +
                          "                      <div class='content-left' id='all-actual-date-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-date' value='' style='width:120px' /></div>" +
@@ -464,8 +460,7 @@ public class eCPDataRequireContract
                          "                  <div class='clear'></div>";
             }
       
-            if (_setAmtIndemnitorYear.Equals("N"))
-            {
+            if (_setAmtIndemnitorYear.Equals("N")) {
                 _html += "                  <div>" +
                          "                      <div class='content-left' id='all-actual-day-label'>ระยะเวลาที่ใช้ในการศึกษา</div>" +
                          "                      <div class='content-left' id='all-actual-day-input'><input class='inputbox textbox-numeric' type='text' id='all-actual-day' value='' style='width:120px' /></div>" +
@@ -473,8 +468,7 @@ public class eCPDataRequireContract
                          "                  </div>" +
                          "                  <div class='clear'></div>";
 
-                if (_civilDefault.Equals("1"))
-                {
+                if (_civilDefault.Equals("1")) {
                     _html += "              <div>" +
                              "                  <div class='content-left' id='actual-date-label'>ระยะเวลาที่ปฏิบัติงานชดใช้</div>" +
                              "                  <div class='content-left' id='actual-date-input'><input class='inputbox textbox-numeric' type='text' id='actual-date' value='' style='width:120px' /></div>" +
@@ -584,24 +578,24 @@ public class eCPDataRequireContract
         return _html;
     }
 
-    public static string DetailCPTransRequireContract(string _cp1id, string _status)
-    {
+    public static string DetailCPTransRequireContract(
+        string _cp1id,
+        string _status
+    ) {
         string _html = String.Empty;
         string _trackingStatus = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransRequireContract(_cp1id);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _html += eCPDataBreakContract.DetailCPTransBreakRequireContract(_cp1id, _data, _status);
         }
 
         return _html;
     }
     
-    public static string AddCPTransRequireContract(string _cp1id)
-    {
+    public static string AddCPTransRequireContract(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -613,8 +607,7 @@ public class eCPDataRequireContract
         return _html;
     }
 
-    public static string UpdateCPTransRequireContract(string _cp1id)
-    {
+    public static string UpdateCPTransRequireContract(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -626,8 +619,7 @@ public class eCPDataRequireContract
         return _html;
     }
 
-    public static string ListSearchRepayStatusCPTransRequireContract(string _cp1id)
-    {
+    public static string ListSearchRepayStatusCPTransRequireContract(string _cp1id) {
         string _repayStatus = String.Empty;
 
         _repayStatus = eCPDB.ChkRepayStatusCPTransRequireContract(_cp1id);
@@ -635,8 +627,7 @@ public class eCPDataRequireContract
         return "<repaystatus>" + _repayStatus + "<repaystatus>";
     }
 
-    public static string TabCPTransRequireContract()
-    {
+    public static string TabCPTransRequireContract() {
         string _html = String.Empty;
         int _section;
 

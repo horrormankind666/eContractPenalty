@@ -8,10 +8,11 @@ Create By           : Yutthaphoom Tawana
 using System;
 using System.Web;
 
-public class eCPDataRepay
-{
-    public static string StatusRepayNext(string _action, string _statusRepay)
-    {
+public class eCPDataRepay {
+    public static string StatusRepayNext(
+        string _action,
+        string _statusRepay
+    ) {
         string _nextStatus = String.Empty;
 
         _nextStatus = _action.Equals("add") ? eCPUtil._repayStatus[int.Parse(_statusRepay) + 1] : _nextStatus;
@@ -21,12 +22,13 @@ public class eCPDataRepay
         return _nextStatus;
     }
 
-    public static string ChkActionRepay(string _statusRepay, string _statusReply)
-    {
+    public static string ChkActionRepay(
+        string _statusRepay,
+        string _statusReply
+    ) {
         string _action;
 
-        if (!_statusRepay.Equals("2"))
-        {
+        if (!_statusRepay.Equals("2")) {
             _action = (String.IsNullOrEmpty(_statusReply) || _statusReply.Equals("2")) ? "add" : "update";
         }
         else
@@ -35,8 +37,7 @@ public class eCPDataRepay
         return _action;
     }
     
-    private static string DetailCalInterestOverpayment(string[,] _data)
-    {
+    private static string DetailCalInterestOverpayment(string[,] _data) {
         string _html = String.Empty;
         string[] _repayDate = eCPUtil.RepayDate(_data[0, 8]);
         string _repayDateStartDefault = !String.IsNullOrEmpty(_repayDate[0]) ? _repayDate[0] : String.Empty;
@@ -44,7 +45,9 @@ public class eCPDataRepay
         string _overpaymentDateStartDefault = !String.IsNullOrEmpty(_repayDate[2]) ? _repayDate[2] : String.Empty;
         string _overpaymentDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
         string _overpaymentInterestDefault = String.Empty;
-        //string _totalPenaltyDefault = double.Parse(_data[0, 1]).ToString("#,##0.00");
+        /*
+        string _totalPenaltyDefault = double.Parse(_data[0, 1]).ToString("#,##0.00");
+        */
         string _totalPenaltyDefault = double.Parse(_data[0, 11]).ToString("#,##0.00");
         string _capitalDefault = _totalPenaltyDefault;
         double[] _overpayment;
@@ -160,8 +163,7 @@ public class eCPDataRepay
         return _html;
     }
 
-    public static string DetailCalInterestOverpayment(string _cp2id)
-    {
+    public static string DetailCalInterestOverpayment(string _cp2id) {
         string _html = String.Empty;
         string _statusRepay = String.Empty;
         string[,] _data1;
@@ -169,8 +171,7 @@ public class eCPDataRepay
 
         _data1 = eCPDB.ListCPTransRepayContract(_cp2id);
 
-        if (_data1.GetLength(0) > 0)
-        {
+        if (_data1.GetLength(0) > 0) {
             _statusRepay = _data1[0, 2];
 
             _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepay);
@@ -184,8 +185,7 @@ public class eCPDataRepay
         return _html;
     } 
     
-    private static string AddUpdateCPTransRepayContract(string[,] _data)
-    {        
+    private static string AddUpdateCPTransRepayContract(string[,] _data) {
         int _i;
         string _html = String.Empty;
         string _cp1id = _data[0, 2];
@@ -213,8 +213,7 @@ public class eCPDataRepay
 
         _data1 = eCPDB.ListCPTransRepayContract(_cp2id);
 
-        if (_data1.GetLength(0) > 0)
-        {                       
+        if (_data1.GetLength(0) > 0) {
             _statusReplyDefault = _data1[0, 3];
             _replyResultDefault = _data1[0, 4];
             _repayDateDefault = _data1[0, 5];
@@ -231,8 +230,8 @@ public class eCPDataRepay
         _statusRepayCurrent = (eCPDB.SearchRepayStatusDetail(_cp2id, _statusRepayDefault, _statusPaymentDefault)).Split(new char[] { ';' });
         _action = ChkActionRepay(_statusRepayDefault, _statusReplyDefault);
         _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
-        if (_data2.GetLength(0) > 0)
-        {
+
+        if (_data2.GetLength(0) > 0) {
             _replyDateMark = _data2[0, 5];
             _repayDate = eCPUtil.RepayDate(_replyDateMark);
             _repayDateStart = !String.IsNullOrEmpty(_repayDate[0]) ? _repayDate[0] : String.Empty;
@@ -249,11 +248,11 @@ public class eCPDataRepay
                  "      <input type='hidden' id='reply-date-hidden' value='" + _replyDateDefault + "' />" +
                  "      <input type='hidden' id='pursuant-hidden' value='" + _pursuantDefault + "' />" +
                  "      <input type='hidden' id='pursuant-book-date-hidden' value='" + _pursuantBookDateDefault + "' />";
+        /*
+        _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
+        */
 
-        //_data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
-
-        if (_data2.GetLength(0) > 0)
-        {
+        if (_data2.GetLength(0) > 0) {
             _html += "  <div>" +
                      "      <div class='content-left' id='history-repay-label'>" +
                      "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>ประวัติการแจ้งชำระหนี้</div></div>" +
@@ -262,8 +261,7 @@ public class eCPDataRepay
                      "          <div class='form-input-style clear-bottom'>" +
                      "              <div class='form-input-content'>";
 
-            for(_i = 0; _i < _data2.GetLength(0); _i++)
-            {
+            for(_i = 0; _i < _data2.GetLength(0); _i++) {
                 _previousRepayDateEnd = (_i < _data2.GetLength(0)) ? _data2[_i, 5] : _previousRepayDateEnd;
 
                 _html += "              <div><span>" + eCPUtil._repayStatus[int.Parse(_data2[_i, 1])] + "</span></div>" +
@@ -285,8 +283,7 @@ public class eCPDataRepay
                      "  <div class='box3'></div>";
         }
 
-        if ((_statusRepayDefault.Equals("0") && _action.Equals("add")) || (_action.Equals("update")))
-        {                        
+        if ((_statusRepayDefault.Equals("0") && _action.Equals("add")) || (_action.Equals("update"))) {
             _html += "  <div>" +
                      "      <div class='content-left' id='status-repay" + _statusRepayDefault + "-current-label'>" +
                      "          <div class='form-label-discription-style " + ((_statusRepayDefault.Equals("0") && _action.Equals("add")) ? "clear-bottom" : "") + "'><div class='form-label-style'>สถานะการแจ้งชำระหนี้ปัจจุบัน</div></div>" +
@@ -296,8 +293,7 @@ public class eCPDataRepay
                      "              <div class='form-input-content'>" +
                      "                  <div><span>" + eCPUtil._repayStatusDetail[int.Parse(_statusRepayCurrent[0])] + "</span></div>";
 
-            if (_action.Equals("update"))
-            {
+            if (_action.Equals("update")) {
                 _html += "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>";
 
                 if (_statusRepayDefault.Equals("1"))
@@ -310,8 +306,7 @@ public class eCPDataRepay
                      "  </div>" +
                      "  <div class='clear'></div>";
 
-            if (_action.Equals("update"))
-            {
+            if (_action.Equals("update")) {
                 _html += "<div>" +
                          "  <div class='form-label-discription-style'>" +
                          "      <div id='repay-date-label'>" +
@@ -334,8 +329,7 @@ public class eCPDataRepay
             }
         }
 
-        if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop")))
-        {
+        if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop"))) {
             _html += "  <div id='status-repay" + _statusRepayDefault + "-" + _action + "'>" +
                      "      <div class='content-left' id='status-repay23-current-label'>" +
                      "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>สถานะการแจ้งชำระหนี้ปัจจุบัน</div></div>" +
@@ -360,8 +354,7 @@ public class eCPDataRepay
                      "  <div class='clear'></div>";
         }
 
-        if (_action.Equals("update"))
-        {
+        if (_action.Equals("update")) {
             _html += "  <div id='notice-claim-debt'>" +
                      "      <div>" +
                      "          <div class='form-label-discription-style'>" +
@@ -435,10 +428,8 @@ public class eCPDataRepay
                      "  <div class='clear'></div>";
         }
 
-        if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("update")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop")))
-        {
-            if (!String.IsNullOrEmpty(_overpaymentDateStart))
-            {
+        if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("update")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop"))) {
+            if (!String.IsNullOrEmpty(_overpaymentDateStart)) {
                 IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
                 DateTime _dateA = DateTime.Parse(_overpaymentDateStart, _provider);
                 DateTime _dateB = DateTime.Parse(Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")), _provider);
@@ -469,10 +460,11 @@ public class eCPDataRepay
             }
         }
 
-        //if (!(_statusReplyDefault + _replyResultDefault).Equals("21"))
-        //{
-        if ((_action.Equals("add") || _action.Equals("stop")) && _statusPaymentDefault.Equals("1"))
+        /*
+        if (!(_statusReplyDefault + _replyResultDefault).Equals("21"))
         {
+        */
+        if ((_action.Equals("add") || _action.Equals("stop")) && _statusPaymentDefault.Equals("1")) {
             _html += "  <div class='box3'></div>" +
                      "  <div>" +
                      "      <div class='content-left' id='status-repay-label'>" +
@@ -484,8 +476,7 @@ public class eCPDataRepay
                      "  </div>" +
                      "  <div class='clear'></div>";
 
-            if (_action.Equals("add"))
-            {
+            if (_action.Equals("add")) {
                 _html += "<div>" +
                          "  <div class='form-label-discription-style " + (!String.IsNullOrEmpty(_overpaymentDateStart) ? "" : "") + "'>" +
                          "      <div id='repay-date-label'>" +
@@ -504,16 +495,22 @@ public class eCPDataRepay
                          "<div class='clear'></div>";
             }
         }
-        //}
+        /*
+        }
+        */
 
         _html += "  </div>" +
                  "  <div class='button'>" +
                  "      <div class='button-style1' id='button-style1" + (!_action.Equals("stop") && _statusPaymentDefault.Equals("1") ? "1" : "2") + "'>" +
-                 //"      <div class='button-style1' id='button-style1" + (!_action.Equals("stop") && !(_statusReplyDefault + _replyResultDefault).Equals("21") ? "1" : "2") + "'>" +
+                 /*
+                 "      <div class='button-style1' id='button-style1" + (!_action.Equals("stop") && !(_statusReplyDefault + _replyResultDefault).Equals("21") ? "1" : "2") + "'>" +
+                 */
                  "          <ul>";
 
+        /*
+        if (!_action.Equals("stop") && !(_statusReplyDefault + _replyResultDefault).Equals("21"))
+        */
         if (!_action.Equals("stop") && _statusPaymentDefault.Equals("1"))
-        //if (!_action.Equals("stop") && !(_statusReplyDefault + _replyResultDefault).Equals("21"))
         {
             _html += "          <li><a href='javascript:void(0)' onclick=ConfirmActionCPTransRepayContract('" + _action + "')>บันทึก</a></li>" +
                      "          <li><a href='javascript:void(0)' onclick='ResetFrmCPTransRepayContract(false)'>ล้าง</a></li>";
@@ -534,8 +531,7 @@ public class eCPDataRepay
         return _html;
     }
 
-    private static string ViewCPTransRepayContract(string[,] _data)
-    {
+    private static string ViewCPTransRepayContract(string[,] _data) {
         int _i;
         string _html = String.Empty;
         string _cp1id = _data[0, 2];
@@ -560,8 +556,7 @@ public class eCPDataRepay
 
         _data1 = eCPDB.ListCPTransRepayContract(_cp2id);
 
-        if (_data1.GetLength(0) > 0)
-        {                       
+        if (_data1.GetLength(0) > 0) {
             _statusReplyDefault = _data1[0, 3];
             _replyResultDefault = _data1[0, 4];
             _repayDateDefault = _data1[0, 5];
@@ -576,8 +571,8 @@ public class eCPDataRepay
         _statusRepayCurrent = (eCPDB.SearchRepayStatusDetail(_cp2id, _statusRepayDefault, _statusPaymentDefault)).Split(new char[] { ';' });
         _action = ChkActionRepay(_statusRepayDefault, _statusReplyDefault);
         _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
-        if (_data2.GetLength(0) > 0)
-        {
+
+        if (_data2.GetLength(0) > 0) {
             _replyDateMark = _data2[0, 5];
             _repayDate = eCPUtil.RepayDate(_replyDateMark);
             _repayDateStart = !String.IsNullOrEmpty(_repayDate[0]) ? _repayDate[0] : String.Empty;
@@ -588,10 +583,11 @@ public class eCPDataRepay
         _html += "<div class='form-content' id='view-cp-trans-repay-contract'>" +
                  "  <div>";
 
-        //_data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
+        /*
+        _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
+        */
 
-        if (_data2.GetLength(0) > 0)
-        {
+        if (_data2.GetLength(0) > 0) {
             _html += "  <div>" +
                      "      <div class='content-left' id='history-repay-label'>" +
                      "          <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>ประวัติการแจ้งชำระหนี้</div></div>" +
@@ -600,8 +596,7 @@ public class eCPDataRepay
                      "          <div class='form-input-style clear-bottom'>" +
                      "              <div class='form-input-content'>";
 
-            for(_i = 0; _i < _data2.GetLength(0); _i++)
-            {
+            for(_i = 0; _i < _data2.GetLength(0); _i++) {
                 _previousRepayDateEnd = (_i < _data2.GetLength(0)) ? _data2[_i, 5] : _previousRepayDateEnd;
 
                 _html += "              <div><span>" + eCPUtil._repayStatus[int.Parse(_data2[_i, 1])] + "</span></div>" +
@@ -622,8 +617,7 @@ public class eCPDataRepay
                      "  <div class='box3'></div>";
         }
 
-        if ((_statusRepayDefault.Equals("0") && _action.Equals("add")) || (_action.Equals("update")))
-        {                        
+        if ((_statusRepayDefault.Equals("0") && _action.Equals("add")) || (_action.Equals("update"))) {
             _html += "  <div>" +
                      "      <div class='content-left' id='status-repay" + _statusRepayDefault + "-current-label'>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>สถานะการแจ้งชำระหนี้ปัจจุบัน</div></div>" +
@@ -633,8 +627,7 @@ public class eCPDataRepay
                      "              <div class='form-input-content'>" +
                      "                  <div><span>" + eCPUtil._repayStatusDetail[int.Parse(_statusRepayCurrent[0])] + "</span></div>";
 
-            if (_action.Equals("update"))
-            {
+            if (_action.Equals("update")) {
                 _html += "              <div class='form-input-content-line'><a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + _cp1id + "'," + _statusRepayDefault + ",'" + _previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + _statusRepayDefault + "</a></div>";
 
                 if (_statusRepayDefault.Equals("1"))
@@ -648,8 +641,7 @@ public class eCPDataRepay
                      "  <div class='clear'></div>";
         }
 
-        if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop")))
-        {
+        if ((_statusRepayDefault.Equals("1") && _action.Equals("add")) || (_statusRepayDefault.Equals("2") && _action.Equals("stop"))) {
             _html += "  <div id='status-repay" + _statusRepayDefault + "-" + _action + "'>" +
                      "      <div class='content-left' id='status-repay23-current-label'>" +
                      "          <div class='form-label-discription-style'><div class='form-label-style'>สถานะการแจ้งชำระหนี้ปัจจุบัน</div></div>" +
@@ -692,8 +684,7 @@ public class eCPDataRepay
         return _html;
     }
 
-    public static string AddUpdateCPTransRepayContract(string _cp1id)
-    {
+    public static string AddUpdateCPTransRepayContract(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -705,8 +696,7 @@ public class eCPDataRepay
         return _html;
     }
 
-    public static string ViewCPTransRepayContract(string _cp1id)
-    {
+    public static string ViewCPTransRepayContract(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -718,8 +708,7 @@ public class eCPDataRepay
         return _html;
     }
 
-    public static string ListRepay(HttpContext _c)
-    {
+    public static string ListRepay(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -740,14 +729,13 @@ public class eCPDataRepay
         string _overpayment = String.Empty;
 
         _recordCount = eCPDB.CountRepay(_c);
-        if (_recordCount > 0)
-        {
+
+        if (_recordCount > 0) {
             _data = eCPDB.ListRepay1(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _overpayment = String.Empty;
                 /*
                 _data1 = eCPDB.ListCPTransRepayContract(_data[_i, 1]);
@@ -761,8 +749,7 @@ public class eCPDataRepay
                     _overpayment = !_overpaymentArray[0].Equals(0) ? _overpaymentArray[0].ToString("#,##0") : "-";
                 }
                 */
-                if ((!String.IsNullOrEmpty(_data[_i, 21])) && (_data[_i, 15].Equals("1")))
-                {
+                if ((!String.IsNullOrEmpty(_data[_i, 21])) && (_data[_i, 15].Equals("1"))) {
                     _repayDate = eCPUtil.RepayDate(_data[_i, 21]);
                     _dateA = DateTime.Parse(_repayDate[2], _provider);
                     _dateB = DateTime.Parse(Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")), _provider);
@@ -808,8 +795,7 @@ public class eCPDataRepay
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListSearchRepayStatusCalInterestOverpayment(string _cp2id)
-    {
+    public static string ListSearchRepayStatusCalInterestOverpayment(string _cp2id) {
         string _result = String.Empty;
 
         _result = eCPDB.ChkRepayStatusCalInterestOverpayment(_cp2id);

@@ -79,7 +79,10 @@ function DownloadDocumentCopy(_doc) {
     }, 500);
 }
 
-function PreviewDocumentCopy(_doc, _callbackFunc) {
+function PreviewDocumentCopy(
+    _doc,
+    _callbackFunc
+) {
     try {
         var _pdfData = atob($("#" + _doc + "-copy").val().split("base64,")[1]);
         var _pdfjs = window["pdfjs-dist/build/pdf"];
@@ -383,7 +386,10 @@ function ConfirmActionCPTransProsecution(_doc) {
     });
 }
 
-function AddUpdateCPTransProsecution(_send, _doc) {
+function AddUpdateCPTransProsecution(
+    _send,
+    _doc
+) {
     var _RCID = $("#RCID-hidden").val();
     var _action = (_RCID.length > 0 ? "update" : "add");
 

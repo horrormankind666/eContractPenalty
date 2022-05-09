@@ -1,4 +1,9 @@
-﻿function InitSlide(_scrollId, _slide, _download, _file) {
+﻿function InitSlide(
+    _scrollId,
+    _slide,
+    _download,
+    _file
+) {
     var _slideSize = _slide.length;
     var _slideStart = 1;
     var _slideEnd = _slideSize;
@@ -54,7 +59,11 @@
     });
 }
 
-function SlideTool(_slideSize, _download, _file) {
+function SlideTool(
+    _slideSize,
+    _download,
+    _file
+) {
     var _html = "";
 
     _html += "<ul class='nav-slide'>" +
@@ -63,8 +72,7 @@ function SlideTool(_slideSize, _download, _file) {
              "  <li>" +
              "      <select class='slide-nav'>";
 
-    for (var _i = 1; _i <= _slideSize; _i++ )
-    {
+    for (var _i = 1; _i <= _slideSize; _i++ ) {
         _html += "      <option value='" + _i + "'>" + _i + "</option>";
     }
 

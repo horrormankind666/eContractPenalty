@@ -11,15 +11,18 @@
 .slide {
     position: relative;
 }
+
 .slide .slide-tools {
     background: transparent;
     position: absolute;
     top: 0;
 }
+
 .slide .slide-tools .slide-tool-content {
     padding-top: 7px;
     display: none;
 }
+
 .slide .slide-tools .slide-tool {
     width: 100%;
     height: 15px;
@@ -42,6 +45,7 @@
     height: 18px;
     line-height: 17px;
 }
+
 .nav-slide li {
     float: left;
     display: block;
@@ -49,6 +53,7 @@
     position: relative;
     right: 50%;
 }
+
 .nav-slide li a {
     display: block;
     height: 18px;
@@ -58,9 +63,11 @@
     background: #5EA8E0;
     color: #FFFFFF;
 }
+
 .nav-slide li a.fix-width {
     width: 22px;
 }
+
 .nav-slide li a:hover {
     background: #990000;
     color: #FFFFFF;

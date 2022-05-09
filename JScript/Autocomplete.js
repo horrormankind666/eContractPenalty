@@ -30,7 +30,9 @@
 												"(?![^&;]+;)(?!<[^<>]*)(" +
 												$.ui.autocomplete.escapeRegex(request.term) +
 												")(?![^<>]*>)(?![^&;]+;)", "i"
-																								//")(?![^<>]*>)(?![^&;]+;)", "gi"
+												/*
+												")(?![^<>]*>)(?![^&;]+;)", "gi"
+												*/
 											), "<strong>$1</strong>"),
 												value: text,
 												option: this
@@ -56,7 +58,9 @@
 								});
 
 								if (!valid) {
-									// remove invalid value, as it didn't match anything
+									/*
+									remove invalid value, as it didn't match anything
+									*/
 									$(this).val("");
 									select.val("");
 									input.data("autocomplete").term = "";
@@ -65,7 +69,9 @@
 							}					        
 						}
 					});
-			//.addClass("ui-widget ui-widget-content ui-corner-left");
+			/*
+			.addClass("ui-widget ui-widget-content ui-corner-left");
+			*/
 
 			input.data("autocomplete")._renderItem = function (ul, item) {
 				return $("<li></li>")
@@ -83,22 +89,30 @@
 					},
 					text: false
 				})
-			//.removeClass("ui-corner-all")
-			//.addClass("ui-corner-right ui-button-icon")
+			/*
+			.removeClass("ui-corner-all")
+			.addClass("ui-corner-right ui-button-icon")
+			*/
 				.click(function () {
-					// close if already visible
+					/*
+					close if already visible
+					*/
 					if (input.autocomplete("widget").is(":visible")) {
 						input.autocomplete("close");
 						return;
 					}
 
-					// work around a bug (likely same cause as #5265)
+					/*
+					work around a bug (likely same cause as #5265)
+					*/
 					$(this).blur();
 
 					if (input.is(":disabled") == false)
 						input.select();
 
-					// pass empty string as value to search for, displaying all results
+					/*
+					pass empty string as value to search for, displaying all results
+					*/
 					input.autocomplete("search", "");
 					input.focus();
 				});

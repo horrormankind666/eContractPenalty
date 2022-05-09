@@ -3,16 +3,15 @@ using System.IO;
 using System.Text;
 using System.Web.UI;
 
-public partial class FileProcess : Page
-{
-    protected void Page_Load(object sender, EventArgs e)
-    {
+public partial class FileProcess: Page {
+    protected void Page_Load(
+        object sender,
+        EventArgs e
+    ) {
         string _action = Request.Form["action"];
 
-        if (!String.IsNullOrEmpty(_action))
-        {
-            if (_action.Equals("preview"))
-            {
+        if (!String.IsNullOrEmpty(_action)) {
+            if (_action.Equals("preview")) {
                 Stream _fs = Request.Files["file"].InputStream;
                 BinaryReader _br = new BinaryReader(_fs);
                 Byte[] _bytes = _br.ReadBytes((Int32)_fs.Length);
@@ -20,8 +19,7 @@ public partial class FileProcess : Page
                 Response.Write(Convert.ToBase64String(_bytes, 0, _bytes.Length));
             }
 
-            if (_action.Equals("download"))
-            {
+            if (_action.Equals("download")) {
                 string _fName = Request.Form["filename"];
                 string _fEncode = Request.Form["file"];
                 string _fDecode = Encoding.UTF8.GetString(Convert.FromBase64String(_fEncode));

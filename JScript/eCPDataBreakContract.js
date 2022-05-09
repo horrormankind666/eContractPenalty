@@ -22,7 +22,10 @@ function ViewStudentInAddProfileStudent(_profileStudent) {
     LoadCombobox("programprofilestudent", "dlevel=&faculty=" + _dataProfileStdent[6], "list-program-profile-student", (_dataProfileStdent[8] + ";" + _dataProfileStdent[9].replace(/\s/g, " ") + ";" + _dataProfileStdent[10] + ";" + _dataProfileStdent[11] + ";" + _dataProfileStdent[12] + ";" + _dataProfileStdent[13]), 390, 415);
 }
 
-function ChkStudentTransBreakContract(_studentid, _callbackFunc) {
+function ChkStudentTransBreakContract(
+    _studentid,
+    _callbackFunc
+) {
     var _send = new Array();
     _send[_send.length] = "studentid=" + _studentid;
 
@@ -225,7 +228,9 @@ function ResetFrmCPTransBreakContract(_disable) {
     $("#contract-date").val($("#contract-date-hidden").val());
     $("#contract-date-agreement").val($("#contract-date-agreement-hidden").val());
     InitCalendar("#pursuant-book-date, #input-date, #state-location-date, #contract-date, #contract-date-agreement");
-    //InitCalendarFromTo("#contract-date", false, "#contract-date-agreement", false);
+    /*
+    InitCalendarFromTo("#contract-date", false, "#contract-date-agreement", false);
+    */
     $("#guarantor").val($("#guarantor-hidden").val());
     InitCombobox("scholar", "0", $("#scholar-hidden").val(), 219, 244);
     $("#scholarship-money").val($("#scholarship-money-hidden").val());
@@ -287,7 +292,12 @@ function ResetFrmCommentBreakContract() {
     $("#comment-reject").val("");
 }
 
-function ViewScholarshipAndPayBreakContract(_faculty, _program, _scholar, _caseGraduateBreakContract) {
+function ViewScholarshipAndPayBreakContract(
+    _faculty,
+    _program,
+    _scholar,
+    _caseGraduateBreakContract
+) {
     $("#scholarship-money").val("");
     $("#scholarship-year").val("");
     $("#scholarship-month").val("");
@@ -321,7 +331,11 @@ function ViewScholarshipAndPayBreakContract(_faculty, _program, _scholar, _caseG
     }
 }
 
-function ViewScholarship(_faculty, _program, _scholar) {
+function ViewScholarship(
+    _faculty,
+    _program,
+    _scholar
+) {
     $("#scholarship-money").val("");
     $("#scholarship-year").val("");
     $("#scholarship-month").val("");
@@ -349,7 +363,11 @@ function ViewScholarship(_faculty, _program, _scholar) {
     }
 }
 
-function ViewPayBreakContract(_faculty, _program, _caseGraduateBreakContract) {    
+function ViewPayBreakContract(
+    _faculty,
+    _program,
+    _caseGraduateBreakContract
+) {
     $("#cal-date-condition").val("");
     $("#indemnitor-year").val("");
     $("#indemnitor-cash").val("");
@@ -400,7 +418,10 @@ function ConfirmActionCPTransBreakContract(_action) {
     });
 }
 
-function AddUpdateCPTransBreakContract(_action, _send) {
+function AddUpdateCPTransBreakContract(
+    _action,
+    _send
+) {
     var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
 
     AddUpdateData(_action, _action + "cptransbreakcontract", _send, false, "", "", "", false, function (_result) {
@@ -618,8 +639,14 @@ function ValidateCPTransBreakContract(_action) {
     }  
 }
 
-function ChkTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, _idActive, _callbackFunc) {
-    if (_idActive.length > 0) $("#" + _idActive).addClass("active");
+function ChkTrackingStatusViewTransBreakContract(
+    _cp1id,
+    _trackingStatus,
+    _idActive,
+    _callbackFunc
+) {
+    if (_idActive.length > 0)
+        $("#" + _idActive).addClass("active");
     
     var _send = new Array();
     _send[_send.length] = "cp1id=" + _cp1id;
@@ -645,7 +672,11 @@ function ChkTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, _idAct
     });
 }
 
-function ViewTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, _action) {
+function ViewTrackingStatusViewTransBreakContract(
+    _cp1id,
+    _trackingStatus,
+    _action
+) {
     ChkTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, "trans-break-contract" + _cp1id, function (_result) {
         if (_result == "0") {
             var _frmIndex = $("#dialog-form1").is(":visible") == false ? 1 : 2;
@@ -671,7 +702,11 @@ function ViewTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, _acti
     });
 }
 
-function ValidateCommentBreakContract(_cp1id, _action, _from) {
+function ValidateCommentBreakContract(
+    _cp1id,
+    _action,
+    _from
+) {
     var _error = false;
     var _msg;
     var _focus;
@@ -740,7 +775,11 @@ function ValidateCommentBreakContract(_cp1id, _action, _from) {
     });
 }
 
-function ConfirmAddCommentBreakContract(_cp1id, _action, _from) {
+function ConfirmAddCommentBreakContract(
+    _cp1id,
+    _action,
+    _from
+) {
     var _msgAction = (_action == "E" ? "ส่งกลับแก้ไขรายการ" : "ยกเลิกรายการ");
 
     DialogConfirm("ต้องการ" + _msgAction + "นี้หรือไม่");
@@ -758,7 +797,11 @@ function ConfirmAddCommentBreakContract(_cp1id, _action, _from) {
     });
 }
 
-function ConfirmUpdateTrackingStatus(_cp1id, _status, _from) {
+function ConfirmUpdateTrackingStatus(
+    _cp1id,
+    _status,
+    _from
+) {
     var _statusMsg = "";
 
     _statusMsg = (_status == "edit") ? "ส่งกลับแก้ไข" : _statusMsg;
@@ -779,7 +822,11 @@ function ConfirmUpdateTrackingStatus(_cp1id, _status, _from) {
     });
 }
 
-function UpdateTrackingStatus(_cp1id, _status, _from) {
+function UpdateTrackingStatus(
+    _cp1id,
+    _status,
+    _from
+) {
     var _send = new Array();
     _send[_send.length] = "cp1id=" + _cp1id;
     _send[_send.length] = "status=" + _status;
@@ -792,7 +839,8 @@ function UpdateTrackingStatus(_cp1id, _status, _from) {
                     return;
                 }
 
-                if (_status == "edit") OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
+                if (_status == "edit")
+                    OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
 
                 if (_status == "cancel") {
                     switch (_from) {
@@ -813,15 +861,24 @@ function UpdateTrackingStatus(_cp1id, _status, _from) {
     });
 }
 
-function ConfirmUpdateTrackingStatusBreakContract(_cp1id, _status) {
+function ConfirmUpdateTrackingStatusBreakContract(
+    _cp1id,
+    _status
+) {
     ConfirmUpdateTrackingStatus(_cp1id, _status, "breakcontract");
 }
 
-function ConfirmUpdateTrackingStatusRequireContract(_cp1id, _status) {
+function ConfirmUpdateTrackingStatusRequireContract(
+    _cp1id,
+    _status
+) {
     ConfirmUpdateTrackingStatus(_cp1id, _status, "requirecontract");
 }
 
-function ConfirmUpdateTrackingStatusRepayContract(_cp1id, _status) {
+function ConfirmUpdateTrackingStatusRepayContract(
+    _cp1id,
+    _status
+) {
     ConfirmUpdateTrackingStatus(_cp1id, _status, "repaycontract");
 }
 

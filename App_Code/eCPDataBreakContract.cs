@@ -9,10 +9,12 @@ using System;
 using System.Collections;
 using System.Web;
 
-public class eCPDataBreakContract
-{
-    public static string AddCommentBreakContract(string _cp1id, string _action, string _from)
-    {
+public class eCPDataBreakContract {
+    public static string AddCommentBreakContract(
+        string _cp1id,
+        string _action,
+        string _from
+    ) {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='add-comment-break-contract'>" +
@@ -36,8 +38,7 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    public static string AddProfileStudent()
-    {
+    public static string AddProfileStudent() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='add-profile-students'>" +
@@ -122,8 +123,10 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    private static string AddUpdateCPTransBreakContract(string _action, string[,] _data)
-    {
+    private static string AddUpdateCPTransBreakContract(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         int _i;       
         string _cp1id = _action.Equals("update") ? _data[0, 1] : String.Empty;
@@ -349,8 +352,7 @@ public class eCPDataBreakContract
                  "                                  <select id='scholar'>" +
                  "                                      <option value='0'>เลือกสถานะการได้รับทุนการศึกษา</option>";
 
-        for (_i = 0; _i < eCPUtil._scholar.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._scholar.GetLength(0); _i++) {
             _html += "                                  <option value='" + (_i + 1) + "'>" + eCPUtil._scholar[_i] + "</option>";
         }
 
@@ -392,8 +394,7 @@ public class eCPDataBreakContract
                  "                                  <select id='case-graduate-break-contract'>" +
                  "                                      <option value='0'>เลือกสถานะการสำเร็จการศึกษา</option>";
 
-        for (_i = 0; _i < eCPUtil._caseGraduate.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._caseGraduate.GetLength(0); _i++) {
             _html += "                                  <option value='" + (_i + 1) + "'>" + eCPUtil._caseGraduate[_i, 1] + "</option>";
         }
 
@@ -427,8 +428,7 @@ public class eCPDataBreakContract
                  "                                  <select id='civil'>" +
                  "                                      <option value='0'>เลือกสถานะการปฏิบัติงานชดใช้</option>";
 
-        for (_i = 0; _i < eCPUtil._civil.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._civil.GetLength(0); _i++) {
             _html += "                                  <option value='" + (_i + 1) + "'>" + eCPUtil._civil[_i] + "</option>";
         }
 
@@ -485,8 +485,7 @@ public class eCPDataBreakContract
                  "              <div class='clear'></div>" +
                  "          </div>";                 
 
-        if (_statusEdit.Equals("2"))
-        {
+        if (_statusEdit.Equals("2")) {
             _html += "      <div class='box3'></div>" +
                      "      <div id='comment-detail'>" +
                      "          <div>" +
@@ -540,8 +539,7 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    public static string AddCPTransBreakContract()
-    {
+    public static string AddCPTransBreakContract() {
         string _html = String.Empty;
         string[,] _data = new string[0, 0];
 
@@ -550,8 +548,7 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    public static string UpdateCPTransBreakContract(string _cp1id)
-    {
+    public static string UpdateCPTransBreakContract(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -563,8 +560,11 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    public static string DetailCPTransBreakRequireContract(string _cp1id, string[,] _data, string _status)
-    {
+    public static string DetailCPTransBreakRequireContract(
+        string _cp1id,
+        string[,] _data,
+        string _status
+    ) {
         string _html = String.Empty;       
         string _studentIDDefault = (_status.Equals("v1") || _status.Equals("a")) ? _data[0, 2] : _data[0, 19];
         string _titleNameDefault = (_status.Equals("v1") || _status.Equals("a")) ? _data[0, 5] : _data[0, 20];
@@ -648,8 +648,7 @@ public class eCPDataBreakContract
             _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
 
 
-        if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
-        {
+        if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault))) {
             _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
                               " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
         }
@@ -730,12 +729,10 @@ public class eCPDataBreakContract
                  "  </div>" +
                  "  <div class='clear'></div>";
 
-        if ((_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1")))
-        {
+        if ((_status.Equals("v2") || _status.Equals("v3") || _status.Equals("r") || _status.Equals("r1"))) {
             _statusRepayCurrent = (eCPDB.SearchRepayStatusDetail(_cp2id, _statusRepay, _statusPayment)).Split(new char[] { ';' });
 
-            if (_caseGraduateBreakContractDefault.Equals("1")) 
-            {
+            if (_caseGraduateBreakContractDefault.Equals("1")) {
                 _html += "<div class='box3'></div>" +
                          "<div id='cal-contract-penalty1'>" +
                          "  <div class='content-left' id='cal-contract-penalty1-label'>" +
@@ -762,26 +759,22 @@ public class eCPDataBreakContract
                          "<div class='clear'></div>";
             }
                         
-            if (_caseGraduateBreakContractDefault.Equals("2"))
-            {
+            if (_caseGraduateBreakContractDefault.Equals("2")) {
                 _html += "<div class='box3'></div>";
 
-                if (_civilDefault.Equals("1"))
-                {
+                if (_civilDefault.Equals("1")) {
                     string _startDate = String.Empty;
                     string _endDate = String.Empty;
                     string _afterStudyLeave = String.Empty;
 
-                    if (_studyLeaveDefault.Equals("N"))
-                    {
-                        _startDate  = _requireDateDefault;
-                        _endDate    = _approveDateDefault;
+                    if (_studyLeaveDefault.Equals("N")) {
+                        _startDate = _requireDateDefault;
+                        _endDate = _approveDateDefault;
                     }
 
-                    if (_studyLeaveDefault.Equals("Y"))
-                    {
-                        _startDate       = _beforeStudyLeaveStartDateDefault;
-                        _endDate         = _beforeStudyLeaveEndDateDefault;
+                    if (_studyLeaveDefault.Equals("Y")) {
+                        _startDate = _beforeStudyLeaveStartDateDefault;
+                        _endDate = _beforeStudyLeaveEndDateDefault;
                         _afterStudyLeave = ("<div class='form-input-content-line'>" + eCPUtil._studyLeave[1] + " และกลับเข้าปฏิบัติงาน</div><div class='form-input-content-line'>ตั้งแต่วันที่ <span>" + Util.LongDateTH(_afterStudyLeaveStartDateDefault) + "</span> ถึงวันที่ <span>" + Util.LongDateTH(_afterStudyLeaveEndDateDefault) + "</span></div>");
                     }
 
@@ -820,12 +813,11 @@ public class eCPDataBreakContract
                 if (_setAmtIndemnitorYear.Equals("Y"))
                     _html += "          <div class='form-input-content-line'>ระยะเวลาที่ต้องปฏิบัติงานชดใช้ <span>" + (!String.IsNullOrEmpty(_allActualDateDefault) ? double.Parse(_allActualDateDefault).ToString("#,##0") : "-") + "</span> วัน ปฏิบัติงานชดใช้แล้ว <span>" + (!String.IsNullOrEmpty(_actualDateDefault) ? double.Parse(_actualDateDefault).ToString("#,##0") : "-") + "</span> วัน ขาด <span>" + (!String.IsNullOrEmpty(_remainDateDefault) ? double.Parse(_remainDateDefault).ToString("#,##0") : "-") + "</span> วัน</div>";
 
-                if (_setAmtIndemnitorYear.Equals("N"))
-                {
+                if (_setAmtIndemnitorYear.Equals("N")) {
                     _html += "          <div class='form-input-content-line'>ระยะเวลาที่ใช้ในการศึกษา <span>" + double.Parse(_actualDayDefault).ToString("#,##0") + "</span> วัน</div>";
 
                     if (_civilDefault.Equals("1"))
-                    _html += "          <div class='form-input-content-line'>ระยะเวลาที่ปฏิบัติงานชดใช้ <span>" + (!String.IsNullOrEmpty(_actualDateDefault) ? double.Parse(_actualDateDefault).ToString("#,##0") : "-") + "</span> วัน</div>";
+                        _html += "      <div class='form-input-content-line'>ระยะเวลาที่ปฏิบัติงานชดใช้ <span>" + (!String.IsNullOrEmpty(_actualDateDefault) ? double.Parse(_actualDateDefault).ToString("#,##0") : "-") + "</span> วัน</div>";
                 }
 
                 _html += "              <div class='form-input-content-line'>ยอดเงินค่าปรับผิดสัญญา <span>" + double.Parse(_subtotalPenaltyDefault).ToString("#,##0.00") + "</span> บาท</div>" +
@@ -848,8 +840,7 @@ public class eCPDataBreakContract
                      "<div class='clear'></div>";
         }
 
-        if (_statusCancel.Equals("2") || _statusEdit.Equals("2"))
-        {
+        if (_statusCancel.Equals("2") || _statusEdit.Equals("2")) {
             _html += "<div class='box3'></div>" +
                      "<div id='commenteditcancel-detail'>" +
                      "  <div class='content-left' id='commenteditcancel-label'>" +
@@ -869,14 +860,12 @@ public class eCPDataBreakContract
                  "      <div class='button-style1' id='button-style1-" + _eCPCookie["UserSection"] + _status + _statusEdit + _statusCancel + _statusPayment + "'>" +
                  "          <ul>";
 
-        if (_status.Equals("a"))
-        {
+        if (_status.Equals("a")) {
             _html += "          <li><a href='javascript:void(0)' onclick=ReceiverCPTransBreakContract('" + _cp1id + "','" + _trackingStatus + "')>รับรายการ</a></li>" +
                      "          <li><a href='javascript:void(0)' onclick=LoadForm(2,'addcommenteditbreakcontract',true,'','" + _cp1id + "','')>ส่งกลับแก้ไข</a></li>";
         }
-
-        if (_status.Equals("r"))
-        {
+ 
+        if (_status.Equals("r")) {
             _html += "          <li id='button-status-r'><a href='javascript:void(0)' onclick=LoadForm(2,'addupdaterepaycontract',true,'','" + _cp1id + "','')>รายละเอียดการแจ้งชำระหนี้</a></li>" +
                      "          <li id='button-status-i'><a href='javascript:void(0)' onclick=ViewCalInterestOverpayment('" + _cp2id + "')>คำนวณดอกเบี้ย</a></li>" +
                      "          <li><a href='javascript:void(0)' onclick=LoadForm(2,'addcommentcancelrepaycontract',true,'','" + _cp1id + "','')>ยกเลิกรายการ</a></li>";
@@ -909,24 +898,24 @@ public class eCPDataBreakContract
         return _html;
     }
 
-    public static string DetailCPTransBreakContract(string _cp1id, string _status)
-    {
+    public static string DetailCPTransBreakContract(
+        string _cp1id,
+        string _status
+    ) {
         string _html = String.Empty;
         string _trackingStatus = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailCPTransBreakContract(_cp1id);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _html = DetailCPTransBreakRequireContract(_cp1id, _data, _status);
         }
 
         return _html;
     }
 
-    public static string ListSearchStudentCPTransBreakContract(string _studentid)
-    {
+    public static string ListSearchStudentCPTransBreakContract(string _studentid) {
         string[,] _data;
         int _recordCount;
         int _error;
@@ -934,8 +923,7 @@ public class eCPDataBreakContract
         _data = eCPDB.ListSearchStudentCPTransBreakContract(_studentid);
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _error = 1;
         }
         else
@@ -944,8 +932,7 @@ public class eCPDataBreakContract
         return "<error>" + _error + "<error>";
     }
 
-    public static string ListSearchTrackingStatusCPTransBreakContract(string _cp1id)
-    {
+    public static string ListSearchTrackingStatusCPTransBreakContract(string _cp1id) {
         string _trackingStatus = String.Empty;
 
         _trackingStatus = eCPDB.ChkTrackingStatusCPTransBreakContract(_cp1id);
@@ -953,8 +940,7 @@ public class eCPDataBreakContract
         return "<trackingstatus>" + _trackingStatus + "<trackingstatus>";
     }
 
-    public static string ListCPTransBreakContract(HttpContext _c)
-    {
+    public static string ListCPTransBreakContract(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -975,22 +961,19 @@ public class eCPDataBreakContract
         
         _recordCount = eCPDB.CountCPTransBreakContract(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPTransBreakContract(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _groupNum = !_data[_i, 8].Equals("0") ? " ( กลุ่ม " + _data[_i, 8] + " )" : "";
                 _trackingStatus = _data[_i, 9] + _data[_i, 10] + _data[_i, 11] + _data[_i, 12];
                 _callFunc = "ViewTrackingStatusViewTransBreakContract('" + _data[_i, 1] + "','" + _trackingStatus + "','" + _data[_i, 15] + "')";
                 _iconStatus = eCPUtil._iconTrackingStatus[Util.FindIndexArray2D(0, eCPUtil._iconTrackingStatus, _trackingStatus) - 1, 1];
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
 
-                if (_section.Equals(1))
-                {
+                if (_section.Equals(1)) {
                     _html += "<ul class='table-row-content " + _highlight + "' id='trans-break-contract" + _data[_i, 1] + "'>" +
                              "  <li id='tab1-table-content-cp-trans-require-contract-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
                              "  <li class='table-col' id='tab1-table-content-cp-trans-require-contract-col2' onclick=" + _callFunc + "><div>" + _data[_i, 2] + "</div></li>" +
@@ -1007,8 +990,7 @@ public class eCPDataBreakContract
                              "</ul>";
                 }
 
-                if (_section.Equals(2))
-                {
+                if (_section.Equals(2)) {
                     _html += "<ul class='table-row-content " + _highlight + "' id='trans-break-contract" + _data[_i, 1] + "'>" +
                              "  <li id='tab2-table-content-cp-trans-break-contract-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
                              "  <li class='table-col' id='tab2-table-content-cp-trans-break-contract-col2' " + (!_trackingStatus.Equals("1111") ? "onclick=" + _callFunc : "") + "><div>" + (_trackingStatus.Equals("1111") ? "<input class='checkbox' type='checkbox' name='send-break-contract' onclick=UncheckRoot('check-uncheck-all') value='" + _data[_i, 1] + "' />" : "") + "</div></li>" +
@@ -1041,8 +1023,7 @@ public class eCPDataBreakContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string TabCPTransBreakContract()
-    {
+    public static string TabCPTransBreakContract() {
         string _html = String.Empty;
         int _section;
 

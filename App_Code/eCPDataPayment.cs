@@ -9,10 +9,8 @@ using System;
 using System.Collections;
 using System.Web;
 
-public class eCPDataPayment
-{
-    public static string ChkBalance()
-    {
+public class eCPDataPayment {
+    public static string ChkBalance() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='chk-balance'>" +
@@ -55,8 +53,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string AddDetailPayChannel(string _payChannel)
-    {
+    public static string AddDetailPayChannel(string _payChannel) {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='add-detail-pay-channel'>" +
@@ -70,8 +67,7 @@ public class eCPDataPayment
                  "  </div>" +
                  "  <div class='clear'></div>";
         /*
-        if (_payChannel.Equals("1"))
-        {
+        if (_payChannel.Equals("1")) {
             _html += "<div id='pay-channel-1-receipt-no'>" +
                      "  <div class='form-label-discription-style'><div class='form-label-style'>เลขที่ใบเสร็จ</div></div>" +
                      "  <div class='form-input-style'><div class='form-input-content'><input class='inputbox' type='text' id='receipt-no' onblur=Trim('receipt-no'); value='' style='width:200px' /></div></div>" +
@@ -90,8 +86,7 @@ public class eCPDataPayment
         }
         */
 
-        if (_payChannel.Equals("2"))
-        {
+        if (_payChannel.Equals("2")) {
             _html += "<div id='pay-channel-2-cheque-no'>" +
                      "  <div class='form-label-discription-style'><div class='form-label-style'>เลขที่เช็ค</div></div>" +
                      "  <div class='form-input-style'><div class='form-input-content'><input class='inputbox' type='text' id='cheque-no' onblur=Trim('cheque-no'); value='' style='width:200px' /></div></div>" +
@@ -114,8 +109,7 @@ public class eCPDataPayment
                      "<div class='clear'></div>";
         }
 
-        if (_payChannel.Equals("3"))
-        {
+        if (_payChannel.Equals("3")) {
             _html += "<div id='pay-channel-3-cash-bank'>" +
                      "  <div class='form-label-discription-style'><div class='form-label-style'>ธนาคาร</div></div>" +
                      " <div class='form-input-style'><div class='form-input-content'><input class='inputbox' type='text' id='cash-bank' onblur=Trim('cash-bank'); value='' style='width:200px' /></div></div>" +
@@ -157,8 +151,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string CalInterestYesNo(string _typeInterest)
-    {
+    private static string CalInterestYesNo(string _typeInterest) {
         string _html = String.Empty;
 
         _html += "<div id='cal-interest-yesno'>" +
@@ -188,16 +181,20 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string FrmOverpayment(string _formatPayment, string _statusPayment, string _repayDateStart, string _repayDateEnd, double _overpaymentYear, double _overpaymentDay)
-    {
+    private static string FrmOverpayment(
+        string _formatPayment,
+        string _statusPayment,
+        string _repayDateStart,
+        string _repayDateEnd,
+        double _overpaymentYear,
+        double _overpaymentDay
+    ) {
         string _html = String.Empty;
 
         _html += "<div class='box3'></div>";
 
-        if (_statusPayment.Equals("1"))
-        {
-            if ((_overpaymentYear + _overpaymentDay) > 0)
-            {
+        if (_statusPayment.Equals("1")) {
+            if ((_overpaymentYear + _overpaymentDay) > 0) {
                 _html += CalInterestYesNo("overpayment") +
                          "<div id='cal-interest-overpayment'>" +
                          "  <div>" +
@@ -269,8 +266,7 @@ public class eCPDataPayment
             }
         }
 
-        if (_statusPayment.Equals("2") || (_formatPayment.Equals("2") && (_overpaymentYear + _overpaymentDay) <= 0))
-        {            
+        if (_statusPayment.Equals("2") || (_formatPayment.Equals("2") && (_overpaymentYear + _overpaymentDay) <= 0)) {
             _html += CalInterestYesNo("payrepay") +
                      "<div id='cal-interest-payrepay'>" +
                      "  <input type='hidden' id='pay-repay-date-end-old' value=''>" +
@@ -329,8 +325,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string FrmPayment()
-    {
+    private static string FrmPayment() {
         string _html = String.Empty;
 
         _html += "<div>" +
@@ -489,10 +484,11 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string AddCpTransPaymentPayRepay(string[,] _data)
-    {
+    private static string AddCpTransPaymentPayRepay(string[,] _data) {
         string _html = String.Empty;
-        //string _totalPenaltyDefault = _data[0, 5];
+        /*
+        string _totalPenaltyDefault = _data[0, 5];
+        */
         string _totalPenaltyDefault = _data[0, 4];
         string _statusPayment = _data[0, 7];
         string _replyDateDefault = _data[0, 24];
@@ -523,8 +519,7 @@ public class eCPDataPayment
         DateTime _dateA;
         DateTime _dateB;
 
-        if (_statusPayment.Equals("1"))
-        {            
+        if (_statusPayment.Equals("1")) {
             _repayDate = eCPUtil.RepayDate(_replyDateDefault);
             _repayDateStartDefault = !String.IsNullOrEmpty(_repayDate[0]) ? _repayDate[0] : String.Empty;
             _repayDateEndDefault = !String.IsNullOrEmpty(_repayDate[1]) ? _repayDate[1] : String.Empty;
@@ -539,16 +534,14 @@ public class eCPDataPayment
             _overpaymentDay = _overpayment[5];
         }
 
-        if (_statusPayment.Equals("2") || (_overpaymentYear + _overpaymentDay) <= 0)
-        {
+        if (_statusPayment.Equals("2") || (_overpaymentYear + _overpaymentDay) <= 0) {
             _payRepayDateStartDefault = !String.IsNullOrEmpty(_paymentDateDefault) ? Util.ConvertDateTH(DateTime.Parse(_paymentDateDefault, _provider).AddDays(1).ToString()) : Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
             _payRepayDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
 
             _dateA = DateTime.Parse(_payRepayDateStartDefault, _provider);
             _dateB = DateTime.Parse(_payRepayDateEndDefault, _provider);
 
-            if (_dateA > _dateB)
-            {
+            if (_dateA > _dateB) {
                 _payRepayDateEndDefault = Util.ConvertDateTH(_dateA.ToString());
                 _dateB = _dateA;
             }
@@ -605,10 +598,11 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string AddCpTransPaymentFullRepay(string[,] _data)
-    {
+    private static string AddCpTransPaymentFullRepay(string[,] _data) {
         string _html = String.Empty;
-        //string _totalPenaltyDefault = _data[0, 5];
+        /*
+        string _totalPenaltyDefault = _data[0, 5];
+        */
         string _totalPenaltyDefault = _data[0, 4];
         string _statusPayment = _data[0, 7];
         string _replyDateDefault = _data[0, 24];
@@ -679,15 +673,13 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string DetailTransPayment(string _cp2id)
-    {
+    public static string DetailTransPayment(string _cp2id) {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListDetailTransPayment(_cp2id);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             string _calInterestYesNoDefault = !String.IsNullOrEmpty(_data[0, 2]) ? eCPUtil._calInterestYesNo[Util.FindIndexArray2D(1, eCPUtil._calInterestYesNo, _data[0, 2]) - 1, 0] : String.Empty;
             string _overpaymentDateStartDefault = !String.IsNullOrEmpty(_data[0, 3]) ? Util.LongDateTH(_data[0, 3]) : String.Empty;
             string _overpaymentDateEndDefault = !String.IsNullOrEmpty(_data[0, 4]) ? Util.LongDateTH(_data[0, 4]) : String.Empty;
@@ -743,8 +735,7 @@ public class eCPDataPayment
                      "          </div>" +
                      "          <div class='clear'></div>";
 
-            if (!String.IsNullOrEmpty(_calInterestYesNoDefault))
-            {
+            if (!String.IsNullOrEmpty(_calInterestYesNoDefault)) {
                 _html += "      <div>" +
                          "          <div class='content-left'>" +
                          "              <div class='form-label-discription-style'><div class='form-label-style'>คิด / ไม่คิดดอกเบี้ย</div></div>" +
@@ -758,8 +749,7 @@ public class eCPDataPayment
 
             if (!String.IsNullOrEmpty(_overpaymentDateStartDefault) && !String.IsNullOrEmpty(_overpaymentDateEndDefault) &&
                 !String.IsNullOrEmpty(_overpaymentYearDefault) && !String.IsNullOrEmpty(_overpaymentDayDefault) &&
-                !String.IsNullOrEmpty(_overpaymentInterestDefault) && !String.IsNullOrEmpty(_overpaymentTotalInterestDefault))
-            {
+                !String.IsNullOrEmpty(_overpaymentInterestDefault) && !String.IsNullOrEmpty(_overpaymentTotalInterestDefault)) {
                 _html += "      <div id='overpayment'>" +
                          "          <div class='content-left'>" +
                          "              <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยจากการผิดนัดชำระ</div></div>" +
@@ -780,8 +770,7 @@ public class eCPDataPayment
 
             if (!String.IsNullOrEmpty(_payRepayDateStartDefault) && !String.IsNullOrEmpty(_payRepayDateEndDefault) &&
                 !String.IsNullOrEmpty(_payRepayYearDefault) && !String.IsNullOrEmpty(_payRepayDayDefault) &&
-                !String.IsNullOrEmpty(_payRepayInterestDefault) && !String.IsNullOrEmpty(_payRepayTotalInterestDefault))
-            {
+                !String.IsNullOrEmpty(_payRepayInterestDefault) && !String.IsNullOrEmpty(_payRepayTotalInterestDefault)) {
                 _html += "      <div id='overpayment'>" +
                          "          <div class='content-left'>" +
                          "              <div class='form-label-discription-style'><div class='form-label-style'>ดอกเบี้ยผ่อนชำระ</div></div>" +
@@ -836,16 +825,14 @@ public class eCPDataPayment
                      "                      <div class='form-input-content'>" +
                      "                          <div><span>" + eCPUtil._payChannel[int.Parse(_channelDefault) - 1] + "</span></div>";
 
-            if (_channelDefault.Equals("2"))
-            {
+            if (_channelDefault.Equals("2")) {
                 _html += "                      <div class='form-input-content-line'>เลขที่เช็ค <span>" + _chequeNoDefault + "</span></div>" +
                          "                      <div class='form-input-content-line'>ธนาคาร <span>" + _chequeBankDefault + "</span></div>" +
                          "                      <div class='form-input-content-line'>สาขา <span>" + _chequeBankBranchDefault + "</span></div>" +
                          "                      <div class='form-input-content-line'>วันที่บนเช็ค <span>" + _chequeDateDefault + "</span></div>";
             }
 
-            if (_channelDefault.Equals("3"))
-            {
+            if (_channelDefault.Equals("3")) {
                 _html += "                      <div class='form-input-content-line'>ธนาคาร <span>" + _cashBankDefault + "</span></div>" +
                          "                      <div class='form-input-content-line'>สาขา <span>" + _cashBankBranchDefault + "</span></div>" +
                          "                      <div class='form-input-content-line'>ชื่อบัญชี <span>" + _cashBankAccountDefault + "</span></div>" +
@@ -872,8 +859,7 @@ public class eCPDataPayment
                      "                          <div class='form-input-content-line'>เข้ากองทุน <span>" + _receiptFundDefault + "</span></div>" +
                      "                          <div class='form-input-content-line'>สำเนาใบเสร็จรับเงิน <span>" + (!String.IsNullOrEmpty(_receiptCopyDefault) ? "<a class='text-underline' href='javascript:void(0)' onclick=DownloadReceiptCopy('" + _receiptCopyDefault + "')>ดาว์นโหลดสำเนาใบเสร็จรับเงิน</a>" : "-") + "</span></div>";
 
-            if (!String.IsNullOrEmpty(_receiptCopyDefault))
-            {
+            if (!String.IsNullOrEmpty(_receiptCopyDefault)) {
                 _html += "                      <form id='download-receiptcopy-form' action='FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
                          "                          <input type='hidden' id='action' name='action' value='download' />" +
                          "                          <input type='hidden' id='file' name='file' value='' />" +
@@ -901,8 +887,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string ListTransPayment(string[,] _data)
-    {
+    public static string ListTransPayment(string[,] _data) {
         int _i;
         string _html = String.Empty;
         string _highlight = String.Empty;
@@ -913,8 +898,8 @@ public class eCPDataPayment
         double _totalPay = 0;
 
         _html += "<div class='table-content'>";
-        for (_i = 0; _i < _data.GetLength(0); _i++)
-        {
+
+        for (_i = 0; _i < _data.GetLength(0); _i++) {
             _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
             _callFunc = "ShowDetailTransPayment('" + _data[_i, 1] + "','" + double.Parse(_data[_i, 0]).ToString("#,##0") + "')";
             _totalInterest = (_totalInterest + double.Parse(_data[_i, 5]));
@@ -936,8 +921,7 @@ public class eCPDataPayment
                      "</ul>";
         }
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _html += "<ul class='table-row-content table-row-total' id='detail-trans-payment-total'>" +
                      "  <li id='table-content-trans-payment-total-col1'><div>รวม</div></li>" +
                      "  <li class='table-col' id='table-content-trans-payment-total-col2'></li>" +
@@ -958,8 +942,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string DetailCpTransPayment(string[,] _data)
-    {
+    private static string DetailCpTransPayment(string[,] _data) {
         string _html = String.Empty;
         string _cp2id = _data[0, 1];
         string _statusRepay = _data[0, 6];
@@ -1026,8 +1009,10 @@ public class eCPDataPayment
         return _html;
     }
 
-    private static string DetailPenaltyAndFormatPayment(string[,] _data, bool _showStatusPaymentRecord)
-    {
+    private static string DetailPenaltyAndFormatPayment(
+        string[,] _data,
+        bool _showStatusPaymentRecord
+    ) {
         string _html = String.Empty;
         string _cp2id = _data[0, 1];
         string _totalPayScholarshipDefault = _data[0, 3];
@@ -1068,8 +1053,7 @@ public class eCPDataPayment
                  "  </div>" +
                  "  <div class='clear'></div>";
 
-        if (!_statusPayment.Equals("3") && _showStatusPaymentRecord.Equals(true))
-        {
+        if (!_statusPayment.Equals("3") && _showStatusPaymentRecord.Equals(true)) {
             _html += "<div id='status-payment-record'>" +
                      "  <div class='content-left' id='status-payment-record-label'>" +
                      "      <div class='form-label-discription-style clear-bottom'>" +
@@ -1099,8 +1083,7 @@ public class eCPDataPayment
                      "<div class='clear'></div>";
         }
 
-        if (_statusPayment.Equals("3"))
-        {
+        if (_statusPayment.Equals("3")) {
             _html += "<div>" +
                      "  <div class='content-left' id='certificate-reimbursement-label'>" +
                      "      <div class='form-label-discription-style clear-bottom'><div class='form-label-style'>หนังสือรับรองการชดใช้เงิน</div></div>" +
@@ -1127,8 +1110,10 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string AddDetailCPTransPayment(string _cp2id, string _action)
-    {
+    public static string AddDetailCPTransPayment(
+        string _cp2id,
+        string _action
+    ) {
         string _html = String.Empty;
         string _statusRepay = String.Empty;
         string[,] _data1;
@@ -1136,8 +1121,7 @@ public class eCPDataPayment
 
         _data1 = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
 
-        if (_data1.GetLength(0) > 0)
-        {
+        if (_data1.GetLength(0) > 0) {
             _statusRepay = _data1[0, 6];
 
             _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepay);
@@ -1145,8 +1129,7 @@ public class eCPDataPayment
             if (_data2.GetLength(0) > 0)
                 _data1[0, 24] = _data2[0, 5];
 
-            switch (_action)
-            {
+            switch (_action) {
                 case "detail":
                     _html = DetailCpTransPayment(_data1);
                     break;
@@ -1162,15 +1145,13 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string TabAddDetailCPTransPayment(string _cp2id)
-    {
+    public static string TabAddDetailCPTransPayment(string _cp2id) {
         string _html = String.Empty;
         string[,] _data;
                 
         _data = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             string _statusPayment = _data[0, 7];
             string _formatPayment = _data[0, 8];
             string _studentIDDefault = _data[0, 9];
@@ -1199,8 +1180,7 @@ public class eCPDataPayment
             if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
                 _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
 
-            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
-            {
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault))) {
                 _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
                                   " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
             }
@@ -1246,8 +1226,7 @@ public class eCPDataPayment
                      "          <div class='tab-line'></div>" +
                      "      </div>";
 
-            if (!_statusPayment.Equals("3"))
-            {
+            if (!_statusPayment.Equals("3")) {
                 _html += "  <div class='subtab-content' id='tab2-adddetail-cp-trans-payment-head'>" +
                          "      <div class='tab-line'></div>" +
                          "  </div>";
@@ -1269,8 +1248,7 @@ public class eCPDataPayment
                      "      <div class='adddetail-cp-trans-payment-content' id='detail-data-trans-payment'>" + DetailCpTransPayment(_data) + "</div>" +
                      "  </div>";
 
-            if (!_statusPayment.Equals("3"))
-            {
+            if (!_statusPayment.Equals("3")) {
                 _html += "<div class='subtab-content' id='tab2-adddetail-cp-trans-payment-content'>" +
                          "  <div class='adddetail-cp-trans-payment-content' id='add-data-trans-payment'></div>" +
                          "</div>";
@@ -1285,8 +1263,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string SelectFormatPayment(string _cp2id)
-    {
+    public static string SelectFormatPayment(string _cp2id) {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='select-format-payment'>" +
@@ -1331,8 +1308,7 @@ public class eCPDataPayment
         return _html;
     }
 
-    public static string ListPaymentOnCPTransRequireContract(HttpContext _c)
-    {
+    public static string ListPaymentOnCPTransRequireContract(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -1348,8 +1324,7 @@ public class eCPDataPayment
 
         _recordCount = eCPDB.CountPaymentOnCPTransRequireContract(_c);
 
-        if (_recordCount > 0)
-        {            
+        if (_recordCount > 0) {
             _data = eCPDB.ListPaymentOnCPTransRequireContract(_c);
 
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
@@ -1358,8 +1333,7 @@ public class eCPDataPayment
             
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
 
@@ -1402,8 +1376,7 @@ public class eCPDataPayment
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string TabPaymentOnCPTransRequireContract()
-    {
+    public static string TabPaymentOnCPTransRequireContract() {
         string _html = String.Empty;
         string _title = "cp-trans-payment";
         int _pid;
@@ -1414,7 +1387,6 @@ public class eCPDataPayment
 
         if (_pid.Equals(20) || _pid.Equals(6))
             _title = "cp-report-debtor-contract-break-require-repay-payment";
-
 
         _html += "<div id='cp-trans-payment-head'>" +
                  "  <div class='content-data-head'>" +

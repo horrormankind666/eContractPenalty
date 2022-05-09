@@ -11,32 +11,26 @@ using System;
 using System.Web;
 using System.Web.SessionState;
 
-public class eCPHandler : IHttpHandler, IRequiresSessionState
-{
-    public void ProcessRequest (HttpContext _context)
-    {
+public class eCPHandler : IHttpHandler, IRequiresSessionState {
+    public void ProcessRequest (HttpContext _context) {
         _context.Response.ContentType = "text/plain";
         string[] _browser = Util.BrowserCapabilities();
         bool _error = false;
 
-        if (_error.Equals(false) && _browser[1].Equals("IE") && (int.Parse(_browser[3]) < 9))
-        {
+        if (_error.Equals(false) && _browser[1].Equals("IE") && (int.Parse(_browser[3]) < 9)) {
             _error = true;
             _context.Response.Write("<errorbrowser>1<errorbrowser>");
         }
 
-        if (_error.Equals(false) && bool.Parse(_browser[13]).Equals(false))
-        {
+        if (_error.Equals(false) && bool.Parse(_browser[13]).Equals(false)) {
             _error = true;
             _context.Response.Write("<errorbrowser>2<errorbrowser>");
         }
 
-        if (_error.Equals(false))
-        {
+        if (_error.Equals(false)) {
             string _action = _context.Request["action"];
 
-            switch (_action)
-            {
+            switch (_action) {
                 case "add":
                 case "update":
                 case "del":
@@ -86,28 +80,24 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
     private static string _head;
     private static string _content;
 
-    private string SetValuePageReturn()
-    {
+    private string SetValuePageReturn() {
         string _return = "<error>" + _error + "<error><head>" + _head + "<head><menubar>" + _menuBar + "<menubar><menu>" + _menu + "<menu><content>" + _content + "<content>";
 
         return _return;
     }
 
-    private void SetPage(HttpContext _c)
-    {
+    private void SetPage(HttpContext _c) {
         int _section;
         int _pid;
 
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
-        if (_eCPCookie == null)
-        {
+        if (_eCPCookie == null) {
             _section = 0;
             _pid = 0;
         }
-        else
-        {
+        else {
             _section = int.Parse(_eCPCookie["UserSection"]);
             _pid = int.Parse(_eCPCookie["Pid"]);
         }
@@ -115,23 +105,20 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write("<section>" + _section + "<section><page>" + _pid + "<page>");
     }
 
-    private void ShowPage(HttpContext _c)
-    {
+    private void ShowPage(HttpContext _c) {
         bool _loginResult;
         eCPUtil _util = new eCPUtil();
 
         _loginResult = eCPDB.ChkLogin();
 
-        if (!_loginResult)
-        {
+        if (!_loginResult) {
             _error = 1;
             _head = String.Empty;
             _menuBar = String.Empty;
             _menu = 0;
             _content = eCPUtil.Signin();
         }
-        else
-        {
+        else {
             _error = 0;
             _head = eCPUtil.Head();
             _menuBar = eCPUtil.MenuBar(_loginResult);
@@ -142,12 +129,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(SetValuePageReturn());
     }
 
-    private void Signin(HttpContext _c)
-    {
+    private void Signin(HttpContext _c)    {
         bool _loginResult = eCPDB.Signin(_c.Request["authen"]);
 
-        if (!_loginResult)
-        {
+        if (!_loginResult) {
             _error = 1;
         }
         else
@@ -156,13 +141,11 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(SetValuePageReturn());
     }
 
-    private void Signout()
-    {
+    private void Signout() {
         eCPDB.Signout();
     }
 
-    private void ShowForm(HttpContext _c)
-    {
+    private void ShowForm(HttpContext _c) {
         string _frmOrder = _c.Request["frm"];
         string _frm = String.Empty;
         string _trackingStatus = String.Empty;
@@ -172,8 +155,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         int _height = 0;
         string _title = String.Empty;
 
-        switch (_frmOrder)
-        {
+        switch (_frmOrder) {
             case "searchcptabuser":
                 _frm = eCPDataFormSearch.SearchCPTabUser();
                 _width = 655;
@@ -259,16 +241,14 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
                 _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract") ? "r" : _trackingStatus;
                 _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract1") ? "r1" : _trackingStatus;
 
-                if (_trackingStatus.Equals("v1") || _trackingStatus.Equals("a"))
-                {
+                if (_trackingStatus.Equals("v1") || _trackingStatus.Equals("a")) {
                     _frm = eCPDataBreakContract.DetailCPTransBreakContract(_c.Request["id"], _trackingStatus);
                     _width = 900;
                     _height = 0;
                     _title = "detail-cp-trans-break-contract";
                 }
 
-                if (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") || _trackingStatus.Equals("r") || _trackingStatus.Equals("r1"))
-                {
+                if (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") || _trackingStatus.Equals("r") || _trackingStatus.Equals("r1")) {
                     _frm = eCPDataRequireContract.DetailCPTransRequireContract(_c.Request["id"], _trackingStatus);
                     _width = 900;
                     _height = 0;
@@ -476,8 +456,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write("<form>" + _frm + "<form><width>" + _width + "<width><height>" + _height + "<height><title>" + _title + "<title>");
     }
 
-    private void AddUpdateData(HttpContext _c)
-    {
+    private void AddUpdateData(HttpContext _c) {
         string _listUpdate = String.Empty;
         string _trackingStauts = String.Empty;
         bool _loginResult;
@@ -487,12 +466,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
 
         _loginResult = eCPDB.ChkLogin();
 
-        if (!_loginResult)
-        {
+        if (!_loginResult) {
             _error = 1;
         }
-        else
-        {
+        else {
             if (_c.Request["cmd"].Equals("addcptabuser") || _c.Request["cmd"].Equals("updatecptabuser"))
                 _error = (eCPDB.CheckRepeatCPTabUser(_c, "username") > 0 ? 2 : (eCPDB.CheckRepeatCPTabUser(_c, "password") > 0 ? 3 : _error));
 
@@ -512,13 +489,11 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write("<error>" + _error + "<error>" + _listUpdate);
     }
 
-    private void ShowList(HttpContext _c)
-    {
+    private void ShowList(HttpContext _c) {
         string _listOrder = _c.Request["list"];
         string _listData = String.Empty;
 
-        switch (_listOrder)
-        {
+        switch (_listOrder) {
             case "program":
                 _listData = eCPUtil.ListProgram(false, "program", _c.Request["dlevel"], _c.Request["faculty"]);
                 break;
@@ -559,13 +534,11 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_listData);
     }
 
-    private void ShowSearch(HttpContext _c)
-    {
+    private void ShowSearch(HttpContext _c) {
         string _searchFrom = _c.Request["from"];
         string _listData = String.Empty;
 
-        switch (_searchFrom)
-        {
+        switch (_searchFrom) {
             case "tabuser":
                 _listData = eCPDataUser.ListCPTabUser(_c);
                 break;
@@ -649,12 +622,10 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_listData);
     }
 
-    private void ShowCalculate(HttpContext _c)
-    {
+    private void ShowCalculate(HttpContext _c) {
         string _cal = _c.Request["cal"];
 
-        switch (_cal)
-        {
+        switch (_cal) {
             case "scholarshipandpenalty":
                 ShowCalScholarshipPenalty(_c);
                 break;
@@ -679,8 +650,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private void ShowCalScholarshipPenalty(HttpContext _c)
-    {
+    private void ShowCalScholarshipPenalty(HttpContext _c) {
         string _scholar = _c.Request["scholar"];
         string _scholarshipMoney = _c.Request["scholarshipmoney"];
         string _scholarshipYear = _c.Request["scholarshipyear"];
@@ -722,8 +692,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowCalInterestOverpayment(HttpContext _c)
-    {
+    private void ShowCalInterestOverpayment(HttpContext _c) {
         /*
         interestoverpayment
         _send[0] = "capital"
@@ -775,8 +744,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowCalInterestPayRepay(HttpContext _c)
-    {
+    private void ShowCalInterestPayRepay(HttpContext _c) {
         /*
         interestpayrepay
         _send[0] = "capital"
@@ -828,8 +796,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowCalInterestOverpaymentAndPayRepay(HttpContext _c)
-    {
+    private void ShowCalInterestOverpaymentAndPayRepay(HttpContext _c) {
         /*
         interestoverpaymentandpayrepay
         _send[0] = "capital"
@@ -903,8 +870,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowCalChkBalance(HttpContext _c)
-    {
+    private void ShowCalChkBalance(HttpContext _c) {
         /*
         chkbalance
         _send[0] = "capital"
@@ -938,8 +904,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowCalTotalPayment(HttpContext _c)
-    {
+    private void ShowCalTotalPayment(HttpContext _c) {
         /*
         totalpayment
         _send[0] = "capital"
@@ -958,8 +923,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowCalReportTableCalCapitalAndInterest(HttpContext _c)
-    {
+    private void ShowCalReportTableCalCapitalAndInterest(HttpContext _c) {
         /*
         reportrablecalcapitalandinterest
         _send[0] = "capital"
@@ -988,16 +952,13 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         _c.Response.Write(_result);
     }
 
-    private void ShowPrint(HttpContext _c)
-    {
+    private void ShowPrint(HttpContext _c) {
         //eCPDB.ConnectStoreProcAddUpdate(eCPDB.InsertTransactionLog("EXPORT", "", "SelectReportExport, " + Request.Form["export-order"], Request.Form["export-send"]));
 
         string _send = _c.Request["cp1id"] + ":" + _c.Request["action"];
 
-        if (_c.Request["type"].Equals("pdf"))
-        {
-            switch (_c.Request["order"])
-            {
+        if (_c.Request["type"].Equals("pdf")) {
+            switch (_c.Request["order"]) {
                 case "reporttablecalcapitalandinterest":
                     eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(_send);
                     break;
@@ -1007,10 +968,8 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
             }
         }
 
-        if (_c.Request["type"].Equals("word"))
-        {
-            switch (_c.Request["order"])
-            {
+        if (_c.Request["type"].Equals("word")) {
+            switch (_c.Request["order"]) {
                 case "reportnoticerepaycomplete":
                     eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(_send);
                     break;
@@ -1021,18 +980,17 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState
         }
     }
 
-    private void ShowDocEContract(HttpContext _c)
-    {
-        //int _result = (Util.FileSiteExist(_c.Request["path"] + _c.Request["file"]).Equals(true) ? 0 : 1);
+    private void ShowDocEContract(HttpContext _c) {
+        /*
+        int _result = (Util.FileSiteExist(_c.Request["path"] + _c.Request["file"]).Equals(true) ? 0 : 1);
+        */
         int _result = 0;
 
         _c.Response.Write("<econtract>" + _result + "<econtract>");
     }
 
-    public bool IsReusable
-    {
-        get
-        {
+    public bool IsReusable {
+        get {
             return false;
         }
     }

@@ -16,49 +16,46 @@ using Newtonsoft.Json.Linq;
 
 public class eCPDB
 {
-    //public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
+    /*
+    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
+    */
     public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=Infinity;User ID=MUstudent53;Password=oydL7dKk53;Connect Timeout=600;Asynchronous Processing=true;";
-    //public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=MUStudent;User ID=MUstudent53;Password=oydL7dKk53;Asynchronous Processing=true;";
-    //public const string CONNECTION_STRING = "Server=.\\SQLEXPRESS;Database=eContractPenalty;User ID=sa;Password=123456;Asynchronous Processing=true;";
+    /*
+    public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=MUStudent;User ID=MUstudent53;Password=oydL7dKk53;Asynchronous Processing=true;";
+    public const string CONNECTION_STRING = "Server=.\\SQLEXPRESS;Database=eContractPenalty;User ID=sa;Password=123456;Asynchronous Processing=true;";
+    */
     private const string STORE_PROC = "sp_ecpEContractPenalty";
     public static string[] _userSection = new string[] {"กองกฎหมาย", "กองบริหารการศึกษา", "กองคลัง"};
     public static string _username;
     public static string _password;
 
     /*
-    private static void ConnectDB()
-    {
+    private static void ConnectDB() {
         _eCPConn = new SqlConnection();
 
-        try
-        {
+        try {
             if (_eCPConn.State == ConnectionState.Open)
                 _eCPConn.Close();
 
             _eCPConn.ConnectionString = CONNECTION_STRING;
             _eCPConn.Open();
         }
-        catch
-        {
+        catch {
         }
     }    
 
-    private static void DisConnectDB()
-    {
-        try
-        {
+    private static void DisConnectDB() {
+        try {
             if (_eCPConn.State == ConnectionState.Open)
                 _eCPConn.Close();
 
             _eCPConn = null;
         }
-        catch
-        {
+        catch {
         }
     }
 
-    private static SqlCommand ConnectStoreProc(string _sqlCmd)
-    {
+    private static SqlCommand ConnectStoreProc(string _sqlCmd) {
         ConnectDB();
         
         SqlCommand _cmd = new SqlCommand(_sqlCmd);
@@ -70,15 +67,13 @@ public class eCPDB
     }
     */
 
-    public static SqlConnection ConnectDB(string _connString)
-    {
+    public static SqlConnection ConnectDB(string _connString) {
         SqlConnection _conn = new SqlConnection(_connString);
 
         return _conn;
     }
 
-    public static DataSet ExecuteCommandStoredProcedure(params SqlParameter[] _values)
-    {
+    public static DataSet ExecuteCommandStoredProcedure(params SqlParameter[] _values) {
         SqlConnection _conn = ConnectDB(CONNECTION_STRING);
         SqlCommand _cmd = new SqlCommand(STORE_PROC, _conn);
         DataSet _ds = new DataSet();
@@ -89,8 +84,7 @@ public class eCPDB
         if (_values != null && _values.Length > 0)
             _cmd.Parameters.AddRange(_values);
 
-        try
-        {
+        try {
             _conn.Open();
 
             SqlDataAdapter _da = new SqlDataAdapter(_cmd);
@@ -98,8 +92,7 @@ public class eCPDB
             _ds = new DataSet();
             _da.Fill(_ds);
         }
-        finally
-        {
+        finally {
             _cmd.Dispose();
 
             _conn.Close();
@@ -109,8 +102,7 @@ public class eCPDB
         return _ds;
     }
 
-    public static void ConnectStoreProcAddUpdate(string _sqlCmd)
-    {
+    public static void ConnectStoreProcAddUpdate(string _sqlCmd) {
         SqlConnection _conn = ConnectDB(CONNECTION_STRING);
         SqlCommand _cmd = new SqlCommand(STORE_PROC, _conn);
 
@@ -119,13 +111,11 @@ public class eCPDB
         _cmd.Parameters.AddWithValue("@ordertable", 52);
         _cmd.Parameters.AddWithValue("@cmd", _sqlCmd);
 
-        try
-        {
+        try {
             _conn.Open();
             _cmd.ExecuteNonQuery();
         }
-        finally
-        {
+        finally {
             _cmd.Dispose();
 
             _conn.Close();
@@ -133,8 +123,12 @@ public class eCPDB
         }
     }
     
-    public static string InsertTransactionLog(string _what, string _where, string _function, string _sqlCommand)
-    {
+    public static string InsertTransactionLog(
+        string _what,
+        string _where,
+        string _function,
+        string _sqlCommand
+    ) {
         string _command = String.Empty;
         string _whoIs = String.Empty;
         string _name = String.Empty;
@@ -161,57 +155,49 @@ public class eCPDB
         return _command;
     }
 
-    public static bool ChkLogin()
-    {
+    public static bool ChkLogin() {
         bool _loginResult = false;
         string _sql = String.Empty;
 
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
-        if (_eCPCookie == null)
-        {
+        if (_eCPCookie == null) {
             _loginResult = false;
         }
-        else
-        {
+        else {
             int _rowCount;
 
             if ((String.IsNullOrEmpty(_eCPCookie["Authen"])) ||
-                //(String.IsNullOrEmpty(_eCPCookie["Username"])) ||
-                //(String.IsNullOrEmpty(_eCPCookie["Password"])) ||
-                //(String.IsNullOrEmpty(_eCPCookie["Name"])) ||
+                /*
+                (String.IsNullOrEmpty(_eCPCookie["Username"])) ||
+                (String.IsNullOrEmpty(_eCPCookie["Password"])) ||
+                (String.IsNullOrEmpty(_eCPCookie["Name"])) ||
+                */
                 (String.IsNullOrEmpty(_eCPCookie["UserSection"])) ||
                 (String.IsNullOrEmpty(_eCPCookie["UserLevel"])) ||
-                (String.IsNullOrEmpty(_eCPCookie["Pid"])))
-            {
+                (String.IsNullOrEmpty(_eCPCookie["Pid"]))) {
                 Signout();
                 _loginResult = false;
             }
-            else
-            {
-
+            else {
                 string _userid = eCPUtil.GetUserID();
                 string[,] _data = ListDetailCPTabUser(_userid, "", "", "");
 
                 _rowCount = _data.GetLength(0);
 
-                if (_rowCount <= 0)
-                {
+                if (_rowCount <= 0) {
                     Signout();
                     _loginResult = false;
                 }
-                else
-                {
+                else {
                     if (!_data[0, 9].Equals(_userid) ||
                         !_data[0, 4].Equals(_eCPCookie["UserSection"]) ||
-                        !_data[0, 5].Equals(_eCPCookie["UserLevel"]))
-                    {
+                        !_data[0, 5].Equals(_eCPCookie["UserLevel"])) {
                         Signout();
                         _loginResult = false;
                     }
-                    else
-                    {
+                    else {
                         _loginResult = true;
                     }
                 }
@@ -221,8 +207,7 @@ public class eCPDB
         return _loginResult;
     }
 
-    public static bool Signin(string _authen)
-    {
+    public static bool Signin(string _authen) {
         int _rowCount;
         bool _loginResult = false;
         string _sql = String.Empty;
@@ -240,20 +225,16 @@ public class eCPDB
 
         _rowCount = _ds.Tables[0].Rows.Count;
         
-        if(_rowCount <= 0)
-        {
+        if(_rowCount <= 0) {
             _loginResult = false;
         }
-        else
-        {
+        else {
             DataRow _dr = _ds.Tables[0].Rows[0];
 
-            if (!(_dr["Username"].ToString()).Equals(_username) || !(_dr["Password"].ToString()).Equals(_password))
-            {
+            if (!(_dr["Username"].ToString()).Equals(_username) || !(_dr["Password"].ToString()).Equals(_password)) {
                 _loginResult = false;
             }
-            else
-            {
+            else {
                 HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
                 /*
                 _eCPCookie.Values.Add("Username", _dr["Username"].ToString());
@@ -265,7 +246,9 @@ public class eCPDB
                 _eCPCookie.Values.Add("UserLevel", _dr["UserLevel"].ToString());
                 _eCPCookie.Values.Add("Pid", "0");
                                 
-                //_eCPCookie.Expires = DateTime.Now.AddHours(1);
+                /*
+                _eCPCookie.Expires = DateTime.Now.AddHours(1);
+                */
                 HttpContext.Current.Response.Cookies.Add(_eCPCookie);
                             
                 _loginResult = true;
@@ -281,14 +264,12 @@ public class eCPDB
         return _loginResult;
     }
 
-    public static void ClearUser()
-    {
+    public static void ClearUser() {
         _username = String.Empty;
         _password = String.Empty;
     }
 
-    public static void Signout()
-    {
+    public static void Signout() {
         ConnectStoreProcAddUpdate(InsertTransactionLog("SIGN OUT", "", "Signout", ""));
         
         HttpContext.Current.Session.Abandon();
@@ -300,8 +281,7 @@ public class eCPDB
         ClearUser();
     }
 
-    public static int CountCPTabUser(HttpContext _c)
-    {
+    public static int CountCPTabUser(HttpContext _c) {
         int _section;
         int _recordCount = 0;
 
@@ -324,8 +304,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPTabUser(HttpContext _c)
-    {
+    public static string[,] ListCPTabUser(HttpContext _c) {
         int _section;
         int _i = 0;
 
@@ -344,8 +323,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 10];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["Username"].ToString();
             _data[_i, 2] = _dr["Password"].ToString();
@@ -365,8 +343,7 @@ public class eCPDB
         return _data;
     }
 
-    public static DataSet ListCPTabUser()
-    {
+    public static DataSet ListCPTabUser() {
         int _section;
 
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
@@ -384,8 +361,12 @@ public class eCPDB
         return _ds;
     }
 
-    public static string[,] ListDetailCPTabUser(string _userid, string _username, string _password, string _userlevel)
-    {
+    public static string[,] ListDetailCPTabUser(
+        string _userid,
+        string _username,
+        string _password,
+        string _userlevel
+    ) {
         int _section;
         int _i = 0;
 
@@ -404,8 +385,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 10];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["Username"].ToString();
             _data[_i, 2] = _dr["Password"].ToString();
@@ -423,8 +403,10 @@ public class eCPDB
         return _data;
     }
 
-    public static int CheckRepeatCPTabUser(HttpContext _c, string _column)
-    {
+    public static int CheckRepeatCPTabUser(
+        HttpContext _c,
+        string _column
+    ) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -442,8 +424,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPTabProgram(string _cp1id)
-    {
+    public static string[,] ListCPTabProgram(string _cp1id) {
         int _i = 0;
         string _sql = String.Empty;
 
@@ -454,8 +435,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 9];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["FacultyCode"].ToString();
             _data[_i, 2] = _dr["FactTName"].ToString();
@@ -474,8 +454,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CheckRepeatCPTabProgram(HttpContext _c)
-    {
+    public static int CheckRepeatCPTabProgram(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -495,8 +474,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPTabCalDate(string _cpid)
-    {
+    public static string[,] ListCPTabCalDate(string _cpid) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -506,8 +484,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 3];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["CalDateCondition"].ToString();
             _data[_i, 2] = _dr["PenaltyFormula"].ToString();
@@ -520,8 +497,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCPTabInterest(string _cp1id)
-    {
+    public static string[,] ListCPTabInterest(string _cp1id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -531,8 +507,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["InContractInterest"].ToString();
             _data[_i, 2] = _dr["OutContractInterest"].ToString();
@@ -546,8 +521,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListSearchUseContractInterest()
-    {
+    public static string[,] ListSearchUseContractInterest() {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -557,8 +531,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["InContractInterest"].ToString();
             _data[_i, 1] = _dr["OutContractInterest"].ToString();
 
@@ -570,8 +543,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCPTabPayBreakContract(string _cp1id)
-    {
+    public static string[,] ListCPTabPayBreakContract(string _cp1id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -581,8 +553,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 16];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["FacultyCode"].ToString();
             _data[_i, 2] = _dr["FactTName"].ToString();
@@ -608,8 +579,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CheckRepeatCPTabPayBreakContract(HttpContext _c)
-    {
+    public static int CheckRepeatCPTabPayBreakContract(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -630,8 +600,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListSearchCPTabPayBreakContract(HttpContext _c)
-    {
+    public static string[,] ListSearchCPTabPayBreakContract(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -646,8 +615,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["CalDateCondition"].ToString();
             _data[_i, 2] = _dr["AmtIndemnitorYear"].ToString();
@@ -659,8 +627,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCPTabScholarship(string _cp1id)
-    {
+    public static string[,] ListCPTabScholarship(string _cp1id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -670,8 +637,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 10];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["FacultyCode"].ToString();
             _data[_i, 2] = _dr["FactTName"].ToString();
@@ -691,8 +657,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CheckRepeatCPTabScholarship(HttpContext _c)
-    {
+    public static int CheckRepeatCPTabScholarship(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -712,8 +677,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListSearchCPTabScholarship(HttpContext _c)
-    {
+    public static string[,] ListSearchCPTabScholarship(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -727,8 +691,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["ScholarshipMoney"].ToString();
         }
@@ -738,8 +701,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListTitlename()
-    {
+    public static string[,] ListTitlename() {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -748,8 +710,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["TitleCode"].ToString();
             _data[_i, 1] = _dr["TitleEName"].ToString();
             _data[_i, 2] = _dr["TitleTName"].ToString();
@@ -763,8 +724,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListFaculty(bool _cpTabProgram)
-    {
+    public static string[,] ListFaculty(bool _cpTabProgram) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -773,8 +733,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["FacultyCode"].ToString();
             _data[_i, 1] = _dr["FactTName"].ToString();
 
@@ -786,8 +745,11 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListProgram(bool _cpTabProgram, string _dlevel, string _faculty)
-    {
+    public static string[,] ListProgram(
+        bool _cpTabProgram,
+        string _dlevel,
+        string _faculty
+    ) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -798,8 +760,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 6];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ProgramCode"].ToString();
             _data[_i, 1] = _dr["MajorCode"].ToString();
             _data[_i, 2] = _dr["GroupNum"].ToString();
@@ -815,8 +776,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListProvince()
-    {
+    public static string[,] ListProvince() {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -825,8 +785,7 @@ public class eCPDB
         
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ProvinceID"].ToString();
             _data[_i, 1] = _dr["ProvinceTName"].ToString();
 
@@ -838,8 +797,7 @@ public class eCPDB
         return _data;
     }
     
-    public static int CountStudent(HttpContext _c)
-    {
+    public static int CountStudent(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -859,8 +817,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListStudent(HttpContext _c)
-    {
+    public static string[,] ListStudent(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -876,8 +833,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 15];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["StudentID"].ToString();
             _data[_i, 2] = _dr["TitleCode"].ToString();
@@ -902,8 +858,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListProfileStudent(string _studentid)
-    {
+    public static string[,] ListProfileStudent(string _studentid) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -913,8 +868,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 26];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["StudentID"].ToString();
             _data[_i, 2] = _dr["TitleCode"].ToString();
@@ -941,8 +895,7 @@ public class eCPDB
             _data[_i, 23] = _dr["GuarantorLastName"].ToString();            
         }
 
-        foreach (DataRow _dr in _ds.Tables[2].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[2].Rows) {
             _data[_i, 24] = _dr["FileName"].ToString();
             _data[_i, 25] = _dr["FolderName"].ToString();
         }
@@ -952,8 +905,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListSearchStudentCPTransBreakContract(string _studentid)
-    {
+    public static string[,] ListSearchStudentCPTransBreakContract(string _studentid) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -963,8 +915,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 2];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["StudentID"].ToString();
 
@@ -976,8 +927,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPTransBreakContract(HttpContext _c)
-    {        
+    public static int CountCPTransBreakContract(HttpContext _c) {
         int _section;
         int _recordCount = 0;
 
@@ -1009,8 +959,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPTransBreakContract(HttpContext _c)
-    {
+    public static string[,] ListCPTransBreakContract(HttpContext _c) {
         int _section;
         int _i = 0;
 
@@ -1038,8 +987,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 16];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["StudentID"].ToString();
@@ -1065,8 +1013,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string ChkTrackingStatusCPTransBreakContract(string _cp1id)
-    {
+    public static string ChkTrackingStatusCPTransBreakContract(string _cp1id) {
         string _trackingStatus = String.Empty;
         int _section, _pid;
 
@@ -1089,8 +1036,7 @@ public class eCPDB
         return _trackingStatus;
     }
 
-    public static string[,] ListDetailCPTransBreakContract(string _cp1id)
-    {
+    public static string[,] ListDetailCPTransBreakContract(string _cp1id) {
         int _section;
         int _i = 0;
 
@@ -1107,8 +1053,7 @@ public class eCPDB
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 52];
         string[,] _data1;
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["StudentID"].ToString();
@@ -1174,8 +1119,7 @@ public class eCPDB
         return _data;
     }
     
-    public static int CountRepay(HttpContext _c)
-    {
+    public static int CountRepay(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1201,16 +1145,17 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string SearchRepayStatusDetail(string _cp2id, string _statusRepay, string _statusPayment)
-    {
+    public static string SearchRepayStatusDetail(
+        string _cp2id,
+        string _statusRepay,
+        string _statusPayment
+    ) { 
         string _repayStatusDetail = String.Empty;
         string _repayStatusDetailOrder = String.Empty;
         string[] _iconRepayStatus = new string[4];
 
-        if (!String.IsNullOrEmpty(_cp2id) && !String.IsNullOrEmpty(_statusRepay) && !String.IsNullOrEmpty(_statusPayment))
-        {
-            if (_statusRepay.Equals("0"))
-            {
+        if (!String.IsNullOrEmpty(_cp2id) && !String.IsNullOrEmpty(_statusRepay) && !String.IsNullOrEmpty(_statusPayment)) {
+            if (_statusRepay.Equals("0")) {
                 _repayStatusDetailOrder = "0";
                 _iconRepayStatus[0] = eCPUtil._iconRepayStatus[0, 1];
                 _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 0];
@@ -1218,17 +1163,15 @@ public class eCPDB
                 _iconRepayStatus[3] = eCPUtil._iconRepayStatus[3, 0];
             }
 
-            if (_statusPayment.Equals("2"))
-            {
-            _repayStatusDetailOrder = "7";
+            if (_statusPayment.Equals("2")) {
+                _repayStatusDetailOrder = "7";
                 _iconRepayStatus[0] = eCPUtil._iconRepayStatus[0, 0];
                 _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 0];
                 _iconRepayStatus[2] = eCPUtil._iconRepayStatus[2, 0];
                 _iconRepayStatus[3] = eCPUtil._iconRepayStatus[3, 1];
             }
 
-            if (_statusPayment.Equals("3"))
-            {
+            if (_statusPayment.Equals("3")) {
                 _repayStatusDetailOrder = "8";
                 _iconRepayStatus[0] = eCPUtil._iconRepayStatus[0, 0];
                 _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 0];
@@ -1236,8 +1179,7 @@ public class eCPDB
                 _iconRepayStatus[3] = eCPUtil._iconRepayStatus[3, 2];
             }                
 
-            if ((_statusRepay.Equals("1") || _statusRepay.Equals("2")) && (_statusPayment.Equals("1")))
-            {
+            if ((_statusRepay.Equals("1") || _statusRepay.Equals("2")) && (_statusPayment.Equals("1"))) {
                 _iconRepayStatus[0] = eCPUtil._iconRepayStatus[0, 0];
                 _iconRepayStatus[3] = eCPUtil._iconRepayStatus[3, 0];
 
@@ -1246,22 +1188,19 @@ public class eCPDB
                     new SqlParameter("@cp2id", _cp2id)
                 );
 
-                foreach (DataRow _dr in _ds.Tables[0].Rows)
-                {
-                    if (_dr["StatusRepay"].ToString().Equals("1"))
-                    {
-                        if (_dr["StatusReply"].ToString().Equals("1"))
-                        {
+                foreach (DataRow _dr in _ds.Tables[0].Rows) {
+                    if (_dr["StatusRepay"].ToString().Equals("1")) {
+                        if (_dr["StatusReply"].ToString().Equals("1")) {
                             _repayStatusDetailOrder = "1";
                             _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 1];
                         }
-                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("1"))
-                        {
+
+                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("1")) {
                             _repayStatusDetailOrder = "2";
                             _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 2];
                         }
-                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("2"))
-                        {
+
+                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("2")) {
                             _repayStatusDetailOrder = "3";
                             _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 3];
                         }
@@ -1269,20 +1208,18 @@ public class eCPDB
 
                     _iconRepayStatus[2] = eCPUtil._iconRepayStatus[2, 0];
 
-                    if (_dr["StatusRepay"].ToString().Equals("2"))
-                    {
-                        if (_dr["StatusReply"].ToString().Equals("1"))
-                        {
+                    if (_dr["StatusRepay"].ToString().Equals("2")) {
+                        if (_dr["StatusReply"].ToString().Equals("1")) {
                             _repayStatusDetailOrder = "4";
                             _iconRepayStatus[2] = eCPUtil._iconRepayStatus[2, 1];
                         }
-                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("1"))
-                        {
+
+                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("1")) {
                             _repayStatusDetailOrder = "5";
                             _iconRepayStatus[2] = eCPUtil._iconRepayStatus[2, 2];
                         }
-                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("2"))
-                        {
+
+                        if (_dr["StatusReply"].ToString().Equals("2") && _dr["ReplyResult"].ToString().Equals("2")) {
                             _repayStatusDetailOrder = "6";
                             _iconRepayStatus[2] = eCPUtil._iconRepayStatus[2, 3];
                         }
@@ -1292,8 +1229,7 @@ public class eCPDB
                 _ds.Dispose();
             }
         }
-        else
-        {
+        else {
             _repayStatusDetailOrder = "0";
             _iconRepayStatus[0] = eCPUtil._iconRepayStatus[0, 0];
             _iconRepayStatus[1] = eCPUtil._iconRepayStatus[1, 0];
@@ -1306,8 +1242,7 @@ public class eCPDB
         return _repayStatusDetail;
     }
 
-    public static string[,] ListRepay(HttpContext _c)
-    {
+    public static string[,] ListRepay(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1329,8 +1264,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 19];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -1359,8 +1293,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListRepay1(HttpContext _c)
-    {
+    public static string[,] ListRepay1(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1382,8 +1315,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 22];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -1415,8 +1347,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailCPTransRequireContract(string _cp1id)
-    {
+    public static string[,] ListDetailCPTransRequireContract(string _cp1id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1427,8 +1358,7 @@ public class eCPDB
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 78];
         string[,] _data1;
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {           
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -1519,8 +1449,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string ChkRepayStatusCPTransRequireContract(string _cp1id)
-    {
+    public static string ChkRepayStatusCPTransRequireContract(string _cp1id) {
         string _repayStatus = String.Empty;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1536,8 +1465,7 @@ public class eCPDB
         return _repayStatus;
     }
 
-    public static string[,] ListCPTransRepayContract(string _cp2id)
-    {
+    public static string[,] ListCPTransRepayContract(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1548,8 +1476,7 @@ public class eCPDB
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 14];
         string[,] _data1;
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["TotalPenalty"].ToString();
             _data[_i, 2] = _dr["StatusRepay"].ToString();
@@ -1565,8 +1492,7 @@ public class eCPDB
             
             _data1 = ListMaxReplyDate(_dr["ID"].ToString());
 
-            if (_data1.GetLength(0) > 0)
-            {
+            if (_data1.GetLength(0) > 0) {
                 if (_data1[0, 3].Equals("2") && _data1[0, 4].Equals("1"))
                     _data[_i, 8] = _data1[0, 5];
 
@@ -1585,8 +1511,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListMaxReplyDate(string _cp2id)
-    {
+    public static string[,] ListMaxReplyDate(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1596,8 +1521,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 6];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RCID"].ToString();
             _data[_i, 1] = _dr["StatusRepay"].ToString();
             _data[_i, 2] = _dr["RepayDate"].ToString();
@@ -1613,8 +1537,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string ChkRepayStatusCalInterestOverpayment(string _cp2id)
-    {
+    public static string ChkRepayStatusCalInterestOverpayment(string _cp2id) {
         string[,] _data;
         string _result;
         string[] _repayDate;
@@ -1622,18 +1545,15 @@ public class eCPDB
         
         _data = ListCPTransRepayContract(_cp2id);
 
-        if (_data.GetLength(0) > 0)
-        {
-            if (!_data[0, 7].Equals("2")) //Status Payment
-            {
-                if (!_data[0, 7].Equals("3")) //Status Payment
-                {
-                    if (_data[0, 9].Equals("2"))
-                    {
-                        if (_data[0, 10].Equals("1"))
-                        {
-                            if (!String.IsNullOrEmpty(_data[0, 8])) //Reply Date
-                            {
+        if (_data.GetLength(0) > 0) {
+            //Status Payment
+            if (!_data[0, 7].Equals("2")) {
+                //Status Payment
+                if (!_data[0, 7].Equals("3")) {
+                    if (_data[0, 9].Equals("2")) {
+                        if (_data[0, 10].Equals("1")) {
+                            //Reply Date
+                            if (!String.IsNullOrEmpty(_data[0, 8])) {
                                 _repayDate = eCPUtil.RepayDate(_data[0, 8]);
                                 IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
                                 DateTime _dateA = DateTime.Parse(_repayDate[2], _provider);
@@ -1641,8 +1561,7 @@ public class eCPDB
 
                                 _overpayment = Util.CalcDate(_dateA, _dateB);
 
-                                if (!_overpayment[0].Equals(0))
-                                {
+                                if (!_overpayment[0].Equals(0)) {
                                     _result = "0";
                                 }
                                 else
@@ -1669,13 +1588,14 @@ public class eCPDB
         return _result;
     }
 
-    public static string[,] ListCPTransRepayContractNoCurrentStatusRepay(string _cp2id, string _statusRepay)
-    {
+    public static string[,] ListCPTransRepayContractNoCurrentStatusRepay(
+        string _cp2id,
+        string _statusRepay
+    ) { 
         int _i = 0;
         string[,] _data = new string[0, 0];
 
-        if (!String.IsNullOrEmpty(_cp2id) && !String.IsNullOrEmpty(_statusRepay))
-        {
+        if (!String.IsNullOrEmpty(_cp2id) && !String.IsNullOrEmpty(_statusRepay)) {
             DataSet _ds = ExecuteCommandStoredProcedure(
                 new SqlParameter("@ordertable", 18),
                 new SqlParameter("@cp2id", _cp2id),
@@ -1684,8 +1604,7 @@ public class eCPDB
 
             _data = new string[_ds.Tables[0].Rows.Count, 8];
 
-            foreach (DataRow _dr in _ds.Tables[0].Rows)
-            {
+            foreach (DataRow _dr in _ds.Tables[0].Rows) {
                 _data[_i, 0] = _dr["ID"].ToString();
                 _data[_i, 1] = _dr["StatusRepay"].ToString();
                 _data[_i, 2] = _dr["StatusReply"].ToString();
@@ -1704,8 +1623,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountPaymentOnCPTransRequireContract(HttpContext _c)
-    {
+    public static int CountPaymentOnCPTransRequireContract(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1729,8 +1647,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListPaymentOnCPTransRequireContract(HttpContext _c)
-    {
+    public static string[,] ListPaymentOnCPTransRequireContract(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1750,8 +1667,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 28];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -1789,8 +1705,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailPaymentOnCPTransRequireContract(string _cp2id)
-    {
+    public static string[,] ListDetailPaymentOnCPTransRequireContract(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1801,8 +1716,7 @@ public class eCPDB
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 38];
         string[,] _data1;
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -1834,8 +1748,7 @@ public class eCPDB
 
             _data1 = ListLastTransPayment(_dr["ID"].ToString());
 
-            if (_data1.GetLength(0) > 0)
-            {
+            if (_data1.GetLength(0) > 0) {
                 _data[_i, 25] = _data1[0, 2];
                 _data[_i, 26] = _data1[0, 3];
                 _data[_i, 27] = _data1[0, 4];
@@ -1858,8 +1771,11 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListTransPayment(string _cp1id, string _dateStart, string _dateEnd)
-    {
+    public static string[,] ListTransPayment(
+        string _cp1id,
+        string _dateStart,
+        string _dateEnd
+    ) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1871,8 +1787,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 15];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {            
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -1897,8 +1812,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailTransPayment(string _cp2id)
-    {
+    public static string[,] ListDetailTransPayment(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1908,8 +1822,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 43];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {            
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["RCID"].ToString();
             _data[_i, 2] = _dr["CalInterestYesNo"].ToString();
@@ -1960,8 +1873,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListLastTransPayment(string _cp2id)
-    {
+    public static string[,] ListLastTransPayment(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1971,8 +1883,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 5];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["RCID"].ToString();
             _data[_i, 2] = _dr["DateTimePayment"].ToString();
@@ -1985,8 +1896,7 @@ public class eCPDB
         return _data;
     }
     
-    public static string ListCPTransProsecution(string _cp2id)
-    {
+    public static string ListCPTransProsecution(string _cp2id) {
         JArray jsonArray = new JArray();
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -1999,28 +1909,23 @@ public class eCPDB
         string _remainAccruedInterest = String.Empty;
         string _totalRemain = String.Empty;
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _dateTimePayment = _data[0, 2];
             _remainAccruedInterest = _data[0, 3];
             _totalRemain = _data[0, 4];
         }
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
-            jsonArray.Add(new JObject()
-            {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
+            jsonArray.Add(new JObject() {
                 {
-                    "eCPTransRequireContract", new JObject()
-                    {
+                    "eCPTransRequireContract", new JObject() {
                         { "ID", _dr["ID"].ToString() },
                         { "BCID", _dr["BCID"].ToString() },
                         { "subtotalPenalty", _dr["SubtotalPenalty"].ToString() },
                         { "totalPenalty", _dr["TotalPenalty"].ToString() },
                         { "statusPayment", _dr["StatusPayment"].ToString() },
                         {
-                            "lawyer", new JObject()
-                            {
+                            "lawyer", new JObject() {
                                 { "fullName", _dr["LawyerFullname"].ToString() },
                                 { "phoneNumber", _dr["LawyerPhoneNumber"].ToString() },
                                 { "mobileNumber", _dr["LawyerMobileNumber"].ToString() },
@@ -2030,15 +1935,12 @@ public class eCPDB
                     }
                 },
                 {
-                    "eCPTransProsecution", new JObject()
-                    {
+                    "eCPTransProsecution", new JObject() {
                         { "RCID", _dr["RCID"].ToString() },
                         {
-                            "complaint", new JObject()
-                            {
+                            "complaint", new JObject() {
                                 {
-                                    "lawyer", new JObject()
-                                    {
+                                    "lawyer", new JObject() {
                                         { "fullName", _dr["ComplaintLawyerFullname"].ToString() },
                                         { "phoneNumber", _dr["ComplaintLawyerPhoneNumber"].ToString() },
                                         { "mobileNumber", _dr["ComplaintLawyerMobileNumber"].ToString() },
@@ -2052,11 +1954,9 @@ public class eCPDB
                             }
                         },
                         {
-                            "judgment", new JObject()
-                            {
+                            "judgment", new JObject() {
                                 {
-                                    "lawyer", new JObject()
-                                    {
+                                    "lawyer", new JObject() {
                                         { "fullName", _dr["JudgmentLawyerFullname"].ToString() },
                                         { "phoneNumber", _dr["JudgmentLawyerPhoneNumber"].ToString() },
                                         { "mobileNumber", _dr["JudgmentLawyerMobileNumber"].ToString() },
@@ -2071,11 +1971,9 @@ public class eCPDB
                             }
                         },
                         {
-                            "execution", new JObject()
-                            {
+                            "execution", new JObject() {
                                 {
-                                    "lawyer", new JObject()
-                                    {
+                                    "lawyer", new JObject() {
                                         { "fullName", _dr["ExecutionLawyerFullname"].ToString() },
                                         { "phoneNumber", _dr["ExecutionLawyerPhoneNumber"].ToString() },
                                         { "mobileNumber", _dr["ExecutionLawyerMobileNumber"].ToString() },
@@ -2088,11 +1986,9 @@ public class eCPDB
                             }
                         },
                         {
-                            "executionWithdraw", new JObject()
-                            {
+                            "executionWithdraw", new JObject() {
                                 {
-                                    "lawyer", new JObject()
-                                    {
+                                    "lawyer", new JObject() {
                                         { "fullName", _dr["ExecutionWithdrawLawyerFullname"].ToString() },
                                         { "phoneNumber", _dr["ExecutionWithdrawLawyerPhoneNumber"].ToString() },
                                         { "mobileNumber", _dr["ExecutionWithdrawLawyerMobileNumber"].ToString() },
@@ -2108,11 +2004,9 @@ public class eCPDB
                     }
                 },
                 {
-                    "eCPTransPayment", new JObject()
-                    {
+                    "eCPTransPayment", new JObject() {
                         {
-                            "lastPayment", new JObject()
-                            {
+                            "lastPayment", new JObject() {
                                 { "dateTimePayment", _dateTimePayment },
                                 { "remainAccruedInterest", _remainAccruedInterest },
                                 { "totalRemain", _totalRemain }
@@ -2128,8 +2022,7 @@ public class eCPDB
         return JsonConvert.SerializeObject(jsonArray);
     }
 
-    public static string GetPersonRecordsAddress(string _studentCode)
-    {
+    public static string GetPersonRecordsAddress(string _studentCode) {
         JArray jsonArray = new JArray();
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2137,15 +2030,12 @@ public class eCPDB
             new SqlParameter("@studentid", (!String.IsNullOrEmpty(_studentCode) ? _studentCode : null))
         );
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
-            jsonArray.Add(new JObject()
-            {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
+            jsonArray.Add(new JObject() {
                 { "perPersonID", _dr["id"].ToString() },
                 { "idCard", _dr["idCard"].ToString() },
                 {
-                    "addressTypePermanent", new JObject()
-                    {
+                    "addressTypePermanent", new JObject() {
                         { "address", _dr["addressPermanent"].ToString() },
                         { "country", _dr["thCountryNamePermanent"].ToString() },
                         { "village", _dr["villagePermanent"].ToString() },
@@ -2162,8 +2052,7 @@ public class eCPDB
                     }
                 },
                 {
-                    "addressTypeCurrent", new JObject()
-                    {
+                    "addressTypeCurrent", new JObject() {
                         { "address", _dr["addressCurrent"].ToString() },
                         { "country", _dr["thCountryNameCurrent"].ToString() },
                         { "village", _dr["villageCurrent"].ToString() },
@@ -2187,8 +2076,10 @@ public class eCPDB
         return JsonConvert.SerializeObject(jsonArray);
     }
 
-    public static string[,] ListLastCommentOnCPTransBreakContract(string _cpid, string _action)
-    {
+    public static string[,] ListLastCommentOnCPTransBreakContract(
+        string _cpid,
+        string _action
+    ) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2199,8 +2090,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["Comment"].ToString();
@@ -2214,8 +2104,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportTableCalCapitalAndInterest(HttpContext _c)
-    {
+    public static int CountCPReportTableCalCapitalAndInterest(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2235,8 +2124,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPReportTableCalCapitalAndInterest(HttpContext _c)
-    {
+    public static string[,] ListCPReportTableCalCapitalAndInterest(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2253,8 +2141,7 @@ public class eCPDB
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 20];
         string[,] _data1;
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {            
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -2294,8 +2181,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListSumPayOnPayment(string _cp2id)
-    {
+    public static string[,] ListSumPayOnPayment(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2304,9 +2190,8 @@ public class eCPDB
         );
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 4];
-
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+ 
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RCID"].ToString();
             _data[_i, 1] = _dr["SumPayCapital"].ToString();
             _data[_i, 2] = _dr["SumPayInterest"].ToString();
@@ -2318,8 +2203,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailCPReportTableCalCapitalAndInterest(string _cp2id)
-    {
+    public static string[,] ListDetailCPReportTableCalCapitalAndInterest(string _cp2id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2330,8 +2214,7 @@ public class eCPDB
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 26];
         string[,] _data1;
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["ID"].ToString();
             _data[_i, 2] = _dr["BCID"].ToString();
@@ -2371,8 +2254,12 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCalCPReportTableCalCapitalAndInterest(string _capital, string _interest, string _pay, string _paymentDate)
-    {
+    public static string[,] ListCalCPReportTableCalCapitalAndInterest(
+        string _capital,
+        string _interest,
+        string _pay,
+        string _paymentDate
+    ) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2385,8 +2272,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count + 1, 9];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {           
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["PaidPeriod"].ToString();
             _data[_i, 1] = _dr["Capital"].ToString();
             _data[_i, 2] = _dr["Paid"].ToString();
@@ -2397,8 +2283,7 @@ public class eCPDB
             _i++;
         }
 
-        foreach (DataRow _dr1 in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr1 in _ds.Tables[1].Rows) {
             _data[_i, 6] = _dr1["SumPaid"].ToString();
             _data[_i, 7] = _dr1["SumInterest"].ToString();
             _data[_i, 8] = _dr1["SumPayTotal"].ToString();
@@ -2409,8 +2294,12 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListSumCalCPReportTableCalCapitalAndInterest(string _capital, string _interest, string _pay, string _paymentDate)
-    {
+    public static string[,] ListSumCalCPReportTableCalCapitalAndInterest(
+        string _capital,
+        string _interest,
+        string _pay,
+        string _paymentDate
+    ) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2423,8 +2312,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 6];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["PaidPeriod"].ToString();
             _data[_i, 1] = _dr["Capital"].ToString();
             _data[_i, 2] = _dr["Paid"].ToString();
@@ -2440,8 +2328,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportStepOfWork(HttpContext _c)
-    {
+    public static int CountCPReportStepOfWork(HttpContext _c) {
         int _section;
         int _recordCount = 0;
 
@@ -2468,8 +2355,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPReportStepOfWork(HttpContext _c)
-    {
+    public static string[,] ListCPReportStepOfWork(HttpContext _c) {
         int _section;
         int _i = 0;
 
@@ -2492,8 +2378,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 17];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -2520,8 +2405,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c)
-    {
+    public static int CountReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2542,8 +2426,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c)
-    {
+    public static string[,] ListReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2560,8 +2443,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 17];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -2588,8 +2470,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCPReportStatisticRepay()
-    {
+    public static string[,] ListCPReportStatisticRepay() {
         int _i = 0;
         double _remain = 0;
 
@@ -2599,8 +2480,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 10];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["AcadamicYear"].ToString();
             _data[_i, 2] = !String.IsNullOrEmpty(_dr["CountProgram"].ToString()) ? _dr["CountProgram"].ToString() : "0";
@@ -2623,8 +2503,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCPReportStatisticRepayByProgram(string _acadamicyear)
-    {
+    public static string[,] ListCPReportStatisticRepayByProgram(string _acadamicyear) {
         int _i = 0;
         double _remain = 0;
 
@@ -2635,8 +2514,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 15];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["AcadamicYear"].ToString();
             _data[_i, 2] = _dr["FacultyCode"].ToString();
@@ -2664,8 +2542,7 @@ public class eCPDB
         return _data;
     }
     
-    public static string[,] ListCPReportStatisticContract()
-    {
+    public static string[,] ListCPReportStatisticContract() {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2674,8 +2551,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 5];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["AcadamicYear"].ToString();
             _data[_i, 2] = !String.IsNullOrEmpty(_dr["CountStudent"].ToString()) ? _dr["CountStudent"].ToString() : "0";
@@ -2690,8 +2566,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountReportStudentSignContract(HttpContext _c)
-    {
+    public static int CountReportStudentSignContract(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2712,8 +2587,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListReportStudentSignContract(HttpContext _c)
-    {
+    public static string[,] ListReportStudentSignContract(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2730,8 +2604,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 10];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["StudentID"].ToString();
             _data[_i, 2] = _dr["TitleTName"].ToString();
@@ -2751,8 +2624,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListCPReportStatisticContractByProgram(string _acadamicyear)
-    {
+    public static string[,] ListCPReportStatisticContractByProgram(string _acadamicyear) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2762,8 +2634,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 11];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["AcadamicYear"].ToString();
             _data[_i, 2] = _dr["FacultyCode"].ToString();
@@ -2784,8 +2655,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportNoticeRepayComplete(HttpContext _c)
-    {
+    public static int CountCPReportNoticeRepayComplete(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2805,8 +2675,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListReportNoticeRepayComplete(HttpContext _c)
-    {
+    public static string[,] ListReportNoticeRepayComplete(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2822,8 +2691,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 12];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -2845,8 +2713,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailReportNoticeRepayComplete(string _cp1id)
-    {
+    public static string[,] ListDetailReportNoticeRepayComplete(string _cp1id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2856,8 +2723,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 16];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["BCID"].ToString();
             _data[_i, 1] = _dr["RCID"].ToString();
             _data[_i, 2] = _dr["StudentID"].ToString();
@@ -2881,8 +2747,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportNoticeClaimDebt(HttpContext _c)
-    {
+    public static int CountCPReportNoticeClaimDebt(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2902,8 +2767,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListReportNoticeClaimDebt(HttpContext _c)
-    {
+    public static string[,] ListReportNoticeClaimDebt(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2919,8 +2783,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 12];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -2942,8 +2805,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListDetailReportNoticeClaimDebt(string _cp1id)
-    {
+    public static string[,] ListDetailReportNoticeClaimDebt(string _cp1id) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -2953,8 +2815,7 @@ public class eCPDB
         
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 27];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {            
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["BCID"].ToString();
             _data[_i, 1] = _dr["RCID"].ToString();
             _data[_i, 2] = _dr["StudentID"].ToString();
@@ -2989,8 +2850,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportStatisticPaymentByDate(HttpContext _c)
-    {
+    public static int CountCPReportStatisticPaymentByDate(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -3013,8 +2873,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListReportStatisticPaymentByDate(HttpContext _c)
-    {
+    public static string[,] ListReportStatisticPaymentByDate(HttpContext _c) {
         int _i = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -3033,8 +2892,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 14];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -3058,8 +2916,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportEContract(HttpContext _c)
-    {
+    public static int CountCPReportEContract(HttpContext _c) {
         int _recordCount = 0;
 
         DataSet _ds = ExecuteCommandStoredProcedure(
@@ -3080,8 +2937,7 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPReportEContract(HttpContext _c)
-    {
+    public static string[,] ListCPReportEContract(HttpContext _c) {
         int _i = 0;
         string _pathEContract = "https://econtract.mahidol.ac.th/ElectronicContract/";
         string _path = String.Empty;
@@ -3103,8 +2959,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 18];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["StudentID"].ToString();
             _data[_i, 2] = _dr["TitleTName"].ToString();
@@ -3114,15 +2969,13 @@ public class eCPDB
             _data[_i, 6] = _dr["ProgTName"].ToString();
             _data[_i, 7] = _dr["GroupNum"].ToString();
             /*
-            if (_dr["operationType"].Equals("S") || _dr["operationType"].Equals("M"))
-            {
+            if (_dr["operationType"].Equals("S") || _dr["operationType"].Equals("M")) {
                 _data[_i, 8] = "1";
                 _data[_i, 9] = "1";
                 _data[_i, 10] = "1";
             }
 
-            if (_dr["operationType"].Equals("O"))
-            {
+            if (_dr["operationType"].Equals("O")) {
                 _data[_i, 8] = (_dr["contractSignByStudent"].Equals(true) ? "1" : "0");
                 _data[_i, 9] = (_dr["parentContractSignFlagF"].Equals(true) ? "1" : "0");
                 _data[_i, 10] = (_dr["parentContractSignFlagM"].Equals(true) ? "1" : "0");
@@ -3130,8 +2983,7 @@ public class eCPDB
 
             _p = _dr["ProgramCode"].ToString();
 
-            if (_dr["ProgramCode"].Equals("NSNSB"))
-            {
+            if (_dr["ProgramCode"].Equals("NSNSB")) {
                 switch (_dr["QuotaCode"].ToString())
                 {
                     case "350":
@@ -3173,8 +3025,7 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportDebtorContract(HttpContext _c)
-    {
+    public static int CountCPReportDebtorContract(HttpContext _c) {
         int _recordCount = 0;
         int _orderTable = 0;
 
@@ -3204,14 +3055,12 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPReportDebtorContract(HttpContext _c)
-    {
+    public static string[,] ListCPReportDebtorContract(HttpContext _c) {
         int _i = 0;
         int _orderTable = 0;
         double _remain = 0;
 
-        switch (_c.Request["reportorder"])
-        {
+        switch (_c.Request["reportorder"]) {
             case "reportdebtorcontract":
                 _orderTable = 43;
                 break;
@@ -3231,8 +3080,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[0].Rows.Count, 14];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["FacultyCode"].ToString();
             _data[_i, 2] = _dr["FacultyName"].ToString();
@@ -3259,13 +3107,11 @@ public class eCPDB
         return _data;
     }
 
-    public static int CountCPReportDebtorContractByProgram(HttpContext _c)
-    {
+    public static int CountCPReportDebtorContractByProgram(HttpContext _c) {
         int _recordCount = 0;
         int _orderTable = 0;
 
-        switch (_c.Request["reportorder"])
-        {
+        switch (_c.Request["reportorder"]) {
             case "reportdebtorcontract":
                 _orderTable = 44;
                 break;
@@ -3297,14 +3143,12 @@ public class eCPDB
         return _recordCount;
     }
 
-    public static string[,] ListCPReportDebtorContractByProgram(HttpContext _c)
-    {
+    public static string[,] ListCPReportDebtorContractByProgram(HttpContext _c) {
         int _i = 0;
         int _orderTable = 0;
         double _remain = 0;
 
-        switch (_c.Request["reportorder"])
-        {
+        switch (_c.Request["reportorder"]) {
             case "reportdebtorcontract":
                 _orderTable = 44;
                 break;
@@ -3332,8 +3176,7 @@ public class eCPDB
 
         string[,] _data = new string[_ds.Tables[1].Rows.Count, 23];
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 0] = _dr["RowNum"].ToString();
             _data[_i, 1] = _dr["BCID"].ToString();
             _data[_i, 2] = _dr["RCID"].ToString();
@@ -3369,8 +3212,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListExportReportDebtorContract(string _exportSend)
-    {
+    public static string[,] ListExportReportDebtorContract(string _exportSend) {
         int _i = 0;
         char[] _separator;
 
@@ -3399,8 +3241,7 @@ public class eCPDB
 
         string[,] _data = new string[(_ds.Tables[0].Rows.Count + 1), 29];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["StudentID"].ToString();
             _data[_i, 1] = _dr["TitleTName"].ToString();
             _data[_i, 2] = _dr["FirstTName"].ToString();
@@ -3433,8 +3274,7 @@ public class eCPDB
             _i++;
         }
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 28] = _dr["TotalPenalty"].ToString();
         }
 
@@ -3443,8 +3283,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListExportReportDebtorContractPaid(string _exportSend)
-    {
+    public static string[,] ListExportReportDebtorContractPaid(string _exportSend) {
         int _i = 0;
         char[] _separator;
 
@@ -3473,8 +3312,7 @@ public class eCPDB
 
         string[,] _data = new string[(_ds.Tables[0].Rows.Count + 1), 46];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["StudentID"].ToString();
             _data[_i, 1] = _dr["TitleTName"].ToString();
             _data[_i, 2] = _dr["FirstTName"].ToString();
@@ -3516,8 +3354,7 @@ public class eCPDB
             _i++;
         }
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 37] = _dr["TotalCapital"].ToString();
             _data[_i, 38] = _dr["TotalInterest"].ToString();
             _data[_i, 39] = _dr["TotalPayment"].ToString();
@@ -3534,8 +3371,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string[,] ListExportReportDebtorContractRemain(string _exportSend)
-    {
+    public static string[,] ListExportReportDebtorContractRemain(string _exportSend) {
         int _i = 0;
         char[] _separator;
         double _totalRemainCapital = 0;
@@ -3568,8 +3404,7 @@ public class eCPDB
 
         string[,] _data = new string[(_ds.Tables[0].Rows.Count + 1), 37];
 
-        foreach (DataRow _dr in _ds.Tables[0].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["StudentID"].ToString();
             _data[_i, 1] = _dr["TitleTName"].ToString();
             _data[_i, 2] = _dr["FirstTName"].ToString();
@@ -3611,8 +3446,7 @@ public class eCPDB
             _i++;
         }
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _data[_i, 32] = _dr["TotalPenalty"].ToString();
             _data[_i, 33] = _totalRemainCapital.ToString();
             _data[_i, 34] = _totalAccruedInterest.ToString();
@@ -3625,8 +3459,7 @@ public class eCPDB
         return _data;
     }
 
-    public static string ListExportReportDebtorContractBreakRequireRepayPayment(string _exportSend)
-    {
+    public static string ListExportReportDebtorContractBreakRequireRepayPayment(string _exportSend) {
         char[] _separator;
 
         _separator = new char[] { ':' };
@@ -3657,10 +3490,8 @@ public class eCPDB
             new SqlParameter("@dateend", (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : null))
         );
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
-            jsonArray.Add(new JObject()
-            {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
+            jsonArray.Add(new JObject() {
                 { "ID", _dr["ID"].ToString() },
                 { "BCID", _dr["BCID"].ToString() },
                 { "studentCode", _dr["StudentID"].ToString() },
@@ -3694,16 +3525,14 @@ public class eCPDB
         return JsonConvert.SerializeObject(jsonArray);
     }
 
-    public static void AddUpdateData(HttpContext _c)
-    {
+    public static void AddUpdateData(HttpContext _c) {
         string _command = String.Empty;
         string _what = String.Empty;
         string _where = String.Empty;
         string _function = String.Empty;
         string _sqlCommand = String.Empty;
 
-        if (_c.Request["cmd"].Equals("addcptabuser"))
-        {
+        if (_c.Request["cmd"].Equals("addcptabuser")) {
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
             _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
             
@@ -3726,8 +3555,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatecptabuser"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptabuser")) {
             _what = "UPDATE";
             _where = "ecpTabUser";
             _function = "AddUpdateData, updatecptabuser";
@@ -3741,16 +3569,14 @@ public class eCPDB
                         "WHERE (ID = '" + _c.Request["userid"] + "')";
         }
 
-        if (_c.Request["cmd"].Equals("delcptabuser"))
-        {
+        if (_c.Request["cmd"].Equals("delcptabuser")) {
             _what = "DELETE";
             _where = "ecpTabUser";
             _function = "AddUpdateData, ecpTabUser";
             _command += "DELETE FROM ecpTabUser WHERE (ID = '" + _c.Request["userid"] + "')";
         }
 
-        if (_c.Request["cmd"].Equals("addcptabprogram"))
-        {
+        if (_c.Request["cmd"].Equals("addcptabprogram")) {
             _what = "INSERT";
             _where = "ecpTabProgram";
             _function = "AddUpdateData, addcptabprogram";
@@ -3766,8 +3592,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatecptabprogram"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptabprogram")) {
             _what = "UPDATE";
             _where = "ecpTabProgram";
             _function = "AddUpdateData, updatecptabprogram";
@@ -3780,16 +3605,14 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("delcptabprogram"))
-        {
+        if (_c.Request["cmd"].Equals("delcptabprogram")) {
             _what = "DELETE";
             _where = "ecpTabProgram";
             _function = "AddUpdateData, delcptabprogram";
             _command += "DELETE FROM ecpTabProgram WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("addcptabinterest"))
-        {
+        if (_c.Request["cmd"].Equals("addcptabinterest")) {
             _what = "INSERT";
             _where = "ecpTabInterest";
             _function = "AddUpdateData, addcptabinterest";
@@ -3802,8 +3625,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updateusecontractinterest"))
-        {
+        if (_c.Request["cmd"].Equals("updateusecontractinterest")) {
             _what = "UPDATE";
             _where = "ecpTabInterest";
             _function = "AddUpdateData, updateusecontractinterest";
@@ -3811,8 +3633,7 @@ public class eCPDB
                         "UPDATE ecpTabInterest SET UseContractInterest = " + _c.Request["usecontractinterest"] + " WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("updatecptabinterest"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptabinterest")) {
             _what = "UPDATE";
             _where = "ecpTabInterest";
             _function = "AddUpdateData, updatecptabinterest";
@@ -3822,16 +3643,14 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("delcptabinterest"))
-        {
+        if (_c.Request["cmd"].Equals("delcptabinterest")) {
             _what = "DELETE";
             _where = "ecpTabInterest";
             _function = "AddUpdateData, delcptabinterest";
             _command += "DELETE FROM ecpTabInterest WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("addcptabpaybreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("addcptabpaybreakcontract")) {
             _what = "INSERT";
             _where = "ecpTabPayBreakContract";
             _function = "AddUpdateData, addcptabpaybreakcontract";
@@ -3851,8 +3670,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatecptabpaybreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptabpaybreakcontract")) {
             _what = "UPDATE";
             _where = "ecpTabPayBreakContract";
             _function = "AddUpdateData, updatecptabpaybreakcontract";
@@ -3869,16 +3687,14 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("delcptabpaybreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("delcptabpaybreakcontract")) {
             _what = "DELETE";
             _where = "ecpTabPayBreakContract";
             _function = "AddUpdateData, delcptabpaybreakcontract";
             _command += "DELETE FROM ecpTabPayBreakContract WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("addcptabscholarship"))
-        {
+        if (_c.Request["cmd"].Equals("addcptabscholarship")) {
             _what = "INSERT";
             _where = "ecpTabScholarship";
             _function = "AddUpdateData, addcptabscholarship";
@@ -3895,8 +3711,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatecptabscholarship"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptabscholarship")) {
             _what = "UPDATE";
             _where = "ecpTabScholarship";
             _function = "AddUpdateData, updatecptabscholarship";
@@ -3910,16 +3725,14 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("delcptabscholarship"))
-        {
+        if (_c.Request["cmd"].Equals("delcptabscholarship")) {
             _what = "DELETE";
             _where = "ecpTabScholarship";
             _function = "AddUpdateData, delcptabscholarship";
             _command += "DELETE FROM ecpTabScholarship WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("addcptransbreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("addcptransbreakcontract")) {
             _what = "INSERT";
             _where = "ecpTransBreakContract";
             _function = "AddUpdateData, addcptransbreakcontract";
@@ -3977,8 +3790,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatecptransbreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptransbreakcontract")) {
             _what = "UPDATE";
             _where = "ecpTransBreakContract";
             _function = "AddUpdateData, updatecptransbreakcontract";
@@ -4026,8 +3838,7 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("updatetrackingstatusbreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("updatetrackingstatusbreakcontract")) {
             _what = "UPDATE";
             _where = "ecpTransBreakContract";
             _function = "AddUpdateData, updatetrackingstatusbreakcontract";
@@ -4038,8 +3849,7 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"];
         }
 
-        if (_c.Request["cmd"].Equals("sendbreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("sendbreakcontract")) {
             char[] _separator = new char[] {';'};
             string[] _cpid = (_c.Request["cp1id"]).Split(_separator);
             int _i;
@@ -4056,8 +3866,7 @@ public class eCPDB
             }
         }
 
-        if (_c.Request["cmd"].Equals("rejectcptransbreakcontract"))
-        {
+        if (_c.Request["cmd"].Equals("rejectcptransbreakcontract")) {
             _what = "UPDATE";
             _where = "ecpTransBreakContract";
             _function = "AddUpdateData, rejectcptransbreakcontract";
@@ -4076,8 +3885,7 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("addcptransrequirecontract"))
-        {
+        if (_c.Request["cmd"].Equals("addcptransrequirecontract")) {
             _what = "UPDATE, INSERT";
             _where = "ecpTransBreakContract, ecpTransRequireContract";
             _function = "AddUpdateData, addcptransrequirecontract";
@@ -4089,10 +3897,8 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"] + "; " +
                         "INSERT INTO ecpTransRequireContract ";
 
-            if (_c.Request["casegraduate"].Equals("1"))
-            {
-                if (_c.Request["scholar"].Equals("1"))
-                {
+            if (_c.Request["casegraduate"].Equals("1")) {
+                if (_c.Request["scholar"].Equals("1")) {
                     _command += "(BCID, ActualMonthScholarship, ActualScholarship, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber,	LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                                 "VALUES " +
                                 "(" +
@@ -4112,8 +3918,7 @@ public class eCPDB
                                 "1, " +
                                 "0)";
                 }
-                else
-                {
+                else {
                     _command += "(BCID, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                                 "VALUES " +
                                 "(" +
@@ -4133,10 +3938,8 @@ public class eCPDB
                 }
             }
 
-            if (_c.Request["casegraduate"].Equals("2"))
-            {
-                if (_c.Request["civil"].Equals("1"))
-                {
+            if (_c.Request["casegraduate"].Equals("2")) {
+                if (_c.Request["civil"].Equals("1")) {
                     _command += "(BCID, IndemnitorAddress, Province, StudyLeave, RequireDate, ApproveDate, BeforeStudyLeaveStartDate, BeforeStudyLeaveEndDate, StudyLeaveStartDate, StudyLeaveEndDate, AfterStudyLeaveStartDate, AfterStudyLeaveEndDate, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                                 "VALUES " +
                                 "(" +
@@ -4167,8 +3970,7 @@ public class eCPDB
                                 "1, " +
                                 "0)";
                 }
-                else
-                {
+                else {
                     _command += "(BCID, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment)" +
                                 "VALUES " +
                                 "(" +
@@ -4191,8 +3993,7 @@ public class eCPDB
             }
         }
 
-        if (_c.Request["cmd"].Equals("updatecptransrequirecontract"))
-        {            
+        if (_c.Request["cmd"].Equals("updatecptransrequirecontract")) {
             _what = "UPDATE, UPDATE";
             _where = "ecpTransBreakContract, ecpTransRequireContract";
             _function = "AddUpdateData, updatecptransrequirecontract";
@@ -4204,8 +4005,7 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp1id"] + "; " +
                         "UPDATE ecpTransRequireContract SET ";
 
-            if (_c.Request["casegraduate"].Equals("1"))
-            {
+            if (_c.Request["casegraduate"].Equals("1")) {
                 _command += "ActualMonthScholarship = " + (String.IsNullOrEmpty(_c.Request["actualmonthscholarship"]) ? "NULL" : _c.Request["actualmonthscholarship"]) + ", " +
                             "ActualScholarship = " + (String.IsNullOrEmpty(_c.Request["actualscholarship"]) ? "NULL" : _c.Request["actualscholarship"]) + ", " +
                             "TotalPayScholarship = " + _c.Request["totalpayscholarship"] + ", " +
@@ -4222,10 +4022,8 @@ public class eCPDB
                             "FormatPayment = 0 ";
             }
       
-            if (_c.Request["casegraduate"].Equals("2"))
-            {
-                if (_c.Request["civil"].Equals("1"))
-                {
+            if (_c.Request["casegraduate"].Equals("2")) {
+                if (_c.Request["civil"].Equals("1")) {
                     _command += "IndemnitorAddress = '" + _c.Request["indemnitoraddress"] + "', " +
                                 "Province = '" + _c.Request["province"] + "', " +
                                 "StudyLeave = '" + _c.Request["studyleave"] + "', " +
@@ -4252,8 +4050,7 @@ public class eCPDB
                                 "StatusPayment = 1, " +
                                 "FormatPayment = 0 ";
                 }
-                else
-                {
+                else {
                     _command += "TotalPayScholarship = " + _c.Request["totalpayscholarship"] + ", " +
                                 "SubtotalPenalty = " + _c.Request["subtotalpenalty"] + ", " +
                                 "TotalPenalty = " + _c.Request["totalpenalty"] + ", " +
@@ -4270,8 +4067,7 @@ public class eCPDB
             _command += "WHERE ID = " + _c.Request["cp2id"];
         }
 
-        if (_c.Request["cmd"].Equals("addcptransrepaycontract"))
-        {
+        if (_c.Request["cmd"].Equals("addcptransrepaycontract")) {
             _what = "UPDATE, INSERT";
             _where = "ecpTransRequireContract, ecpTransRepayContract";
             _function = "AddUpdateData, addcptransrepaycontract";
@@ -4289,15 +4085,13 @@ public class eCPDB
                         ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatecptransrepaycontract"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptransrepaycontract")) {
             _what = "UPDATE";
             _where = "ecpTransRepayContract";
             _function = "AddUpdateData, updatecptransrepaycontract";
             _command += "UPDATE ecpTransRepayContract SET ";
 
-            if (!String.IsNullOrEmpty(_c.Request["replydate"]) && !String.IsNullOrEmpty(_c.Request["replyresult"]))
-            {
+            if (!String.IsNullOrEmpty(_c.Request["replydate"]) && !String.IsNullOrEmpty(_c.Request["replyresult"])) {
                 _command += "StatusReply = 2, " +
                             "ReplyResult = " + _c.Request["replyresult"] + ", " +
                             "ReplyDate = '" + _c.Request["replydate"] + "', ";
@@ -4309,8 +4103,7 @@ public class eCPDB
                         "WHERE (RCID = " + _c.Request["cp2id"] + ") AND (StatusRepay = " + _c.Request["statusrepay"] + ")";
         }
 
-        if (_c.Request["cmd"].Equals("updatestatuspaymentrecord"))
-        {
+        if (_c.Request["cmd"].Equals("updatestatuspaymentrecord")) {
             _what = "UPDATE";
             _where = "ecpTransRequireContract";
             _function = "UpdateData, updatestatuspaymentrecord";
@@ -4323,8 +4116,7 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp2id"];
         }
 
-        if (_c.Request["cmd"].Equals("addcptranspaymentfullrepay"))
-        {                                    
+        if (_c.Request["cmd"].Equals("addcptranspaymentfullrepay")) {
             string _capital = _c.Request["capital"];
             string _totalInterest = _c.Request["totalinterest"];
             string _totalAccruedInterest = _c.Request["totalaccruedinterest"];
@@ -4335,8 +4127,7 @@ public class eCPDB
 
             _payRemain = eCPUtil.CalChkBalance(_capital, _totalInterest, _totalAccruedInterest, _totalPayment, _pay);
 
-            switch (int.Parse(_c.Request["channel"]))
-            {
+            switch (int.Parse(_c.Request["channel"])) {
                 case 1: 
                     _channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
@@ -4360,10 +4151,8 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp2id"] + "; " +
                         "INSERT INTO ecpTransPayment ";
 
-            if (int.Parse(_c.Request["overpayment"]) > 0)
-            {                                    
-                if (_c.Request["calinterestyesno"].Equals("Y"))
-                {
+            if (int.Parse(_c.Request["overpayment"]) > 0) {
+                if (_c.Request["calinterestyesno"].Equals("Y")) {
                     _command += "(RCID, CalInterestYesNo, OverpaymentDateStart, OverpaymentDateEnd, OverpaymentYear, OverpaymentDay, OverpaymentInterest, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
@@ -4391,8 +4180,7 @@ public class eCPDB
                                 _channelDetail[1] + ")";
                 }
 
-                if (_c.Request["calinterestyesno"].Equals("N"))
-                {
+                if (_c.Request["calinterestyesno"].Equals("N")) {
                     _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
@@ -4415,8 +4203,7 @@ public class eCPDB
                 }
             }
 
-            if (int.Parse(_c.Request["overpayment"]) <= 0)
-            {
+            if (int.Parse(_c.Request["overpayment"]) <= 0) {
                 _command += "(RCID, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                             "VALUES " +
                             "(" +
@@ -4438,8 +4225,7 @@ public class eCPDB
             }
         }
 
-        if (_c.Request["cmd"].Equals("addcptranspaymentpayrepay"))
-        {                        
+        if (_c.Request["cmd"].Equals("addcptranspaymentpayrepay")) {
             string _statusPayment = _c.Request["statuspayment"];
             string _capital = _c.Request["capital"];
             string _totalInterest = _c.Request["totalinterest"];
@@ -4451,8 +4237,7 @@ public class eCPDB
 
             _payRemain = eCPUtil.CalChkBalance(_capital, _totalInterest, _totalAccruedInterest, _totalPayment, _pay);
             
-            switch (int.Parse(_c.Request["channel"]))
-            {
+            switch (int.Parse(_c.Request["channel"])) {
                 case 1:
                     _channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
                     _channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
@@ -4476,12 +4261,9 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp2id"] + "; " +
                         "INSERT INTO ecpTransPayment ";
 
-            if (_statusPayment.Equals("1"))
-            {                                    
-                if (int.Parse(_c.Request["overpayment"]) > 0)
-                {
-                    if (_c.Request["calinterestyesno"].Equals("Y"))
-                    {
+            if (_statusPayment.Equals("1")) {
+                if (int.Parse(_c.Request["overpayment"]) > 0) {
+                    if (_c.Request["calinterestyesno"].Equals("Y")) {
                         _command += "(RCID, CalInterestYesNo, OverpaymentDateStart, OverpaymentDateEnd, OverpaymentYear, OverpaymentDay, OverpaymentInterest, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                     "VALUES " +
                                     "(" +
@@ -4509,8 +4291,7 @@ public class eCPDB
                                     _channelDetail[1] + ")";
                     }
 
-                    if (_c.Request["calinterestyesno"].Equals("N"))
-                    {
+                    if (_c.Request["calinterestyesno"].Equals("N")) {
                         _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                     "VALUES " +
                                     "(" +
@@ -4534,10 +4315,8 @@ public class eCPDB
                 }
             }
 
-            if (_statusPayment.Equals("2") || int.Parse(_c.Request["overpayment"]) <= 0)
-            {                           
-                if (_c.Request["calinterestyesno"].Equals("Y"))
-                {
+            if (_statusPayment.Equals("2") || int.Parse(_c.Request["overpayment"]) <= 0) {
+                if (_c.Request["calinterestyesno"].Equals("Y")) {
                     _command += "(RCID, CalInterestYesNo, PayRepayDateStart, PayRepayDateEnd, PayRepayYear, PayRepayDay, PayRepayInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
@@ -4565,8 +4344,7 @@ public class eCPDB
                                 _channelDetail[1] + ")";
                 }
 
-                if (_c.Request["calinterestyesno"].Equals("N"))
-                {
+                if (_c.Request["calinterestyesno"].Equals("N")) {
                     _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
@@ -4590,16 +4368,14 @@ public class eCPDB
             } 
         }
 
-        if (_c.Request["cmd"].Equals("addcptransprosecution"))
-        {
+        if (_c.Request["cmd"].Equals("addcptransprosecution")) {
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
             _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
             string _userid = eCPUtil.GetUserID();
             string[] _documentetail = new string[2];
 
-            switch (_c.Request["document"])
-            {
+            switch (_c.Request["document"]) {
                 case "complaint":
                     _documentetail[0] = "ComplaintLawyerFullname, ComplaintLawyerPhoneNumber, ComplaintLawyerMobileNumber, ComplaintLawyerEmail, ComplaintBlackCaseNo, ComplaintCapital, ComplaintInterest, ComplaintActionDate, ComplaintActionBy, ComplaintActionIP";
                     _documentetail[1] = 
@@ -4659,16 +4435,14 @@ public class eCPDB
         }
 
 
-        if (_c.Request["cmd"].Equals("updatecptransprosecution"))
-        {
+        if (_c.Request["cmd"].Equals("updatecptransprosecution")) {
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
             _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
             string _userid = eCPUtil.GetUserID();
             string _documentetail = String.Empty;
 
-            switch (_c.Request["document"])
-            {
+            switch (_c.Request["document"]) {
                 case "complaint":
                     _documentetail =
                         "ComplaintLawyerFullname = '" + _c.Request[_c.Request["document"] + "lawyerfullname"] + "', " +

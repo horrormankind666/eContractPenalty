@@ -8,10 +8,11 @@ Create By           : Yutthaphoom Tawana
 using System;
 using System.Web;
 
-public class eCPDataUser
-{
-    public static string AddUpdateCPTabUser(string _action, string[,] _data)
-    {
+public class eCPDataUser {
+    public static string AddUpdateCPTabUser(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         string _userid = _action.Equals("update") ? _data[0, 9] : String.Empty;
         string _username = _action.Equals("update") ? _data[0, 1] : String.Empty;
@@ -139,8 +140,7 @@ public class eCPDataUser
         return _html;
     }
     
-    public static string AddCPTabuser()
-    {
+    public static string AddCPTabuser() {
         string _html = String.Empty;
         string[,] _data = new string[0, 0];
 
@@ -149,8 +149,7 @@ public class eCPDataUser
         return _html;
     }
 
-    public static string UpdateCPTabUser(string _userid)
-    {
+    public static string UpdateCPTabUser(string _userid) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -162,8 +161,7 @@ public class eCPDataUser
         return _html;
     }
     
-    public static string ListCPTabUser(HttpContext _c)
-    {
+    public static string ListCPTabUser(HttpContext _c) {
         string _html = String.Empty;
         string _pageHtml = String.Empty;
         string[,] _data;
@@ -183,22 +181,20 @@ public class eCPDataUser
 
         _recordCount = eCPDB.CountCPTabUser(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPTabUser(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _j = 0;
                 Array.Clear(_phoneNumber, 0, _phoneNumber.Length);
 
-                if (!String.IsNullOrEmpty(_data[_i, 6]))
-                {
+                if (!String.IsNullOrEmpty(_data[_i, 6])) {
                     _phoneNumber[_j] = _data[_i, 6];
                     _j++;
                 }
+
                 if (!String.IsNullOrEmpty(_data[_i, 7]))
                     _phoneNumber[_j] = _data[_i, 7];
 
@@ -227,8 +223,7 @@ public class eCPDataUser
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
     
-    public static string TabCPTabUser()
-    {
+    public static string TabCPTabUser() {
         string _html = String.Empty;
 
         _html += "<div id='cp-tab-user-head'>" +

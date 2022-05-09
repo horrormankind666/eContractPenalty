@@ -101,105 +101,147 @@ function GoToPage(_section, _order) {
 
     if (_order == 0) { _pid = 1; _area = "all"; }
 
-    //เจ้าหน้าที่กองกฏหมาย
+    /*
+    เจ้าหน้าที่กองกฏหมาย
+    */
     if (_order != 0 && _section == 1) {
         switch (_order) {
-            //หน้าแรก
+            /*
+            หน้าแรก
+            */
             case 1:
                 _pid = 1;
                 _area = "sec";
                 break;
-            //บัญชีผู้ใช้งาน
+            /*
+            บัญชีผู้ใช้งาน
+            */
             case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            //ตั้งค่าระบบ - กำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา
+            /*
+            ตั้งค่าระบบ - กำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา
+            */
             case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            //ตั้งค่าระบบ - เงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
+            /*
+            ตั้งค่าระบบ - เงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
+            */
             case 4:
                 _pid = 4;
                 _area = "sec";
                 break;
-            //ตั้งค่าระบบ - กำหนดดอกเบี้ยจากการผิดนัดชำระ
+            /*
+            ตั้งค่าระบบ - กำหนดดอกเบี้ยจากการผิดนัดชำระ
+            */
             case 5:
                 _pid = 5;
                 _area = "sec";
                 break;
-            //ตั้งค่าระบบ - เกณฑ์การชดใช้ตามสัญญา
+            /*
+            ตั้งค่าระบบ - เกณฑ์การชดใช้ตามสัญญา
+            */
             case 6:
                 _pid = 6;
                 _area = "sec";
                 break;
-            //ตั้งค่าระบบ - กำหนดทุนการศึกษาแต่ละหลักสูตร
+            /*
+            ตั้งค่าระบบ - กำหนดทุนการศึกษาแต่ละหลักสูตร
+            */
             case 7:
                 _pid = 7;
                 _area = "sec";
                 break;
-            //รับแจ้งนักศึกษาผิดสัญญา
+            /*
+            รับแจ้งนักศึกษาผิดสัญญา
+            */
             case 8:
                 _pid = 8;
                 _area = "sec";
                 break;
-            //บันทึกการชำระหนี้ / ดอกเบี้ย
+            /*
+            บันทึกการชำระหนี้ / ดอกเบี้ย
+            */
             case 9:
                 _pid = 9;
                 _area = "sec";
                 break;
-            //รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
+            /*
+            รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
+            */
             case 10:
                 _pid = 10;
                 _area = "sec";
                 break;
-            //รายงาน - ตารางคำนวณเงินต้นและดอกเบี้ย
+            /*
+            รายงาน - ตารางคำนวณเงินต้นและดอกเบี้ย
+            */
             case 11:
                 _pid = 11;
                 _area = "sec";
                 break;
-            //รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
+            /*
+            รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
+            */
             case 12:
                 _pid = 12;
                 _area = "sec";
                 break;
-            //รายงาน - หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
+            /*
+            รายงาน - หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
+            */
             case 13:
                 _pid = 13;
                 _area = "sec";
                 break;
-            //รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
+            /*
+            รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
+            */
             case 14:
                 _pid = 14;
                 _area = "sec";
                 break;
-            //รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
+            /*
+            รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
+            */
             case 15:
                 _pid = 15;
                 _area = "sec";
                 break;
-            //รายงาน - เอกสารสัญญาการเป็นนักศึกษา
+            /*
+            รายงาน - เอกสารสัญญาการเป็นนักศึกษา
+            */
             case 16:
                 _pid = 16;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
+            */
             case 17:
                 _pid = 17;
                 _area = "sec";
                 break;
-            //รายงาน - การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
+            /*
+            รายงาน - การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
+            */
             case 18:
                 _pid = 18;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้
+            */
             case 19:
                 _pid = 19;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            */
             case 20:
                 _pid = 20;
                 _area = "sec";
@@ -207,50 +249,70 @@ function GoToPage(_section, _order) {
         }
     }
 
-    //เจ้าหน้าที่กองบริหารการศึกษา
+    /*
+    เจ้าหน้าที่กองบริหารการศึกษา
+    */
     if (_order != 0 && _section == 2) {
         switch (_order) {
-            //หน้าแรก
+            /*
+            หน้าแรก
+            */
             case 1:
                 _pid = 1;
                 _area = "sec";
                 break;
-            //บัญชีผู้ใช้งาน
+            /*
+            บัญชีผู้ใช้งาน
+            */
             case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            //แจ้งนักศึกษาผิดสัญญา
+            /*
+            แจ้งนักศึกษาผิดสัญญา
+            */
             case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            //รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
+            /*
+            รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
+            */
             case 4:
                 _pid = 4;
                 _area = "sec";
-                break;            
-            //รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
+                break;
+            /*
+            รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
+            */
             case 5:
                 _pid = 5;
                 _area = "sec";
                 break;
-            //รายงาน - หนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
+            /*
+            รายงาน - หนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
+            */
             case 6:
                 _pid = 6;
                 _area = "sec";
                 break;
-            //รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
+            /*
+            รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
+            */
             case 7:
                 _pid = 7;
                 _area = "sec";
                 break;
-            //รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
+            /*
+            รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
+            */
             case 8:
                 _pid = 8;
                 _area = "sec";
                 break;
-            //รายงาน - เอกสารสัญญาการเป็นนักศึกษา
+            /*
+            รายงาน - เอกสารสัญญาการเป็นนักศึกษา
+            */
             case 9:
                 _pid = 9;
                 _area = "sec";
@@ -258,35 +320,49 @@ function GoToPage(_section, _order) {
         }
     }
 
-    //เจ้าหน้าที่กองคลัง
+    /*
+    เจ้าหน้าที่กองคลัง
+    */
     if (_order != 0 && _section == 3) {
         switch (_order) {
-            //หน้าแรก
+            /*
+            หน้าแรก
+            */
             case 1:
                 _pid = 1;
                 _area = "sec";
                 break;
-            //บัญชีผู้ใช้งาน
+            /*
+            บัญชีผู้ใช้งาน
+            */
             case 2:
                 _pid = 2;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
+            */
             case 3:
                 _pid = 3;
                 _area = "sec";
                 break;
-            //รายงาน - การรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
+            /*
+            รายงาน - การรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
+            */
             case 4:
                 _pid = 4;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
+            */
             case 5:
                 _pid = 5;
                 _area = "sec";
                 break;
-            //รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            */
             case 6:
                 _pid = 6;
                 _area = "sec";
@@ -324,12 +400,18 @@ function LoadSignin() {
         $("#content-content").html(_dataContent[1]);
 
         InitTextSelect();
-        //GoToElement("top-page");
+        /*
+        GoToElement("top-page");
+        */
         GoToTopElement("html, body");
     })
 }
 
-function LoadPage(_area, _section, _pid) {
+function LoadPage(
+    _area,
+    _section,
+    _pid
+) {
     var _send = new Array();
     _send[_send.length] = "action=page";
     _send[_send.length] = "area=" + _area;
@@ -371,8 +453,10 @@ function LoadPage(_area, _section, _pid) {
         }
 
         $("#content-content").html(_dataContent[1]);
-        
-        //InitSticky();
+
+        /*
+        InitSticky();
+        */
         InitTab(false);
 
         if (_section == 1) {
@@ -474,7 +558,14 @@ function LoadPage(_area, _section, _pid) {
     });
 }
 
-function LoadCombobox(_listData, _param, _target, _value, _widthInput, _widthList) {
+function LoadCombobox(
+    _listData,
+    _param,
+    _target,
+    _value,
+    _widthInput,
+    _widthList
+) {
     var _send = new Array();
     _send[_send.length] = "action=combobox";
     _send[_send.length] = "list=" + _listData;
@@ -488,7 +579,12 @@ function LoadCombobox(_listData, _param, _target, _value, _widthInput, _widthLis
     });
 }
 
-function LoadList(_listData, _recordCountID, _listID, _navPageID) {
+function LoadList(
+    _listData,
+    _recordCountID,
+    _listID,
+    _navPageID
+) {
     $("#" + _recordCountID).html("");
     $("#" + _listID).html("");
     if (_navPageID.length > 0) $("#" + _navPageID).html("");
@@ -582,7 +678,15 @@ function InitTab(_subTab) {
     });
 }
 
-function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _trackingStatus) {
+function OpenTab(
+    _dropID,
+    _linkTab,
+    _tabTitle,
+    _tabHidden,
+    _action,
+    _id,
+    _trackingStatus
+) {
     GoToTopElement("html, body");
 
     $(".tab-content").hide();
@@ -741,8 +845,13 @@ function OpenTab(_dropID, _linkTab, _tabTitle, _tabHidden, _action, _id, _tracki
     }
 }
 
-function OpenSubTab(_dropID, _linkTab, _id) {
+function OpenSubTab(
+    _dropID,
+    _linkTab,
+    _id
+) {
     $(".subtab-content").hide();
+
     if ($("#" + _dropID).hasClass("active") == false)  {
         $(".content-data-subtabs ul li a").removeClass("active");
         $("#" + _dropID).addClass("active");
@@ -770,8 +879,12 @@ function OpenSubTab(_dropID, _linkTab, _id) {
         case "link-tab1-report-student-on-statistic-contract-by-program":
         case "link-tab2-report-student-on-statistic-contract-by-program":
             SetMsgLoading("กำลังโหลด...");
-            if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(1);
-            if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true) SearchReportStudentOnStatisticContractByProgram(2);
+
+            if ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true)
+                SearchReportStudentOnStatisticContractByProgram(1);
+
+            if ($("#link-tab2-report-student-on-statistic-contract-by-program").hasClass("active") == true)
+                SearchReportStudentOnStatisticContractByProgram(2);
             break;
     }
 }
@@ -783,7 +896,10 @@ function SetNullCombobox(_id) {
     }
 }
 
-function SetSelectCombobox(_id, _value) {
+function SetSelectCombobox(
+    _id,
+    _value
+) {
     if (_id == "dlevel" ||
         _id == "faculty" ||
         _id == "facultycptabprogram" ||
@@ -1234,7 +1350,14 @@ function InitComboboxOnClick(_id) {
     });
 }
 
-function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
+function LoadForm(
+    _frmIndex,
+    _frm,
+    _dialogFrm,
+    _frmID,
+    _id,
+    _idActive
+) {
     if (_idActive.length > 0)
         $("#" + _idActive).addClass("active");
 
@@ -1257,7 +1380,12 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
 
         if (_dataForm[1].length == 0) {
             DialogMessage("ไม่พบข้อมูล", "", false, _idActive);
-            //if (_idActive.length > 0) $("#" + _idActive).removeClass("active");
+
+            /*
+            if (_idActive.length > 0)
+                $("#" + _idActive).removeClass("active");
+            */
+
             return;
         }
 
@@ -1414,7 +1542,17 @@ function LoadForm(_frmIndex, _frm, _dialogFrm, _frmID, _id, _idActive) {
     });
 }
 
-function AddUpdateData(_action, _cmd, _valueSend, _listUpdate, _recordCount, _listData, _navPage, _closeFrm, _callbackFunc) {
+function AddUpdateData(
+    _action,
+    _cmd,
+    _valueSend,
+    _listUpdate,
+    _recordCount,
+    _listData,
+    _navPage,
+    _closeFrm,
+    _callbackFunc
+) {
     var _i;
     var _msgAction = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
     var _send = new Array();
@@ -1452,7 +1590,13 @@ function AddUpdateData(_action, _cmd, _valueSend, _listUpdate, _recordCount, _li
     });
 }
 
-function SearchData(_from, _valueSend, _recordSearch, _listSearch, _navPage) {
+function SearchData(
+    _from,
+    _valueSend,
+    _recordSearch,
+    _listSearch,
+    _navPage
+) {
     $("#" + _recordSearch).html("");
 
     if (_from != "studentwithresult")
@@ -1503,7 +1647,12 @@ function ViewData(_from, _valueSend, _callbackFunc) {
     });
 }
 
-function PageNav(_pageContent, _currentPage, _startRow, _endRow) {
+function PageNav(
+    _pageContent,
+    _currentPage,
+    _startRow,
+    _endRow
+) {
     var _send = new Array();
     _send[_send.length] = "currentpage=" + _currentPage;
     _send[_send.length] = "startrow=" + _startRow;
@@ -1767,7 +1916,11 @@ function PageNav(_pageContent, _currentPage, _startRow, _endRow) {
     }
 }
 
-function CalculateFrm(_cal, _valueSend, _callbackFunc) {
+function CalculateFrm(
+    _cal,
+    _valueSend,
+    _callbackFunc
+) {
     var _i;
     var _j = 2;
     var _send = new Array();
@@ -1786,7 +1939,10 @@ function CalculateFrm(_cal, _valueSend, _callbackFunc) {
     });
 }
 
-function CloseFrm(_dialogFrm, _frmClose) {
+function CloseFrm(
+    _dialogFrm,
+    _frmClose
+) {
     if (_dialogFrm == true) {
         if ($("#dialog-form2").dialog("isOpen") == true) {
             $("#dialog-form2").dialog("close");
@@ -2306,7 +2462,11 @@ function CalculateTotalPayment() {
     });
 }
 
-function BoxSearchCondition(_countCondition, _searchValue, _id) {
+function BoxSearchCondition(
+    _countCondition,
+    _searchValue,
+    _id
+) {
     var _showCondition = new Array();
     var _i, _j = 0;
 
@@ -2331,7 +2491,11 @@ function BoxSearchCondition(_countCondition, _searchValue, _id) {
         $("#" + _id).hide();
 }
 
-function ShowDocEContract(_sid, _path, _file) {
+function ShowDocEContract(
+    _sid,
+    _path,
+    _file
+) {
     $("#report-e-contract" + _sid).addClass("active");
 
     var _send = new Array();

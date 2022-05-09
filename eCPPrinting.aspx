@@ -10,10 +10,8 @@
 </head>
 <body>
 <%
-    if (Request.Form["export-type"].Equals("pdf"))
-    {
-        switch (Request.Form["export-order"])
-        {
+    if (Request.Form["export-type"].Equals("pdf")) {
+        switch (Request.Form["export-order"]) {
             case "reporttablecalcapitalandinterest": 
                 eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(Request.Form["export-send"]);
                 break;
@@ -23,10 +21,8 @@
         }
     }
 
-    if (Request.Form["export-type"].Equals("word"))
-    {
-        switch (Request.Form["export-order"])
-        {
+    if (Request.Form["export-type"].Equals("word")) {
+        switch (Request.Form["export-order"]) {
             case "reportnoticerepaycomplete":
                 eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(Request.Form["export-send"]);
                 break;
@@ -39,10 +35,8 @@
         }
     }
 
-    if (Request.Form["export-type"].Equals("excel"))
-    {
-        switch (Request.Form["export-order"])
-        {
+    if (Request.Form["export-type"].Equals("excel")) {
+        switch (Request.Form["export-order"]) {
             case "reportdebtorcontract":
                 eCPDataReportDebtorContract.ExportCPReportDebtorContract(Request.Form["export-send"]);
                 break;

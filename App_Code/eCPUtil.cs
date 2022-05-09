@@ -13,8 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 
-public class eCPUtil
-{  
+public class eCPUtil {  
     public const string URL_PICTURE_STUDENT = "http://intranet.student.mahidol/studentweb/resources/images/";
     public const int WIDTH_PICTURE_STUDENT = 119;
     public const int HEIGHT_PICTURE_STUDENT = 120;
@@ -23,8 +22,7 @@ public class eCPUtil
     public const double PAY_REPAY_LEAST = 500;
     public const int PERIOD_REPAY_LEAST = 40;
         
-    private static string[,] _pageOrder = new string[,]
-    {
+    private static string[,] _pageOrder = new string[,] {
         {
             "Home",
             "CPTabUser",
@@ -93,15 +91,13 @@ public class eCPUtil
         }
     };
 
-    public static int[,] _activeMenu = new int[,] 
-    {
+    public static int[,] _activeMenu = new int[,] {
         { 1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
         { 1, 2, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
         { 1, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
-    public static string[,,] _actionTrackingStatus = new string[,,]
-    {
+    public static string[,,] _actionTrackingStatus = new string[,,] {
         {
             { "1111", "v1" }, 
             { "1112", "v1" },
@@ -131,8 +127,7 @@ public class eCPUtil
         }
     };
 
-    public static string[,] _iconTrackingStatus = new string[,]
-    {
+    public static string[,] _iconTrackingStatus = new string[,] {
         { "1111", "status-send" },
         { "1112", "status-cancel" },
         { "2111", "status-receiver-disable" },
@@ -142,59 +137,50 @@ public class eCPUtil
         { "2212", "status-cancel" }
     };
 
-    public static string[,] _iconRepayStatus = new string[,]
-    {
+    public static string[,] _iconRepayStatus = new string[,] {
         { "status-repay-wait-disable", "status-repay-wait", "", "" },
         { "status-repay-count1-disable", "status-repay-count1-wait", "status-repay-count1-yes", "status-repay-count1-no" },
         {"status-repay-count2-disable", "status-repay-count2-wait", "status-repay-count2-yes", "status-repay-count2-no" },
         {"status-repay-success-disable", "status-repay-success-wait", "status-repay-success", "" }
     };
 
-    public static string[] _iconPaymentStatus = new string[]
-    {
+    public static string[] _iconPaymentStatus = new string[] {
         "status-payment-disable",
         "status-payment-wait",
         "status-payment-success"
     };
 
-    public static string[,] _iconEContractStatus = new string[,] 
-    {
+    public static string[,] _iconEContractStatus = new string[,] {
         { "0", "status-e-contract-uncomplete" },
         { "1", "status-e-contract-complete" }
     };
 
-    public static string[,] _dlevel = new string[,]
-    {
+    public static string[,] _dlevel = new string[,] {
         { "ต่ำกว่าปริญญาตรี", "U" },
         { "ปริญญาตรี", "B" }
     };
 
-    public static string[,] _caseGraduate = new string[,]
-    {
+    public static string[,] _caseGraduate = new string[,] {
         { "ก่อนสำเร็จการศึกษา", "ไม่สำเร็จการศึกษา" },
         { "หลังสำเร็จการศึกษา", "สำเร็จการศึกษา" }
     };
 
-    public static string[] _civil = new string[]
-    {
+    public static string[] _civil = new string[] {
         "ปฏิบัติงานชดใช้",
         "ไม่ปฏิบัติงานชดใช้"
     };
 
-    public static string[] _scholar = new string[]
-    {
+    public static string[] _scholar = new string[] {
         "ได้รับทุนการศึกษา",
         "ไม่ได้รับทุนการศึกษา"
     };
     
-    public static string[] _studyLeave = new string[]
-    {
+    public static string[] _studyLeave = new string[] {
         "ไม่มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุน",
         "มีการลาศึกษา / ลาฝึกอบรม ระหว่างการปฏิบัติงานชดใช้ทุน"
     };
     
-    public static string[,] _trackingStatusORAA = new string[,]
-    {
+    public static string[,] _trackingStatusORAA = new string[,] {
         { "รอส่งรายการแจ้ง", "1" },
         { "รอรับรายการแจ้ง", "2" },
         { "รับรายการแจ้งแล้ว", "3" },
@@ -203,23 +189,20 @@ public class eCPUtil
         { "รอส่งรายการแจ้ง, ส่งกลับแก้ไข, รายการแจ้งถูกยกเลิก", "6" }
     };
 
-    public static string[,] _trackingStatusORLA = new string[,]
-    {
+    public static string[,] _trackingStatusORLA = new string[,] {
         { "รอรับรายการแจ้ง", "2" },
         { "รับรายการแจ้งแล้ว", "3" },
         { "ส่งกลับแก้ไข", "4" },
         { "รายการแจ้งถูกยกเลิก", "5" }
     };
 
-    public static string[] _repayStatus = new string[]
-    {
+    public static string[] _repayStatus = new string[] {
         "รอแจ้งชำระหนี้",
         "แจ้งชำระหนี้ครั้งที่ 1",
         "แจ้งชำระหนี้ครั้งที่ 2"
     };
 
-    public static string[] _repayStatusDetail = new string[]
-    {
+    public static string[] _repayStatusDetail = new string[] {
         "รอแจ้งชำระหนี้",
         "แจ้งชำระหนี้ครั้งที่ 1 ( รอเอกสารตอบกลับ )",
         "แจ้งชำระหนี้ครั้งที่ 1 ( ผู้ผิดสัญญารับทราบให้ชำระหนี้ )",
@@ -231,46 +214,39 @@ public class eCPUtil
         "ชำระหนี้เรียบร้อย"
     };
 
-    public static string[] _resultReply = new string[] 
-    {
+    public static string[] _resultReply = new string[] {
         "ผู้ผิดสัญญารับทราบให้ชำระหนี้",
         "ผู้ผิดสัญญาไม่รับทราบให้ชำระหนี้"
     };
 
-    public static string[] _paymentStatus = new string[] 
-    { 
+    public static string[] _paymentStatus = new string[]  { 
         "ยังไม่ได้ชำระหนี้",
         "อยู่ระหว่างการชำระหนี้",
         "ชำระหนี้เรียบร้อย"
     };
 
-    public static string[,] _paymentRecordStatus = new string[,]
-    {
+    public static string[,] _paymentRecordStatus = new string[,] {
         { "หยุดบันทึกข้อมูลการชำระหนี้ชั่วคราว", "P" },
         { "บันทึกข้อมูลการชำระหนี้ต่อเนื่อง", "C" }
     };
 
-    public static string[] _paymentFormat = new string[]
-    {
+    public static string[] _paymentFormat = new string[] {
         "ชำระแบบเต็มจำนวน",
         "ชำระแบบผ่อนชำระ"
     };
 
-    public static string[] _payChannel = new string[] 
-    {
+    public static string[] _payChannel = new string[] {
         "ชำระด้วยเงินสด",
         "ชำระด้วยเช็คขีดคร่อม",
         "นำฝากบัญชีเงินฝาก"
     };
 
-    public static string[,] _calInterestYesNo = new string[,]
-    {
+    public static string[,] _calInterestYesNo = new string[,] {
         { "คิดดอกเบี้ย", "Y" },
         { "ไม่คิดตอกเบี้ย", "N" }
     };
 
-    public static string[,] _stepOfWorkStatus = new string[,]
-    {
+    public static string[,] _stepOfWorkStatus = new string[,] {
         { "รอส่งรายการแจ้ง", "1" },
         { "รอรับรายการแจ้ง", "2" },
         { "รับรายการแจ้งแล้ว", "3" },
@@ -288,14 +264,12 @@ public class eCPUtil
         { "ชำระหนี้เรียบร้อย", "15" }
     };
 
-    public static string[,] _conditionTableCalCapitalAndInterest = new string[,]
-    {
+    public static string[,] _conditionTableCalCapitalAndInterest = new string[,] {
         { "จำนวนเงินต้นที่ต้องการชำระต่อเดือน", "1" },
         { "จำนวนงวดที่ต้องการชำระ", "2" }
     };
 
-    public static string[,] _longMonth = new string[,]
-    {
+    public static string[,] _longMonth = new string[,] {
         { "มกราคม", "ม.ค." },
         { "กุมภาพันธ์", "ก.พ." },
         { "มีนาคม", "มี.ค." },
@@ -310,15 +284,12 @@ public class eCPUtil
         { "ธันวาคม", "ธ.ค." }
     };
 
-    public static string CurrentDate(string _format)
-    {
+    public static string CurrentDate(string _format) {
         return (DateTime.Today.ToString(_format));
     }
 
-    public static string ThaiLongDate(string _dateEN)
-    {
-        if (!String.IsNullOrEmpty(_dateEN))
-        {
+    public static string ThaiLongDate(string _dateEN) {
+        if (!String.IsNullOrEmpty(_dateEN)) {
             DateTime _dt = DateTime.Parse(_dateEN);
 
             return ((int.Parse(_dt.ToString("dd"))).ToString() + " " + _longMonth[_dt.Month - 1, 0] + " " + (_dt.Year + 543).ToString());
@@ -327,8 +298,7 @@ public class eCPUtil
             return _dateEN;
     }
 
-    public static string MenuBar(bool _loginResult)
-    {
+    public static string MenuBar(bool _loginResult) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -336,8 +306,7 @@ public class eCPUtil
                  "  <div class='content-left'>" +
                  "      <ul>";
 
-        if (_loginResult)
-        {
+        if (_loginResult) {
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
             _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
@@ -346,10 +315,8 @@ public class eCPUtil
             if (_eCPCookie["UserLevel"].Equals("Administrator"))
                 _html += "  <li class='have-link'><a class='link-msg' id='menu2' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",2)'>บัญชีผู้ใช้</a></li>";
 
-            if (_eCPCookie["UserSection"].Equals("1"))
-            {
-                if (_eCPCookie["UserLevel"].Equals("Administrator"))
-                {
+            if (_eCPCookie["UserSection"].Equals("1")) {
+                if (_eCPCookie["UserLevel"].Equals("Administrator")) {
                     _html += "<li class='have-link' id='submenu31'><div class='link-msg' id='menu3'>ตั้งค่า</div>" +
                              "  <ul>" +
                              "      <li><a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",3)'>กำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา</a></li>" +
@@ -380,8 +347,7 @@ public class eCPUtil
                          "  </li>";
             }
 
-            if (_eCPCookie["UserSection"].Equals("2"))
-            {
+            if (_eCPCookie["UserSection"].Equals("2")) {
                 _html += "  <li class='have-link'><a class='link-msg' id='menu3' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",3)'>แจ้งผู้ผิดสัญญา</a></li>" +
                          "  <li class='have-link' id='submenu41'><div class='link-msg' id='menu4'>รายงาน</div>" +
                          "      <ul>" +
@@ -395,8 +361,7 @@ public class eCPUtil
                          "  </li>";
             }
 
-            if (_eCPCookie["UserSection"].Equals("3"))
-            {
+            if (_eCPCookie["UserSection"].Equals("3")) {
                 _html += "  <li class='have-link' id='submenu21'><div class='link-msg' id='menu2'>รายงาน</div>" +
                          "      <ul>" +
                          "          <li><a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + _eCPCookie["UserSection"] + ",3)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a></li>" +
@@ -418,8 +383,7 @@ public class eCPUtil
                  */
                  "          <li><div id='current-date'>&nbsp;&nbsp;" + Util.ShortDateTH(Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"))) + "&nbsp;&nbsp;</div>";
 
-        if (_loginResult)
-        {
+        if (_loginResult) {
             HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
             _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
@@ -440,8 +404,7 @@ public class eCPUtil
         return _html;
     }
 
-    public static string Head()
-    {
+    public static string Head() {
         string _html = String.Empty;
         string _title = String.Empty;
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
@@ -465,8 +428,7 @@ public class eCPUtil
         return _html;
     }
         
-    public static string Signin()
-    {
+    public static string Signin() {
         string _html = String.Empty;
 
         _html += "<div class='signin-space'></div>" +
@@ -489,8 +451,7 @@ public class eCPUtil
         return _html;
     }
 
-    public static string Manual()
-    {
+    public static string Manual() {
         string _html = String.Empty;
 
         _html += "<div class='slide' id='slide-manual'>" +
@@ -504,8 +465,10 @@ public class eCPUtil
         return _html;
     }
 
-    public string GenPage(bool _loginResult, int _pid)
-    {
+    public string GenPage(
+        bool _loginResult,
+        int _pid
+    ) {
         int _order = 0;
 
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
@@ -531,8 +494,7 @@ public class eCPUtil
         return _result;
     }
     
-    public string Home()
-    {
+    public string Home() {
         string _html = String.Empty;
 
         _html += "<div class='home'></div>";
@@ -540,8 +502,7 @@ public class eCPUtil
         return _html;
     }
 
-    public static string ContentTitle(string _content)
-    {
+    public static string ContentTitle(string _content) {
         string _html = String.Empty;
 
         _html += "<div class='content-data-title'>" +
@@ -551,8 +512,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTabUser()
-    {
+    public string CPTabUser() {
         string _html = String.Empty;
 
         _html = eCPDataUser.TabCPTabUser();
@@ -560,8 +520,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTabProgram()
-    {
+    public string CPTabProgram() {
         string _html = String.Empty;
 
         _html = eCPDataConfiguration.TabCPTabProgram();
@@ -569,8 +528,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTabCalDate()
-    {
+    public string CPTabCalDate() {
         string _html = String.Empty;
 
         _html = eCPDataConfiguration.ListCPTabCalDate();
@@ -578,8 +536,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTabInterest()
-    {
+    public string CPTabInterest() {
         string _html = String.Empty;
 
         _html = eCPDataConfiguration.TabCPTabInterest();
@@ -587,8 +544,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTabPayBreakContract()
-    {
+    public string CPTabPayBreakContract() {
         string _html = String.Empty;
 
         _html = eCPDataConfiguration.TabCPTabPayBreakContract();
@@ -596,8 +552,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTabScholarship()
-    {
+    public string CPTabScholarship() {
         string _html = String.Empty;
 
         _html = eCPDataConfiguration.TabCPTabScholarship();
@@ -605,8 +560,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTransBreakContract()
-    {
+    public string CPTransBreakContract() {
         string _html = String.Empty;
 
         _html += eCPDataBreakContract.TabCPTransBreakContract();
@@ -614,8 +568,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTransRequireContract()
-    {
+    public string CPTransRequireContract() {
         string _html = String.Empty;
 
         _html += eCPDataRequireContract.TabCPTransRequireContract();
@@ -623,8 +576,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPTransPayment()
-    {
+    public string CPTransPayment() {
         string _html = String.Empty;
 
         _html += eCPDataPayment.TabPaymentOnCPTransRequireContract();
@@ -632,8 +584,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportStepOfWork()
-    {
+    public string CPReportStepOfWork() {
         string _html = String.Empty;
 
         _html += eCPDataReportStepOfWork.ListCPReportStepOfWork();
@@ -641,8 +592,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportTableCalCapitalAndInterest()
-    {
+    public string CPReportTableCalCapitalAndInterest() {
         string _html = String.Empty;
 
         _html += eCPDataReportTableCalCapitalAndInterest.TabCPReportTableCalCapitalAndInterest();
@@ -650,8 +600,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportStatisticRepay()
-    {
+    public string CPReportStatisticRepay() {
         string _html = String.Empty;
 
         _html += eCPDataReportStatisticRepay.TabCPReportStatisticRepay();
@@ -659,8 +608,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportStatisticContract()
-    {
+    public string CPReportStatisticContract() {
         string _html = String.Empty;
 
         _html += eCPDataReportStatisticContract.TabCPReportStatisticContract();
@@ -668,8 +616,7 @@ public class eCPUtil
         return _html;
     }
     
-    public string CPReportNoticeRepayComplete()
-    {
+    public string CPReportNoticeRepayComplete() {
         string _html = String.Empty;
 
         _html += eCPDataReportNoticeRepayComplete.ListCPReportNoticeRepayComplete();
@@ -677,8 +624,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportNoticeClaimDebt()
-    {
+    public string CPReportNoticeClaimDebt() {
         string _html = String.Empty;
 
         _html += eCPDataReportNoticeClaimDebt.ListCPReportNoticeClaimDebt();
@@ -686,8 +632,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportStatisticPaymentByDate()
-    {
+    public string CPReportStatisticPaymentByDate() {
         string _html = String.Empty;
 
         _html += eCPDataReportStatisticPaymentByDate.ListCPReportStatisticPaymentByDate();
@@ -695,8 +640,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportEContract()
-    {
+    public string CPReportEContract() {
         string _html = String.Empty;
 
         _html += eCPDataReportEContract.ListCPReportEContract();
@@ -704,8 +648,7 @@ public class eCPUtil
         return _html;
     }
     
-    public string CPReportDebtorContract()
-    {
+    public string CPReportDebtorContract() {
         string _html = String.Empty;
 
         _html += eCPDataReportDebtorContract.TabCPReportDebtorContract("reportdebtorcontract");
@@ -713,8 +656,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportDebtorContractPaid()
-    {
+    public string CPReportDebtorContractPaid() {
         string _html = String.Empty;
 
         _html += eCPDataReportDebtorContract.TabCPReportDebtorContract("reportdebtorcontractpaid");
@@ -722,8 +664,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportDebtorContractRemain()
-    {
+    public string CPReportDebtorContractRemain() {
         string _html = String.Empty;
 
         _html += eCPDataReportDebtorContract.TabCPReportDebtorContract("reportdebtorcontractremain");
@@ -731,8 +672,7 @@ public class eCPUtil
         return _html;
     }
 
-    public string CPReportDebtorContractBreakRequireRepayPayment()
-    {
+    public string CPReportDebtorContractBreakRequireRepayPayment() {
         string _html = String.Empty;
 
         _html += eCPDataPayment.TabPaymentOnCPTransRequireContract();
@@ -740,8 +680,7 @@ public class eCPUtil
         return _html;
     }
 
-    public static string ListUser(string _id)
-    {        
+    public static string ListUser(string _id) {
         string _html = String.Empty;
         int _i = 0;
         int _section;
@@ -756,8 +695,7 @@ public class eCPUtil
 
         DataSet _ds = eCPDB.ListCPTabUser();
 
-        foreach (DataRow _dr in _ds.Tables[1].Rows)
-        {
+        foreach (DataRow _dr in _ds.Tables[1].Rows) {
             _html += "  <option value='" + (_dr["Name"].ToString() + ";" + _dr["PhoneNumber"].ToString() + ";" + _dr["MobileNumber"].ToString() + ";" + _dr["Email"].ToString())  + "'>" + _dr["Name"].ToString() + "</option>";
         }
 
@@ -769,8 +707,7 @@ public class eCPUtil
         return _html;
     }
 
-    public static string ListTitleName(string _id)
-    {
+    public static string ListTitleName(string _id) {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -783,8 +720,7 @@ public class eCPUtil
         _data = eCPDB.ListTitlename();
         _recordCount = _data.GetLength(0);
 
-        for (_i = 0; _i < _recordCount; _i++)
-        {
+        for (_i = 0; _i < _recordCount; _i++) {
             _html += "  <option value='" + _data[_i, 0] + ";" + _data[_i, 1] + ";" + _data[_i, 2] + "'>" + _data[_i, 2] + "</option>";
         }
 
@@ -794,8 +730,10 @@ public class eCPUtil
         return _html;
     }
 
-    public static string ListFaculty(bool _cpTabProgram, string _id)
-    {
+    public static string ListFaculty(
+        bool _cpTabProgram,
+        string _id
+    ) {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -808,8 +746,7 @@ public class eCPUtil
         _data = eCPDB.ListFaculty(_cpTabProgram);
         _recordCount = _data.GetLength(0);
 
-        for (_i = 0; _i < _recordCount; _i++)
-        {
+        for (_i = 0; _i < _recordCount; _i++) {
             _html += "  <option value='" + _data[_i, 0] + ";" + _data[_i, 1] + "'>" + _data[_i, 0] + " - " + _data[_i, 1] + "</option>";
         }
 
@@ -819,8 +756,12 @@ public class eCPUtil
         return _html;
     }
 
-    public static string ListProgram(bool _cpTabProgram, string _id, string _dlevel, string _faculty)
-    {
+    public static string ListProgram(
+        bool _cpTabProgram,
+        string _id,
+        string _dlevel,
+        string _faculty
+    ) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string[,] _data;
@@ -831,13 +772,11 @@ public class eCPUtil
                  "  <select id='" + _id + "'>" +
                  "      <option value='0'>เลือกหลักสูตร</option>";
 
-        if (!_faculty.Equals("0"))
-        {
+        if (!_faculty.Equals("0")) {
             _data = eCPDB.ListProgram(_cpTabProgram, _dlevel, _faculty);
             _recordCount = _data.GetLength(0);                            
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _groupNum = !_data[_i, 2].Equals("0") ? " ( กลุ่ม " + _data[_i, 2] + " )" : "";
                 _html += "<option value='" + _data[_i, 0] + ";" + _data[_i, 3] + ";" + _data[_i, 1] + ";" + _data[_i, 2] + ";" + _data[_i, 4] + ";" + _data[_i, 5] + "'>" + _data[_i, 0] + " - " + _data[_i, 3] + _groupNum + "</option>";
             }
@@ -849,8 +788,7 @@ public class eCPUtil
         return "<list>" + _html + "<list>";
     }
 
-    public static string ListCalDate(string _id)
-    {
+    public static string ListCalDate(string _id) {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -863,10 +801,8 @@ public class eCPUtil
         _data = eCPDB.ListCPTabCalDate("");
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+        if (_recordCount > 0) {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _html += "<option value='" + _data[_i, 0] + "'>วิธีที่ " + _data[_i, 0] + "</option>";
             }
         }
@@ -877,8 +813,7 @@ public class eCPUtil
         return "<list>" + _html + "<list>";
     }
 
-    public static string ListProvince(string _id)
-    {
+    public static string ListProvince(string _id) {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -891,10 +826,8 @@ public class eCPUtil
         _data = eCPDB.ListProvince();
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+        if (_recordCount > 0) {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _html += "<option value='" + _data[_i, 0] + "'>" + _data[_i, 1] + "</option>";
             }
         }
@@ -905,20 +838,25 @@ public class eCPUtil
         return "<list>" + _html + "<list>";
     }
 
-    public static double[] CalPayScholarship(string _scholar, string _caseGraduate, string _civil, string _scholarshipMoney, string _scholarshipYear, string _scholarshipMonth, string _allActualMonthScholarship)
-    {
+    public static double[] CalPayScholarship(
+        string _scholar,
+        string _caseGraduate,
+        string _civil,
+        string _scholarshipMoney,
+        string _scholarshipYear,
+        string _scholarshipMonth,
+        string _allActualMonthScholarship
+    ) {
         double[] _result = new double[2];
 
-        if (_scholar.Equals("1"))
-        {
+        if (_scholar.Equals("1")) {
             double _sMoney = double.Parse(_scholarshipMoney);
             double _sYear = double.Parse(_scholarshipYear);
             double _sMonth = double.Parse(_scholarshipMonth);
 
             _sYear = _sYear + (_sMonth / 12);
 
-            switch (_caseGraduate)
-            {
+            switch (_caseGraduate) {
                 case "1":
                     double _aMonth = double.Parse(_allActualMonthScholarship);        
 
@@ -927,13 +865,14 @@ public class eCPUtil
                     break;
                 case "2":
                     _result[0] = 0;                            
-                    //_result[1] = _civil.Equals("1") ? (_sMoney * _sYear) : ((_sMoney * _sYear) * 2);
+                    /*
+                    _result[1] = _civil.Equals("1") ? (_sMoney * _sYear) : ((_sMoney * _sYear) * 2);
+                    */
                     _result[1] = _civil.Equals("1") ? _sMoney : ((_sMoney * _sYear) * 2);
                     break;
             }
         }
-        else
-        {
+        else {
             _result[0] = 0;
             _result[1] = 0;
         }
@@ -941,14 +880,31 @@ public class eCPUtil
         return _result;
     }
 
-    public static double[] GetCalPenalty(string _studyLeave, string _beforeStudyLeaveStartDate, string _beforeStudyLeaveEndDate, string _afterStudyLeaveStartDate, string _afterStudyLeaveEndDate, string _scholar, string _caseGraduate, string _educationDate, string _graduateDate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition)
-    {
+    public static double[] GetCalPenalty(
+        string _studyLeave,
+        string _beforeStudyLeaveStartDate,
+        string _beforeStudyLeaveEndDate,
+        string _afterStudyLeaveStartDate,
+        string _afterStudyLeaveEndDate,
+        string _scholar,
+        string _caseGraduate,
+        string _educationDate,
+        string _graduateDate,
+        string _civil,
+        string _totalPayScholarship,
+        string _scholarshipYear,
+        string _scholarshipMonth,
+        string _dateStart,
+        string _dateEnd,
+        string _indemnitorYear,
+        string _indemnitorCash,
+        string _calDateCondition
+    ) {
         double[] _result = new double[15];
 
         if (!_studyLeave.Equals("Y"))
             _result = CalPenalty(_scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _totalPayScholarship, _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition, 0);
-        else
-        {
+        else {
             _dateStart = _beforeStudyLeaveStartDate;
             _dateEnd = _beforeStudyLeaveEndDate;
 
@@ -963,8 +919,22 @@ public class eCPUtil
         return _result;
     }
 
-    public static double[] CalPenalty(string _scholar, string _caseGraduate, string _educationDate, string _graduateDate, string _civil, string _totalPayScholarship, string _scholarshipYear, string _scholarshipMonth, string _dateStart, string _dateEnd, string _indemnitorYear, string _indemnitorCash, string _calDateCondition, double _addDays)
-    {
+    public static double[] CalPenalty(
+        string _scholar,
+        string _caseGraduate,
+        string _educationDate,
+        string _graduateDate,
+        string _civil,
+        string _totalPayScholarship,
+        string _scholarshipYear,
+        string _scholarshipMonth,
+        string _dateStart,
+        string _dateEnd,
+        string _indemnitorYear,
+        string _indemnitorCash,
+        string _calDateCondition,
+        double _addDays
+    ) {
         double _actual;
         double _month;
         double _day;
@@ -981,14 +951,12 @@ public class eCPUtil
         int _formular = int.Parse(_calDateCondition);
         double[] _resultCalcDate;
 
-        if (_scholar.Equals("1") && _caseGraduate.Equals("2") && _civil.Equals("1"))
-        {
+        if (_scholar.Equals("1") && _caseGraduate.Equals("2") && _civil.Equals("1")) {
             _iCash = _sPayScholarship + _iCash;
             _sPayScholarship = 0;
         }
 
-        if (!String.IsNullOrEmpty(_educationDate) && !String.IsNullOrEmpty(_graduateDate))
-        {
+        if (!String.IsNullOrEmpty(_educationDate) && !String.IsNullOrEmpty(_graduateDate)) {
             IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
             DateTime _dateA = DateTime.Parse(_educationDate, _provider);
             DateTime _dateB = DateTime.Parse(_graduateDate, _provider);
@@ -998,8 +966,7 @@ public class eCPUtil
             _educationActual = !_resultCalcDate[0].Equals(0) ? _resultCalcDate[0] : 0;
         }
 
-        if (!String.IsNullOrEmpty(_dateStart) && !String.IsNullOrEmpty(_dateEnd))
-        {
+        if (!String.IsNullOrEmpty(_dateStart) && !String.IsNullOrEmpty(_dateEnd)) {
             IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
             DateTime _dateA = DateTime.Parse(_dateStart, _provider);
             DateTime _dateB = DateTime.Parse(_dateEnd, _provider);
@@ -1012,8 +979,7 @@ public class eCPUtil
             _day = !_resultCalcDate[2].Equals(0) ? _resultCalcDate[2] : 0;
             _dayLastMonth = DateTime.DaysInMonth(_dateB.Year, _dateB.Month);
 
-            switch (_formular)
-            {
+            switch (_formular) {
                 case 1:
                     _totalPenalty = CalPenaltyFormular1(_iCash, _resultCalcDate[3]);
                     break;
@@ -1021,8 +987,7 @@ public class eCPUtil
                     _totalPenalty = CalPenaltyFormular2(_iCash, _resultCalcDate[1], _resultCalcDate[2], _dayLastMonth);
                     break;
                 case 3:
-                    if (_caseGraduate.Equals("2") && _civil.Equals("2"))
-                    {
+                    if (_caseGraduate.Equals("2") && _civil.Equals("2")) {
                         _resultCalcDate[0] = 0;
                         _actual = 0;
                         _month = 0;
@@ -1080,8 +1045,10 @@ public class eCPUtil
         return _result;
     }
 
-    private static double CalPenaltyFormular1(double _indemnitorCash, double _educationDate)
-    {
+    private static double CalPenaltyFormular1(
+        double _indemnitorCash,
+        double _educationDate
+    ) {
         double _total;
 
         _total = _indemnitorCash * _educationDate;
@@ -1089,8 +1056,10 @@ public class eCPUtil
         return _total;
     }
 
-    public static string PenaltyFormular1ToString(double _indemnitorCash, double _educationDate)
-    {
+    public static string PenaltyFormular1ToString(
+        double _indemnitorCash,
+        double _educationDate
+    ) {
         string _result = String.Empty;
 
         _result = (_indemnitorCash.ToString("#,##0.00") + " X " + _educationDate.ToString("#,###0"));
@@ -1098,8 +1067,12 @@ public class eCPUtil
         return _result;
     }
 
-    private static double CalPenaltyFormular2(double _indemnitorCash, double _educationMonth, double _educationDay, int _dayLastMonth)
-    {
+    private static double CalPenaltyFormular2(
+        double _indemnitorCash,
+        double _educationMonth,
+        double _educationDay,
+        int _dayLastMonth
+    ) {
         double _total;
 
         _total = (_indemnitorCash * _educationMonth) + ((_indemnitorCash * _educationDay) / _dayLastMonth);
@@ -1107,8 +1080,12 @@ public class eCPUtil
         return _total;
     }
 
-    public static string PenaltyFormular2ToString(double _indemnitorCash, double _educationMonth, double _educationDay, int _dayLastMonth)
-    {
+    public static string PenaltyFormular2ToString(
+        double _indemnitorCash,
+        double _educationMonth,
+        double _educationDay,
+        int _dayLastMonth
+    ) {
         string _result = String.Empty;
 
         _result = ("( " + _indemnitorCash.ToString("#,##0.00") + " X " + _educationMonth.ToString("#,##0") + " ) + ;( " + _indemnitorCash.ToString("#,##0.00") + " X " + _educationDay.ToString("#,##0") + " );" + _dayLastMonth.ToString("#,##0"));
@@ -1117,8 +1094,11 @@ public class eCPUtil
     }
 
 
-    private static double CalPenaltyFormular3(double _indemnitorCash, double _allActual, double _actual)
-    {
+    private static double CalPenaltyFormular3(
+        double _indemnitorCash,
+        double _allActual,
+        double _actual
+    ) {
         double _total;
 
         _total = (_indemnitorCash * (_allActual - _actual)) / _allActual;
@@ -1126,8 +1106,11 @@ public class eCPUtil
         return _total;
     }
 
-    public static string PenaltyFormular3ToString(double _indemnitorCash, double _allActual, double _actual)
-    {
+    public static string PenaltyFormular3ToString(
+        double _indemnitorCash,
+        double _allActual,
+        double _actual
+    ) {
         string _result = String.Empty;
 
         _result = (_indemnitorCash.ToString("#,##0.00") + " X " + "( " + _allActual.ToString("#,##0") + " - " + _actual.ToString("#,##0") + " );" + _allActual.ToString("#,##0"));
@@ -1135,8 +1118,11 @@ public class eCPUtil
         return _result;
     }
 
-    private static double CalPenaltyFormular4(double _indemnitorCash, double _educationActual, double _actual)
-    {
+    private static double CalPenaltyFormular4(
+        double _indemnitorCash,
+        double _educationActual,
+        double _actual
+    ) {
         double _total;
 
         _total = (_indemnitorCash * ((2 * _educationActual) - _actual)) / (2 * _educationActual);
@@ -1144,8 +1130,11 @@ public class eCPUtil
         return _total;
     }
 
-    public static string PenaltyFormular4ToString(double _indemnitorCash, double _educationActual, double _actual)
-    {
+    public static string PenaltyFormular4ToString(
+        double _indemnitorCash,
+        double _educationActual,
+        double _actual
+    ) {
         string _result = String.Empty;
 
         _result = (_indemnitorCash.ToString("#,##0.00") + " X " + "(( 2 X " + _educationActual.ToString("#,##0") + " ) - " + _actual.ToString("#,##0") + " );( 2 X " + _educationActual.ToString("#,##0") + " )");
@@ -1153,27 +1142,27 @@ public class eCPUtil
         return _result;
     }
 
-    public static string[] RepayDate(string _replyDate)
-    {
+    public static string[] RepayDate(string _replyDate) {
         string[] _repayDate = new string[3];
         string _dow = String.Empty;
         double _ad = 0;
 
         _repayDate[0] = !String.IsNullOrEmpty(_replyDate) ? Util.ConvertDateTH((DateTime.Parse(_replyDate, new System.Globalization.CultureInfo("th-TH")).AddDays(1)).ToString()) : String.Empty;
 
-        if (!String.IsNullOrEmpty(_repayDate[0]))
-        {
-            //_dow = DateTime.Parse(_repayDate[0], new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST).DayOfWeek.ToString();
+        if (!String.IsNullOrEmpty(_repayDate[0])) {
+            /*
+            _dow = DateTime.Parse(_repayDate[0], new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST).DayOfWeek.ToString();
+            */
             _dow = DateTime.Parse(_replyDate, new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST).DayOfWeek.ToString();
             /*
             if (_dow.Equals("Saturday"))
                 _ad = 2;
             
             if (_dow.Equals("Sunday"))
-            _ad = 1;
-            */
+                _ad = 1;
 
-            //_repayDate[1] = Util.ConvertDateTH((DateTime.Parse(_repayDate[0], new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST + _ad)).ToString());
+            _repayDate[1] = Util.ConvertDateTH((DateTime.Parse(_repayDate[0], new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST + _ad)).ToString());
+            */
             _repayDate[1] = Util.ConvertDateTH((DateTime.Parse(_replyDate, new System.Globalization.CultureInfo("th-TH")).AddDays(eCPUtil.PAYMENT_AT_LEAST + _ad)).ToString());
         }
         else
@@ -1184,8 +1173,13 @@ public class eCPUtil
         return _repayDate;
     }
 
-    public static double CalInterestOverpayment(string _capital, string _overpaymentYear, string _overpaymentDay, string _overpaymentInterest, string _overpaymentDateEnd)
-    {
+    public static double CalInterestOverpayment(
+        string _capital,
+        string _overpaymentYear,
+        string _overpaymentDay,
+        string _overpaymentInterest,
+        string _overpaymentDateEnd
+    ) {
         double _opCapital = double.Parse(_capital);
         double _opOverpaymentYear = double.Parse(_overpaymentYear);
         double _opOverpaymentDay = double.Parse(_overpaymentDay);
@@ -1197,24 +1191,23 @@ public class eCPUtil
         double _interestOverpaymentDay = 0;
         double _totalInterestOverpayment = 0;
 
-        if (!_opOverpaymentYear.Equals(0))
-        {
+        if (!_opOverpaymentYear.Equals(0)) {
             _interestOverpaymentYear = _opCapital * _opOverpaymentYear * (_opOverpaymentInterest / 100);
         }
 
-        if (!_opOverpaymentDay.Equals(0))
-        {
+        if (!_opOverpaymentDay.Equals(0)) {
             _interestOverpaymentDay = _opCapital * (_opOverpaymentDay / _dayLastYear[0]) * (_opOverpaymentInterest / 100);
         }
 
-        //_totalInterestOverpayment = Util.RoundStang(_interestOverpaymentYear + _interestOverpaymentDay);
+        /*
+        _totalInterestOverpayment = Util.RoundStang(_interestOverpaymentYear + _interestOverpaymentDay);
+        */
         _totalInterestOverpayment = (_interestOverpaymentYear + _interestOverpaymentDay);
 
         return _totalInterestOverpayment;
     }
 
-    public static string[] GetContractInterest()
-    {
+    public static string[] GetContractInterest() {
         string[,] _data;
         string[] _contractInterest = new string[2];
         int _recordCount;
@@ -1222,8 +1215,7 @@ public class eCPUtil
         _data = eCPDB.ListSearchUseContractInterest();
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _contractInterest[0] = _data[0, 0];
             _contractInterest[1] = _data[0, 1];
         }
@@ -1231,13 +1223,17 @@ public class eCPUtil
         return _contractInterest;
     }
 
-    public static string DoubleToString2Decimal(double _d)
-    {
+    public static string DoubleToString2Decimal(double _d) {
         return _d.ToString("#.00");
     }
 
-    public static string[] CalChkBalance(string _capital, string _totalInterest, string _totalAccruedInterest, string _totalPayment, string _pay)
-    {
+    public static string[] CalChkBalance(
+        string _capital,
+        string _totalInterest,
+        string _totalAccruedInterest,
+        string _totalPayment,
+        string _pay
+    ) {
         string[] _result = new string[5];
         
         _totalInterest = !String.IsNullOrEmpty(_totalInterest) ? _totalInterest : String.Empty;
@@ -1245,8 +1241,7 @@ public class eCPUtil
         _totalPayment = !String.IsNullOrEmpty(_totalPayment) ? _totalPayment : String.Empty;
         _pay = !String.IsNullOrEmpty(_pay) ? _pay : String.Empty;
 
-        if (!String.IsNullOrEmpty(_totalPayment) && !String.IsNullOrEmpty(_pay))
-        {
+        if (!String.IsNullOrEmpty(_totalPayment) && !String.IsNullOrEmpty(_pay)) {
             double _capitalAll = double.Parse(_capital);
             double _totalInterestAll = double.Parse(_totalInterest);
             double _totalAccruedInterestAll = double.Parse(_totalAccruedInterest);
@@ -1299,8 +1294,7 @@ public class eCPUtil
             _result[3] = _accruedInterest.ToString();
             _result[4] = double.Parse(DoubleToString2Decimal(_remainAccruedInterest)) < 0 ? "0" : _remainAccruedInterest.ToString();
         }
-        else
-        {
+        else {
             _result[0] = String.Empty;
             _result[1] = String.Empty;
             _result[2] = String.Empty;
@@ -1311,10 +1305,8 @@ public class eCPUtil
         return _result;
     }
 
-    public static string EncodeToBase64(string _str)
-    {
-        try
-        {
+    public static string EncodeToBase64(string _str) {
+        try {
             string _strEncode = String.Empty;
             byte[] _encDataByte = new byte[_str.Length];
 
@@ -1323,19 +1315,16 @@ public class eCPUtil
 
             return _strEncode;
         }
-        catch
-        {
+        catch {
             return String.Empty;
         }
     }
 
 
-    public static string DecodeFromBase64(string _strEncode)
-    {
+    public static string DecodeFromBase64(string _strEncode) {
         string _strDecode = String.Empty;
 
-        try
-        {
+        try {
             UTF8Encoding _encoder = new UTF8Encoding();
             Decoder _utf8Decode = _encoder.GetDecoder();
             byte[] _todecodeByte = Convert.FromBase64String(_strEncode);
@@ -1345,15 +1334,13 @@ public class eCPUtil
             _utf8Decode.GetChars(_todecodeByte, 0, _todecodeByte.Length, _decodedChar, 0);
             _strDecode = new String(_decodedChar);
         }
-        catch
-        {
+        catch {
         }
 
         return _strDecode;
     }
 
-    public static Dictionary<string, string> GetUsername()
-    {
+    public static Dictionary<string, string> GetUsername() {
         Dictionary<string, string> _result = new Dictionary<string, string>();
         string _username = String.Empty;
         string _password = String.Empty;
@@ -1372,23 +1359,19 @@ public class eCPUtil
         }
     }
 
-    public static Dictionary<string, string> GetUsername(string _authen)
-    {
+    public static Dictionary<string, string> GetUsername(string _authen) {
         Dictionary<string, string> _result = new Dictionary<string, string>();
         string[] _auth = DecodeFromBase64(_authen).Split('.');
         string _username = String.Empty;
         string _password = String.Empty;
 
-        try
-        {
-            if (_auth.Length.Equals(4))
-            {
+        try {
+            if (_auth.Length.Equals(4)) {
                 _username = eCPUtil.DecodeFromBase64(new String(_auth[1].Reverse().ToArray()));
                 _password = eCPUtil.DecodeFromBase64(new String(_auth[2].Reverse().ToArray()));
             }
         }
-        catch
-        {
+        catch {
         }
 
         _result.Add("Username", _username);
@@ -1397,31 +1380,26 @@ public class eCPUtil
         return _result;
     }
 
-    public static string GetUserID()
-    {
+    public static string GetUserID() {
         HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
         _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
 
         string _userid = String.Empty;
 
-        try
-        {
+        try {
             if (!String.IsNullOrEmpty(_eCPCookie["Authen"]))
                 _userid = eCPUtil.DecodeFromBase64(new String(eCPUtil.DecodeFromBase64(_eCPCookie["Authen"]).Reverse().ToArray()));
         }
-        catch
-        {
+        catch {
         }
 
         return _userid;
     }
 
-    public static string GetFileExtension(string _contentType)
-    {
+    public static string GetFileExtension(string _contentType) {
         string _fileExtension = String.Empty;
         
-        switch (_contentType)
-        {
+        switch (_contentType) {
             case "image/gif": 
                 _fileExtension = "gif";
                 break;
@@ -1442,13 +1420,11 @@ public class eCPUtil
         return _fileExtension;
     }
 
-    public static int GetStartRow(string startRow)
-    {
+    public static int GetStartRow(string startRow) {
         return (!String.IsNullOrEmpty(startRow) ? int.Parse(startRow) : 1);
     }
 
-    public static int GetEndRow(string endRow)
-    {
+    public static int GetEndRow(string endRow) {
         return (!String.IsNullOrEmpty(endRow) ? int.Parse(endRow) : ROW_PER_PAGE);
     }
 }

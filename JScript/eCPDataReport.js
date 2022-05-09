@@ -204,7 +204,15 @@ function ExportReportTableCalCapitalAndInterest() {
     }
 }
 
-function ViewReportStepOfWorkOnStatisticRepayByProgram(_order, _facultyCode, _facultyName, _programCode, _programName, _majorCode, _groupNum) {
+function ViewReportStepOfWorkOnStatisticRepayByProgram(
+    _order,
+    _facultyCode,
+    _facultyName,
+    _programCode,
+    _programName,
+    _majorCode,
+    _groupNum
+) {
     var _facultyName = _facultyName.replace("&", " ");
     var _programName = _programName.replace("&", " ")
 
@@ -223,7 +231,15 @@ function ViewReportStatisticContractByProgram(_acadamicyear) {
     OpenTab("link-tab2-cp-report-statistic-contract", "#tab2-cp-report-statistic-contract", "สถิติการทำสัญญาและการผิดสัญญาปีการศึกษา 25" + _acadamicyear + " แยกตามหลักสูตร", false, "", _acadamicyear, "");
 }
 
-function ViewReportStudentOnStatisticContractContractByProgram(_order, _facultyCode, _facultyName, _programCode, _programName, _majorCode, _groupNum) {
+function ViewReportStudentOnStatisticContractContractByProgram(
+    _order,
+    _facultyCode,
+    _facultyName,
+    _programCode,
+    _programName,
+    _majorCode,
+    _groupNum
+) {
     var _facultyName = _facultyName.replace("&", " ");
     var _programName = _programName.replace("&", " ")
 
@@ -248,7 +264,10 @@ function ConfirmPrintNoticeRepayComplete() {
     });
 }
 
-function PrintNoticeCheckForReimbursement(_cp1id, _action) {
+function PrintNoticeCheckForReimbursement(
+    _cp1id,
+    _action
+) {
     var _send = new Array();
     _send[_send.length] = _cp1id;
     _send[_send.length] = _action;
@@ -274,7 +293,11 @@ function PrintNoticeRepayComplete() {
     Printing(_valCheck.join(";"), "reportnoticerepaycomplete", "word", "eCPPrinting.aspx", "export-target");
 }
 
-function PrintNoticeClaimDebt(_cp1id, _time, _previousRepayDateEnd) {
+function PrintNoticeClaimDebt(
+    _cp1id,
+    _time,
+    _previousRepayDateEnd
+) {
     var _send = new Array();
     _send[_send.length] = _cp1id;
     _send[_send.length] = _time;
@@ -283,7 +306,13 @@ function PrintNoticeClaimDebt(_cp1id, _time, _previousRepayDateEnd) {
     Printing(_send.join(":"), "reportnoticeclaimdebt", "word", "eCPPrinting.aspx", "export-target");
 }
 
-function Printing(_send, _order, _type, _frmAction, _frmTarget) {
+function Printing(
+    _send,
+    _order,
+    _type,
+    _frmAction,
+    _frmTarget
+) {
     DialogLoading("กำลังโหลด...");
 
     $("#export-send").val(_send);
@@ -298,7 +327,16 @@ function Printing(_send, _order, _type, _frmAction, _frmTarget) {
     }, 500);
 }
 
-function ViewReportDebtorContractByProgram(_facultyCode, _facultyName, _programCode, _programName, _majorCode, _groupNum, _dLevel, _dLevelname) {
+function ViewReportDebtorContractByProgram(
+    _facultyCode,
+    _facultyName,
+    _programCode,
+    _programName,
+    _majorCode,
+    _groupNum,
+    _dLevel,
+    _dLevelname
+) {
     var _facultyName = _facultyName.replace("&", " ");
     var _programName = _programName.replace("&", " ")
 

@@ -1,4 +1,7 @@
-﻿function ReceiverCPTransBreakContract(_cp1id, _trackingStatus) {
+﻿function ReceiverCPTransBreakContract(
+    _cp1id,
+    _trackingStatus
+) {
     ChkTrackingStatusViewTransBreakContract(_cp1id, _trackingStatus, "", function (_result) {
         if (_result == "0") {
             $("#dialog-form1").dialog("close");
@@ -583,7 +586,10 @@ function ConfirmActionCPTransRequireContract(_action) {
     });
 }
 
-function AddUpdateCPTransRequireContract(_action, _send) {
+function AddUpdateCPTransRequireContract(
+    _action,
+    _send
+) {
     var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
     
     AddUpdateData(_action, _action + "cptransrequirecontract", _send, false, "", "", "", false, function (_result) {
@@ -605,7 +611,10 @@ function AddUpdateCPTransRequireContract(_action, _send) {
     });
 }
 
-function ChkRepayStatusViewTransRequireContract(_cp1id, _callbackFunc) {
+function ChkRepayStatusViewTransRequireContract(
+    _cp1id,
+    _callbackFunc
+) {
     var _send = new Array();
     _send[_send.length] = "cp1id=" + _cp1id;
 
@@ -624,7 +633,12 @@ function ChkRepayStatusViewTransRequireContract(_cp1id, _callbackFunc) {
     });
 }
 
-function ViewRepayStatusViewTransRequireContract(_cp1id, _cp2id, _trackingStatus, _action) {
+function ViewRepayStatusViewTransRequireContract(
+    _cp1id,
+    _cp2id,
+    _trackingStatus,
+    _action
+) {
     ChkRepayStatusViewTransRequireContract(_cp1id, function (_result) {
         if ((_result == "0") && (_action == "e"))
             OpenTab("link-tab3-cp-trans-require-contract", "#tab3-cp-trans-require-contract", "ปรับปรุงรายการรับแจ้ง", false, "update", _cp1id, _trackingStatus);

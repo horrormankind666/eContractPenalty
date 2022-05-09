@@ -17,17 +17,14 @@ using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using NExport2PDF;
 
-public class eCPDataReport
-{
-    public static string ReplaceFacultyToShortProgram(string _faculty)
-    {
+public class eCPDataReport {
+    public static string ReplaceFacultyToShortProgram(string _faculty) {
         _faculty = _faculty.Replace("คณะ", "");
 
         return _faculty;
     }
 
-    public static string ReplaceProgramToShortProgram(string _program)
-    {
+    public static string ReplaceProgramToShortProgram(string _program) {
         _program = _program.Replace("ประกาศนียบัตร", "");
         _program = _program.Replace("บัณฑิต", "");
         _program = _program.Replace("ศาสตร", "ศาสตร์");
@@ -36,10 +33,8 @@ public class eCPDataReport
     }
 }
 
-public class eCPDataReportStatisticRepay
-{
-    public static string ListReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c)
-    {
+public class eCPDataReportStatisticRepay {
+    public static string ListReportStepOfWorkOnStatisticRepayByProgram(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -57,14 +52,12 @@ public class eCPDataReportStatisticRepay
 
         _recordCount = eCPDB.CountReportStepOfWorkOnStatisticRepayByProgram(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListReportStepOfWorkOnStatisticRepayByProgram(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _trackingStatus = _data[_i, 10] + _data[_i, 11] + _data[_i, 12] + _data[_i, 13];
                 _iconStatus1 = eCPUtil._iconTrackingStatus[Util.FindIndexArray2D(0, eCPUtil._iconTrackingStatus, _trackingStatus) - 1, 1];
                 _iconStatus2 = _data[_i, 14].Split(new char[] { ';' });
@@ -116,8 +109,7 @@ public class eCPDataReportStatisticRepay
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListReportStepOfWorkOnStatisticRepayByProgram()
-    {
+    public static string ListReportStepOfWorkOnStatisticRepayByProgram() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='list-report-step-of-work-on-statistic-repay-by-program'>" +
@@ -189,8 +181,7 @@ public class eCPDataReportStatisticRepay
         return _html;
     }
 
-    public static string ListCPReportStatisticRepayByProgram(string _acadamicyear)
-    {
+    public static string ListCPReportStatisticRepayByProgram(string _acadamicyear) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string[,] _data;
@@ -202,12 +193,10 @@ public class eCPDataReportStatisticRepay
         _data = eCPDB.ListCPReportStatisticRepayByProgram(_acadamicyear);
         _recordCount = _data.GetLength(0);
         
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _groupNum = !_data[_i, 7].Equals("0") ? " ( กลุ่ม " + _data[_i, 7] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewReportStepOfWorkOnStatisticRepayByProgram('" + _data[_i, 0] + "','" + _data[_i, 2] + "','" + _data[_i, 3].Replace(" ", "&") + "','" + _data[_i, 4] + "','" + _data[_i, 5].Replace(" ", "&") + "','" + _data[_i, 6] + "','" + _data[_i, 7] + "')";
@@ -230,8 +219,7 @@ public class eCPDataReportStatisticRepay
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav><pagenav>";
     }
 
-    public static string ListCPReportStatisticRepay(string[,] _data)
-    {
+    public static string ListCPReportStatisticRepay(string[,] _data) {
         string _html = String.Empty;
         string _highlight = String.Empty;
         string _callFunc = String.Empty;
@@ -241,12 +229,10 @@ public class eCPDataReportStatisticRepay
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewReportStatisticRepayByProgram('" + _data[_i, 1] + "')";
                 _html += "<ul class='table-row-content " + _highlight + "' id='report-statistic-repay" + _data[_i, 1] + "'>" +
@@ -269,8 +255,7 @@ public class eCPDataReportStatisticRepay
         return _html;
     }
 
-    public static string ListUpdateCPReportStatisticRepay()
-    {
+    public static string ListUpdateCPReportStatisticRepay() {
         string _html = String.Empty;
         string _return = String.Empty;
         string[,] _data;
@@ -284,8 +269,7 @@ public class eCPDataReportStatisticRepay
         return _return;
     }
 
-    public static string TabCPReportStatisticRepay()
-    {
+    public static string TabCPReportStatisticRepay() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-statistic-repay-head'>" +
@@ -379,10 +363,8 @@ public class eCPDataReportStatisticRepay
     }
 }
 
-public class eCPDataReportStatisticContract
-{
-    private static string ListReportStudentSignContract(HttpContext _c)
-    {
+public class eCPDataReportStatisticContract {
+    private static string ListReportStudentSignContract(HttpContext _c) {
         string _html = String.Empty;
         string _pageHtml = String.Empty;
         string[,] _data;
@@ -395,16 +377,16 @@ public class eCPDataReportStatisticContract
 
         _recordCount = eCPDB.CountReportStudentSignContract(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListReportStudentSignContract(_c);
             
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
-                //_callFunc = "ViewTrackingStatusViewTransBreakContract('" + _data[_i, 1] + "','" + _trackingStatus + "','" + _data[_i, 16] + "')";
+                /*
+                _callFunc = "ViewTrackingStatusViewTransBreakContract('" + _data[_i, 1] + "','" + _trackingStatus + "','" + _data[_i, 16] + "')";
+                */
                 _html += "<ul class='table-row-content " + _highlight + "' id='report-student-sign-contract" + _data[_i, 0] + "'>" +
                          "  <li id='table-content-report-student-sign-contract-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
                          "  <li class='table-col' id='table-content-report-student-sign-contract-col2' onclick=" + _callFunc + "><div>" + _data[_i, 1] + "</div></li>" +
@@ -427,8 +409,7 @@ public class eCPDataReportStatisticContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    private static string ListReportStudentContractPenalty(HttpContext _c)
-    {
+    private static string ListReportStudentContractPenalty(HttpContext _c) {
         string _html = String.Empty;
         string _pageHtml = String.Empty;
         string[,] _data;
@@ -445,14 +426,12 @@ public class eCPDataReportStatisticContract
 
         _recordCount = eCPDB.CountReportStepOfWorkOnStatisticRepayByProgram(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListReportStepOfWorkOnStatisticRepayByProgram(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _trackingStatus = _data[_i, 10] + _data[_i, 11] + _data[_i, 12] + _data[_i, 13];
                 _iconStatus1 = eCPUtil._iconTrackingStatus[Util.FindIndexArray2D(0, eCPUtil._iconTrackingStatus, _trackingStatus) - 1, 1];
                 _iconStatus2 = _data[_i, 14].Split(new char[] { ';' });
@@ -503,8 +482,7 @@ public class eCPDataReportStatisticContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListReportStudentOnStatisticContractByProgram(HttpContext _c)
-    {
+    public static string ListReportStudentOnStatisticContractByProgram(HttpContext _c) {
         string _result = String.Empty;
         int _searchTab = int.Parse(_c.Request["searchtab"]);
 
@@ -514,8 +492,7 @@ public class eCPDataReportStatisticContract
         return _result;
     }
 
-    public static string ListReportStudentOnStatisticContractByProgram()
-    {
+    public static string ListReportStudentOnStatisticContractByProgram() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='list-report-student-on-statistic-contract-by-program-head'>" +
@@ -634,8 +611,7 @@ public class eCPDataReportStatisticContract
         return _html;
     }
 
-    public static string ListCPReportStatisticContractByProgram(string _acadamicyear)
-    {
+    public static string ListCPReportStatisticContractByProgram(string _acadamicyear) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string[,] _data;
@@ -647,12 +623,10 @@ public class eCPDataReportStatisticContract
         _data = eCPDB.ListCPReportStatisticContractByProgram(_acadamicyear);
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _groupNum = !_data[_i, 7].Equals("0") ? " ( กลุ่ม " + _data[_i, 7] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewReportStudentOnStatisticContractContractByProgram('" + _data[_i, 0] + "','" + _data[_i, 2] + "','" + _data[_i, 3].Replace(" ", "&") + "','" + _data[_i, 4] + "','" + _data[_i, 5].Replace(" ", "&") + "','" + _data[_i, 6] + "','" + _data[_i, 7] + "')";
@@ -671,8 +645,7 @@ public class eCPDataReportStatisticContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav><pagenav>";
     }
 
-    public static string ListCPReportStatisticContract(string[,] _data)
-    {
+    public static string ListCPReportStatisticContract(string[,] _data) {
         string _html = String.Empty;
         string _highlight = String.Empty;
         string _callFunc = String.Empty;
@@ -682,12 +655,10 @@ public class eCPDataReportStatisticContract
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewReportStatisticContractByProgram('" + _data[_i, 1] + "')";
                 _html += "<ul class='table-row-content " + _highlight + "' id='report-statistic-contract" + _data[_i, 1] + "'>" +
@@ -705,8 +676,7 @@ public class eCPDataReportStatisticContract
         return _html;
     }
 
-    public static string ListUpdateCPReportStatisticContract()
-    {
+    public static string ListUpdateCPReportStatisticContract() {
         string _html = String.Empty;
         string _return = String.Empty;
         string[,] _data;
@@ -720,8 +690,7 @@ public class eCPDataReportStatisticContract
         return _return;
     }
 
-    public static string TabCPReportStatisticContract()
-    {
+    public static string TabCPReportStatisticContract() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-statistic-contract-head'>" +
@@ -806,10 +775,8 @@ public class eCPDataReportStatisticContract
     }
 }
 
-public class eCPDataReportStepOfWork
-{
-    public static string ListCPReportStepOfWork(HttpContext _c)
-    {
+public class eCPDataReportStepOfWork {
+    public static string ListCPReportStepOfWork(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -827,14 +794,12 @@ public class eCPDataReportStepOfWork
 
         _recordCount = eCPDB.CountCPReportStepOfWork(_c);
 
-        if (_recordCount > 0)
-        {            
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPReportStepOfWork(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {                                                               
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _trackingStatus = _data[_i, 10] + _data[_i, 11] + _data[_i, 12] + _data[_i, 13];                
                 _iconStatus1 = eCPUtil._iconTrackingStatus[Util.FindIndexArray2D(0, eCPUtil._iconTrackingStatus, _trackingStatus) - 1, 1];
                 _iconStatus2 = _data[_i, 14].Split(new char[] { ';' });
@@ -887,8 +852,7 @@ public class eCPDataReportStepOfWork
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListCPReportStepOfWork()
-    {
+    public static string ListCPReportStepOfWork() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-step-of-work-head'>" +
@@ -969,10 +933,8 @@ public class eCPDataReportStepOfWork
     }
 }
 
-public class eCPDataReportTableCalCapitalAndInterest
-{
-    public static void ExportCPReportTableCalCapitalAndInterest(string _exportSend)
-    {
+public class eCPDataReportTableCalCapitalAndInterest {
+    public static void ExportCPReportTableCalCapitalAndInterest(string _exportSend) {
         char[] _separator = new char[] { '&', '.' };
         string[] _send = _exportSend.Split(_separator[0]);
         string _cp2id = _send[0];
@@ -1022,8 +984,7 @@ public class eCPDataReportTableCalCapitalAndInterest
         ExportToPdf _exportToPdf = new ExportToPdf();
         _exportToPdf.ExportToPdfConnect(_template, "pdf", _saveFile);
 
-        for (_i = 1; _i <= _page[1]; _i++)
-        {
+        for (_i = 1; _i <= _page[1]; _i++) {
             if (_i > 1)
                 _exportToPdf.PDFNewPage();
             
@@ -1056,8 +1017,7 @@ public class eCPDataReportTableCalCapitalAndInterest
             _topCell = 660;
             _topText = 662;
 
-            for (_j = _startRow; (_j <= (_data1.GetLength(0) - 1) && _row <= _maxRow); _j++, _row++)
-            {
+            for (_j = _startRow; (_j <= (_data1.GetLength(0) - 1) && _row <= _maxRow); _j++, _row++) {
                 _borderBottom = (_j.Equals(_data1.GetLength(0) - 1) || _row.Equals(_maxRow) ? 1 : 0);
 
                 _exportToPdf.CreateTable(50, _topCell, 50, 21, 1, 0, 1, _borderBottom);
@@ -1097,16 +1057,14 @@ public class eCPDataReportTableCalCapitalAndInterest
         _exportToPdf.ExportToPdfDisconnect();
     }
     
-    public static string ListTableCalCapitalAndInterest(string[,] _data)
-    {
+    public static string ListTableCalCapitalAndInterest(string[,] _data) {
         int _i;
         string _html = String.Empty;
         string _highlight = String.Empty;
 
         _html += "<div class='table-content'>";
 
-        for (_i = 0; _i < (_data.GetLength(0) - 1); _i++)
-        {            
+        for (_i = 0; _i < (_data.GetLength(0) - 1); _i++) {
             _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
             _html += "<ul class='table-row-content " + _highlight + "'>" +
                      "  <li id='table-content-report-table-cal-capital-and-interest-col1'><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
@@ -1124,16 +1082,15 @@ public class eCPDataReportTableCalCapitalAndInterest
         return _html;
     }
 
-    public static string CalReportTableCalCapitalAndInterest(string _cp2id)
-    {
+    public static string CalReportTableCalCapitalAndInterest(string _cp2id) {
         string _html = String.Empty;
         string[] _contractInterest;
         string[,] _data;
         int _i;
 
         _data = eCPDB.ListDetailCPReportTableCalCapitalAndInterest(_cp2id);
-        if (_data.GetLength(0) > 0)
-        {
+
+        if (_data.GetLength(0) > 0) {
             string _studentIDDefault = _data[0, 3];
             string _titleNameDefault = _data[0, 4];
             string _firstNameDefault = _data[0, 5];
@@ -1161,8 +1118,7 @@ public class eCPDataReportTableCalCapitalAndInterest
             if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
                 _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
 
-            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
-            {
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault))) {
                 _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
                                   " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
             }
@@ -1231,8 +1187,7 @@ public class eCPDataReportTableCalCapitalAndInterest
                      "                          <select id='condition-tablecalcapitalandinterest'>" +
                      "                              <option value='0'>เลือกเงื่อนไขที่ใช้คำนวณ</option>";
 
-            for (_i = 0; _i < eCPUtil._conditionTableCalCapitalAndInterest.GetLength(0); _i++)
-            { 
+            for (_i = 0; _i < eCPUtil._conditionTableCalCapitalAndInterest.GetLength(0); _i++) { 
                 _html += "                          <option value='" + eCPUtil._conditionTableCalCapitalAndInterest[_i, 1] + "'>" + eCPUtil._conditionTableCalCapitalAndInterest[_i, 0] + "</option>";
             }
 
@@ -1326,8 +1281,7 @@ public class eCPDataReportTableCalCapitalAndInterest
         return _html;
     }
 
-    public static string ListCPReportTableCalCapitalAndInterest(HttpContext _c)
-    {
+    public static string ListCPReportTableCalCapitalAndInterest(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -1341,14 +1295,12 @@ public class eCPDataReportTableCalCapitalAndInterest
 
         _recordCount = eCPDB.CountCPReportTableCalCapitalAndInterest(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPReportTableCalCapitalAndInterest(_c);
    
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "OpenTab('link-tab2-cp-report-table-cal-capital-and-interest','#tab2-cp-report-table-cal-capital-and-interest','ตารางคำนวณ',false,'','" + _data[_i, 1] + "','')";
@@ -1376,8 +1328,7 @@ public class eCPDataReportTableCalCapitalAndInterest
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
     
-    public static string TabCPReportTableCalCapitalAndInterest()
-    {
+    public static string TabCPReportTableCalCapitalAndInterest() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-table-cal-capital-and-interest-head'>" +
@@ -1471,14 +1422,15 @@ public class eCPDataReportTableCalCapitalAndInterest
     }
 }
 
-public class eCPDataReportNoticeRepayComplete
-{
-    private static string ExportCPReportNoticeRepayCompleteSection(int _section, string _font, string[,] _data)
-    {
+public class eCPDataReportNoticeRepayComplete {
+    private static string ExportCPReportNoticeRepayCompleteSection(
+        int _section,
+        string _font,
+        string[,] _data
+    ) {
         string _html = String.Empty;
 
-        if (_section.Equals(1))
-        {
+        if (_section.Equals(1)) {
             _html += "<tr>" +
                      "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
                      "</tr>" +
@@ -1516,8 +1468,7 @@ public class eCPDataReportNoticeRepayComplete
                      "</tr>";
         }
 
-        if (_section.Equals(2))
-        {
+        if (_section.Equals(2)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
@@ -1529,8 +1480,7 @@ public class eCPDataReportNoticeRepayComplete
                      "</tr>";
         }
                     
-        if (_section.Equals(3))
-        {
+        if (_section.Equals(3)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
@@ -1564,8 +1514,7 @@ public class eCPDataReportNoticeRepayComplete
         return _html;
     }
 
-    public static void ExportCPReportNoticeRepayComplete(string _exportSend)
-    {
+    public static void ExportCPReportNoticeRepayComplete(string _exportSend) {
         string _html = String.Empty;
         string _width = "600";
         string _font = "TH SarabunPSK, TH Sarabun New";
@@ -1574,8 +1523,7 @@ public class eCPDataReportNoticeRepayComplete
         string[,] _data;
         int _i;
 
-        for (_i = 1; _i <= _cp1id.Length; _i++)
-        {
+        for (_i = 1; _i <= _cp1id.Length; _i++) {
             _data = eCPDB.ListDetailReportNoticeRepayComplete(_cp1id[_i - 1]);
 
             _html += "<table align='center' border='0' cellpadding='0' cellspacing='0'>" +
@@ -1710,9 +1658,7 @@ public class eCPDataReportNoticeRepayComplete
         */
     }
 
-    //สำหรับแสดงรายการแจ้งที่ผู้ผิดสัญญาชำระหนี้เรียบร้อยแล้ว เพื่อออกหนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
-    public static string ListCPReportNoticeRepayComplete(HttpContext _c)
-    {
+    public static string ListCPReportNoticeRepayComplete(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -1726,14 +1672,12 @@ public class eCPDataReportNoticeRepayComplete
 
         _recordCount = eCPDB.CountCPReportNoticeRepayComplete(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListReportNoticeRepayComplete(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _iconStatus = eCPUtil._iconPaymentStatus[(!String.IsNullOrEmpty(_data[_i, 11]) ? int.Parse(_data[_i, 11]) - 1 : 0)];
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
@@ -1767,8 +1711,7 @@ public class eCPDataReportNoticeRepayComplete
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListCPReportNoticeRepayComplete()
-    {
+    public static string ListCPReportNoticeRepayComplete() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-notice-repay-complete-head'>" +
@@ -1848,24 +1791,24 @@ public class eCPDataReportNoticeRepayComplete
     }
 }
 
-public class eCPDataReportNoticeClaimDebt
-{
-    private static string ExportCPReportNoticeClaimDebtSection(int _section, string _font, Dictionary<string, string> _lawyer)
-    {        
+public class eCPDataReportNoticeClaimDebt {
+    private static string ExportCPReportNoticeClaimDebtSection(
+        int _section,
+        string _font,
+        Dictionary<string, string> _lawyer
+    ) {
         string _html = String.Empty;
         string _lawyerFullname = String.Empty;
         string _lawyerFullnameWithoutNamePrefix = String.Empty;
         string _lawyerPhoneNumber = String.Empty;
 
-        if (_lawyer != null)
-        {
+        if (_lawyer != null) {
             _lawyerFullname = _lawyer["Fullname"];
             _lawyerFullnameWithoutNamePrefix = _lawyer["FullnameWithoutNamePrefix"];
             _lawyerPhoneNumber = _lawyer["PhoneNumber"];
         }
 
-        if (_section.Equals(1))
-        {
+        if (_section.Equals(1)) {
             _html += "<tr>" +
                      "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
                      "</tr>" +
@@ -1900,8 +1843,7 @@ public class eCPDataReportNoticeClaimDebt
                       "</tr>";
         }
 
-        if (_section.Equals(2))
-        {
+        if (_section.Equals(2)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
@@ -1929,8 +1871,7 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>";
         }
 
-        if (_section.Equals(3))
-        {
+        if (_section.Equals(3)) {
             _html += "<tr>" +
                      "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
                      "</tr>" +
@@ -1955,8 +1896,7 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>";
         }
 
-        if (_section.Equals(4))
-        {
+        if (_section.Equals(4)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <table border='0' cellpadding='0' cellspacing='0'>" +
@@ -1972,8 +1912,7 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>";
         }
 
-        if (_section.Equals(5))
-        {
+        if (_section.Equals(5)) {
             _html += "<tr>" +
                      "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
                      "</tr>" +
@@ -2007,8 +1946,7 @@ public class eCPDataReportNoticeClaimDebt
                      "</tr>";
         }
 
-        if (_section.Equals(6))
-        {
+        if (_section.Equals(6)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
@@ -2046,8 +1984,7 @@ public class eCPDataReportNoticeClaimDebt
         return _html;
     }
     
-    private static string ExportCPReportNoticeClaimDebtTime1(string[,] _data)
-    {
+    private static string ExportCPReportNoticeClaimDebtTime1(string[,] _data) {
         string _html = String.Empty;
         string _width = "600";
         string _font = "TH SarabunPSK, TH Sarabun New";
@@ -2212,9 +2149,10 @@ public class eCPDataReportNoticeClaimDebt
         return _html;
     }
 
-    //สำหรับส่งออกหนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกันครั้งที่ 2 เป็นไฟล์ PDF
-    private static string ExportCPReportNoticeClaimDebtTime2(string[,] _data, string _overpaymentDateStart)
-    {
+    private static string ExportCPReportNoticeClaimDebtTime2(
+        string[,] _data,
+        string _overpaymentDateStart
+    ) {
         string _html = String.Empty;
         string _width = "600";
         string _font = "TH SarabunPSK, TH Sarabun New";
@@ -2234,8 +2172,7 @@ public class eCPDataReportNoticeClaimDebt
 
         _data1 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, _statusRepayDefault);
 
-        if (_data1.GetLength(0) > 0)
-        {
+        if (_data1.GetLength(0) > 0) {
             _replyDate = _data1[0, 5];
             _pursuant = _data1[0, 6];
             _pursuantBookDate = _data1[0, 7];
@@ -2459,8 +2396,7 @@ public class eCPDataReportNoticeClaimDebt
         return _html;
     }
 
-    public static void ExportCPReportNoticeClaimDebt(string _exportSend)
-    {
+    public static void ExportCPReportNoticeClaimDebt(string _exportSend) {
         string _html = String.Empty;
         char[] _separator = new char[] { ':' };
         string[] _value = _exportSend.Split(_separator);
@@ -2473,14 +2409,12 @@ public class eCPDataReportNoticeClaimDebt
 
         _data = eCPDB.ListDetailReportNoticeClaimDebt(_cp1id);
 
-        switch (_time)
-        {
+        switch (_time) {
             case 1:
                 _html = ExportCPReportNoticeClaimDebtTime1(_data);
                 break;
             case 2:
-                if (!String.IsNullOrEmpty(_previousRepayDateEnd))
-                {
+                if (!String.IsNullOrEmpty(_previousRepayDateEnd)) {
                     _repayDate = eCPUtil.RepayDate(_previousRepayDateEnd);
                     _overpaymentDateStart = _repayDate[2];
                 }
@@ -2495,8 +2429,7 @@ public class eCPDataReportNoticeClaimDebt
         HttpContext.Current.Response.Write(_html);
     }
 
-    public static string ListCPReportNoticeClaimDebt(HttpContext _c)
-    {
+    public static string ListCPReportNoticeClaimDebt(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -2511,14 +2444,12 @@ public class eCPDataReportNoticeClaimDebt
 
         _recordCount = eCPDB.CountCPReportNoticeClaimDebt(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListReportNoticeClaimDebt(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _iconStatus = _data[_i, 11].Split(new char[] { ';' });
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
@@ -2555,8 +2486,7 @@ public class eCPDataReportNoticeClaimDebt
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListCPReportNoticeClaimDebt()
-    {
+    public static string ListCPReportNoticeClaimDebt() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-notice-claim-debt-head'>" +
@@ -2634,10 +2564,8 @@ public class eCPDataReportNoticeClaimDebt
     }
 }
 
-public class eCPDataReportNoticeCheckForReimbursement
-{
-    private static void ExportCPReportNoticeCheckForReimbursementV1(string _cp1id)
-    {
+public class eCPDataReportNoticeCheckForReimbursement {
+    private static void ExportCPReportNoticeCheckForReimbursementV1(string _cp1id) {
         string _pdfFont = "Font/THSarabunBold.ttf";
         string _template = String.Empty;
         string _saveFile = "NoticeCheckForReimbursement.pdf";
@@ -2679,8 +2607,7 @@ public class eCPDataReportNoticeCheckForReimbursement
         _exportToPdf.ExportToPdfDisconnect();
     }
 
-    public static void ExportCPReportNoticeCheckForReimbursementV2(string _cp1id)
-    {
+    public static void ExportCPReportNoticeCheckForReimbursementV2(string _cp1id) {
         string _pdfFont = "Font/THSarabunBold.ttf";
         string _template = String.Empty;
         string _saveFile = "NoticeCheckForReimbursement.pdf";
@@ -2710,22 +2637,19 @@ public class eCPDataReportNoticeCheckForReimbursement
         string _afterStudyLeaveStartDate = _data[0, 71];
         string _afterStudyLeaveEndDate = _data[0, 72];
         
-        if (_caseGraduate.Equals("1"))
-        {
+        if (_caseGraduate.Equals("1")) {
             _template = "ExportTemplate/NoticeCheckForReimbursement.NotGraduate.pdf";
             _dateStart = _data[0, 62];
             _dateEnd = _data[0, 63];
         }
 
-        if (_caseGraduate.Equals("2") && _civil.Equals("1"))
-        {
+        if (_caseGraduate.Equals("2") && _civil.Equals("1")) {
             _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.Work.Resign.pdf";
             _dateStart = _data[0, 6];
             _dateEnd = _data[0, 7];
         }
 
-        if (_caseGraduate.Equals("2") && _civil.Equals("2"))
-        {
+        if (_caseGraduate.Equals("2") && _civil.Equals("2")) {
             _template = "ExportTemplate/NoticeCheckForReimbursement.Graduate.NotWorking.pdf";
             _dateStart = _data[0, 44];
             _dateEnd = _data[0, 45];
@@ -2758,14 +2682,12 @@ public class eCPDataReportNoticeCheckForReimbursement
         _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 3], 209, 438, 344, 0);
         _exportToPdf.FillForm(_pdfFont, 13, 0, _data[0, 5], 100, 418, 105, 0);
 
-        if (_data[0, 66].Equals("N"))
-        {            
+        if (_data[0, 66].Equals("N")) {
             _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 6]), 248, 418, 125, 0);
             _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 7]), 408, 418, 145, 0);
         }
 
-        if (_data[0, 66].Equals("Y"))
-        {
+        if (_data[0, 66].Equals("Y")) {
             _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 67]), 248, 418, 125, 0);
             _exportToPdf.FillForm(_pdfFont, 13, 0, Util.LongDateTH(_data[0, 68]), 408, 418, 145, 0);
         }
@@ -2790,8 +2712,7 @@ public class eCPDataReportNoticeCheckForReimbursement
         _resultPayScholarship = eCPUtil.CalPayScholarship(_scholar, _caseGraduate, _civil, _scholarshipMoney, _scholarshipYear, _scholarshipMonth, _allActualMonthScholarship);
         _resultPenalty = eCPUtil.GetCalPenalty(_studyLeave, _beforeStudyLeaveStartDate, _beforeStudyLeaveEndDate, _afterStudyLeaveStartDate, _afterStudyLeaveEndDate, _scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition);
 
-        if (_formular.Equals(1))
-        {
+        if (_formular.Equals(1)) {
             _iCash = _resultPenalty[8];
             _actualMonth = _resultPenalty[9];
             _penaltyFormularString = eCPUtil.PenaltyFormular1ToString(_iCash, _actualMonth).Split(';');
@@ -2799,8 +2720,7 @@ public class eCPDataReportNoticeCheckForReimbursement
             _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[0], 139, 359, 186, 0);
         }
 
-        if (_formular.Equals(2))
-        {
+        if (_formular.Equals(2)) {
             _iCash = _resultPenalty[8];
             _educationMonth = _resultPenalty[10];
             _educationDay = _resultPenalty[11];
@@ -2813,8 +2733,7 @@ public class eCPDataReportNoticeCheckForReimbursement
             _exportToPdf.FillForm(_pdfFont, 12, 1, _penaltyFormularString[2], 237, 357, 87, 0);
         }
 
-        if (_formular.Equals(3))
-        {
+        if (_formular.Equals(3)) {
             _iCash = _resultPenalty[8];
             _allActual = _resultPenalty[2];
             _actual = _resultPenalty[13];
@@ -2824,8 +2743,7 @@ public class eCPDataReportNoticeCheckForReimbursement
             _exportToPdf.FillForm(_pdfFont, 13, 1, _penaltyFormularString[1], 139, 347, 186, 0);
         }
 
-        if (_formular.Equals(4))
-        {
+        if (_formular.Equals(4)) {
             _iCash = _resultPenalty[8];
             _educationActual = _resultPenalty[14];
             _actual = _resultPenalty[3];
@@ -2842,15 +2760,13 @@ public class eCPDataReportNoticeCheckForReimbursement
         _exportToPdf.ExportToPdfDisconnect();
     }
     
-    public static void ExportCPReportNoticeCheckForReimbursement(string _exportSend)
-    {
+    public static void ExportCPReportNoticeCheckForReimbursement(string _exportSend) {
         char[] _separator = new char[] { ':' };
         string[] _cp1idAction = _exportSend.Split(_separator);
         string _cp1id = _cp1idAction[0];
         string _action = _cp1idAction[1];
         
-        switch (_action)
-        {
+        switch (_action) {
             case "v1":
                 ExportCPReportNoticeCheckForReimbursementV1(_cp1id);
                 break;
@@ -2861,10 +2777,8 @@ public class eCPDataReportNoticeCheckForReimbursement
     }
 }
 
-public class eCPDataReportFormRequestCreateAndUpdateDebtor
-{
-    public static void ExportCPReportFormRequestCreateAndUpdateDebtor(string _exportSend)
-    {
+public class eCPDataReportFormRequestCreateAndUpdateDebtor {
+    public static void ExportCPReportFormRequestCreateAndUpdateDebtor(string _exportSend) { 
         /*
         string _pdfFont = "Font/THSarabunBold.ttf";
         string _template = "ExportTemplate/FormRequestCreateAndUpdateDebtor.pdf";
@@ -2895,8 +2809,7 @@ public class eCPDataReportFormRequestCreateAndUpdateDebtor
 
         _data1 = eCPDB.ListDetailCPTransRequireContract(_cp1id);
 
-        if (_data1.GetLength(0) > 0)
-        {
+        if (_data1.GetLength(0) > 0) {
             _studentCode = _data1[0, 19];
             _titleName = _data1[0, 20];
             _firstName = _data1[0, 21];
@@ -2914,8 +2827,7 @@ public class eCPDataReportFormRequestCreateAndUpdateDebtor
             dynamic _jsonObject = JsonConvert.DeserializeObject<dynamic>(eCPDB.GetPersonRecordsAddress(_studentCode));
             JArray _data2 = _jsonObject;
 
-            if (_data2.Count > 0)
-            {
+            if (_data2.Count > 0) {
                 JObject _dr = _jsonObject[0];
                 dynamic _addressTypePermanent = _dr["addressTypePermanent"];
 
@@ -2964,8 +2876,7 @@ public class eCPDataReportFormRequestCreateAndUpdateDebtor
         HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
 
-        using (ExcelPackage _xls = new ExcelPackage(new FileInfo(HttpContext.Current.Server.MapPath(@"ExportTemplate/" + _fileName + ".xlsx"))))
-        {
+        using (ExcelPackage _xls = new ExcelPackage(new FileInfo(HttpContext.Current.Server.MapPath(@"ExportTemplate/" + _fileName + ".xlsx")))) {
             ExcelWorksheet _ws = _xls.Workbook.Worksheets[0];
             MemoryStream _ms = new MemoryStream();
 
@@ -3023,10 +2934,8 @@ public class eCPDataReportFormRequestCreateAndUpdateDebtor
     }
 }
 
-public class eCPDataReportStatisticPaymentByDate
-{
-    public static string ViewTransPaymentByDate(string _cp2idDate)
-    {
+public class eCPDataReportStatisticPaymentByDate {
+    public static string ViewTransPaymentByDate(string _cp2idDate) {
         string _html = String.Empty;
         char[] _separator = new char[] { ':' };
         string[] _cp2idDate1 = _cp2idDate.Split(_separator);
@@ -3038,8 +2947,7 @@ public class eCPDataReportStatisticPaymentByDate
 
         _data = eCPDB.ListDetailPaymentOnCPTransRequireContract(_cp2id);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             string _statusPayment = _data[0, 7];
             string _formatPayment = _data[0, 8];
             string _studentIDDefault = _data[0, 9];
@@ -3068,8 +2976,7 @@ public class eCPDataReportStatisticPaymentByDate
             if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
                 _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
 
-            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault)))
-            {
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault) && (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault) || !String.IsNullOrEmpty(_lawyerMobileNumberDefault) && !String.IsNullOrEmpty(_lawyerEmailDefault))) {
                 _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>" + (_lawyerPhoneNumber.Count > 0 ? (" ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )") : String.Empty) +
                                   " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
             }
@@ -3135,8 +3042,7 @@ public class eCPDataReportStatisticPaymentByDate
         return _html;
     }
     
-    public static string ListCPReportStatisticPaymentByDate(HttpContext _c)
-    {
+    public static string ListCPReportStatisticPaymentByDate(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -3150,14 +3056,12 @@ public class eCPDataReportStatisticPaymentByDate
 
         _recordCount = eCPDB.CountCPReportStatisticPaymentByDate(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListReportStatisticPaymentByDate(_c);
             
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _groupNum = !_data[_i, 9].Equals("0") ? " ( กลุ่ม " + _data[_i, 9] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "LoadForm(1,'viewtranspaymentbydate',true,'','" + (_data[_i, 2] + ":" + _c.Request["datestart"] + ":" + _c.Request["dateend"]) + "','report-statistic-payment-by-date" + _data[_i, 0] + "')";
@@ -3185,8 +3089,7 @@ public class eCPDataReportStatisticPaymentByDate
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListCPReportStatisticPaymentByDate()
-    {
+    public static string ListCPReportStatisticPaymentByDate() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-statistic-payment-by-date-head'>" +
@@ -3274,10 +3177,8 @@ public class eCPDataReportStatisticPaymentByDate
     }
 }
 
-public class eCPDataReportEContract
-{    
-    public static string ListCPReportEContract(HttpContext _c)
-    {
+public class eCPDataReportEContract {    
+    public static string ListCPReportEContract(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -3293,14 +3194,12 @@ public class eCPDataReportEContract
 
         _recordCount = eCPDB.CountCPReportEContract(_c);
      
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPReportEContract(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _iconStatus1 = eCPUtil._iconEContractStatus[Util.FindIndexArray2D(0, eCPUtil._iconEContractStatus, _data[_i, 8]) - 1, 1];
                 _iconStatus2 = eCPUtil._iconEContractStatus[Util.FindIndexArray2D(0, eCPUtil._iconEContractStatus, _data[_i, 9]) - 1, 1];
                 _iconStatus3 = eCPUtil._iconEContractStatus[Util.FindIndexArray2D(0, eCPUtil._iconEContractStatus, _data[_i, 10]) - 1, 1];
@@ -3348,8 +3247,7 @@ public class eCPDataReportEContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListCPReportEContract()
-    {
+    public static string ListCPReportEContract() {
         string _html = String.Empty;
 
         _html += "<div id='cp-report-e-contract-head'>" +
@@ -3429,10 +3327,11 @@ public class eCPDataReportEContract
     }
 }
 
-public class eCPDataReportDebtorContract
-{    
-    private static string ExportCPReportDebtorContractSearchCondition(string _exportSend, string _reportOrder)
-    {
+public class eCPDataReportDebtorContract {
+    private static string ExportCPReportDebtorContractSearchCondition(
+        string _exportSend,
+        string _reportOrder
+    ) {
         string _html = String.Empty;
         string _font = "Cordia New";
         string _fontSize = "13";
@@ -3450,8 +3349,7 @@ public class eCPDataReportDebtorContract
         string[] _program = (!String.IsNullOrEmpty(_exportSendValue[4]) ? _exportSendValue[4].Split(_separator) : new string[0]);
         string[] _formatPayment = (!String.IsNullOrEmpty(_exportSendValue[5]) ? _exportSendValue[5].Split(_separator) : new string[0]);
 
-        switch (_reportOrder)
-        {
+        switch (_reportOrder) {
             case "reportdebtorcontract":
                 _colSpan = 18;
                 break;
@@ -3465,38 +3363,33 @@ public class eCPDataReportDebtorContract
 
         _html += "<table align='center' border='0' cellpadding='0' cellspacing='0'>";
 
-        if (!String.IsNullOrEmpty(_idName) || _faculty.GetLength(0) > 0 || _program.GetLength(0) > 0)
-        {
+        if (!String.IsNullOrEmpty(_idName) || _faculty.GetLength(0) > 0 || _program.GetLength(0) > 0) {
             _html += "<tr>" +
                      "  <td align='left' colspan='" + _colSpan + "'><div style='font:normal " + _fontSize + "pt " + _font + ";'>ค้นหาตามเงื่อนไข</div></td>" +
                      "</tr>";
             
-            if (!String.IsNullOrEmpty(_idName))
-            {
+            if (!String.IsNullOrEmpty(_idName)) {
                 _html += "<tr>" +
                          "  <td align='left' colspan='2'><div style='font:normal " + _fontSize + "pt " + _font + ";'>รหัส / ชื่อ - นามสกุลนักศึกษา</div></td>" +
                          "  <td align='left' colspan='" + (_colSpan - 2) + "'><div style='font:normal " + _fontSize + "pt " + _font + ";'>: " + _idName + "</div></td>" +
                          "</tr>";
             }
 
-            if (_faculty.GetLength(0) > 0)
-            {
+            if (_faculty.GetLength(0) > 0) {
                 _html += "<tr>" +
                          "  <td align='left' colspan='2'><div style='font:normal " + _fontSize + "pt " + _font + ";'>คณะ</div></td>" +
                          "  <td align='left' colspan='" + (_colSpan - 2) + "'><div style='font:normal " + _fontSize + "pt " + _font + ";'>: " + _faculty[0] + " - " + _faculty[1] + "</div></td>" +
                          "</tr>";
             }
 
-            if (_program.GetLength(0) > 0)
-            {
+            if (_program.GetLength(0) > 0) {
                 _html += "<tr>" +
                          "  <td align='left' colspan='2'><div style='font:normal " + _fontSize + "pt " + _font + ";'>หลักสูตร</div></td>" +
                          "  <td align='left' colspan='" + (_colSpan - 2) + "'><div style='font:normal " + _fontSize + "pt " + _font + ";'>: " + _program[0] + " - " + _program[1] + (!_program[3].Equals("0") ? " ( กลุ่ม " + _program[3] + " )" : "") + "</div></td>" +
                          "</tr>";
             }
 
-            if (_formatPayment.GetLength(0) > 0)
-            {
+            if (_formatPayment.GetLength(0) > 0) {
                 _html += "<tr>" +
                          "  <td align='left' colspan='2'><div style='font:normal " + _fontSize + "pt " + _font + ";'>รูปแบบการชำระหนี้</div></td>" +
                          "  <td align='left' colspan='" + (_colSpan - 2) + "'><div style='font:normal " + _fontSize + "pt " + _font + ";'>: " + _formatPayment[1] + "</div></td>" +
@@ -3516,8 +3409,7 @@ public class eCPDataReportDebtorContract
         return _html;
     }
 
-    public static void ExportCPReportDebtorContractRemain(string _exportSend)
-    {
+    public static void ExportCPReportDebtorContractRemain(string _exportSend) {
         string _html = String.Empty;
         string _font = "Cordia New";
         string _fontSize = "13";
@@ -3632,18 +3524,16 @@ public class eCPDataReportDebtorContract
         _data = eCPDB.ListExportReportDebtorContractRemain(_exportSend);
         IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _j = 1;
-            for (_i = 0; _i < (_data.GetLength(0) - 1); _i++)
-            {
+
+            for (_i = 0; _i < (_data.GetLength(0) - 1); _i++) {
                 _order = (_j++).ToString("#,##0");
                 _fullName = (_data[_i, 1] + _data[_i, 2] + " " + _data[_i, 3]);
                 _program = (_data[_i, 6] + " - " + _data[_i, 7] + (!_data[_i, 9].Equals("0") ? "( กลุ่ม " + _data[_i, 9] + " )" : ""));
                 _allActualDate = (_data[_i, 12].Equals("1") ? _data[_i, 14] : String.Empty);
 
-                if (_data[_i, 12].Equals("1"))
-                {
+                if (_data[_i, 12].Equals("1")) {
                     _allActualDate = _data[_i, 14];
                     _workDateStart = _data[_i, 16];
                     _workDateEnd = (!String.IsNullOrEmpty(_workDateStart) ? DateTime.Parse(_workDateStart, _provider).AddDays(double.Parse(_allActualDate)).ToString() : String.Empty);
@@ -3652,8 +3542,7 @@ public class eCPDataReportDebtorContract
                     _actualDate = _data[_i, 18];
                     _remainDate = _data[_i, 19];
                 }
-                else
-                {
+                else {
                     _allActualDate = String.Empty;
                     _workDateStart = String.Empty;
                     _workDateEnd = String.Empty;
@@ -3738,8 +3627,7 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.Write(_html);
     }
 
-    public static void ExportCPReportDebtorContractPaid(string _exportSend)
-    {
+    public static void ExportCPReportDebtorContractPaid(string _exportSend) {
         string _html = String.Empty;
         string _font = "Cordia New";
         string _fontSize = "13";
@@ -3845,19 +3733,16 @@ public class eCPDataReportDebtorContract
         _data = eCPDB.ListExportReportDebtorContractPaid(_exportSend);
         IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
 
-        if (_data.GetLength(0) > 0)
-        {                        
+        if (_data.GetLength(0) > 0) {
             _j = 1;
-            for (_i = 0; _i < (_data.GetLength(0) - 1); _i++)
-            {                            
-                if (!_data[_i, 0].Equals(_studentIDOld))
-                {
+
+            for (_i = 0; _i < (_data.GetLength(0) - 1); _i++) {
+                if (!_data[_i, 0].Equals(_studentIDOld)) {
                     _order = (_j++).ToString("#,##0");
                     _fullName = (_data[_i, 1] + _data[_i, 2] + " " + _data[_i, 3]);
                     _program = (_data[_i, 6] + " - " + _data[_i, 7] + (!_data[_i, 9].Equals("0") ? "( กลุ่ม " + _data[_i, 9] + " )" : ""));
                 }
-                else
-                {
+                else {
                     _order = "&nbsp;";
                     _fullName = "&nbsp;";
                     _program = "&nbsp;";
@@ -3942,8 +3827,7 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.Write(_html);
     }
 
-    public static void ExportCPReportDebtorContract(string _exportSend)
-    {
+    public static void ExportCPReportDebtorContract(string _exportSend) {
         string _html = String.Empty;
         string _font = "Cordia New";
         string _fontSize = "13";
@@ -4051,18 +3935,16 @@ public class eCPDataReportDebtorContract
         _data = eCPDB.ListExportReportDebtorContract(_exportSend);
         IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _j = 1;
-            for (_i = 0; _i < (_data.GetLength(0) - 1); _i++)
-            {
+
+            for (_i = 0; _i < (_data.GetLength(0) - 1); _i++) {
                 _order = (_j++).ToString("#,##0");
                 _fullName = (_data[_i, 1] + _data[_i, 2] + " " + _data[_i, 3]);
                 _program = (_data[_i, 6] + " - " + _data[_i, 7] + (!_data[_i, 9].Equals("0") ? "( กลุ่ม " + _data[_i, 9] + " )" : ""));
                 _allActualDate = (_data[_i, 12].Equals("1") ? _data[_i, 14] : String.Empty);
                             
-                if (_data[_i, 12].Equals("1"))
-                {
+                if (_data[_i, 12].Equals("1")) {
                     _allActualDate = _data[_i, 14];
                     _workDateStart = _data[_i, 16];
                     _workDateEnd = (!String.IsNullOrEmpty(_workDateStart) ? DateTime.Parse(_workDateStart, _provider).AddDays(double.Parse(_allActualDate)).ToString() : String.Empty);
@@ -4071,8 +3953,7 @@ public class eCPDataReportDebtorContract
                     _actualDate = _data[_i, 18];
                     _remainDate = _data[_i, 19];
                 }
-                else
-                {
+                else {
                     _allActualDate = String.Empty;
                     _workDateStart = String.Empty;
                     _workDateEnd = String.Empty;
@@ -4150,8 +4031,7 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.Write(_html);
     }
  
-    public static string ViewTransPayment(string _cp2idDate)
-    {
+    public static string ViewTransPayment(string _cp2idDate) {
         string _html = String.Empty;
         char[] _separator = new char[] { ':' };
         string[] _cp2idDate1 = _cp2idDate.Split(_separator);
@@ -4164,8 +4044,7 @@ public class eCPDataReportDebtorContract
         _data = eCPDB.ListTransPayment(_cp2id, "", "");
         _recordCount = _data.GetLength(0);
         
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div id='view-trans-payment'>" +
                      "  <input type='hidden' id='period-hidden' value=''>" +
                      "  <div class='tab-line'></div>" +
@@ -4200,8 +4079,7 @@ public class eCPDataReportDebtorContract
         return _html;
     }
 
-    public static string ListCPReportDebtorContractByProgram(HttpContext _c)
-    {
+    public static string ListCPReportDebtorContractByProgram(HttpContext _c) {
         string _html = String.Empty;
         string _pageHtml = String.Empty;
         string[,] _data;
@@ -4215,14 +4093,12 @@ public class eCPDataReportDebtorContract
 
         _recordCount = eCPDB.CountCPReportDebtorContractByProgram(_c);
         
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPReportDebtorContractByProgram(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _trackingStatus = _data[_i, 18] + _data[_i, 19] + _data[_i, 20] + _data[_i, 21];
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewTrackingStatusViewTransBreakContract('" + _data[_i, 1] + "','" + _trackingStatus + "','v3')";
@@ -4252,8 +4128,7 @@ public class eCPDataReportDebtorContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string ListCPReportDebtorContract(HttpContext _c)
-    {
+    public static string ListCPReportDebtorContract(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string[,] _data;
@@ -4264,14 +4139,12 @@ public class eCPDataReportDebtorContract
 
         _recordCount = eCPDB.CountCPReportDebtorContract(_c);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListCPReportDebtorContract(_c);
 
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _groupNum = !_data[_i, 6].Equals("0") ? " ( กลุ่ม " + _data[_i, 6] + " )" : "";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _callFunc = "ViewReportDebtorContractByProgram('" + _data[_i, 1] + "','" + _data[_i, 2].Replace(" ", "&") + "','" + _data[_i, 3] + "','" + _data[_i, 4].Replace(" ", "&") + "','" + _data[_i, 5] + "','" + _data[_i, 6] + "','" + _data[_i, 7] + "','" + _data[_i, 8] + "')";
@@ -4292,14 +4165,12 @@ public class eCPDataReportDebtorContract
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav><pagenav>";
     }
 
-    public static string TabCPReportDebtorContract(string _reportOrder)
-    {
+    public static string TabCPReportDebtorContract(string _reportOrder) {
         string _html = String.Empty;
         string _tabName = String.Empty;
         string _title = String.Empty;
 
-        switch (_reportOrder)
-        {
+        switch (_reportOrder) {
             case "reportdebtorcontract":
                 _tabName = "ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้";
                 _title = "cp-report-debtor-contract";
@@ -4457,8 +4328,7 @@ public class eCPDataReportDebtorContract
         return _html;
     }
 
-    public static void ExportCPReportDebtorContractBreakRequireRepayPayment(string _exportSend)
-    {
+    public static void ExportCPReportDebtorContractBreakRequireRepayPayment(string _exportSend) {
         string _fileName = "ReportDebtorContractBreakRequireRepayPayment";
         char[] _separator = new char[] { ':' };
         string[] _exportSendValue = _exportSend.Split(_separator);
@@ -4473,8 +4343,7 @@ public class eCPDataReportDebtorContract
         HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
         HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
 
-        using (ExcelPackage _xls = new ExcelPackage(new FileInfo(HttpContext.Current.Server.MapPath(@"ExportTemplate/" + _fileName + ".xlsx"))))
-        {
+        using (ExcelPackage _xls = new ExcelPackage(new FileInfo(HttpContext.Current.Server.MapPath(@"ExportTemplate/" + _fileName + ".xlsx")))) {
             ExcelWorksheet _ws = _xls.Workbook.Worksheets[0];
             MemoryStream _ms = new MemoryStream();
 
@@ -4487,13 +4356,11 @@ public class eCPDataReportDebtorContract
             _ws.HeaderFooter.EvenHeader.CenteredText = _header;
             _ws.Cells["A1"].Value = ("ช่วงวันที่รับเอกสารการทวงถามครั้งที่ 1 ตั้งแต่วันที่ " + (!String.IsNullOrEmpty(_dateStart) ? _dateStart : "( ไม่ระบุ )") + " - วันที่ " + (!String.IsNullOrEmpty(_dateEnd) ? _dateEnd : "( ไม่ระบุ )"));
 
-            if (_data.Count > 0)
-            {
+            if (_data.Count > 0) {
                 _i = 1;
                 _j = 3;
 
-                foreach (JObject _dr in _jsonObject)
-                {
+                foreach (JObject _dr in _jsonObject) {
                     _ws.Cells["A" + _j.ToString()].Value = _i.ToString("#,##0");
                     _ws.Cells["B" + _j.ToString()].Value = (_dr["titleName"].ToString() + _dr["firstName"].ToString() + " " + _dr["lastName"].ToString());
                     _ws.Cells["C" + _j.ToString()].Value = _dr["studentCode"].ToString();
@@ -4529,22 +4396,22 @@ public class eCPDataReportDebtorContract
     }
 }
 
-public class eCPDataReportCertificateReimbursement
-{
-    private static string ExportCPReportCertificateReimbursementSection(int _section, string _font, Dictionary<string, string> _lawyer)
-    {
+public class eCPDataReportCertificateReimbursement {
+    private static string ExportCPReportCertificateReimbursementSection(
+        int _section,
+        string _font,
+        Dictionary<string, string> _lawyer
+    ) {
         string _html = String.Empty;
         string _lawyerFullname = String.Empty;
         string _lawyerPhoneNumber = String.Empty;
     
-        if (_lawyer != null)
-        {
+        if (_lawyer != null) {
             _lawyerFullname = _lawyer["Fullname"];
             _lawyerPhoneNumber = _lawyer["PhoneNumber"];
         }
 
-        if (_section.Equals(1))
-        {
+        if (_section.Equals(1)) {
             _html += "<tr>" +
                      "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
                      "</tr>" +
@@ -4577,8 +4444,7 @@ public class eCPDataReportCertificateReimbursement
                      "</tr>";
         }
 
-        if (_section.Equals(2))
-        {
+        if (_section.Equals(2)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
@@ -4588,8 +4454,7 @@ public class eCPDataReportCertificateReimbursement
                      "</tr>";
         }
 
-        if (_section.Equals(3))
-        {
+        if (_section.Equals(3)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <table border='0' cellpadding='0' cellspacing='0'>" +
@@ -4605,8 +4470,7 @@ public class eCPDataReportCertificateReimbursement
                      "</tr>";
         }
 
-        if (_section.Equals(4))
-        {
+        if (_section.Equals(4)) {
             _html += "<tr>" +
                      "  <td width='100%' height='110' align='center'><img src='" + Util.GetApplicationPath() + "/Image/LogoMU.png' /></td>" +
                      "</tr>" +
@@ -4641,8 +4505,7 @@ public class eCPDataReportCertificateReimbursement
                      "</tr>";
         }
 
-        if (_section.Equals(5))
-        {
+        if (_section.Equals(5)) {
             _html += "<tr>" +
                      "  <td width='100%'>" +
                      "      <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
@@ -4676,8 +4539,7 @@ public class eCPDataReportCertificateReimbursement
         return _html;
     }
 
-    public static void ExportCPReportCertificateReimbursement(string _exportSend)
-    {
+    public static void ExportCPReportCertificateReimbursement(string _exportSend) {
         string _html = String.Empty;
         string _width = "600";
         string _font = "TH SarabunPSK, TH Sarabun New";
@@ -4748,8 +4610,8 @@ public class eCPDataReportCertificateReimbursement
         string[,] _data2;
 
         _data2 = eCPDB.ListCPTransRepayContractNoCurrentStatusRepay(_cp2id, "2");
-        if (_data2.GetLength(0) > 0)
-        {
+
+        if (_data2.GetLength(0) > 0) {
             _pursuant = _data2[0, 6];
             _pursuantBookDate = _data2[0, 7];
         }
@@ -4763,8 +4625,7 @@ public class eCPDataReportCertificateReimbursement
 
         _data3 = eCPDB.ListTransPayment(_cp2id, "", "");
 
-        if (_data3.GetLength(0) > 0)
-        {
+        if (_data3.GetLength(0) > 0) {
             _html += "<tr>" +
                      "  <td width='" + _width + "' valign='top'>" +
                      "      <table width='100%' border='0' cellpadding='0' cellspacing='0'>" +
@@ -4780,8 +4641,7 @@ public class eCPDataReportCertificateReimbursement
                      "                      </table>" +
                      "                  </div>";
                      
-            if (_formatPayment.Equals("1"))
-            {
+            if (_formatPayment.Equals("1")) {
                 _html += "              <div>" +
                          "                  <table border='0' cellpadding='0' cellspacing='0'>" +
                          "                      <tr>" +
@@ -4793,8 +4653,7 @@ public class eCPDataReportCertificateReimbursement
 
                 _data4 = eCPDB.ListDetailTransPayment(_data3[0, 1]);
 
-                if (_data4.GetLength(0) > 0)
-                {
+                if (_data4.GetLength(0) > 0) {
                     _overpayment = (!String.IsNullOrEmpty(_data4[0, 8]) ? true : false);
                     _receiptNo = (!String.IsNullOrEmpty(_data4[0, 28]) ? _data4[0, 28] : String.Empty);
                     _receiptBookNo = (!String.IsNullOrEmpty(_data4[0, 29]) ? _data4[0, 29] : String.Empty);
@@ -4827,15 +4686,13 @@ public class eCPDataReportCertificateReimbursement
                          "      <tr>" +
                          "          <td width='100%'>";
 
-                if (_overpayment.Equals(false))
-                {
+                if (_overpayment.Equals(false)) {
                     _html += "          <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                              "              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดลตรวจสอบแล้ว ขอเรียนว่า การที่ท่านได้นำเงินจำนวนข้างต้นมาชำระให้แก่มหาวิทยาลัยมหิดลจนครบถ้วน " +
                              "              เป็นการพ้นภาระผูกพันตามสัญญาดังกล่าวแล้ว รายละเอียดปรากฏตามสิ่งที่ส่งมาด้วย" +
                              "          </p>";
                 }
-                else
-                {
+                else {
                     _html += "          <p style='text-wrap:normal;font:normal 15pt " + _font + ";text-align:justify;text-justify:inter-cluster;'>" +
                              "              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดลตรวจสอบแล้ว ขอเรียนว่า การที่ท่านได้นำเงินจำนวนข้างต้นพร้อมทั้งดอกเบี้ยผิดนัดมาชำระให้แก่มหาวิทยาลัยจนครบถ้วน " +
                              "              เป็นการพ้นภาระผูกพันตามสัญญาดังกล่าวแล้ว รายละเอียดปรากฏตามใบเสร็จรับเงิน ที่แนบมาพร้อมนี้" +
@@ -4846,8 +4703,7 @@ public class eCPDataReportCertificateReimbursement
                          "      </tr>";
             }
 
-            if (_formatPayment.Equals("2"))
-            {
+            if (_formatPayment.Equals("2")) {
                 _html += "              <div>" +
                          "                  <table border='0' cellpadding='0' cellspacing='0'>" +
                          "                      <tr>" +
@@ -4867,12 +4723,10 @@ public class eCPDataReportCertificateReimbursement
 
             int _i;
 
-            for (_i = 0; _i < _data3.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data3.GetLength(0); _i++) {
                 _data4 = eCPDB.ListDetailTransPayment(_data3[_i, 1]);
 
-                if (_data4.GetLength(0) > 0)
-                {
+                if (_data4.GetLength(0) > 0) {
                     _receiptNo = (!String.IsNullOrEmpty(_data4[0, 28]) ? _data4[0, 28] : String.Empty);
                     _receiptBookNo = (!String.IsNullOrEmpty(_data4[0, 29]) ? _data4[0, 29] : String.Empty);
                     _receiptDate = (!String.IsNullOrEmpty(_data4[0, 30]) ? _data4[0, 30] : String.Empty);

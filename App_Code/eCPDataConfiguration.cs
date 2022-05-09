@@ -8,10 +8,11 @@ Create By           : Yutthaphoom Tawana
 using System;
 using System.Web;
 
-public class eCPDataConfiguration
-{
-    public static string AddUpdateCPTabProgram(string _action, string[,] _data)
-    {
+public class eCPDataConfiguration {
+    public static string AddUpdateCPTabProgram(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         int _i;
         string _cp1id = _action.Equals("update") ? _data[0, 0] : String.Empty;
@@ -41,8 +42,7 @@ public class eCPDataConfiguration
                  "                      <select id='dlevel'>" +
                  "                          <option value='0'>เลือกระดับการศึกษา</option>";
 
-        for (_i = 0; _i < eCPUtil._dlevel.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._dlevel.GetLength(0); _i++) {
             _html += "                      <option value='" + eCPUtil._dlevel[_i, 1] + "'>" + eCPUtil._dlevel[_i, 0] + "</option>";
         }
 
@@ -93,8 +93,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string AddCPTabProgram()
-    {
+    public static string AddCPTabProgram() {
         string _html = String.Empty;
         string[,] _data = new string[0, 0];
 
@@ -103,8 +102,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string UpdateCPTabProgram(string _cp1id)
-    {
+    public static string UpdateCPTabProgram(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -116,8 +114,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListCPTabProgram(string[,] _data)
-    {
+    public static string ListCPTabProgram(string[,] _data) {
         string _html = String.Empty;
         string _highlight = String.Empty;
         string _callFunc = String.Empty;
@@ -127,12 +124,10 @@ public class eCPDataConfiguration
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _groupNum = !_data[_i, 6].Equals("0") ? " ( กลุ่ม " + _data[_i, 6] + " )" : "";
                 _callFunc = "OpenTab('link-tab3-cp-tab-program','#tab3-cp-tab-program','ปรับปรุงหลักสูตร',false,'update','" + _data[_i, 0] + "','')";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
@@ -150,8 +145,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListUpdateCPTabProgram()
-    {
+    public static string ListUpdateCPTabProgram() {
         string _html = String.Empty;
         string _return = String.Empty;
         string[,] _data;
@@ -165,8 +159,7 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    public static string TabCPTabProgram()
-    {
+    public static string TabCPTabProgram() {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -235,15 +228,13 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string DetailCPTabCalDate(string _cp1id)
-    {
+    public static string DetailCPTabCalDate(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListCPTabCalDate(_cp1id);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _html += "<div class='form-content' id='detail-cp-tab-cal-date'>" +
                      "  <div>" +
                      "      <div class='form-label-discription-style'>" +
@@ -264,8 +255,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListCPTabCalDate(string[,] _data)
-    {
+    public static string ListCPTabCalDate(string[,] _data) {
         string _html = String.Empty;
         string _highlight = String.Empty;
         string _callFunc = String.Empty;
@@ -274,12 +264,10 @@ public class eCPDataConfiguration
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _callFunc = "LoadForm(1,'detailcptabcaldate',true,'','" + _data[_i, 0] + "','cal-date" + _data[_i, 0] + "')";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _html += "<ul class='table-row-content " + _highlight + "' id='cal-date" + _data[_i, 0] + "'>" +
@@ -294,8 +282,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListCPTabCalDate()
-    {
+    public static string ListCPTabCalDate() {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -337,8 +324,10 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    private static string AddUpdateCPTabInterest(string _action, string[,] _data)
-    {
+    private static string AddUpdateCPTabInterest(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         string _cp1id = _action.Equals("update") ? _data[0, 0] : String.Empty;
         string _inContractInterestDefault = _action.Equals("update") ? double.Parse(_data[0, 1]).ToString("#,##0.00") : String.Empty;
@@ -404,8 +393,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string AddCPTabInterest()
-    {
+    public static string AddCPTabInterest() {
         string _html = String.Empty;
         string[,] _data = new string[0, 0];
 
@@ -414,8 +402,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string UpdateCPTabInterest(string _cp1id)
-    {
+    public static string UpdateCPTabInterest(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -427,8 +414,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListCPTabInterest(string[,] _data)
-    {
+    public static string ListCPTabInterest(string[,] _data) {
         string _html = String.Empty;
         string _highlight = String.Empty;
         string _check = String.Empty;
@@ -439,12 +425,10 @@ public class eCPDataConfiguration
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _callFunc = "OpenTab('link-tab3-cp-tab-interest','#tab3-cp-tab-interest','ปรับปรุงรายการดอกเบี้ย',false,'update','" + _data[_i, 0] + "','')";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
                 _useContractInterest = int.Parse(_data[_i, 3]).Equals(1) ? "&radic;" : "&nbsp;";
@@ -462,8 +446,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListUpdateCPTabInterest()
-    {
+    public static string ListUpdateCPTabInterest() {
         string _html = String.Empty;
         string _return = String.Empty;
         string[,] _data;
@@ -477,8 +460,7 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    public static string TabCPTabInterest()
-    {
+    public static string TabCPTabInterest() {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -547,8 +529,10 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string AddUpdateCPTabPayBreakContract(string _action, string[,] _data)
-    {        
+    public static string AddUpdateCPTabPayBreakContract(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         int _i;
         string _cp1id = _action.Equals("update") ? _data[0, 0] : String.Empty;        
@@ -586,8 +570,7 @@ public class eCPDataConfiguration
                  "                      <select id='dlevel'>" +
                  "                          <option value='0'>เลือกระดับการศึกษา</option>";
 
-        for (_i = 0; _i < eCPUtil._dlevel.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._dlevel.GetLength(0); _i++) {
             _html += "                      <option value='" + eCPUtil._dlevel[_i, 1] + "'>" + eCPUtil._dlevel[_i, 0] + "</option>";
         }
 
@@ -612,8 +595,7 @@ public class eCPDataConfiguration
                  "                      <select id='case-graduate'>" +
                  "                          <option value='0'>เลือกกรณีการชดใช้ตามสัญญา</option>";
 
-        for (_i = 0; _i < eCPUtil._caseGraduate.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._caseGraduate.GetLength(0); _i++) {
             _html += "                      <option value='" + (_i + 1) + "'>" + eCPUtil._caseGraduate[_i, 0] + "</option>";
         }
 
@@ -736,8 +718,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string AddCPTabPayBreakContract()
-    {
+    public static string AddCPTabPayBreakContract() {
         string _html = String.Empty;
         string[,] _data = new string[0, 0];
 
@@ -746,8 +727,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string UpdateCPTabPayBreakContract(string _cp1id)
-    {
+    public static string UpdateCPTabPayBreakContract(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -759,8 +739,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListSearchCPTabPayBreakContract(HttpContext _c)
-    {
+    public static string ListSearchCPTabPayBreakContract(HttpContext _c) {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -769,8 +748,7 @@ public class eCPDataConfiguration
         _data = eCPDB.ListSearchCPTabPayBreakContract(_c);
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _error = 0;
             _html += _data[0, 1].ToString() + ";" + double.Parse(_data[0, 2]).ToString("#,##0") + ";" + double.Parse(_data[0, 3]).ToString("#,##0");
         }
@@ -780,8 +758,7 @@ public class eCPDataConfiguration
         return "<error>" + _error + "<error><list>" + _html + "<list>";
     }
 
-    public static string ListCPTabPayBreakContract(string[,] _data)
-    {
+    public static string ListCPTabPayBreakContract(string[,] _data) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _highlight = String.Empty;
@@ -791,12 +768,10 @@ public class eCPDataConfiguration
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {            
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _groupNum = !_data[_i, 6].Equals("0") ? " ( กลุ่ม " + _data[_i, 6] + " )" : "";
                 _callFunc = "OpenTab('link-tab3-cp-tab-pay-break-contract','#tab3-cp-tab-pay-break-contract','ปรับปรุงเกณฑ์การชดใช้',false,'update','" + _data[_i, 0] + "','')";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
@@ -816,8 +791,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListUpdateCPTabPayBreakContract()
-    {
+    public static string ListUpdateCPTabPayBreakContract() {
         string _html = String.Empty;
         string _return = String.Empty;
         string[,] _data;
@@ -831,8 +805,7 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    public static string TabCPTabPayBreakContract()
-    {
+    public static string TabCPTabPayBreakContract() {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;        
@@ -904,8 +877,10 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string AddUpdateCPTabScholarship(string _action, string[,] _data)
-    {
+    public static string AddUpdateCPTabScholarship(
+        string _action,
+        string[,] _data
+    ) {
         string _html = String.Empty;
         int _i;
         string _cp1id = _action.Equals("update") ? _data[0, 0] : String.Empty;
@@ -937,8 +912,7 @@ public class eCPDataConfiguration
                  "                      <select id='dlevel'>" +
                  "                          <option value='0'>เลือกระดับการศึกษา</option>";
 
-        for (_i = 0; _i < eCPUtil._dlevel.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._dlevel.GetLength(0); _i++) {
             _html += "                      <option value='" + eCPUtil._dlevel[_i, 1] + "'>" + eCPUtil._dlevel[_i, 0] + "</option>";
         }
 
@@ -1003,8 +977,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string AddCPTabScholarship()
-    {
+    public static string AddCPTabScholarship() {
         string _html = String.Empty;
         string[,] _data = new string[0, 0];
 
@@ -1013,8 +986,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string UpdateCPTabScholarship(string _cp1id)
-    {
+    public static string UpdateCPTabScholarship(string _cp1id) {
         string _html = String.Empty;
         string[,] _data;
 
@@ -1026,8 +998,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListSearchCPTabScholarship(HttpContext _c)
-    {
+    public static string ListSearchCPTabScholarship(HttpContext _c) {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -1036,8 +1007,7 @@ public class eCPDataConfiguration
         _data = eCPDB.ListSearchCPTabScholarship(_c);
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _error = 0;
             _html += double.Parse(_data[0, 1]).ToString("#,##0");
         }
@@ -1047,8 +1017,7 @@ public class eCPDataConfiguration
         return "<error>" + _error + "<error><list>" + _html + "<list>";
     }
 
-    public static string ListCPTabScholarship(string[,] _data)
-    {
+    public static string ListCPTabScholarship(string[,] _data) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _highlight = String.Empty;
@@ -1058,12 +1027,10 @@ public class eCPDataConfiguration
 
         _recordCount = _data.GetLength(0);
 
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _recordCount; _i++)
-            {
+            for (_i = 0; _i < _recordCount; _i++) {
                 _groupNum = !_data[_i, 6].Equals("0") ? " ( กลุ่ม " + _data[_i, 6] + " )" : "";
                 _callFunc = "OpenTab('link-tab3-cp-tab-scholarship','#tab3-cp-tab-scholarship','ปรับปรุงรายการทุนการศึกษา',false,'update','" + _data[_i, 0] + "','')";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
@@ -1081,8 +1048,7 @@ public class eCPDataConfiguration
         return _html;
     }
     
-    public static string ListUpdateCPTabScholarship()
-    {
+    public static string ListUpdateCPTabScholarship() {
         string _html = String.Empty;
         string _return = String.Empty;
         string[,] _data;
@@ -1096,8 +1062,7 @@ public class eCPDataConfiguration
         return _return;
     }
 
-    public static string TabCPTabScholarship()
-    {
+    public static string TabCPTabScholarship() {
         string _html = String.Empty;
         string[,] _data;
         int _recordCount;
@@ -1167,8 +1132,7 @@ public class eCPDataConfiguration
         return _html;
     }
 
-    public static string ListSearchScholarshipAndPayBreakContract(HttpContext _c)
-    {
+    public static string ListSearchScholarshipAndPayBreakContract(HttpContext _c) {
         string _html = String.Empty;
         string _result = String.Empty;
         string[,] _data;
@@ -1176,8 +1140,7 @@ public class eCPDataConfiguration
 
         _result = ";";
 
-        if (_c.Request["scholar"].Equals("1"))
-        {
+        if (_c.Request["scholar"].Equals("1")) {
             _data = eCPDB.ListSearchCPTabScholarship(_c);
             _recordCount = _data.GetLength(0);          
             _result = _recordCount > 0 ? double.Parse(_data[0, 1]).ToString("#,##0") + ";" : _result;
@@ -1186,8 +1149,7 @@ public class eCPDataConfiguration
         _html += _result;
         _result = ";;";
 
-        if (!_c.Request["casegraduate"].Equals("0"))
-        {
+        if (!_c.Request["casegraduate"].Equals("0")) {
             _data = eCPDB.ListSearchCPTabPayBreakContract(_c);
             _recordCount = _data.GetLength(0);
             _result = _recordCount > 0 ? _data[0, 1].ToString() + ";" + double.Parse(_data[0, 2]).ToString("#,##0") + ";" + double.Parse(_data[0, 3]).ToString("#,##0") : _result;

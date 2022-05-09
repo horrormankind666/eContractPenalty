@@ -227,7 +227,10 @@ function ValidateCPTransRepayContract(_action) {
     });
 }
 
-function ChkRepayStatusCalInterest(_cp2id, _callbackFunc) {
+function ChkRepayStatusCalInterest(
+    _cp2id,
+    _callbackFunc
+) {
     var _send = new Array();
     _send[_send.length] = "cp2id=" + _cp2id;
 

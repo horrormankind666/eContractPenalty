@@ -9,10 +9,8 @@ using System;
 using System.Globalization;
 using System.Web;
 
-public class eCPDataFormSearch
-{
-    public static string SearchCPTabUser()
-    {
+public class eCPDataFormSearch {
+    public static string SearchCPTabUser() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='search-cp-tab-user'>" +
@@ -46,15 +44,13 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string ListProfileStudent(string _studentid)
-    {
+    public static string ListProfileStudent(string _studentid) {
         string _html = String.Empty;
         string[,] _data;
 
         _data = eCPDB.ListProfileStudent(_studentid);
 
-        if (_data.GetLength(0) > 0)
-        {
+        if (_data.GetLength(0) > 0) {
             _html = "<list>" +
                     _data[0, 1]  + ";" +
                     _data[0, 2]  + ";" +
@@ -86,8 +82,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string ListSearchStudentWithResult(HttpContext _c)
-    {
+    public static string ListSearchStudentWithResult(HttpContext _c) {
         string _html = String.Empty;
         string _groupNum = String.Empty;
         string _pageHtml = String.Empty;
@@ -101,14 +96,12 @@ public class eCPDataFormSearch
 
         _recordCount = eCPDB.CountStudent(_c);
     
-        if (_recordCount > 0)
-        {
+        if (_recordCount > 0) {
             _data = eCPDB.ListStudent(_c);
       
             _html += "<div class='table-content'>";
 
-            for (_i = 0; _i < _data.GetLength(0); _i++)
-            {
+            for (_i = 0; _i < _data.GetLength(0); _i++) {
                 _groupNum = !_data[_i, 12].Equals("0") ? " ( กลุ่ม " + _data[_i, 12] + " )" : "";
                 _callFunc = "ViewStudent('" + _data[_i, 1] + ";" + _data[_i, 2] + ";" + _data[_i, 3].Replace(" ", "&nbsp;") + ";" + _data[_i, 4].Replace(" ", "&nbsp;") + ";" + _data[_i, 5].Replace(" ", "&nbsp;") + ";" + _data[_i, 6].Replace(" ", "&nbsp;") + ";" + _data[_i, 7] + ";" + _data[_i, 8].Replace(" ", "&nbsp;") + ";" + _data[_i, 9] + ";" + _data[_i, 10].Replace(" ", "&nbsp;") + ";" + _data[_i, 11] + ";" + _data[_i, 12] + ";" + _data[_i, 13] + ";" + _data[_i, 14] + "')";
                 _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
@@ -134,8 +127,7 @@ public class eCPDataFormSearch
         return "<recordcount>" + _recordCount.ToString("#,##0") + "<recordcount><list>" + _html + "<list><pagenav>" + _pageHtml + "<pagenav>";
     }
 
-    public static string SearchStudentWithResult()
-    {
+    public static string SearchStudentWithResult() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='search-student-with-result'>" +
@@ -211,8 +203,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPTransBreakContract()
-    {
+    public static string SearchCPTransBreakContract() {
         string _html = String.Empty;
         int _section;
         int _i;
@@ -241,8 +232,7 @@ public class eCPDataFormSearch
                                 
         Array _trackingStatus = (_section.Equals(1) ? eCPUtil._trackingStatusORLA : eCPUtil._trackingStatusORAA);
 
-        for (_i = 0; _i < _trackingStatus.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < _trackingStatus.GetLength(0); _i++) {
             _html += "                      <option value='" + _trackingStatus.GetValue(_i, 1) + "'>" + _trackingStatus.GetValue(_i, 0) + "</option>";
         }
 
@@ -320,8 +310,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPTransRepayContract()
-    {
+    public static string SearchCPTransRepayContract() {
         string _html = String.Empty;
         int _i;
 
@@ -343,8 +332,7 @@ public class eCPDataFormSearch
                  "                      <select id='repaystatus-trans-repay-contract'>" +
                  "                          <option value='0'>เลือกสถานะการแจ้งชำระหนี้</option>";
 
-        for (_i = 0; _i < eCPUtil._repayStatusDetail.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._repayStatusDetail.GetLength(0); _i++) {
             _html += "                      <option value='" + (_i + 1) + "'>" + eCPUtil._repayStatusDetail[_i] + "</option>";
         }
 
@@ -422,8 +410,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPTransPayment()
-    {
+    public static string SearchCPTransPayment() {
         string _html = String.Empty;
         int _i;
 
@@ -444,8 +431,7 @@ public class eCPDataFormSearch
                  "                      <select id='paymentstatus-trans-payment'>" +
                  "                          <option value='0'>เลือกสถานะการชำระหนี้</option>";
 
-        for (_i = 0; _i < eCPUtil._paymentStatus.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._paymentStatus.GetLength(0); _i++) {
             _html += "                      <option value='" + (_i + 1) + "'>" + eCPUtil._paymentStatus[_i] + "</option>";
         }
 
@@ -471,8 +457,7 @@ public class eCPDataFormSearch
                  "                      <select id='paymentrecordstatus-trans-payment'>" +
                  "                          <option value='0'>เลือกสถานะการบันทึกข้อมูลการชำระหนี้</option>";
 
-        for (_i = 0; _i < eCPUtil._paymentRecordStatus.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._paymentRecordStatus.GetLength(0); _i++) {
             _html += "                      <option value='" + eCPUtil._paymentRecordStatus[_i, 1] + "'>" + eCPUtil._paymentRecordStatus[_i, 0] + "</option>";
         }
 
@@ -551,8 +536,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportTableCalCapitalAndInterest()
-    {
+    public static string SearchCPReportTableCalCapitalAndInterest() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='search-cp-report-table-cal-capital-and-interest'>" +
@@ -604,8 +588,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportStepOfWork()
-    {        
+    public static string SearchCPReportStepOfWork() {
         string _html = String.Empty;
         int _i;
 
@@ -626,8 +609,7 @@ public class eCPDataFormSearch
                  "                      <select id='stepofworkstatus-report-step-of-work'>" +
                  "                          <option value='0'>เลือกสถานะขั้นตอนการดำเนินงาน</option>";
 
-        for (_i = 0; _i < eCPUtil._stepOfWorkStatus.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._stepOfWorkStatus.GetLength(0); _i++) {
             _html += "                      <option value='" + eCPUtil._stepOfWorkStatus.GetValue(_i, 1) + "'>" + eCPUtil._stepOfWorkStatus.GetValue(_i, 0) + "</option>";
         }
   
@@ -683,8 +665,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportNoticeRepayComplete()
-    {
+    public static string SearchCPReportNoticeRepayComplete() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='search-cp-report-notice-repay-complete'>" +
@@ -736,8 +717,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportNoticeClaimDebt()
-    {
+    public static string SearchCPReportNoticeClaimDebt() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='search-cp-report-notice-claim-debt'>" +
@@ -789,8 +769,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportStatisticPaymentByDate()
-    {
+    public static string SearchCPReportStatisticPaymentByDate() {
         string _html = String.Empty;
         int _i;
         
@@ -843,8 +822,7 @@ public class eCPDataFormSearch
                  "                      <select id='formatpaymentreportstatisticpaymentbydate'>" +
                  "                          <option value='0'>เลือกรูปแบบการชำระหนี้</option>";
                         
-        for (_i = 0; _i < eCPUtil._paymentFormat.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._paymentFormat.GetLength(0); _i++) {
             _html += "                      <option value='" + (_i + 1) + ";" + eCPUtil._paymentFormat[_i] + "'>" + eCPUtil._paymentFormat[_i] + "</option>";
         }
 
@@ -889,8 +867,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportEContract()
-    {        
+    public static string SearchCPReportEContract() {
         string _html = String.Empty;
         int _i;
 
@@ -911,8 +888,7 @@ public class eCPDataFormSearch
                  "                      <select id='acadamicyear-report-e-contract'>" +
                  "                          <option value='0'>เลือกปีการศึกษา</option>";
 
-        for (_i = 2550; _i <= int.Parse(DateTime.Parse(Util.CurrentDate("MM/dd/yyyy")).ToString("yyyy", new CultureInfo("th-TH"))); _i++)
-        {
+        for (_i = 2550; _i <= int.Parse(DateTime.Parse(Util.CurrentDate("MM/dd/yyyy")).ToString("yyyy", new CultureInfo("th-TH"))); _i++) {
             _html += "                      <option value='" + _i + "'>" + _i + "</option>";
         }
 
@@ -968,8 +944,7 @@ public class eCPDataFormSearch
         return _html;
     }
 
-    public static string SearchCPReportDebtorContract()
-    {
+    public static string SearchCPReportDebtorContract() {
         string _html = String.Empty;
 
         _html += "<div class='form-content' id='search-cp-report-debtor-contract'>" +
@@ -1009,8 +984,7 @@ public class eCPDataFormSearch
         return _html;
     }    
     
-    public static string SearchStudentDebtorContractByProgram()
-    {        
+    public static string SearchStudentDebtorContractByProgram() {
         string _html = String.Empty;
         int _i;
 
@@ -1068,8 +1042,7 @@ public class eCPDataFormSearch
                  "                      <select id='formatpaymentreportdebtorcontractbyprogram'>" +
                  "                          <option value='0'>เลือกรูปแบบการชำระหนี้</option>";
                         
-        for (_i = 0; _i < eCPUtil._paymentFormat.GetLength(0); _i++)
-        {
+        for (_i = 0; _i < eCPUtil._paymentFormat.GetLength(0); _i++) {
             _html += "                      <option value='" + (_i + 1) + ";" + eCPUtil._paymentFormat[_i] + "'>" + eCPUtil._paymentFormat[_i] + "</option>";
         }
 

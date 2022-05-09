@@ -9,10 +9,8 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class eCPDataProsecution
-{
-    public static string AddUpdateCPTransProsecution(string _cp2id)
-    {
+public class eCPDataProsecution {
+    public static string AddUpdateCPTransProsecution(string _cp2id) {
         string _html = String.Empty;
         string _RCID = String.Empty;
         string _totalPenalty = String.Empty;
@@ -58,8 +56,7 @@ public class eCPDataProsecution
         dynamic _jsonObject = JsonConvert.DeserializeObject<dynamic>(eCPDB.ListCPTransProsecution(_cp2id));
         JArray _data = _jsonObject;
 
-		if (_data.Count > 0)
-		{
+		if (_data.Count > 0) {
 			JObject _dr = _jsonObject[0];
             dynamic _eCPTransRequireContract = _dr["eCPTransRequireContract"];
             dynamic _eCPTransProsecution = _dr["eCPTransProsecution"];

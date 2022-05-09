@@ -5,7 +5,14 @@ function SetMsgLoading(_val) {
     _msgLoading = _val;
 }
 
-function LoadAjax(_param, _url, _method, _loading, _close, _callbackFunc) {
+function LoadAjax(
+    _param,
+    _url,
+    _method,
+    _loading,
+    _close,
+    _callbackFunc
+) {
     $.ajax({
     beforeSend: function () {
         if (_loading == true)
@@ -48,7 +55,11 @@ function LoadAjax(_param, _url, _method, _loading, _close, _callbackFunc) {
 
         _callbackFunc(_data);
     },
-    error: function (xhr, ajaxOptions, thrownError) {
+    error: function (
+        xhr,
+        ajaxOptions,
+        thrownError
+    ) {
         DialogConfirm("ประมวลผลไม่สำเร็จ");
         $("#dialog-confirm").dialog({
             buttons: {
@@ -209,7 +220,11 @@ function DaysArray(_n) {
     return this;
 }
 
-function IsDate(_day, _month, _year) {
+function IsDate(
+    _day,
+    _month,
+    _year
+) {
     var _daysInMonth = DaysArray(12);
     var _date = _day + "-" + _month + "-" + _year;
 
@@ -293,7 +308,11 @@ function ReplaceText(_text, _textArea) {
     }
 }
 
-function SurroundText(_text1, _text2, _textArea) {
+function SurroundText(
+    _text1,
+    _text2,
+    _textArea
+) {
     if (typeof (_textArea.caretPos) != "undefined" && _textArea.createTextRange) {
         var _caretPos = _textArea.caretPos, _tempLength = _caretPos.text.length;
 
@@ -334,7 +353,10 @@ function SurroundText(_text1, _text2, _textArea) {
     }
 }
 
-function SelectToList(_objChoose, _objList) {
+function SelectToList(
+    _objChoose,
+    _objList
+) {
     var _choose = $("#" + _objChoose).val();
 
     if (_choose.length > 0) {
@@ -355,7 +377,10 @@ function SelectToList(_objChoose, _objList) {
     }
 }
 
-function ClearList(_obj, _mode) {
+function ClearList(
+    _obj,
+    _mode
+) {
     var _objCombo = $("#" + _obj);
 
     if (_mode == 1) {
@@ -392,7 +417,10 @@ function GroupValueList(_obj) {
     return _result;
 }
 
-function CopyList(_objSource, _objDestination) {
+function CopyList(
+    _objSource,
+    _objDestination
+) {
     ClearList(_objDestination, 2);
 
     _objCombo = $("#" + _objSource);
@@ -467,7 +495,13 @@ function GoToTopElement(_anchor) {
     }, 500);
 }
 
-function InitCombobox(_id, _valueDefault, _valueNew, _widthInput, _widthList) {
+function InitCombobox(
+    _id,
+    _valueDefault,
+    _valueNew,
+    _widthInput,
+    _widthList
+) {
     $(document).ready(function () {
         $("#" + _id).val(_valueDefault);
         $("#" + _id).combobox();
@@ -578,7 +612,12 @@ function InitCalendar(_calendarID) {
     });
 }
 
-function InitCalendarFromTo(_fromID, _fromFix, _toID, _toFix) {
+function InitCalendarFromTo(
+    _fromID,
+    _fromFix,
+    _toID,
+    _toFix
+) {
     $(document).ready(function () {
         if (_fromFix == false) {
             $(_fromID).datepicker("destroy");
@@ -695,7 +734,11 @@ function InitSticky() {
     }
 }
 
-function ExtractNumber(_obj, _decimalPlaces, _allowNegative) {
+function ExtractNumber(
+    _obj,
+    _decimalPlaces,
+    _allowNegative
+) {
     var _temp = _obj.value;
     var _reg0Str = "[0-9]*";
 
@@ -745,7 +788,12 @@ function ExtractNumber(_obj, _decimalPlaces, _allowNegative) {
     _obj.value = _temp;
 }
 
-function BlockNonNumbers(_obj, _e, _allowDecimal, _allowNegative) {
+function BlockNonNumbers(
+    _obj,
+    _e,
+    _allowDecimal,
+    _allowNegative
+) {
     var _key;
     var _isCtrl = false;
     var _keychar;
@@ -777,7 +825,10 @@ function BlockNonNumbers(_obj, _e, _allowDecimal, _allowNegative) {
     return _isFirstN || _isFirstD || _reg.test(_keychar);
 }
 
-function AddCommas(_obj, _decimalPlaces) {
+function AddCommas(
+    _obj,
+    _decimalPlaces
+) {
     var _nStr = parseFloat(DelCommas(_obj).length > 0 ? DelCommas(_obj) : "0").toString();
     _nStr += "";    
     var _x = _nStr.split(".");
@@ -854,7 +905,10 @@ function UncheckRoot(_checkboxRoot) {
     }
 }
 
-function CheckUncheckAll(_checkboxRoot, _checkboxChild) {
+function CheckUncheckAll(
+    _checkboxRoot,
+    _checkboxChild
+) {
     _elem = $("input[name=" + _checkboxChild + "]:checkbox");
     _elem.attr("checked", $("#" + _checkboxRoot).is(":checked"));
 }
@@ -881,7 +935,11 @@ function GetDateObject(_str) {
         return _str;
 }
 
-function DateDiff(_date1, _date2, _interval) {
+function DateDiff(
+    _date1,
+    _date2,
+    _interval
+) {
     var _second = 1000;
     var _minute = _second * 60;
     var _hour = _minute * 60;
@@ -929,7 +987,12 @@ function DialogLoading(_loadingMsg) {
     });
 }
 
-function DialogMessage(_alertMsg, _focus, _closeFrm, _idActive) {   
+function DialogMessage(
+    _alertMsg,
+    _focus,
+    _closeFrm,
+    _idActive
+) {
     $("#dialog-message").html(_alertMsg);
     $("#dialog-message").dialog({
         dialogClass: "class-dialog-message",
@@ -971,7 +1034,14 @@ function DialogConfirm(_confirmMsg) {
     });
 }
 
-function DialogForm(_frmIndex, _frm, _width, _height, _title, _idActive) {
+function DialogForm(
+    _frmIndex,
+    _frm,
+    _width,
+    _height,
+    _title,
+    _idActive
+) {
     $("body").css("overflow", "hidden");
 
     if (_frmIndex == 2)

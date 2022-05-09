@@ -7,48 +7,61 @@
     cursor: default;
     overflow-x: hidden;
 }
+
 html, body {
     height: 100%;
 }
+
 body > .body-main {
     height: auto;
     min-height: 100%;
 }
+
 .body-main, .head-bar-main, .body-footer {
     width: 100%;
 }
+
 .main-indent, .head-bar-main, .body-footer {
     min-width: 990px;
 }
+
 .content-layout, .head, .menu-bar, .footer-content {
     width: 990px;
 }
+
 .content-layout {
     padding-bottom: 70px;
 }
+
 .content-left {
     float: left;
 }
+
 .content-right {
     float: right;
 }
+
 .content {
     padding-top: 151px;
 }
+
 .body-footer {
     margin-top: -70px;
     height: 70px;
     background: url(../Image/BgFooter.gif);
 }
+
 .home {
     width: 990px;
     height: 336px;
     background: url(../Image/BgHome.png);
     background-repeat: no-repeat;
 }
+
 .hidden {
     display: none !important;
 }
+
 .overlay {
     width: 100%;
     height: 100%;
@@ -56,6 +69,7 @@ body > .body-main {
     position: absolute;
     z-index: 1;
 }
+
 .overlay .msg {
     color: #FFFFFF;
     position: absolute;
@@ -68,6 +82,7 @@ form,
 input {
     margin: 0;
 }
+
 .inputbox {
     border-left: 2px solid #404040;
     border-top: 2px solid #404040;
@@ -81,17 +96,21 @@ input {
     background-color: #FFFFFF;
     outline: none;
 }
+
 .textbox-numeric {
     text-align: right;
 }
+
 .textbox-disable {
     color: #000000;
     background-color: #CCCCCC;
     cursor: default;
 }
+
 .text-underline {
     text-decoration: underline !important;
 }
+
 .textareabox {
     font: normal 12px Tahoma, Verdana, Arial, sans-serif;
     border-left: 2px solid #404040;
@@ -105,6 +124,7 @@ input {
     resize: none;
     outline: none;
 }
+
 .checkbox,
 .radio {
     margin: 0;
@@ -113,13 +133,16 @@ input {
     outline: none;
     cursor: default;
 }
+
 .combobox :active {
     outline: none;
 }
+
 .combobox .ui-combobox {
     position: relative;
     display: inline-block;
 }
+
 .combobox .ui-button {
     position: absolute;
     top: 0;
@@ -127,21 +150,26 @@ input {
     margin-left: -1px;
     border: 0;
     padding: 0;
-    /* adjust styles for IE 6/7 */
+    /*
+    adjust styles for IE 6/7
+    */
     *height: 1.7em;
     *top: 0.1em;
 }
+
 .combobox .ui-icon {
     width: 20px;
     height: 19px;
     background: url(../Image/Arrow.png) no-repeat;
     outline: none;
 }
+
 .combobox .ui-icon.disable {
     width: 20px;
     height: 19px;
     background: url(../Image/ArrowDisable.png) no-repeat;
 }
+
 .combobox .ui-autocomplete-input {
     position: relative;
     border-left: 2px solid #404040;
@@ -153,11 +181,13 @@ input {
     outline: none;
     cursor: text;
 }
+
 .combobox .ui-button-icon-only {
     width: 20px;
     cursor: default;
     outline: none;
 }
+
 .combobox .ui-state-default {
     border-top: 2px solid #404040;
     border-right: 2px solid #D4D0C8;
@@ -166,6 +196,7 @@ input {
     font-weight: normal;
     color: #000000;
 }
+
 .ui-autocomplete {
     padding: 0;
     margin: 0;
@@ -179,15 +210,19 @@ input {
     position: absolute;
     cursor: default;
 }	
+
 * html .ui-autocomplete {
     width: 1px;
 }
+
 .ui-autocomplete.ui-menu {
     list-style: none;
 }
+
 .ui-autocomplete.ui-menu .ui-menu-item {
     font: normal 12px Tahoma, Verdana, Arial, sans-serif;
 }
+
 .ui-autocomplete.ui-menu .ui-menu-item a {
     padding-left: 3px;
     padding-right: 3px;
@@ -198,6 +233,7 @@ input {
     cursor: default;
     text-decoration: none;
 }
+
 .ui-autocomplete.ui-menu .ui-menu-item a.ui-state-hover,
 .ui-autocomplete.ui-menu .ui-menu-item a.ui-state-active {
     font-weight: normal;
@@ -211,6 +247,7 @@ input {
     margin: 0;
     padding: 0;
 }
+
 .combobox dd,
 .combobox dt,
 .combobox div,
@@ -219,27 +256,33 @@ input {
     padding: 0;
     text-align: left;
 }
+
 .combobox dd {
     position: relative;
 }
+
 .combobox a,
 .combobox a:visited {
     cursor: default;
     color: #000000;
     text-decoration: none;
 }
+
 .combobox a:hover {
     color: #FFFFFF;
 }
+
 .combobox dt a,
 .combobox dt a {
     color: #000000;
     font: normal 13px Tahoma, Verdana, Arial, sans-serif;
 }
+
 .combobox dt a:hover,
 .combobox dt a:focus {
     color: #000000;
 }
+
 .combobox dt a {
     background: #FFFFFF url(../Image/Arrow.png) no-repeat right;
     display: block;
@@ -250,6 +293,7 @@ input {
     border-right: 2px solid #D4D0C8;
     border-bottom: 2px solid #D4D0C8;
 }
+
 .combobox dt a span {
     display: block;
     margin: 0;
@@ -257,6 +301,7 @@ input {
     height: 20px;
     line-height: 19px;
 }
+
 .combobox dd div {
     background: #FFFFCC none repeat scroll 0 0;
     border: 2px solid #404040;
@@ -270,15 +315,19 @@ input {
     max-height: 230px;
     overflow: auto;
 }
+
 .combobox dd ul {
     list-style: none;
 }
+
 .combobox span.value {
     display: none;
 }
+
 .combobox dd ul li {
     font: normal 13px Tahoma, Verdana, Arial, sans-serif;
 }
+
 .combobox dd ul li a {
     padding-left: 3px;
     padding-right: 3px;
@@ -288,37 +337,46 @@ input {
     color: #000000;
     cursor: default;
 }
+
 .combobox dd ul li a:hover {
-    background: url(../Image/BgButton.png) 0px -539px;
+    background: url(../Image/BgButton.png) 0 -539px;
     color: #FFFFFF;
 }
 */
+
 .radio {
     margin-top: 7px;
 }
+
 .radio div {
     float: left;
 }
+
 .radio input[type="radio"] {
     margin-top: 4px;
 }
+
 .radio .radio-label {
     margin-left: 7px;
     font: normal 14px Tahoma, Verdana, Arial, sans-serif;
     color: #000000;
 }
+
 input.calendar {
     width: 80px;
     cursor: default;
 }
+
 a {
     outline: none;
 }
+
 a[disabled] {
     pointer-events: none;
     cursor: default;
     opacity: 0.5;
 }
+
 .bold {
     font-weight: bold;
 }
@@ -334,51 +392,62 @@ a[disabled] {
     padding-top: 0;
     background: #FFFFFF;
 }
+
 .form-content a {
     font: normal 12px Tahoma, Verdana, Arial, sans-serif;
     color: #0000FF;
     text-decoration: none;
 }
+
 .form-content a:hover {
     color: #FF0000;
 }
+
 .form-content .form-label-discription-style,
 .form-content .form-input-style {
     float: left;
     margin-bottom: 1px;
     position: relative;
 }
+
 .form-content .clear-bottom {
     margin-bottom: 0;
 }
+
 .form-content .form-label-discription-style {
     padding: 6px 7px 0 7px;
 }
+
 .form-content .form-label-discription-style {
     background: #A9C8E3;
     font-family: Tahoma, Verdana, Arial, sans-serif;
     font-weight: normal;
     text-align: left;
 }
+
 .form-content .form-label-discription-style .form-label-style {
     font-size: 12px;
     line-height: 12px;
     color: #000000;
 }
+
 .form-discription-style {
     margin-top: 9px;
     color: #666666;
 }
+
 .form-discription-style .form-discription-line1-style,
 .form-discription-style .form-discription-line2-style,
 .form-discription-style .form-discription-line3-style {
     font-size: 11px;
     line-height: 11px;
 }
+
 .form-discription-style .form-discription-line2-style,
 .form-discription-style .form-discription-line3-style {
     margin-top: 5px;
 }
+
 .form-content .form-input-style {
     margin-left: 1px;
     background: #8FAEC9;
@@ -387,12 +456,15 @@ a[disabled] {
     text-align: left;
     color: #000000;
 }
+
 .form-content .form-input-style .form-input-content {
     margin: 0 7px 0 7px
 }
+
 .form-content .form-input-style .form-input-content .form-input-content-line {
     margin-top: 5px;
 }
+
 .form-content .button {
     padding: 10px 0 14px 0;
     background: #A9C8E3;
@@ -405,12 +477,14 @@ a[disabled] {
     list-style: none;
     overflow: hidden;
 }
+
 .button-style1 ul li,
 .button-style2 ul li {
     float: left;
     margin: 0 4px 0 0;
     text-align: center;
 }
+
 .button-style1 ul li a,
 .button-style2 ul li a {
     display: block;
@@ -421,6 +495,7 @@ a[disabled] {
     text-transform: uppercase;
     outline: none;
 }
+
 .button-style1 ul li a:hover,
 .button-style2 ul li a:hover {
     text-decoration: none;
@@ -430,16 +505,18 @@ a[disabled] {
     height: 30px;
     line-height: 30px;
 }
+
 .button-style1 ul li a {
-    background: url(../Image/BgButton.png) 0px -35px;
+    background: url(../Image/BgButton.png) 0 -35px;
     font-size: 12px;
     color: #FFFFFF;
     width: 85px;
     height: 30px;
     line-height: 30px;
 }
+
 .button-style1 ul li a:hover {
-    background: url(../Image/BgButton.png) 0px -334px;
+    background: url(../Image/BgButton.png) 0 -334px;
     color: #FF0000;
 }
 
@@ -447,23 +524,27 @@ a[disabled] {
     height: 23px;
     line-height: 23px;
 }
+
 .button-style2 ul li a {
-    background: url(../Image/BgButton.png) 0px -237px;
+    background: url(../Image/BgButton.png) 0 -237px;
     font-size: 12px;
     color: #000000;
     height: 23px;
     line-height: 23px;
 }
+
 .button-style2 ul li a:hover {
-    background: url(../Image/BgButton.png) 0px -440px;
+    background: url(../Image/BgButton.png) 0 -440px;
     color: #FF0000;
 }
+
 .button-style2-disable ul li a {
     color: #666666;
     cursor: default;
 }
+
 .button-style2-disable ul li a:hover {
-    background: url(../Image/BgButton.png) 0px -237px;
+    background: url(../Image/BgButton.png) 0 -237px;
     color: #666666;
 }
 
@@ -471,6 +552,7 @@ a.link-disable {
     color: #666666;
     cursor: default;
 }
+
 a.link-disable:hover {
     color: #666666;
 }
@@ -484,6 +566,7 @@ a.link-disable:hover {
     list-style: none;
     overflow: hidden;
 }
+
 .icon-status-style ul li,
 .icon-status1-style ul li,
 .icon-status2-style ul li,
@@ -498,6 +581,7 @@ a.link-disable:hover {
 .uploadfile-button.browse {
     position: relative;
 }
+
 .uploadfile-button.browse input[type="file"] {
     position: absolute;
     left: 0;
@@ -509,68 +593,91 @@ a.link-disable:hover {
 .status-send {
     background: url(../Image/IconStatus.png) 0 0 no-repeat;
 }
+
 .status-receiver {
     background: url(../Image/IconStatus.png) 0 -60px no-repeat;
 }
+
 .status-receiver-disable {
     background: url(../Image/IconStatus.png) 0 -20px no-repeat;
 }
+
 .status-edit {
     background: url(../Image/IconStatus.png) 0 -80px no-repeat;
 }
+
 .status-cancel {
     background: url(../Image/IconStatus.png) 0 -100px no-repeat;
 }
+
 .status-repay-wait-disable {
     background: url(../Image/IconStatus.png) 0 -120px no-repeat;
 }
+
 .status-repay-wait {
     background: url(../Image/IconStatus.png) 0 -140px no-repeat;
 }
+
 .status-repay-count1-disable {
     background: url(../Image/IconStatus.png) 0 -160px no-repeat;
 }
+
 .status-repay-count1-wait {
     background: url(../Image/IconStatus.png) 0 -180px no-repeat;
 }
+
 .status-repay-count1-yes {
     background: url(../Image/IconStatus.png) 0 -200px no-repeat;
 }
+
 .status-repay-count1-no {
     background: url(../Image/IconStatus.png) 0 -220px no-repeat;
 }
+
 .status-repay-count2-disable {
     background: url(../Image/IconStatus.png) 0 -240px no-repeat;
 }
+
 .status-repay-count2-wait {
     background: url(../Image/IconStatus.png) 0 -260px no-repeat;
 }
+
 .status-repay-count2-yes {
     background: url(../Image/IconStatus.png) 0 -280px no-repeat;
 }
+
 .status-repay-count2-no {
     background: url(../Image/IconStatus.png) 0 -300px no-repeat;
 }
+
 .status-repay-success {
     background: url(../Image/IconStatus.png) 0 -60px no-repeat;
 }
+
 .status-repay-success-disable {
     background: url(../Image/IconStatus.png) 0 -20px no-repeat;
 }
+
 .status-repay-success-wait {
-    background: url(../Image/IconStatus.png) 0 -40px no-repeat;}
+    background: url(../Image/IconStatus.png) 0 -40px no-repeat;
+}
+
 .status-payment-disable {
     background: url(../Image/IconStatus.png) 0 -20px no-repeat;
 }
+
 .status-payment-wait {
     background: url(../Image/IconStatus.png) 0 -40px no-repeat;
 }
+
 .status-payment-success {
     background: url(../Image/IconStatus.png) 0 -60px no-repeat;
 }
+
 .status-e-contract-uncomplete {
     background: url(../Image/IconStatus.png) 0 -20px no-repeat;
 }
+
 .status-e-contract-complete {
     background: url(../Image/IconStatus.png) 0 -60px no-repeat;
 }
@@ -580,16 +687,19 @@ a.link-disable:hover {
     height: 164px;
     background: url(../Image/StatusExplanation.png) 0 0;
 }
+
 #status-repay-explanation {
     width: 400px;
     height: 286px;
     background: url(../Image/StatusExplanation.png) 0 -164px;
 }
+
 #status-payment-explanation {
     width: 344px;
     height: 100px;
     background: url(../Image/StatusExplanation.png) 0 -452px;
 }
+
 #status-e-contract {
     width: 344px;
     height: 71px;
@@ -601,6 +711,7 @@ a.link-disable:hover {
     width: auto;
     background: #EEEEEE;
 }
+
 .table-head ul,
 .table-content ul,
 .table-content ul li div ul {
@@ -609,6 +720,7 @@ a.link-disable:hover {
     list-style: none;
     overflow: hidden;
 }
+
 .table-head ul li,
 .table-content ul li {
     display: table-cell;
@@ -617,77 +729,96 @@ a.link-disable:hover {
     word-break: keep-all;
     vertical-align: top;
 }
+
 .table-head ul li {
     background: #014C90;
     color: #FFFFFF;
     font: bold 12px Tahoma, Verdana, Arial, sans-serif;
 }
+
 .table-head ul li {
     height: 35px;
     line-height: 32px;
 }
+
 .table-head ul li .table-head-line1 {
     margin-top: 6px;
 }
+
 .table-head ul .table-col, .table-content ul .table-col {
     border-left: 1px solid #EEEEEE;
 }
+
 .table-head a {
     color: #FFFF00;
     font-weight: bold;
     text-decoration: none;
 }
+
 .table-head a:hover {
     color: #FF0000;
 }
+
 .table-content .table-row-content {
     color: #000000;
     font: normal 12px Tahoma, Verdana, Arial, sans-serif;
 }
+
 .table-content .table-row-content:hover {
     background: #B7B7B7;
     color: #FF0000;
     cursor: pointer;
 }
+
 .table-content .table-row-content.noclick:hover {
     cursor: default;
 }
+
 .table-content .active {
     background: #B7B7B7;
     color: #FF0000;
 }
+
 .table-content .table-row-content {
     display: table-row;
     border-top: 1px solid #EEEEEE;
 }
+
 .table-content .table-row-content li div {
     margin: 5px 7px 5px 7px;
     line-height: 20px;
 }
+
 .table-content .table-row-content li div .facultycode-col {
     display: inline-block;
     width: 20px;
 }
+
 .table-content .table-row-content li div .programcode-col {
     display: inline-block;
     width: 42px;
 } 
+
 .table-content .table-row-content li div .facultycode-col-s {
     display: inline-block;
     width: 18px;
 }
+
 .table-content .table-row-content li div .programcode-col-s {
     display: inline-block;
     width: 38px;
 } 
+
 .table-content .table-row-content.table-row-total {
     background: #014C90;
     color: #FFFFFF;
 }
+
 .table-content .table-row-content.table-row-total:hover {
     color: #FFFFFF;
     cursor: default;
 }
+
 .table-content .table-row-content.table-row-total ul li {
     color: #FFFFFF;
 }
@@ -696,26 +827,32 @@ a.link-disable:hover {
 .table-content ul #tab1-table-content-cp-tab-user-col1 {
     width: 61px;
 }
+
 .table-head ul #tab1-table-head-cp-tab-user-col2,
 .table-content ul #tab1-table-content-cp-tab-user-col2 {
     width: 180px;
 }
+
 .table-head ul #tab1-table-head-cp-tab-user-col3,
 .table-content ul #tab1-table-content-cp-tab-user-col3 {
     width: 200px;
 }
+
 .table-head ul #tab1-table-head-cp-tab-user-col4,
 .table-content ul #tab1-table-content-cp-tab-user-col4 {
     width: 122px;
 }
+
 .table-head ul #tab1-table-head-cp-tab-user-col5,
 .table-content ul #tab1-table-content-cp-tab-user-col5 {
     width: 229px;
 }
+
 .table-head ul #tab1-table-head-cp-tab-user-col6,
 .table-content ul #tab1-table-content-cp-tab-user-col6 {
     width: 187px;
 }
+
 .table-head ul #tab1-table-head-cp-tab-user-col1, 
 .table-head ul #tab1-table-head-cp-tab-user-col2,
 .table-head ul #tab1-table-head-cp-tab-user-col3,
@@ -725,6 +862,7 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #tab1-table-content-cp-tab-user-col2 div,
 .table-content ul #tab1-table-content-cp-tab-user-col3 div,
 .table-content ul #tab1-table-content-cp-tab-user-col4 div,
@@ -737,14 +875,17 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-tab-program-col1 {
     width: 160px;
 }
+
 .table-head ul #table-head-cp-tab-program-col2,
 .table-content ul #table-content-cp-tab-program-col2 {
     width: 403px;
 }
+
 .table-head ul #table-head-cp-tab-program-col3,
 .table-content ul #table-content-cp-tab-program-col3 {
     width: 419px;
 }
+
 .table-content ul #table-content-cp-tab-program-col1 div,
 .table-content ul #table-content-cp-tab-program-col2 div,
 .table-content ul #table-content-cp-tab-program-col3 div {
@@ -755,10 +896,12 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-tab-cal-date-col1 {
     width: 791px;
 }
+
 .table-head ul #table-head-cp-tab-cal-date-col2,
 .table-content ul #table-content-cp-tab-cal-date-col2 {
     width: 192px;
 }
+
 .table-content ul #table-content-cp-tab-cal-date-col1 div {
     text-align: left;
 }
@@ -767,28 +910,34 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-tab-interest-col1 {
     width: 435px;
 }
+
 .table-head ul #table-head-cp-tab-interest-col2,
 .table-content ul #table-content-cp-tab-interest-col2 {
     width: 435px;
 }
+
 .table-head ul #table-head-cp-tab-interest-col3,
 .table-content ul #table-content-cp-tab-interest-col3 {
     width: 112px;
 }
+
 .table-head ul #table-head-cp-tab-interest-col1,
 .table-head ul #table-head-cp-tab-interest-col2,
 .table-head ul #table-head-cp-tab-interest-col3 {
     height: 55px;
     line-height: 20px;
 } 
+
 .table-content ul #table-content-cp-tab-interest-col1 div div,
 .table-content ul #table-content-cp-tab-interest-col2 div div {
     width: 225px;
     text-align: right;
 }
+
 .table-content ul #table-content-cp-tab-interest-col3 {
     height: 30px;
 }
+
 .table-content ul #table-content-cp-tab-interest-col3 div .checkbox {
     margin-top: 3px;
 }
@@ -797,26 +946,32 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-tab-pay-break-contract-col1 {
     width: 121px;
 }
+
 .table-head ul #table-head-cp-tab-pay-break-contract-col2,
 .table-content ul #table-content-cp-tab-pay-break-contract-col2 {
     width: 104px;
 }
+
 .table-head ul #table-head-cp-tab-pay-break-contract-col3,
 .table-content ul #table-content-cp-tab-pay-break-contract-col3 {
     width: 380px;
 }
+
 .table-head ul #table-head-cp-tab-pay-break-contract-col4,
 .table-content ul #table-content-cp-tab-pay-break-contract-col4 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-tab-pay-break-contract-col5,
 .table-content ul #table-content-cp-tab-pay-break-contract-col5 {
     width: 140px;
 }
+
 .table-head ul #table-head-cp-tab-pay-break-contract-col6,
 .table-content ul #table-content-cp-tab-pay-break-contract-col6 {
     width: 114px;
 }
+
 .table-head ul #table-head-cp-tab-pay-break-contract-col1,
 .table-head ul #table-head-cp-tab-pay-break-contract-col2,
 .table-head ul #table-head-cp-tab-pay-break-contract-col3,
@@ -826,11 +981,13 @@ a.link-disable:hover {
     height: 75px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-tab-pay-break-contract-col1 div,
 .table-content ul #table-content-cp-tab-pay-break-contract-col2 div,
 .table-content ul #table-content-cp-tab-pay-break-contract-col3 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-tab-pay-break-contract-col4 div {
     text-align: right;
 }
@@ -839,18 +996,22 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-tab-scholarship-col1 {
     width: 113px;
 }
+
 .table-head ul #table-head-cp-tab-scholarship-col2,
 .table-content ul #table-content-cp-tab-scholarship-col2 {
     width: 357px;
 }
+
 .table-head ul #table-head-cp-tab-scholarship-col3,
 .table-content ul #table-content-cp-tab-scholarship-col3 {
     width: 373px;
 }
+
 .table-head ul #table-head-cp-tab-scholarship-col4,
 .table-content ul #table-content-cp-tab-scholarship-col4 {
     width: 140px;
 }
+
 .table-head ul #table-head-cp-tab-scholarship-col1,
 .table-head ul #table-head-cp-tab-scholarship-col2,
 .table-head ul #table-head-cp-tab-scholarship-col3,
@@ -858,11 +1019,13 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 } 
+
 .table-content ul #table-content-cp-tab-scholarship-col1 div,
 .table-content ul #table-content-cp-tab-scholarship-col2 div,
 .table-content ul #table-content-cp-tab-scholarship-col3 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-tab-scholarship-col4 div {
     text-align: right;
 }
@@ -873,48 +1036,59 @@ a.link-disable:hover {
 .table-content ul #tab2-table-content-cp-trans-break-contract-col1 {
     width: 61px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-break-contract-col2,
 .table-content ul #tab1-table-content-cp-trans-break-contract-col2,
 .table-head ul #tab2-table-head-cp-trans-break-contract-col3,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col3 {
     width: 65px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col2,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col2 {
     width: 30px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-break-contract-col3,
 .table-content ul #tab1-table-content-cp-trans-break-contract-col3 {
     width: 259px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col4,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col4 {
     width: 236px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-break-contract-col4,
 .table-content ul #tab1-table-content-cp-trans-break-contract-col4 {
     width: 270px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-break-contract-col5,
 .table-content ul #tab1-table-content-cp-trans-break-contract-col5 {
     width: 325px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col5,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col5 {
     width: 287px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col6,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col6 {
     width: 90px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col7,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col7 {
     width: 90px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col8,
 .table-content ul #tab2-table-content-cp-trans-break-contract-col8 {
     width: 118px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-break-contract-col1,
 .table-head ul #tab2-table-head-cp-trans-break-contract-col1,
 .table-head ul #tab1-table-head-cp-trans-break-contract-col2,
@@ -931,9 +1105,11 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-head ul #tab2-table-head-cp-trans-break-contract-col2 div .checkbox {
     margin-top: 5px;
 }
+
 .table-content ul #tab1-table-content-cp-trans-break-contract-col3 div,
 .table-content ul #tab1-table-content-cp-trans-break-contract-col4 div,
 .table-content ul #tab1-table-content-cp-trans-break-contract-col5 div,
@@ -942,12 +1118,15 @@ a.link-disable:hover {
 .table-content ul #tab2-table-content-cp-trans-break-contract-col8 div {
     text-align: left;
 }
+
 .table-content ul #tab2-table-content-cp-trans-break-contract-col2 {
     height: 30px;
 }
+
 .table-content ul #tab2-table-content-cp-trans-break-contract-col2 div .checkbox {
     margin-top: 3px;
 }
+
 .table-content ul #tab2-table-content-cp-trans-break-contract-col8 .icon-status-style {
     position: relative;
     left: 38px;
@@ -957,26 +1136,32 @@ a.link-disable:hover {
 .table-content ul #tab1-table-content-cp-trans-require-contract-col1 {
     width: 61px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-require-contract-col2,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col2 {
     width: 65px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-require-contract-col3,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col3 {
     width: 270px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-require-contract-col4,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col4 {
     width: 375px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-require-contract-col5,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col5 {
     width: 90px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-require-contract-col6,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col6 {
     width: 118px;
 }
+
 .table-head ul #tab1-table-head-cp-trans-require-contract-col1,
 .table-head ul #tab1-table-head-cp-trans-require-contract-col2,
 .table-head ul #tab1-table-head-cp-trans-require-contract-col3,
@@ -986,11 +1171,13 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #tab1-table-content-cp-trans-require-contract-col3 div,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col4 div,
 .table-content ul #tab1-table-content-cp-trans-require-contract-col6 div {
     text-align: left;
 }
+
 .table-content ul #tab1-table-content-cp-trans-require-contract-col6 .icon-status-style {
     position: relative;
     left: 38px;
@@ -1000,30 +1187,37 @@ a.link-disable:hover {
 .table-content ul #tab2-table-content-repay-col1 {
     width: 61px;
 }
+
 .table-head ul #tab2-table-head-repay-col2,
 .table-content ul #tab2-table-content-repay-col2 {
     width: 65px;
 }
+
 .table-head ul #tab2-table-head-repay-col3,
 .table-content ul #tab2-table-content-repay-col3 {
     width: 240px;
 }
+
 .table-head ul #tab2-table-head-repay-col4,
 .table-content ul #tab2-table-content-repay-col4 {
     width: 306px;
 }
+
 .table-head ul #tab2-table-head-repay-col5,
 .table-content ul #tab2-table-content-repay-col5 {
     width: 90px;
 }
+
 .table-head ul #tab2-table-head-repay-col6,
 .table-content ul #tab2-table-content-repay-col6 {
     width: 73px;
 }
+
 .table-head ul #tab2-table-head-repay-col7,
 .table-content ul #tab2-table-content-repay-col7 {
     width: 143px;
 }
+
 .table-head ul #tab2-table-head-repay-col1,
 .table-head ul #tab2-table-head-repay-col2,
 .table-head ul #tab2-table-head-repay-col3,
@@ -1034,11 +1228,13 @@ a.link-disable:hover {
     height: 75px;
     line-height: 20px;
 }
+
 .table-content ul #tab2-table-content-repay-col3 div,
 .table-content ul #tab2-table-content-repay-col4 div,
 .table-content ul #tab2-table-content-repay-col7 div {
     text-align: left;
 }
+
 .table-content ul #tab2-table-content-repay-col7 .icon-status-style {
     position: relative;
     left: 14px;
@@ -1048,52 +1244,64 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-trans-payment-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col2,
 .table-content ul #table-content-cp-trans-payment-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col3,
 .table-content ul #table-content-cp-trans-payment-col3 {
     width: 96px;
     word-break: break-all;
 }
+
 .table-head ul #table-head-cp-trans-payment-col4,
 .table-content ul #table-content-cp-trans-payment-col4 {
     width: 81px;
     word-break: break-all;
 }
+
 .table-head ul #table-head-cp-trans-payment-col5,
 .table-content ul #table-content-cp-trans-payment-col5 {
     width: 84px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col6,
 .table-content ul #table-content-cp-trans-payment-col6 {
     width: 85px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col7,
 .table-content ul #table-content-cp-trans-payment-col7 {
     width: 80px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col8,
 .table-content ul #table-content-cp-trans-payment-col8 {
     width: 84px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col9,
 .table-content ul #table-content-cp-trans-payment-col9 {
     width: 80px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col10,
 .table-content ul #table-content-cp-trans-payment-col10 {
     width: 80px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col11,
 .table-content ul #table-content-cp-trans-payment-col11 {
     width: 80px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col12,
 .table-content ul #table-content-cp-trans-payment-col12 {
     width: 97px;
 }
+
 .table-head ul #table-head-cp-trans-payment-col1,
 .table-head ul #table-head-cp-trans-payment-col2,
 .table-head ul #table-head-cp-trans-payment-col3,
@@ -1109,11 +1317,13 @@ a.link-disable:hover {
     height: 75px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-trans-payment-col3 div,
 .table-content ul #table-content-cp-trans-payment-col4 div,
 .table-content ul #table-content-cp-trans-payment-col12 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-trans-payment-col6 div,
 .table-content ul #table-content-cp-trans-payment-col7 div,
 .table-content ul #table-content-cp-trans-payment-col8 div,
@@ -1122,6 +1332,7 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-trans-payment-col11 div {
     text-align: right;
 }
+
 .table-content ul #table-content-cp-trans-payment-col12 .icon-status-style {
     position: relative;
     left: 30px;
@@ -1132,56 +1343,67 @@ a.link-disable:hover {
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col1 {
     width: 45px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col2,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col2,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col2 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col3,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col3,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col3 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col4,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col4,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col4 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col5,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col5,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col5 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col6,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col6,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col6 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col7,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col7,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col7 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col8,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col8,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col8 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col9,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col9,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col9 {
     width: 91px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col10,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col10,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col10 {
     width: 85px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col11,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col11,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col11 {
     width: 116px;
 }
+
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col1,
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col2,
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col3,
@@ -1196,6 +1418,7 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col2 div,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col2 div,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col3 div,
@@ -1214,13 +1437,16 @@ a.link-disable:hover {
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col9 div {
     text-align: right;
 }
+
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col11 div {
     text-align: left;
 }
+
 #list-cp-trans-payment .table-head ul li,
 #list-cp-trans-payment .table-content .table-row-content {
     font-size: 11px;
 }
+
 #list-cp-trans-payment .table-content .table-row-content li div {
     margin: 1px 7px 1px 7px;
 }
@@ -1231,66 +1457,77 @@ a.link-disable:hover {
 #view-trans-payment .table-content ul #table-content-trans-payment-col1 {
     width: 45px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col2,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col2,
 #view-trans-payment .table-head ul #table-head-trans-payment-col2,
 #view-trans-payment .table-content ul #table-content-trans-payment-col2 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col3,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col3,
 #view-trans-payment .table-head ul #table-head-trans-payment-col3,
 #view-trans-payment .table-content ul #table-content-trans-payment-col3 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col4,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col4,
 #view-trans-payment .table-head ul #table-head-trans-payment-col4,
 #view-trans-payment .table-content ul #table-content-trans-payment-col4 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col5,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col5,
 #view-trans-payment .table-head ul #table-head-trans-payment-col5,
 #view-trans-payment .table-content ul #table-content-trans-payment-col5 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col6,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col6,
 #view-trans-payment .table-head ul #table-head-trans-payment-col6,
 #view-trans-payment .table-content ul #table-content-trans-payment-col6 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col7,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col7,
 #view-trans-payment .table-head ul #table-head-trans-payment-col7,
 #view-trans-payment .table-content ul #table-content-trans-payment-col7 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col8,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col8,
 #view-trans-payment .table-head ul #table-head-trans-payment-col8,
 #view-trans-payment .table-content ul #table-content-trans-payment-col8 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col9,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col9,
 #view-trans-payment .table-head ul #table-head-trans-payment-col9,
 #view-trans-payment .table-content ul #table-content-trans-payment-col9 {
     width: 86px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col10,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col10,
 #view-trans-payment .table-head ul #table-head-trans-payment-col10,
 #view-trans-payment .table-content ul #table-content-trans-payment-col10 {
     width: 85px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col11,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col11,
 #view-trans-payment .table-head ul #table-head-trans-payment-col11,
 #view-trans-payment .table-content ul #table-content-trans-payment-col11 {
     width: 116px;
 }
+
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col1,
 #view-trans-payment .table-head ul #table-head-trans-payment-col1,
 #view-trans-payment-by-date .table-head ul #table-head-trans-payment-col2,
@@ -1316,6 +1553,7 @@ a.link-disable:hover {
     height: 75px;
     line-height: 20px;
 }
+
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col2 div,
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-total-col2 div,
 #view-trans-payment .table-content ul #table-content-trans-payment-col2 div,
@@ -1350,16 +1588,19 @@ a.link-disable:hover {
 #view-trans-payment .table-content ul #table-content-trans-payment-total-col9 div {
     text-align: right;
 }
+
 #view-trans-payment-by-date .table-content ul #table-content-trans-payment-col11 div,
 #view-trans-payment .table-content ul #table-content-trans-payment-col11 div {
     text-align: left;
 }
+
 #view-trans-payment-by-date .table-head ul li,
 #view-trans-payment-by-date .table-content .table-row-content,
 #view-trans-payment .table-head ul li,
 #view-trans-payment .table-content .table-row-content {
     font-size: 11px;
 }
+
 #view-trans-payment-by-date .table-content .table-row-content li div,
 #view-trans-payment .table-content .table-row-content li div {
     margin: 1px 7px 1px 7px;
@@ -1369,30 +1610,37 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col2,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col3,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col3 {
     width: 231px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col4,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col4 {
     width: 261px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col5,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col5 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col6,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col6 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col7,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col7 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col1,
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col2,
 .table-head ul #table-head-cp-report-table-cal-capital-and-interest-col3,
@@ -1403,10 +1651,12 @@ a.link-disable:hover {
     height: 75px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col3 div,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col4 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col5 div,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col6 div,
 .table-content ul #table-content-cp-report-table-cal-capital-and-interest-col7 div {
@@ -1417,30 +1667,37 @@ a.link-disable:hover {
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col1 {
     width: 74px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col2,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col2 {
     width: 166px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col3,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col3 {
     width: 166px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col4,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col4 {
     width: 166px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col5,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col5 {
     width: 166px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col6,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col6 {
     width: 120px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col7,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col7 {
     width: 120px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col1,
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col2,
 #list-cp-report-table-cal-capital-and-interest .table-head ul #table-head-report-table-cal-capital-and-interest-col3,
@@ -1451,15 +1708,18 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col2 div,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col3 div,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col4 div,
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col5 div {
     text-align: right;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-content ul #table-content-report-table-cal-capital-and-interest-col7 div {
     color: transparent;
 }
+
 #list-cp-report-table-cal-capital-and-interest .table-content .table-row-content:hover {
     cursor: default;
 }
@@ -1467,23 +1727,29 @@ a.link-disable:hover {
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col1 {
     width: 241px;
 }
+
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col2 {
     width: 166px;
 }
+
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col3 {
     width: 166px;
 }
+
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col4 {
     width: 166px;
 }
+
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col5 {
     width: 241px;
 }
+
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col2 div,
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col3 div,
 #sumtotal-table-cal-capital-and-interest .table-content ul #table-content-sumtotal-table-cal-capital-and-interest-col4 div {
     text-align: right;
 }
+
 #sumtotal-table-cal-capital-and-interest .table-content .table-row-content {
     background: #014C90;
     color: #FFFFFF;
@@ -1494,22 +1760,27 @@ a.link-disable:hover {
 .table-content ul #tab1-table-content-search-student-with-result-col1 {
     width: 50px;
 }
+
 .table-head ul #tab1-table-head-search-student-with-result-col2,
 .table-content ul #tab1-table-content-search-student-with-result-col2 {
     width: 65px;
 }
+
 .table-head ul #tab1-table-head-search-student-with-result-col3,
 .table-content ul #tab1-table-content-search-student-with-result-col3 {
     width: 200px;
 }
+
 .table-head ul #tab1-table-head-search-student-with-result-col4,
 .table-content ul #tab1-table-content-search-student-with-result-col4 {
     width: 242px;
 }
+
 .table-head ul #tab1-table-head-search-student-with-result-col5,
 .table-content ul #tab1-table-content-search-student-with-result-col5 {
     width: 333px;
 }
+
 .table-head ul #tab1-table-head-search-student-with-result-col1,
 .table-head ul #tab1-table-head-search-student-with-result-col2,
 .table-head ul #tab1-table-head-search-student-with-result-col3,
@@ -1518,14 +1789,17 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #tab1-table-content-search-student-with-result-col3 div,
 .table-content ul #tab1-table-content-search-student-with-result-col4 div,
 .table-content ul #tab1-table-content-search-student-with-result-col5 div {
     text-align: left;
 }
+
 #list-search-student-with-result .table-content .table-row-content {
     font-size: 11px;
 }
+
 #list-search-student-with-result .table-content .table-row-content li div {
     margin: 1px 7px 1px 7px;
 }
@@ -1534,30 +1808,37 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-step-of-work-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col2,
 .table-content ul #table-content-cp-report-step-of-work-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col3,
 .table-content ul #table-content-cp-report-step-of-work-col3 {
     width: 216px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col4,
 .table-content ul #table-content-cp-report-step-of-work-col4 {
     width: 247px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col5,
 .table-content ul #table-content-cp-report-step-of-work-col5 {
     width: 123px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col6,
 .table-content ul #table-content-cp-report-step-of-work-col6 {
     width: 143px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col7,
 .table-content ul #table-content-cp-report-step-of-work-col7 {
     width: 123px;
 }
+
 .table-head ul #table-head-cp-report-step-of-work-col1,
 .table-head ul #table-head-cp-report-step-of-work-col2,
 .table-head ul #table-head-cp-report-step-of-work-col3,
@@ -1568,6 +1849,7 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-step-of-work-col3 div,
 .table-content ul #table-content-cp-report-step-of-work-col4 div,
 .table-content ul #table-content-cp-report-step-of-work-col5 div,
@@ -1575,14 +1857,17 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-step-of-work-col7 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-step-of-work-col5 .icon-status1-style {
     position: relative;
     left: 43px;
 }
+
 .table-content ul #table-content-cp-report-step-of-work-col6 .icon-status2-style {
     position: relative;
     left: 14px;
 }
+
 .table-content ul #table-content-cp-report-step-of-work-col7 .icon-status3-style {
     position: relative;
     left: 43px;
@@ -1592,26 +1877,32 @@ a.link-disable:hover {
 .table-content ul #table-content-report-step-of-work-col1 {
     width: 56px;
 }
+
 .table-head ul #table-head-report-step-of-work-col2,
 .table-content ul #table-content-report-step-of-work-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-report-step-of-work-col3,
 .table-content ul #table-content-report-step-of-work-col3 {
     width: 246px;
 }
+
 .table-head ul #table-head-report-step-of-work-col4,
 .table-content ul #table-content-report-step-of-work-col4 {
     width: 116px;
 }
+
 .table-head ul #table-head-report-step-of-work-col5,
 .table-content ul #table-content-report-step-of-work-col5 {
     width: 138px;
 }
+
 .table-head ul #table-head-report-step-of-work-col6,
 .table-content ul #table-content-report-step-of-work-col6 {
     width: 118px;
 }
+
 .table-head ul #table-head-report-step-of-work-col1,
 .table-head ul #table-head-report-step-of-work-col2,
 .table-head ul #table-head-report-step-of-work-col3,
@@ -1621,25 +1912,30 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-head ul #table-head-report-step-of-work-col4 .table-head-line1,
 .table-head ul #table-head-report-step-of-work-col5 .table-head-line1,
 .table-head ul #table-head-report-step-of-work-col6 .table-head-line1 {
     margin-bottom: 3px;
 }
+
 .table-content ul #table-content-report-step-of-work-col3 div,
 .table-content ul #table-content-report-step-of-work-col4 div,
 .table-content ul #table-content-report-step-of-work-col5 div,
 .table-content ul #table-content-report-step-of-work-col6 div {
     text-align: left;
 }
+
 .table-content ul #table-content-report-step-of-work-col4 .icon-status1-style {
     position: relative;
     left: 43px;
 }
+
 .table-content ul #table-content-report-step-of-work-col5 .icon-status2-style {
     position: relative;
     left: 14px;
 }
+
 .table-content ul #table-content-report-step-of-work-col6 .icon-status3-style {
     position: relative;
     left: 43px;
@@ -1649,42 +1945,52 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-statistic-repay-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col2,
 .table-content ul #table-content-cp-report-statistic-repay-col2 {
     width: 72px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col3,
 .table-content ul #table-content-cp-report-statistic-repay-col3 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col4,
 .table-content ul #table-content-cp-report-statistic-repay-col4 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col5,
 .table-content ul #table-content-cp-report-statistic-repay-col5 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col6,
 .table-content ul #table-content-cp-report-statistic-repay-col6 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col7,
 .table-content ul #table-content-cp-report-statistic-repay-col7 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col8,
 .table-content ul #table-content-cp-report-statistic-repay-col8 {
     width: 114px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col9,
 .table-content ul #table-content-cp-report-statistic-repay-col9 {
     width: 114px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col10,
 .table-content ul #table-content-cp-report-statistic-repay-col10 {
     width: 114px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-col1,
 .table-head ul #table-head-cp-report-statistic-repay-col2,
 .table-head ul #table-head-cp-report-statistic-repay-col3,
@@ -1698,6 +2004,7 @@ a.link-disable:hover {
     height: 95px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-statistic-repay-col8 div,
 .table-content ul #table-content-cp-report-statistic-repay-col9 div,
 .table-content ul #table-content-cp-report-statistic-repay-col10 div {
@@ -1708,38 +2015,47 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col2,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col2 {
     width: 236px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col3,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col3 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col4,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col4 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col5,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col5 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col6,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col6 {
     width: 100px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col7,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col7 {
     width: 93px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col8,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col8 {
     width: 93px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col9,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col9 {
     width: 93px;
 }
+
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col1,
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col2,
 .table-head ul #table-head-cp-report-statistic-repay-by-program-col3,
@@ -1752,9 +2068,11 @@ a.link-disable:hover {
     height: 95px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col2 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col7 div,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col8 div,
 .table-content ul #table-content-cp-report-statistic-repay-by-program-col9 div {
@@ -1765,22 +2083,27 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-statistic-contract-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-col2,
 .table-content ul #table-content-cp-report-statistic-contract-col2 {
     width: 229px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-col3,
 .table-content ul #table-content-cp-report-statistic-contract-col3 {
     width: 230px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-col4,
 .table-content ul #table-content-cp-report-statistic-contract-col4 {
     width: 230px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-col5,
 .table-content ul #table-content-cp-report-statistic-contract-col5 {
     width: 230px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-col1,
 .table-head ul #table-head-cp-report-statistic-contract-col2,
 .table-head ul #table-head-cp-report-statistic-contract-col3,
@@ -1794,22 +2117,27 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-statistic-contract-by-program-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col2,
 .table-content ul #table-content-cp-report-statistic-contract-by-program-col2 {
     width: 410px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col3,
 .table-content ul #table-content-cp-report-statistic-contract-by-program-col3 {
     width: 170px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col4,
 .table-content ul #table-content-cp-report-statistic-contract-by-program-col4 {
     width: 169px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col5,
 .table-content ul #table-content-cp-report-statistic-contract-by-program-col5 {
     width: 170px;
 }
+
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col1,
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col2,
 .table-head ul #table-head-cp-report-statistic-contract-by-program-col3,
@@ -1818,6 +2146,7 @@ a.link-disable:hover {
     height: 95px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-statistic-contract-by-program-col2 div {
     text-align: left;
 }
@@ -1826,22 +2155,27 @@ a.link-disable:hover {
 .table-content ul #table-content-report-student-sign-contract-col1 {
     width: 56px;
 }
+
 .table-head ul #table-head-report-student-sign-contract-col2,
 .table-content ul #table-content-report-student-sign-contract-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-report-student-sign-contract-col3,
 .table-content ul #table-content-report-student-sign-contract-col3 {
     width: 245px;
 }
+
 .table-head ul #table-head-report-student-sign-contract-col4,
 .table-content ul #table-content-report-student-sign-contract-col4 {
     width: 245px;
 }
+
 .table-head ul #table-head-report-student-sign-contract-col5,
 .table-content ul #table-content-report-student-sign-contract-col5 {
     width: 129px;
 }
+
 .table-head ul #table-head-report-student-sign-contract-col1,
 .table-head ul #table-head-report-student-sign-contract-col2,
 .table-head ul #table-head-report-student-sign-contract-col3,
@@ -1850,10 +2184,12 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-report-student-sign-contract-col3 div,
 .table-content ul #table-content-report-student-sign-contract-col4 div {
     text-align: left;
 }
+
 #list-report-student-on-statistic-contract-by-program-content #tab1-report-student-on-statistic-contract-by-program-content .table-content .table-row-content:hover {
     cursor:default;
 }
@@ -1862,30 +2198,37 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-notice-repay-complete-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col2,
 .table-content ul #table-content-cp-report-notice-repay-complete-col2 {
     width: 42px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col3,
 .table-content ul #table-content-cp-report-notice-repay-complete-col3 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col4,
 .table-content ul #table-content-cp-report-notice-repay-complete-col4 {
     width: 246px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col5,
 .table-content ul #table-content-cp-report-notice-repay-complete-col5 {
     width: 321px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col6,
 .table-content ul #table-content-cp-report-notice-repay-complete-col6 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col7,
 .table-content ul #table-content-cp-report-notice-repay-complete-col7 {
     width: 123px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col1,
 .table-head ul #table-head-cp-report-notice-repay-complete-col2,
 .table-head ul #table-head-cp-report-notice-repay-complete-col3,
@@ -1896,31 +2239,39 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-head ul #table-head-cp-report-notice-repay-complete-col2 div .checkbox {
     margin-top: 5px;
 }
+
 .table-content ul #table-content-cp-report-notice-repay-complete-col3 div,
 .table-content ul #table-content-cp-report-notice-repay-complete-col4 div,
 .table-content ul #table-content-cp-report-notice-repay-complete-col5 div,
 .table-content ul #table-content-cp-report-notice-repay-complete-col7 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-notice-repay-complete-col6 div {
     text-align: right;
 }
+
 .table-content ul #table-content-cp-report-notice-repay-complete-col2 {
     height: 30px;
 }
+
 .table-content ul #table-content-cp-report-notice-repay-complete-col2 div .checkbox {
     margin-top: 3px;
 }
+
 .table-content ul #table-content-cp-report-notice-repay-complete-col7 .icon-status-style {
     position: relative;
     left: 43px;
 }
+
 #cp-report-notice-repay-complete-head .button-style2 ul li a {
     width: 53px;
 }
+
 #cp-report-notice-repay-complete-content .table-content .table-row-content:hover {
     cursor: default;
 }
@@ -1929,26 +2280,32 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-notice-claim-debt-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-notice-claim-debt-col2,
 .table-content ul #table-content-cp-report-notice-claim-debt-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-notice-claim-debt-col3,
 .table-content ul #table-content-cp-report-notice-claim-debt-col3 {
     width: 249px;
 }
+
 .table-head ul #table-head-cp-report-notice-claim-debt-col4,
 .table-content ul #table-content-cp-report-notice-claim-debt-col4 {
     width: 341px;
 }
+
 .table-head ul #table-head-cp-report-notice-claim-debt-col5,
 .table-content ul #table-content-cp-report-notice-claim-debt-col5 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-notice-claim-debt-col6,
 .table-content ul #table-content-cp-report-notice-claim-debt-col6 {
     width: 143px;
 }
+
 .table-head ul #table-head-cp-report-notice-claim-debt-col1,
 .table-head ul #table-head-cp-report-notice-claim-debt-col2,
 .table-head ul #table-head-cp-report-notice-claim-debt-col3,
@@ -1958,18 +2315,22 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-notice-claim-debt-col3 div,
 .table-content ul #table-content-cp-report-notice-claim-debt-col4 div,
 .table-content ul #table-content-cp-report-notice-claim-debt-col6 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-notice-claim-debt-col5 div {
     text-align: right;
 }
+
 .table-content ul #table-content-cp-report-notice-claim-debt-col6 .icon-status-style {
     position: relative;
     left: 14px;
 }
+
 #cp-report-notice-claim-debt-head .button-style2 ul li a {
     width: 53px;
 }
@@ -1978,30 +2339,37 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col2,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col3,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col3 {
     width: 232px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col4,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col4 {
     width: 293px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col5,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col5 {
     width: 106px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col6,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col6 {
     width: 106px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col7,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col7 {
     width: 115px;
 }
+
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col1,
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col2,
 .table-head ul #table-head-cp-report-statistic-payment-by-date-col3,
@@ -2012,15 +2380,18 @@ a.link-disable:hover {
     height: 75px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col2 div,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col3 div,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col4 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col5 div,
 .table-content ul #table-content-cp-report-statistic-payment-by-date-col6 div {
     text-align: right;
 }
+
 #cp-report-statistic-payment-by-date-head .button-style2 ul li a {
     width: 53px;
 }
@@ -2029,30 +2400,37 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-e-contract-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col2,
 .table-content ul #table-content-cp-report-e-contract-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col3,
 .table-content ul #table-content-cp-report-e-contract-col3 {
     width: 230px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col4,
 .table-content ul #table-content-cp-report-e-contract-col4 {
     width: 311px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col5,
 .table-content ul #table-content-cp-report-e-contract-col5 {
     width: 103px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col6,
 .table-content ul #table-content-cp-report-e-contract-col6 {
     width: 103px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col7,
 .table-content ul #table-content-cp-report-e-contract-col7 {
     width: 105px;
 }
+
 .table-head ul #table-head-cp-report-e-contract-col1,
 .table-head ul #table-head-cp-report-e-contract-col2,
 .table-head ul #table-head-cp-report-e-contract-col3,
@@ -2063,6 +2441,7 @@ a.link-disable:hover {
     height: 55px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-e-contract-col3 div,
 .table-content ul #table-content-cp-report-e-contract-col4 div,
 .table-content ul #table-content-cp-report-e-contract-col5 div,
@@ -2070,21 +2449,26 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-e-contract-col7 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-e-contract-col5 .icon-status1-style {
     position: relative;
     left: 32px;
 }
+
 .table-content ul #table-content-cp-report-e-contract-col6 .icon-status2-style {
     position: relative;
     left: 32px;
 }
+
 .table-content ul #table-content-cp-report-e-contract-col7 .icon-status3-style {
     position: relative;
     left: 33px;
 }
+
 #cp-report-e-contract-content .table-content .table-row-content:hover {
     cursor: default;
 }
+
 #cp-report-e-contract-content .table-content .table-row-content .status-e-contract-complete a {
     display: block;
     width: 24px;
@@ -2095,30 +2479,37 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-debtor-contract-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col2,
 .table-content ul #table-content-cp-report-debtor-contract-col2 {
     width: 357px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col3,
 .table-content ul #table-content-cp-report-debtor-contract-col3 {
     width: 85px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col4,
 .table-content ul #table-content-cp-report-debtor-contract-col4 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col5,
 .table-content ul #table-content-cp-report-debtor-contract-col5 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col6,
 .table-content ul #table-content-cp-report-debtor-contract-col6 {
     width: 120px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col7,
 .table-content ul #table-content-cp-report-debtor-contract-col7 {
     width: 115px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-col1,
 .table-head ul #table-head-cp-report-debtor-contract-col2,
 .table-head ul #table-head-cp-report-debtor-contract-col3,
@@ -2129,9 +2520,11 @@ a.link-disable:hover {
     height: 95px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-debtor-contract-col2 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-debtor-contract-col4 div,
 .table-content ul #table-content-cp-report-debtor-contract-col5 div,
 .table-content ul #table-content-cp-report-debtor-contract-col6 div,
@@ -2143,38 +2536,47 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col1 {
     width: 61px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col2,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col2 {
     width: 65px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col3,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col3 {
     width: 233px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col4,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col4 {
     width: 90px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col5,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col5 {
     width: 103px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col6,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col6 {
     width: 103px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col7,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col7 {
     width: 103px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col8,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col8 {
     width: 103px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col9,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col9 {
     width: 115px;
 }
+
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col1,
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col2,
 .table-head ul #table-head-cp-report-debtor-contract-by-program-col3,
@@ -2187,16 +2589,19 @@ a.link-disable:hover {
     height: 95px;
     line-height: 20px;
 }
+
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col2 div,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col3 div {
     text-align: left;
 }
+
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col5 div,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col6 div,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col7 div,
 .table-content ul #table-content-cp-report-debtor-contract-by-program-col8 div {
     text-align: right;
 }
+
 #cp-report-debtor-contract-head .button-style2 ul li a {
     width: 53px;
 }
@@ -2215,25 +2620,31 @@ a.link-disable:hover {
     left: 650px;
     top: 115px;
 }
+
 .frm-signin #frm-signin {
     padding-bottom: 10px;
 }
+
 .frm-signin #frm-signin #colpassword {
     margin-top: 12px;
 }
+
 .frm-signin .button-style1 {
     padding-bottom: 15px;
 }
+
 .frm-signin #manual {
     text-align: right;
     margin-right: 5px;
 }
+
 .frm-signin #manual a {
     font-family: Tahoma, Verdana, Arial, sans-serif;
     font-size: 14px;
     color: #0000FF;
     text-decoration: none;
 }
+
 .frm-signin #manual a:hover {
     color: #FF0000;
 }
@@ -2241,26 +2652,33 @@ a.link-disable:hover {
 .box1 {
     border: 3px solid #0B284B;
 }
+
 .box2 {
     border: 3px solid #808080;
 }
+
 .box3 {
     border: 3px solid #0B284B;
     border-bottom: 0;
 }
+
 .box4 {
     border: 3px solid #0B284B;
     border-top: 0;
 }
+
 .box5 {
     border: 4px solid #000000;
 }
+
 .box6 {
     border: 1px solid #000000;
 }
+
 .highlight1 {
     background: #A9C8E3;
 }
+
 .highlight2 {
     background: #8FAEC9;
 }
@@ -2273,60 +2691,78 @@ a.link-disable:hover {
     color: #BBBBBB;
     font-style: italic;
 }
+
 .box-search-condition .box-search-condition-title {
     font: bold 12px Tahoma, Verdana, Arial, sans-serif;
     height: 20px;
 }
+
 .box-search-condition .box-search-condition-order {
     font: normal 11px Tahoma, Verdana, Arial, sans-serif;
     height: 16px;
 }
+
 .box-search-condition .box-search-condition-order .box-search-condition-order-title {
     float: left;
 }
+
 .box-search-condition .search-tab-user-condition-order .box-search-condition-order-title {
     width: 21px;
 }
+
 .box-search-condition .search-trans-break-contract-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-report-step-of-work-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-report-statistic-payment-by-date-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-report-notice-repay-complete-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-trans-repay-contract-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-trans-payment-condition-order .box-search-condition-order-title {
     width: 225px;
 }
+
 .box-search-condition .search-report-table-cal-capital-and-interest-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-report-notice-claim-debt-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-report-e-contract-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .search-report-debtor-contract-condition-order .box-search-condition-order-title {
     width: 100px;
 }
+
 .box-search-condition .search-report-debtor-contract-by-program-condition-order .box-search-condition-order-title {
     width: 141px;
 }
+
 .box-search-condition .box-search-condition-order .box-search-condition-split-title-value {
     float: left;
     width: 12px;
 }
+
 .box-search-condition .box-search-condition-order .box-search-condition-order-value {
     float: left;
 }
+
 #search-tab-user-condition,
 #search-trans-break-contract-condition,
 #search-report-step-of-work-condition,
@@ -2354,6 +2790,7 @@ a.link-disable:hover {
     height: 22px;
     line-height: 22px;
 }
+
 .nav-page li {
     float: left;
     display: block;
@@ -2361,6 +2798,7 @@ a.link-disable:hover {
     position: relative;
     right: 50%;
 }
+
 .nav-page li a {
     display: block;
     width: 22px;
@@ -2371,11 +2809,13 @@ a.link-disable:hover {
     background: #113B5E;
     color: #BBBBBB;
 }
+
 .nav-page li a:hover {
     background: url(../Image/BgButton.png) 0 -135px;
     color: #FFFFFF;
     text-decoration: none;
 }
+
 .nav-page #active {
     width: 22px;
     height: 22px;
@@ -2392,26 +2832,31 @@ a.link-disable:hover {
     top: 0;
     z-index: 5000;
 }
+
 .head-bar-main {
     height: 35px;
     line-height: 35px;
     background: url(../Image/HeadBar.gif);
 }
+
 .head-bar-main .head-bar ul,
 .head-bar-main .head-bar ul ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
+
 .head-bar-main .head-bar ul {
     position: relative;
     float: left;
 }
+
 .head-bar-main .head-bar ul li {
     float: left;
     margin-left: 2px;
     display: inline;
 }
+
 .head-bar-main .head-bar ul li,
 .head-bar-main .head-bar ul li a {
     display: block;
@@ -2423,38 +2868,46 @@ a.link-disable:hover {
     color: #0000FF;
     background: transparent;
 }
+
 .head-bar-main .head-bar ul .have-link:hover,
 .head-bar-main .head-bar ul .have-link a:hover {
     position: relative;
     background: #0079B2;
     color: #FFFFFF;
 }
+
 .head-bar-main .head-bar ul li ul {
     display: none;
     position: absolute;
 }
+
 .head-bar-main .head-bar ul ul li {
     float: none;
 }
+
 .head-bar-main .head-bar ul #submenu11:hover ul,
 .head-bar-main .head-bar ul #submenu21:hover ul {
     display: block;
 }
+
 .head-bar-main .head-bar ul #submenu11 ul {
     left: -107px;
     width: 243px;
     height: 92px;
     background: url(../Image/BgSubMenu.png) 0 0;
 }
+
 .head-bar-main .head-bar ul #submenu21 ul {
     left: -16px;
     width: 425px;
     height: 156px;
     background: url(../Image/BgSubMenu.png) 0 -92px;
 }
+
 .head-bar-main .head-bar ul ul li {
     margin-left: 19px;
 }
+
 .head-bar-main .head-bar ul ul li a {
     display: block;
     font: normal 13px Tahoma, Verdana, Arial, sans-serif;
@@ -2466,51 +2919,65 @@ a.link-disable:hover {
     color: #000000;
     background: transparent;
 }
+
 .head-bar-main .head-bar ul #submenu11 ul li .item-submenu-first,
 .head-bar-main .head-bar ul #submenu11 ul li .item-submenu {
     width: 199px;
 }
+
 .head-bar-main .head-bar ul #submenu21 ul li .item-submenu-first,
 .head-bar-main .head-bar ul #submenu21 ul li .item-submenu {
     width: 382px;
 }
+
 .head-bar-main .head-bar ul ul li .item-submenu-first {
     margin-top: 6px;
 }
+
 .head-bar-main .head-bar ul ul li .item-submenu-first:hover,
 .head-bar-main .head-bar ul ul li .item-submenu:hover {
     background: url(../Image/BgButton.png) 0 -129px;
     color: #FFFFFF;
 }
+
 .head-bar-main .head-bar ul li .active {
     background: #0079B2;
     color: #FFFFFF;
 }
+
 .head-bar-main .head-bar ul li .noactive {
     background: transparent;
 }
+
 .head-bar-main .head-bar ul .link-img {
     width: 24px;
 }
+
 .head-bar-main .head-bar ul li #mu-icon1 {
     background: url(../Image/BgMUIcon.gif) 0 0;
 }
+
 .head-bar-main .head-bar ul li #mu-icon1:hover {
     background: url(../Image/BgMUIcon.gif) 0 32px;
 }
+
 .head-bar-main .head-bar ul li #mu-icon2 {
     background: url(../Image/BgMUIcon.gif) 24px 0;
 }
+
 .head-bar-main .head-bar ul li #mu-icon2:hover {
     background: url(../Image/BgMUIcon.gif) 24px 32px;
 }
+
 .head-bar-main .head-bar ul .link-msg {
     padding: 0 5px 0 5px;
 }
+
 .head-bar-main .head-bar #current-date {
     margin-left: 5px;
     color: #5E89B4;
 }
+
 .head-bar-main .head-bar #whois {
     color: #000000;
 }
@@ -2519,12 +2986,14 @@ a.link-disable:hover {
 .head {
     height: 106px;
 }
+
 .head .head-title-main {
     width: auto;
     height: 100px;
     background: #2376BC;
     border: 3px solid #FFFFFF;
 }
+
 .head .head-title-oraa,
 .head .head-title-oraa-bg,
 .head .head-title-orla,
@@ -2534,21 +3003,27 @@ a.link-disable:hover {
     width: 984px;
     height: 100px;
 }
+
 .head .head-title-oraa {
     background: url(../Image/HeadTitleORAA.gif) -4px 0;
 }
+
 .head .head-title-oraa-bg {
     background: url(../Image/BgHeadTitleORAA.png);
 }
+
 .head .head-title-orla {
     background: url(../Image/HeadTitleORLA.gif);
 }
+
 .head .head-title-orla-bg {
     background: url(../Image/BgHeadTitleORLA.png);
 }
+
 .head .head-title-orfa {
     background: url(../Image/HeadTitleORFA.gif);
 }
+
 .head .head-title-orfa-bg {
     background: url(../Image/BgHeadTitleORFA.png);
 }
@@ -2557,34 +3032,41 @@ a.link-disable:hover {
     height: 45px;
     background: #2376BC;
 }
+
 .menu-bar-main .menu-bar {
     width: auto;
     height: 35px;
     line-height: 35px;
     background: url(../Image/Bar.png) 0 -32px;
 }
+
 .menu-bar-main .menu-bar .content-left,
 .menu-bar-main .menu-bar .content-right {
     margin-top: 3px;
 }
+
 .menu-bar-main .menu-bar ul,
 .menu-bar-main .menu-bar ul ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
+
 .menu-bar-main .menu-bar ul {
     position: relative;
     float: left;
 }
+
 .menu-bar-main .menu-bar ul li {
     float: left;
     margin-left: 1px;
     display: inline;
 }
+
 .menu-bar-main .menu-bar ul .first-link {
     margin-left: 0;
 }
+
 .menu-bar-main .menu-bar ul li,
 .menu-bar-main .menu-bar ul li a {
     display: block;
@@ -2596,26 +3078,31 @@ a.link-disable:hover {
     color: #0000FF;
     background: transparent;
 }
+
 .menu-bar-main .menu-bar ul .have-link:hover,
 .menu-bar-main .menu-bar ul .have-link a:hover {
     position: relative;
     background: #6586AD;
     color: #FFFFFF;
 }
+
 .menu-bar-main .menu-bar ul li ul {
     display: none;
     position: absolute;
     z-index: 200;
 }
+
 .menu-bar-main .menu-bar ul ul li {
     float: none;
 }
+
 .menu-bar-main .menu-bar ul #submenu21:hover ul,
 .menu-bar-main .menu-bar ul #submenu31:hover ul,
 .menu-bar-main .menu-bar ul #submenu41:hover ul,
 .menu-bar-main .menu-bar ul #submenu61:hover ul {
     display: block;
 }
+
 .menu-bar-main .menu-bar ul #submenu21 ul,
 .menu-bar-main .menu-bar ul #submenu31 ul,
 .menu-bar-main .menu-bar ul #submenu41 ul,
@@ -2630,6 +3117,7 @@ a.link-disable:hover {
 .menu-bar-main .menu-bar ul ul li {
     margin: 3px;
 }
+
 .menu-bar-main .menu-bar ul ul li,
 .menu-bar-main .menu-bar ul ul li a {
     display: block;
@@ -2641,59 +3129,75 @@ a.link-disable:hover {
     color: #000000;
     background: transparent;
 }
+
 .menu-bar-main .menu-bar ul ul li a {
     padding-left: 6px;
 }
+
 .menu-bar-main .menu-bar ul #submenu21 ul li .item-submenu-first,
 .menu-bar-main .menu-bar ul #submenu21 ul li .item-submenu {
     width: 385px;
 }
+
 .menu-bar-main .menu-bar ul #submenu31 ul li .item-submenu-first,
 .menu-bar-main .menu-bar ul #submenu31 ul li .item-submenu {
     width: 385px;
 }
+
 .menu-bar-main .menu-bar ul #submenu41 ul li .item-submenu-first,
 .menu-bar-main .menu-bar ul #submenu41 ul li .item-submenu {
     width: 385px;
 }
+
 .menu-bar-main .menu-bar ul #submenu61 ul li .item-submenu-first,
 .menu-bar-main .menu-bar ul #submenu61 ul li .item-submenu {
     width: 385px;
 }
+
 .menu-bar-main .menu-bar ul ul li .item-submenu-first:hover,
 .menu-bar-main .menu-bar ul ul li .item-submenu:hover {
     background: url(../Image/BgButton.png) 0 -135px;
     color: #FFFFFF;
 }
+
 .menu-bar-main .menu-bar ul li .active {
     background: #6586AD;
     color: #FFFFFF;
 }
+
 .menu-bar-main .menu-bar ul li .noactive {
     background: transparent;
 }
+
 .menu-bar-main .menu-bar ul .link-img {
     width: 24px;
 }
+
 .menu-bar-main .menu-bar ul li #mu-icon1 {
     background: url(../Image/MUIcon.png) 0 0;
 }
+
 .menu-bar-main .menu-bar ul li #mu-icon1:hover {
     background: url(../Image/MUIcon.png) 0 -32px;
 }
+
 .menu-bar-main .menu-bar ul li #mu-icon2 {
     background: url(../Image/MUIcon.png) 24px 0;
 }
+
 .menu-bar-main .menu-bar ul li #mu-icon2:hover {
     background: url(../Image/MUIcon.png) -24px -32px;
 }
+
 .menu-bar-main .menu-bar ul .link-msg {
     padding: 0 5px 0 5px;
 }
+
 .menu-bar-main .menu-bar #current-date {
     margin-right: 5px;
     color: #5E89B4;
 }
+
 .menu-bar-main .menu-bar #whois {
     color: #000000;
 }
@@ -2701,9 +3205,11 @@ a.link-disable:hover {
 .content-data-tab-head {
     border-bottom: 3px solid #000000;
 }
+
 .content-data-title {
     height: 35px;
 }
+
 .content-data-title-cp-tab-user,
 .content-data-title-cp-tab-program,
 .content-data-title-cp-tab-cal-date,
@@ -2728,87 +3234,113 @@ a.link-disable:hover {
     width: auto;
     height: 35px;
 }
+
 .content-data-title-cp-tab-user {
     background: url(../Image/TitleFooter.png) 0 -1565px;
 }
+
 .content-data-title-cp-tab-program {
     background: url(../Image/TitleFooter.png) 0 -1030px;
 }
+
 .content-data-title-cp-tab-cal-date {
     background: url(../Image/TitleFooter.png) 0 0;
 }
+
 .content-data-title-cp-tab-interest {
     background: url(../Image/TitleFooter.png) 0 -35px;
 }
+
 .content-data-title-cp-tab-pay-break-contract {
     background: url(../Image/TitleFooter.png) 0 -70px;
 }
+
 .content-data-title-cp-tab-scholarship {
     background: url(../Image/TitleFooter.png) 0 -525px;
 }
+
 .content-data-title-cp-trans-break-contract {
     background: url(../Image/TitleFooter.png) 0 -215px;
 }
+
 .content-data-title-cp-trans-require-contract {
     background: url(../Image/TitleFooter.png) 0 -410px;
 }
+
 .content-data-title-cp-trans-payment {
     background: url(../Image/TitleFooter.png) 0 -760px;
 }
+
 .content-data-title-cp-report-step-of-work {
     background: url(../Image/TitleFooter.png) 0 -1265px;
 }
+
 .content-data-title-cp-report-table-cal-capital-and-interest {
     background: url(../Image/TitleFooter.png) 0 -995px;
 }
+
 .content-data-title-cp-report-statistic-repay {
     background: url(../Image/TitleFooter.png) 0 -1340px;
 }
+
 .content-data-title-cp-report-statistic-contract {
     background: url(../Image/TitleFooter.png) 0 -1640px;
 }
+
 .content-data-title-cp-report-notice-repay-complete {
     background: url(../Image/TitleFooter.png) 0 -1415px;
 }
+
 .content-data-title-cp-report-notice-claim-debt {
     background: url(../Image/TitleFooter.png) 0 -1490px;
 }
+
 .content-data-title-cp-report-statistic-payment-by-date {
     background: url(../Image/TitleFooter.png) 0 -1715px;
 }
+
 .content-data-title-cp-report-e-contract {
     background: url(../Image/TitleFooter.png) 0 -1870px;
 }
+
 .content-data-title-cp-report-debtor-contract {
     background: url(../Image/TitleFooter.png) 0 -1985px;
 }
+
 .content-data-title-cp-report-debtor-contract-paid {
     background: url(../Image/TitleFooter.png) 0 -2020px;
 }
+
 .content-data-title-cp-report-debtor-contract-remain {
     background: url(../Image/TitleFooter.png) 0 -2055px;
 }
+
 .content-data-title-cp-report-debtor-contract-break-require-repay-payment {
     background: url(../Image/TitleFooter.png) 0 -2130px;
 }
+
 .content-data-tabs {
     width: auto;
     height: 35px;
     background: #174D7A;
     text-align: left;
 }
+
 .content-data-tabs-content {
     padding: 5px 0 0 6px;
 }
+
 .content-data-tabs ul {
     margin: 0;
     padding: 0;
     list-style-type: none;
 }
+
 .content-data-tabs ul li {
     float: left;
     margin-left: 3px;
 }
+
 .content-data-tabs ul li a {
     display: block;
     padding: 0 10px 0 10px;
@@ -2820,17 +3352,20 @@ a.link-disable:hover {
     color: #BBBBBB;
     background: #1A4568;
 }
+
 .content-data-tabs ul li .active,
 .content-data-tabs ul li a:hover {
     height: 30px;
     background: url(../Image/BgButton.png) 0 -633px;
     color: #FFFFFF;
 }
+
 .tab-line {
     width: auto;
     height: 5px;
     background: #113B5E;
 }
+
 .content-data-tab-content {
     width: auto;
     height: 25px;
@@ -2839,12 +3374,15 @@ a.link-disable:hover {
     color: #FFFFFF;
     background: #113B5E;
 }
+
 .content-data-tab-content .inputbox {
     font-size: 12px;
 }
+
 .content-data-tab-content-msg {
     line-height: 25px;
 }
+
 .content-data-top-bottom {
     width: auto;
     background: #144670;
@@ -2855,6 +3393,7 @@ a.link-disable:hover {
 .class-dialog-form .ui-dialog-content {
     border-bottom: 3px solid #808080;
 }
+
 .class-dialog-confirm button,
 .class-dialog-message button {
     background: url(../Image/BgButton.png) 0 -235px;
@@ -2864,11 +3403,13 @@ a.link-disable:hover {
     height: 32px;
     line-height: 32px;
 }
+
 .class-dialog-confirm button:hover,
 .class-dialog-message button:hover {
     background: url(../Image/BgButton.png) 0 -438px;
     color:#FF0000;
 }
+
 .class-dialog-loading .ui-dialog-titlebar-close,
 .class-dialog-message .ui-dialog-titlebar-close,
 .class-dialog-confirm .ui-dialog-titlebar-close {
@@ -2878,114 +3419,150 @@ a.link-disable:hover {
 .class-dialog-form .ui-dialog-titlebar-close {
     visibility: visible;
 }
+
 .class-dialog-form .ui-dialog-content {
     padding: 0;
     margin: 0;
     background: #EEEEEE;
 }
+
 .class-dialog-form-search-cp-tab-user .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1600px;
 }
+
 .class-dialog-form-detail-cp-tab-cal-date .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -175px;
 }
+
 .class-dialog-form-search-student .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -250px;
 }
+
 .class-dialog-form-search-cp-trans-break-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -290px;
 }
+
 .class-dialog-form-detail-tracking-status .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -330px;
 }
+
 .class-dialog-form-detail-cp-trans-break-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -370px;
 }
+
 .class-dialog-form-detail-cp-trans-require-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -445px;
 }
+
 .class-dialog-form-add-comment-E-break-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -485px;
 }
+
 .class-dialog-form-add-comment-C-break-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1185px;
 }
+
 .class-dialog-form-detail-repay-status .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -560px;
 }
+
 .class-dialog-form-repay-cp-trans-require-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -600px;
 }
+
 .class-dialog-form-search-cp-trans-repay-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -680px;
 }
+
 .class-dialog-form-addupdate-repay-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -640px;
 }
+
 .class-dialog-form-cal-interest .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -720px;
 }
+
 .class-dialog-form-detail-payment-status .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -795px;
 }
+
 .class-dialog-form-adddetail-cp-trans-payment .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -835px;
 }
+
 .class-dialog-form-search-cp-trans-payment .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -875px;
 }
+
 .class-dialog-form-select-format-payment .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -915px;
 }
+
 .class-dialog-form-detail-trans-payment .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -955px;
 }
+
 .class-dialog-form-add-profile-student .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1065px;
 }
+
 .class-dialog-form-add-detail-pay-channel .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1105px;
 }
+
 .class-dialog-form-chk-balance .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1145px;
 }
+
 .class-dialog-form-search-cp-report-table-cal-capital-and-interest .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1225px;
 }
+
 .class-dialog-form-search-cp-report-step-of-work .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1300px;
 }
+
 .class-dialog-form-report-step-of-work-on-statistic-repay-by-program .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1375px;
 }
+
 .class-dialog-form-report-student-on-statistic-contract-by-program .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1675px;
 }
+
 .class-dialog-form-search-cp-report-notice-repay-complete .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1450px;
 }
+
 .class-dialog-form-search-cp-report-notice-claim-debt .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1525px;
 }
+
 .class-dialog-form-search-cp-report-statistic-payment-by-date .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1750px;
 }
+
 .class-dialog-form-view-trans-payment-by-date .ui-dialog-titlebar,
 .class-dialog-form-view-trans-payment .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1790px;
 }
+
 .class-dialog-form-manual .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1830px;
 }
+
 .class-dialog-form-detail-e-contract-status .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1905px;
 }
+
 .class-dialog-form-search-cp-report-e-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -1945px;
 }
+
 .class-dialog-form-search-cp-report-debtor-contract .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -2090px;
 }
+
 .class-dialog-form-search-cp-report-debtor-contract-by-program .ui-dialog-titlebar {
     background: url(../Image/TitleFooter.png) 0 -2090px;
 }
@@ -2993,6 +3570,7 @@ a.link-disable:hover {
 #cp-tab-user-head .button-style2 ul li a {
     width: 53px;
 }
+
 #cp-tab-user-head #tab2-cp-tab-user-head,
 #cp-tab-user-head #tab3-cp-tab-user-head,
 #cp-tab-user-head #tab2-cp-tab-user-contents,
@@ -3001,12 +3579,15 @@ a.link-disable:hover {
 #cp-tab-user-content #tab3-cp-tab-user-content {
     display: none;
 }
+
 #addupdate-cp-tab-user .form-label-discription-style {
     width: 265px;
 }
+
 #addupdate-cp-tab-user .form-input-style {
     width: 704px;
 }
+
 #addupdate-cp-tab-user #username-label,
 #addupdate-cp-tab-user #password-label,
 #addupdate-cp-tab-user #name-label,
@@ -3015,6 +3596,7 @@ a.link-disable:hover {
 #addupdate-cp-tab-user #email-label {
     height: 41px;
 }
+
 #addupdate-cp-tab-user #username-input,
 #addupdate-cp-tab-user #password-input,
 #addupdate-cp-tab-user #name-input,
@@ -3024,12 +3606,15 @@ a.link-disable:hover {
     height: 35px;
     margin-top: 12px;
 }
+
 #add-cp-tab-user #button-style11 {
     width: 273px;
 }
+
 #update-cp-tab-user #button-style11 {
     width: 364px;
 }
+
 #update-cp-tab-user #button-style12 {
     width: 87px;
 }
@@ -3042,36 +3627,46 @@ a.link-disable:hover {
 #cp-tab-program-content #tab3-cp-tab-program-content {
     display: none;
 }
+
 #addupdate-cp-tab-program .form-label-discription-style {
     width: 265px;
 }
+
 #addupdate-cp-tab-program .form-input-style {
     width: 704px;
 }
+
 #addupdate-cp-tab-program #dlevel-label {
     height: 41px;
 }
+
 #addupdate-cp-tab-program #faculty-program-label {
     height: 54px;
     margin-top: 13px;
 }
+
 #addupdate-cp-tab-program #dlevel-input {
     height: 35px;
     margin-top: 12px;
 }
+
 #addupdate-cp-tab-program #faculty-program-input {
     height: 63px;
     margin-top: 10px;
 }
+
 #addupdate-cp-tab-program #list-program {
     margin-top: 7px;
 }
+
 #add-cp-tab-program #button-style11 {
     width: 273px;
 }
+
 #update-cp-tab-program #button-style11 {
     width: 364px;
 }
+
 #update-cp-tab-program #button-style12 {
     width: 87px;
 }
@@ -3082,11 +3677,13 @@ a.link-disable:hover {
     font-weight: bold;
     text-align: center;
 }
+
 #detail-cp-tab-cal-date .form-label-discription-style .form-label-style {
     font-size: 12px;
     height: 25px;
     line-height: 20px;
 }
+
 #detail-cp-tab-cal-date .form-input-style {
     float: none;
     margin-left: 0;
@@ -3094,6 +3691,7 @@ a.link-disable:hover {
     height: 100px;
     text-align: center;
 }
+
 #detail-cp-tab-cal-date .button-style1 {
     position: relative;
     left: 328px;
@@ -3116,13 +3714,16 @@ a.link-disable:hover {
 #search-student-debtor-contract-by-program .form-label-discription-style {
     width: 201px;
 }
+
 #search-cp-trans-payment .form-label-discription-style {
     width: 255px;
 }
+
 #search-student-with-result .form-input-style {
     width: 678px;
     font-size: 12px;
 }
+
 #search-cp-tab-user .form-input-style,
 #search-cp-trans-break-contract .form-input-style,
 #search-cp-trans-repay-contract .form-input-style,
@@ -3136,19 +3737,23 @@ a.link-disable:hover {
     width: 433px;
     font-size: 12px;
 }
+
 #search-cp-trans-payment .form-input-style {
     width: 379px;
     font-size: 12px;
 }
+
 #search-step-of-work .form-input-style,
 #search-student-contract .form-input-style,
 #search-student-debtor-contract-by-program .form-input-style {
     width: 528px;
     font-size: 12px;
 }
+
 #search-student-debtor-contract-by-program .form-input-style span {
     color: #0000FF;
 }
+
 #search-student-with-result #search-student-keyword1-label,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword1-label,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword2-label,
@@ -3169,9 +3774,11 @@ a.link-disable:hover {
 #search-student-debtor-contract-by-program #search-student-debtor-contract-by-program-keyword1-label {
     height: 57px;
 }
+
 #search-cp-trans-payment #search-cp-trans-payment-keyword5-label {
     height: 73px;
 }
+
 #search-cp-tab-user #search-cp-tab-user-keyword1-label,
 #search-cp-trans-payment #search-cp-trans-payment-keyword1-label,
 #search-cp-report-step-of-work #search-cp-report-step-of-work-keyword1-label,
@@ -3182,6 +3789,7 @@ a.link-disable:hover {
 #search-student-debtor-contract-by-program #search-student-debtor-contract-by-program-keyword2-label {
     height: 41px;
 }
+
 #search-student-with-result #search-student-keyword23-label,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword34-label,
 #search-cp-trans-repay-contract #search-cp-trans-repay-contract-keyword34-label,
@@ -3195,11 +3803,13 @@ a.link-disable:hover {
     height: 52px;
     padding-top: 15px;
 }
+
 #search-student-debtor-contract-by-program #search-student-debtor-contract-by-program-faculty-label,
 #search-student-debtor-contract-by-program #search-student-debtor-contract-by-program-program-label {
     height: 20px;
     padding-top: 2px;
 }
+
 #search-student-with-result #search-student-keyword1-input,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword1-input,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword2-input,
@@ -3223,10 +3833,12 @@ a.link-disable:hover {
     height: 43px;
     margin-top: 20px;
 }
+
 #search-cp-trans-payment #search-cp-trans-payment-keyword5-input {
     height: 51px;
     margin-top: 28px;
 }
+
 #search-cp-tab-user #search-cp-tab-user-keyword1-input,
 #search-cp-trans-payment #search-cp-trans-payment-keyword1-input,
 #search-cp-report-step-of-work #search-cp-report-step-of-work-keyword1-input,
@@ -3238,10 +3850,12 @@ a.link-disable:hover {
     height: 35px;
     margin-top: 12px;
 }
+
 #search-student-debtor-contract-by-program #search-student-debtor-contract-by-program-faculty-input,
 #search-student-debtor-contract-by-program #search-student-debtor-contract-by-program-program-input {
     line-height: 28px;
 }
+
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword5-input #date-start-trans-break-contract-label,
 #search-cp-trans-repay-contract #search-cp-trans-repay-contract-keyword5-input #date-start-trans-repay-contract-label,
 #search-cp-trans-payment #search-cp-trans-payment-keyword5-input #date-start-trans-repay1-reply-label,
@@ -3249,6 +3863,7 @@ a.link-disable:hover {
 #search-cp-report-debtor-contract #search-cp-report-debtor-contract-keyword1-input #date-start-report-debtor-contract-label {
     width: 64px;
 }
+
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword5-input #date-start-trans-break-contract-input,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword5-input #date-end-trans-break-contract-input,
 #search-cp-trans-repay-contract #search-cp-trans-repay-contract-keyword5-input #date-start-trans-repay-contract-input,
@@ -3260,6 +3875,7 @@ a.link-disable:hover {
 #search-cp-report-debtor-contract #search-cp-report-debtor-contract-keyword1-input #date-start-report-debtor-contract-input {
     width: 114px;
 }
+
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword5-input #date-end-trans-break-contract-label,
 #search-cp-trans-repay-contract #search-cp-trans-repay-contract-keyword5-input #date-end-trans-repay-contract-label,
 #search-cp-trans-payment #search-cp-trans-payment-keyword5-input #date-end-trans-repay1-reply-label,
@@ -3267,6 +3883,7 @@ a.link-disable:hover {
 #search-cp-report-debtor-contract #search-cp-report-debtor-contract-keyword1-input #date-end-report-debtor-contract-label {
     width: 41px;
 }
+
 #search-student-with-result #search-student-keyword23-input,
 #search-cp-trans-break-contract #search-cp-trans-break-contract-keyword34-input,
 #search-cp-trans-repay-contract #search-cp-trans-repay-contract-keyword34-input,
@@ -3280,6 +3897,7 @@ a.link-disable:hover {
     height: 63px;
     margin-top: 10px;
 }
+
 #search-student-with-result #list-program-search-student,
 #search-cp-trans-break-contract #list-program-trans-break-contract,
 #search-cp-trans-repay-contract #list-program-trans-repay-contract,
@@ -3292,11 +3910,13 @@ a.link-disable:hover {
 #search-cp-report-e-contract #list-program-report-e-contract {
     margin-top: 7px;
 }
+
 #search-student-with-result .button-style1 {
     position: relative;
     left: 313px;
     width: 273px;
 }
+
 #search-cp-tab-user .button-style1,
 #search-cp-trans-break-contract .button-style1,
 #search-cp-trans-repay-contract .button-style1,
@@ -3312,6 +3932,7 @@ a.link-disable:hover {
     left: 190px;
     width: 273px;
 }
+
 #list-report-step-of-work-on-statistic-repay-by-program .button-style1,
 #list-report-student-on-statistic-contract-by-program-head .button-style1,
 #search-student-debtor-contract-by-program .button-style1 {
@@ -3324,25 +3945,31 @@ a.link-disable:hover {
     border-left: 0;
     border-right: 0;
 }
+
 #list-search-student-with-result .tab-line {
     background: #1A4568;
 }
+
 #list-search-student-with-result .content-data-tab-content {
     padding: 0 7px 0 7px;
     background: #1A4568;
 }
+
 #list-search-student-with-result #box-list-data-search-student-with-result {
     height: 220px;
     background: #90A3B7;
     overflow: hidden;
 }
+
 #list-search-student-with-result #box-list-data-search-student-with-result:hover {
     overflow-y: scroll;
 }
+
 #list-search-student-with-result #box-list-data-search-student-with-result,
 #list-search-student-with-result #box-list-data-search-student-with-result #list-data-search-student-with-result {
     width: 894px;
 }
+
 #list-search-student-with-result #nav-page-search-student-with-result {
     height:42px;
     background:#144670;
@@ -3356,27 +3983,34 @@ a.link-disable:hover {
 #cp-tab-interest-content #tab3-cp-tab-interest-content {
     display: none;
 }
+
 #addupdate-cp-tab-interest .form-label-discription-style {
     width: 265px;
 }
+
 #addupdate-cp-tab-interest .form-input-style {
     width: 704px;
 }
+
 #addupdate-cp-tab-interest #in-contract-interest-label,
 #addupdate-cp-tab-interest #out-contract-interest-label {
     height: 57px;
 }
+
 #addupdate-cp-tab-interest #in-contract-interest-input,
 #addupdate-cp-tab-interest #out-contract-interest-input {
     height: 43px;
     margin-top: 20px;
 }
+
 #add-cp-tab-interest #button-style11 {
     width: 273px;
 }
+
 #update-cp-tab-interest #button-style11 {
     width: 364px;
 }
+
 #update-cp-tab-interest #button-style12 {
     width: 87px;
 }
@@ -3389,85 +4023,107 @@ a.link-disable:hover {
 #cp-tab-pay-break-contract-content #tab3-cp-tab-pay-break-contract-content {
     display: none;
 }
+
 #addupdate-cp-tab-pay-break-contract .form-label-discription-style {
     width: 255px;
 }
+
 #addupdate-cp-tab-pay-break-contract .form-input-style {
     width: 714px;
     font-size: 12px;
 }
+
 #addupdate-cp-tab-pay-break-contract #dlevel-label,
 #addupdate-cp-tab-pay-break-contract #case-graduate-label {
     height: 41px;
 }
+
 #addupdate-cp-tab-pay-break-contract #faculty-program-label {
     height: 54px;
     margin-top: 13px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amount-cash-label {
     height: 73px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-label {
     height: 67px;
     margin-top: 10px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input .radio {
     margin-top: 5px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-no-label,
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-yes-label {
     margin-top: 5px;
     height: 12px;
     line-height: 12px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-no-input, 
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #amt-indemnitor-year-yes-input {
     width: 20px;
     height: 20px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input #set-amt-indemnitor-year {
     margin-bottom: 5px;
 }
+
 #addupdate-cp-tab-pay-break-contract #cal-date-condition-label {
     height: 63px;
     margin-top: 6px;
 }
+
 #addupdate-cp-tab-pay-break-contract #dlevel-input,
 #addupdate-cp-tab-pay-break-contract #case-graduate-input {
     height: 35px;
     margin-top: 12px;
 }
+
 #addupdate-cp-tab-pay-break-contract #faculty-program-input {
     height: 63px;
     margin-top: 10px;
 }
+
 #addupdate-cp-tab-pay-break-contract #list-program {
     margin-top: 7px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amount-cash-input {
     height: 51px;
     margin-top: 28px;
 }
+
 #addupdate-cp-tab-pay-break-contract #amt-indemnitor-year-input {
     height: 78px;
     margin-top: 5px;
 }
+
 #addupdate-cp-tab-pay-break-contract #cal-date-condition-input {
     height: 65px;
     margin-top: 10px;
 }
+
 #addupdate-cp-tab-pay-break-contract #cal-date-condition-input #view-cal-date {
     margin-top: 7px;
 }
+
 #addupdate-cp-tab-pay-break-contract #cal-date-condition-input #view-cal-date .button-style2 ul li a {
     width: 80px;
 }
+
 #add-cp-tab-pay-break-contract #button-style11 {
     width: 273px;
 }
+
 #update-cp-tab-pay-break-contract #button-style11 {
     width: 364px;
 }
+
 #update-cp-tab-pay-break-contract #button-style12 {
     width: 87px;
 }
@@ -3480,43 +4136,55 @@ a.link-disable:hover {
 #cp-tab-scholarship-content #tab3-cp-tab-scholarship-content {
     display: none;
 }
+
 #addupdate-cp-tab-scholarship .form-label-discription-style {
     width: 255px;
 }
+
 #addupdate-cp-tab-scholarship .form-input-style {
     width: 714px;
 }
+
 #addupdate-cp-tab-scholarship #dlevel-label {
     height: 41px;
 }
+
 #addupdate-cp-tab-scholarship #faculty-program-label {
     height: 54px;
     margin-top: 13px;
 }
+
 #addupdate-cp-tab-scholarship #scholarship-money-label {
     height: 41px;
 }
+
 #addupdate-cp-tab-scholarship #dlevel-input {
     height: 35px;
     margin-top: 12px;
 }
+
 #addupdate-cp-tab-scholarship #faculty-program-input {
     height: 63px;
     margin-top: 10px;
 }
+
 #addupdate-cp-tab-scholarship #list-program {
     margin-top: 7px;
 }
+
 #addupdate-cp-tab-scholarship #scholarship-money-input {
     height: 35px;
     margin-top: 12px;
 }
+
 #add-cp-tab-scholarship #button-style11 {
     width: 273px;
 }
+
 #update-cp-tab-scholarship #button-style11 {
     width: 364px;
 }
+
 #update-cp-tab-scholarship #button-style12 {
     width: 87px;
 }
@@ -3524,12 +4192,15 @@ a.link-disable:hover {
 #cp-trans-break-contract-head #tab1-cp-trans-break-contract-head {
     text-align: left;
 }
+
 #cp-trans-break-contract-head .button-style2 ul li a {
     width: 53px;
 }
+
 #cp-trans-break-contract-head .button-style2 ul li #button-send {
     width: 35px;
 }
+
 #cp-trans-break-contract-head #tab2-cp-trans-break-contract-head,
 #cp-trans-break-contract-head #tab3-cp-trans-break-contract-head,
 #cp-trans-break-contract-head #tab2-cp-trans-break-contract-contents,
@@ -3542,60 +4213,76 @@ a.link-disable:hover {
 #add-profile-student .form-label-discription-style {
     width: 210px;
 }
+
 #add-profile-student .form-input-style {
     width: 600px;
     font-size: 12px;
 }
+
 #add-profile-student #profile-student-id-label {
     height: 63px;
     margin-top: 6px;
 }
+
 #add-profile-student #profile-student-fullname-label {
     height: 57px;
 }
+
 #add-profile-student #profile-student-id-input {
     height: 65px;
     margin-top: 10px;
 }
+
 #add-profile-student #profile-student-id-input #profile-student-search {
     margin-top: 7px;
 }
+
 #add-profile-student #profile-student-id-input .button-style2 ul li a {
     width: 90px;
 }
+
 #add-profile-student #profile-student-fullname-input {
     height: 43px;
     margin-top: 20px;
 }
+
 #add-profile-student #profile-student-fullname-input #profile-student-firstname-label,
 #add-profile-student #profile-student-fullname-input #profile-student-lastname-label {
     margin-top: 5px;
     height: 12px;
     line-height: 12px;
 }
+
 #add-profile-student #profile-student-fullname-input #profile-student-titlename-input {
     width: 169px;
 }
+
 #add-profile-student #profile-student-fullname-input #profile-student-firstname-label {
     width: 21px;
 }
+
 #add-profile-student #profile-student-fullname-input #profile-student-firstname-input {
     width: 181px;
 }
+
 #add-profile-student #profile-student-fullname-input #profile-student-lastname-label {
     width: 47px;
 }
+
 #add-profile-student #profile-student-faculty-program-label {
     height: 54px;
     margin-top: 13px;
 }
+
 #add-profile-student #profile-student-faculty-program-input {
     height: 63px;
     margin-top: 10px;
 }
+
 #add-profile-student #list-program-profile-student {
     margin-top: 7px;
 }
+
 #add-profile-students .button-style1 {
     position: relative;
     left: 278px;
@@ -3607,25 +4294,30 @@ a.link-disable:hover {
     padding-top: 7px;
     background: #CCCCCC;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #picture-add-student #picture-student {
     width: 113px;
     height: 136px;
     background: #FFFFFF;
     border: 1px solid #000000;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #picture-add-student #picture-student img {
     width: 113px;
     height: 136px;
     border: 0;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #picture-add-student #add-student {
     padding-top: 8px;
     height: 20px;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #picture-add-student #add-student a {
     height: 12px;
     line-height: 12px;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #profile-student-label .form-label-discription-style {
     float: none;
     width: 241px;
@@ -3633,6 +4325,7 @@ a.link-disable:hover {
     padding-top: 8px;
     margin-right: 1px;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #profile-student-input .form-label-discription-style {
     float: none;
     background: #8FAEC9;
@@ -3641,26 +4334,32 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #addupdate-cp-trans-break-contract #profile-student #profile-student-input span {
     color: #0000FF;
 }
+
 #addupdate-cp-trans-break-contract .form-input-style {
     width: 599px;
     font-size:12px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail .form-label-discription-style,
 #addupdate-cp-trans-break-contract #break-contract .form-label-discription-style,
 #addupdate-cp-trans-break-contract #comment-detail .form-label-discription-style {
     width: 370px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-label {
     height: 84px;
     padding-top: 43px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input {
     height: 123px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-book-label,
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-label,
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-book-date-label,
@@ -3688,46 +4387,59 @@ a.link-disable:hover {
     height: 12px;
     line-height:12px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-book-label {
     width: 69px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-label {
     width: 69px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-input {
     width: 268px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #pursuant-book-date-label,
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #input-date-label,
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #state-location-date-label {
     width: 28px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #location-label {
     width: 69px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #location-input {
     width: 268px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #state-location-label {
     width: 69px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-money-label,
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-year-month-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-year-unit-label {
     width: 14px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #state-location-input {
     width: 268px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-money-input {
     width: 129px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-year-input,
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-month-input {
     width: 58px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #status-scholar-input,
 #addupdate-cp-trans-break-contract #break-contract #scholar-input #scholarship-money-input,
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-input #contract-date-input,
@@ -3743,6 +4455,7 @@ a.link-disable:hover {
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input #state-location-date-input {
     height: 30px;
 }
+
 #addupdate-cp-trans-break-contract #pursuant-detail #pursuant-detail-input,
 #addupdate-cp-trans-break-contract #break-contract #scholar-input,
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-input,
@@ -3750,136 +4463,174 @@ a.link-disable:hover {
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input {
     font-size: 12px;
 } 
+
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-label {
     height: 77px;
     margin-top: 20px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-graduate-label {
     height: 62px;
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-graduate-input {
     height: 63px;
     margin-top: 10px;
 } 
+
 #addupdate-cp-trans-break-contract #break-contract #case-graduate-civil-label {
     height: 62px;
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-label {
     height: 77px;
     margin-top: 20px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-input {
     height: 93px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-civil-label {
     height: 46px;
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-civil-input {
     height: 40px;
     margin-top: 17px;
 } 
+
 #addupdate-cp-trans-break-contract #break-contract #scholar-input {
     height: 93px;
     margin-top: 10px;
 }   
+
 #addupdate-cp-trans-break-contract #break-contract #education-date-input {
     height: 47px;
     margin-top: 26px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-force-date-label {
     height: 78px;
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-force-date-input {
     height: 56px;
     margin-top: 33px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-label {
     height: 28px;
     padding-top: 9px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input {
     height: 33px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-break-contract #comment-detail #comment-label {
     height: 75px;
     margin-top: 35px;
 }
+
 #addupdate-cp-trans-break-contract #comment-detail #comment-input {
     height: 106px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-break-contract #comment-detail #comment-input #comments {
     height: 90px;
     overflow: hidden;
 }
+
 #addupdate-cp-trans-break-contract #comment-detail #comment-input #comments:hover {
     overflow-y: scroll;
 }
+
 #addupdate-cp-trans-break-contract #comment-detail #comment-input #comments,
 #addupdate-cp-trans-break-contract #comment-detail #comment-input #comments #comment {
     width: 447px;
 }
+
 #addupdate-cp-trans-break-contract #comment-detail #comment-input #comments #comment {
     margin-right: 12px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-input #contract-date-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-input #contract-date-agreement-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-date-guarantor-input #guarantor-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-graduate-input #education-date-start-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-graduate-input #education-date-start-input {
     width: 118px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #case-graduate-input #education-date-end-label {
     width: 41px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-force-date-input #contract-force-date-start-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #contract-force-date-input #contract-force-date-start-input {
     width: 118px;
 } 
+
 #addupdate-cp-trans-break-contract #break-contract #contract-force-date-input #contract-force-date-end-label {
     width: 41px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input #indemnitor-year-label {
     width: 125px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input #indemnitor-year-input {
     width: 58px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input #indemnitor-year-unit-label {
     width: 17px;
 }
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input #indemnitor-cash-label {
     width: 124px;
 } 
+
 #addupdate-cp-trans-break-contract #break-contract #indemnitor-input #indemnitor-cash-input {
     width: 136px;
 }
+
 #add-cp-trans-break-contract #button-style11 {
     width: 273px;
 } 
+
 #update-cp-trans-break-contract #button-style11 {
     width:364px;
 }
+
 #add-cp-trans-break-contract #button-style12 #button-status-p a,
 #update-cp-trans-break-contract #button-style12 #button-status-p a {
     width: 120px;
 }
+
 #add-cp-trans-break-contract #button-style12,
 #update-cp-trans-break-contract #button-style12 {
     width: 217px;
@@ -3892,97 +4643,119 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #detail-cp-trans-break-require-contract .form-label-discription-style span {
     color: #0000FF;
 }
+
 #detail-cp-trans-break-require-contract .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
 }
+
 #detail-cp-trans-break-require-contract .form-input-style span {
     color: #0000FF;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #picture-student {
     width: 155px;
     padding: 7px;
     background: #CCCCCC;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #picture-student.status-a {
     width: 115px;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #picture-student div {
     width: 153px;
     height: 157px;
     background: #FFFFFF;
     border: 1px solid #000000;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #picture-student.status-a div {
     width: 113px;
     height: 128px;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #picture-student div img {
     width: 100%;
     height: 100%;
     border: 0px;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #profile-student-label .form-label-discription-style {
     width: 111px;
     margin-right: 1px;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #profile-student-label.status-a .form-label-discription-style {
     width: 151px;
 }
+
 #detail-cp-trans-break-require-contract #break-contract-detail #break-contract-detail-label .form-label-discription-style,
 #detail-cp-trans-break-require-contract #status-repay #status-repay-label .form-label-discription-style,
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-label .form-label-discription-style {
     width: 280px;
     margin-right: 1px;
 }
+
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-label .form-label-discription-style {
     height: 45px;
     padding-top: 31px;
 }
+
 #detail-cp-trans-break-require-contract #indemnitor-work #indemnitor-work-label .form-label-discription-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty1 #cal-contract-penalty1-label .form-label-discription-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty2 #cal-contract-penalty2-label .form-label-discription-style,
 #detail-cp-trans-break-require-contract #lawyer #lawyer-label .form-label-discription-style {
     width: 280px;
 }
+
 #detail-cp-trans-break-require-contract #profile-student #profile-student-input .form-label-discription-style,
 #detail-cp-trans-break-require-contract #break-contract-detail #break-contract-detail-input .form-label-discription-style,
 #detail-cp-trans-break-require-contract #status-repay #status-repay-input .form-label-discription-style,
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input .form-label-discription-style {
     width: 585px;
 }
+
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input .form-label-discription-style {
     height: 68px;
 }
+
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input #commentseditcancel {
     height: 54px;
     overflow: hidden;
 }
+
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input #commentseditcancel:hover {
     overflow-y: scroll;
 }
+
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input #commentseditcancel,
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input #commentseditcancel #commenteditcancel {
     width: 579px;
 }
+
 #detail-cp-trans-break-require-contract #commenteditcancel-detail #commenteditcancel-input #commentseditcancel #commenteditcancel {
     margin-right: 12px;
 }
+
 #detail-cp-trans-break-require-contract #indemnitor-work #indemnitor-work-input .form-input-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty1 #cal-contract-penalty1-input .form-input-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty2 #cal-contract-penalty2-input .form-input-style,
 #detail-cp-trans-break-require-contract #lawyer #lawyer-input .form-input-style {
     width: 599px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail {
     padding-top: 3px;
     padding-bottom: 3px;
     background: #8FAEC9;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail .form-input-style {
     float: none;
     width: 894px;
@@ -3990,54 +4763,68 @@ a.link-disable:hover {
     line-height: 25px;
     margin: 0;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #pursuant-book-detail-label {
     width: 68px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #pursuant-book-detail-input {
     width: 382px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #pursuant-detail-label {
     width: 15px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #pursuant-detail-input,
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #state-location-detail-input {
     width: 247px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #pursuant-book-date-detail-label,
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #input-date-detail-label,
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #state-location-date-detail-label {
     width: 28px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #pursuant-book-date-detail-input,
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #input-date-detail-input,
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #state-location-date-input {
     width: 140px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #location-detail-label {
     width: 68px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #location-detail-input {
     width: 171px;
 }
+
 #detail-cp-trans-break-require-contract #pursuant-detail-detail #state-location-detail-label {
     width: 58px;
 }
+
 #detail-cp-trans-break-require-contract #cal-contract-penalty1-label .form-label-discription-style {
     padding-top: 36px;
     height: 87px;
 }
+
 #detail-cp-trans-break-require-contract #cal-contract-penalty2-label .form-label-discription-style {
     padding-top: 23px;
     height: 74px;
 }
+
 #detail-cp-trans-break-require-contract #indemnitor-work-label.study-leave-n .form-label-discription-style {
     padding-top: 18px;
     height: 33px;
 }
+
 #detail-cp-trans-break-require-contract #indemnitor-work-label.study-leave-y .form-label-discription-style {
     padding-top: 41px;
     height: 56px;
 }
+
 #detail-cp-trans-break-require-contract #cal-contract-penalty1-input .form-input-style,
 #detail-cp-trans-break-require-contract #cal-contract-penalty2-input .form-input-style,
 #detail-cp-trans-break-require-contract #indemnitor-work-input .form-input-style,
@@ -4045,26 +4832,33 @@ a.link-disable:hover {
     padding-top: 5px;
     line-height: 18px;
 }
+
 #detail-cp-trans-break-require-contract #cal-contract-penalty1-input .form-input-style {
     height: 118px;
 }
+
 #detail-cp-trans-break-require-contract #cal-contract-penalty2-input .form-input-style {
     height: 92px;
 }
+
 #detail-cp-trans-break-require-contract #indemnitor-work-input.study-leave-n .form-input-style {
     height: 46px;
 }
+
 #detail-cp-trans-break-require-contract #indemnitor-work-input.study-leave-y .form-input-style {
     height: 92px;
 }
+
 #detail-cp-trans-break-require-contract #lawyer-input .form-input-style {
     height: 46px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1a11 {
     position: relative;
     left: 312px;
     width: 273px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-2v111 #button-status-v1 a,
 #detail-cp-trans-break-require-contract #button-style1-2v112 #button-status-v1 a,
 #detail-cp-trans-break-require-contract #button-style1-2v121 #button-status-v1 a,
@@ -4075,6 +4869,7 @@ a.link-disable:hover {
 #detail-cp-trans-break-require-contract #button-style1-1v2113 #button-status-v2 a {
     width: 120px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-2v111,
 #detail-cp-trans-break-require-contract #button-style1-2v211,
 #detail-cp-trans-break-require-contract #button-style1-2v121,
@@ -4089,6 +4884,7 @@ a.link-disable:hover {
     left: 340px;
     width: 217px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1v121,
 #detail-cp-trans-break-require-contract #button-style1-1v122,
 #detail-cp-trans-break-require-contract #button-style1-1v2121,
@@ -4103,21 +4899,25 @@ a.link-disable:hover {
     left: 403px;
     width: 87px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1r1111 #button-status-r a,
 #detail-cp-trans-break-require-contract #button-style1-1r1112 #button-status-r a,
 #detail-cp-trans-break-require-contract #button-style1-1r1113 #button-status-r a {
     width: 170px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1r111 #button-status-r a,
 #detail-cp-trans-break-require-contract #button-style1-1r112 #button-status-r a,
 #detail-cp-trans-break-require-contract #button-style1-1r113 #button-status-r a {
     width: 170px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1r111 #button-status-i a,
 #detail-cp-trans-break-require-contract #button-style1-1r112 #button-status-i a,
 #detail-cp-trans-break-require-contract #button-style1-1r113 #button-status-i a {
     width: 100px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1r111,
 #detail-cp-trans-break-require-contract #button-style1-1r112,
 #detail-cp-trans-break-require-contract #button-style1-1r113 {
@@ -4125,6 +4925,7 @@ a.link-disable:hover {
     left: 217px;
     width: 464px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1r1111,
 #detail-cp-trans-break-require-contract #button-style1-1r1112,
 #detail-cp-trans-break-require-contract #button-style1-1r1113 {
@@ -4132,6 +4933,7 @@ a.link-disable:hover {
     left: 315px;
     width: 267px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1v3111,
 #detail-cp-trans-break-require-contract #button-style1-1v3112,
 #detail-cp-trans-break-require-contract #button-style1-1v3113,
@@ -4142,6 +4944,7 @@ a.link-disable:hover {
     left: 328px;
     width: 242px;
 }
+
 #detail-cp-trans-break-require-contract #button-style1-1v3111 #button-status-v3 a,
 #detail-cp-trans-break-require-contract #button-style1-1v3112 #button-status-v3 a,
 #detail-cp-trans-break-require-contract #button-style1-1v3113 #button-status-v3 a,
@@ -4154,9 +4957,11 @@ a.link-disable:hover {
 #cp-trans-require-contract-head #tab1-cp-trans-require-contract-head {
     text-align: left;
 }
+
 #cp-trans-require-contract-head .button-style2 ul li a {
     width: 53px;
 }
+
 #cp-trans-require-contract-head #tab2-cp-trans-require-contract-head,
 #cp-trans-require-contract-head #tab2-cp-trans-require-contract-contents,
 #cp-trans-require-contract-content #tab2-cp-trans-require-contract-content,
@@ -4171,6 +4976,7 @@ a.link-disable:hover {
     margin-left: 0;
     padding: 10px 1px 10px 1px;
 }
+
 #add-comment-break-contract .button-style1 {
     position: relative;
     left: 102px;
@@ -4182,17 +4988,20 @@ a.link-disable:hover {
     padding: 7px;
     background: #CCCCCC;
 }
+
 #addupdate-cp-trans-require-contract #profile-student #picture-student div {
     width: 113px;
     height: 128px;
     background: #FFFFFF;
     border: 1px solid #000000;
 }
+
 #addupdate-cp-trans-require-contract #profile-student #picture-student div img {
     width: 113px;
     height: 128px;
     border: 0;
 }
+
 #addupdate-cp-trans-require-contract #profile-student #profile-student-label .form-label-discription-style {
     float: none;
     width: 150px;
@@ -4200,6 +5009,7 @@ a.link-disable:hover {
     padding-top: 8px;
     margin-right: 1px;
 }
+
 #addupdate-cp-trans-require-contract #profile-student #profile-student-input .form-label-discription-style {
     float: none;
     background: #8FAEC9;
@@ -4208,9 +5018,11 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #addupdate-cp-trans-require-contract #profile-student #profile-student-input span {
     color: #0000FF;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-label .form-label-discription-style,
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-label .form-label-discription-style {
     float: none;
@@ -4219,38 +5031,46 @@ a.link-disable:hover {
     padding-top: 117px;
     margin-right: 1px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-label-civil-1-set-n .form-label-discription-style {
     height: 169px;
     padding-top: 101px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-label-civil-2-set-n .form-label-discription-style {
     height: 154px;
     padding-top: 86px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract .form-label-discription-style,
 #addupdate-cp-trans-require-contract #indemnitor-work .form-label-discription-style,
 #addupdate-cp-trans-require-contract #lawyer .form-label-discription-style {
     width: 279px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input .form-label-discription-style,
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input .form-label-discription-style {
     float: none;
     background: #8FAEC9;
     width: 676px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract .form-input-style,
 #addupdate-cp-trans-require-contract #indemnitor-work .form-input-style,
 #addupdate-cp-trans-require-contract #lawyer .form-input-style {
     width: 690px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-label {
     height: 167px;
     margin-top: 110px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input {
     height: 273px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-input,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-agreement-input,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #guarantor-input,
@@ -4289,34 +5109,43 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #lawyer #lawyer-input #email-input {
     height: 30px;
 }
+
 #addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-input {
     height: 50px;
 }
+
 #addupdate-cp-trans-require-contract #lawyer #lawyer-input #fullname-input .form-discription-style {
     margin-top: 6px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-label {
     height: 171px;
     margin-top: 150px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input {
     height: 317px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-yesno-input {
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input .calendar {
     width: 80px;
 }
+
 #addupdate-cp-trans-require-contract #lawyer #lawyer-label {
     height: 84px;
     margin-top: 63px;
 }
+
 #addupdate-cp-trans-require-contract #lawyer #lawyer-input {
     height: 143px;
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-label,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-agreement-label,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #guarantor-label,
@@ -4382,55 +5211,68 @@ a.link-disable:hover {
     height: 12px;
     line-height: 12px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-yesno-label {
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-button,
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #cal-contract-penalty-button {
     height: 35px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-scholarship {
     height: 93px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #cal-contract-penalty-scholarship {
     height: 33px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-actual {
     height: 96px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-1-set-y #cal-contract-penalty-actual,
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-2-set-y #cal-contract-penalty-actual {
     height: 156px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-1-set-n #cal-contract-penalty-actual {
     height: 126px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 #cal-contract-penalty-input-civil-2-set-n #cal-contract-penalty-actual {
     height: 96px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #cal-contract-penalty-total {
     height: 33px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input #cal-contract-penalty-total {
     height: 33px;
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input .button-style2,
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input .button-style2 {
     margin-bottom: 10px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input .button-style2 ul li a,
 #addupdate-cp-trans-require-contract #cal-contract-penalty2 .cal-contract-penalty-input .button-style2 ul li a {
     width: 80px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract .form-input-style,
 #addupdate-cp-trans-require-contract #indemnitor-work .form-input-style,
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input,
@@ -4438,6 +5280,7 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #lawyer .form-input-style {
     font-size: 12px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-label,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-date-agreement-label,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholar-label,
@@ -4469,24 +5312,31 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #lawyer #lawyer-input #email-label {
     width: 159px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #guarantor-label {
     width: 59px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-label {
     width: 59px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-unit-label {
     width: 84px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-label {
     width: 51px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-unit-label {
     width: 14px;
 }
+
 #addupdate-cp-trans-require-contract #cal-contract-penalty1 .cal-contract-penalty-input #all-actual-month-unit-label {
     width: 32px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #education-date-end-label,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #contract-force-date-end-label {
     width: 59px;
@@ -4514,87 +5364,108 @@ a.link-disable:hover {
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #indemnitor-cash-input {
     width: 135px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-money-input {
     width: 74px;
 }
+
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-year-input,
 #addupdate-cp-trans-require-contract #break-contract #break-contract-input #scholarship-month-input {
     width: 35px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-no-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes-label {
     margin-top: 5px;
     height: 12px;
     line-height: 12px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input .radio {
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-no-input, 
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes-input {
     width: 20px;
     height: 20px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #require-date-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-start-date-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-start-date-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-start-date-label {
     width: 55px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #approve-date-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-end-date-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-end-date-label,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-end-date-label {
     width: 41px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #actual-date-unit-label {
     width: 19px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #remain-date-label {
     width: 183px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #province-input {
     width: 480px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #require-date-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #before-study-leave-start-date-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #study-leave-start-date-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #after-study-leave-start-date-input {
     width: 115px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #actual-date-input {
     width: 99px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #indemnitor-work-input #remain-date-input {
     width: 82px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-no,
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes {
     margin-top: 10px;
     margin-left: 20px;
 } 
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-no {
     margin-top: 8px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes #study-leave,
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes #after-study-leave {
     margin-top: 10px;
 }
+
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes #before-study-leave-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes #study-leave-input,
 #addupdate-cp-trans-require-contract #indemnitor-work #study-leave-yesno-input #study-leave-status-yes #after-study-leave-input {
     margin-top: 10px;
 } 
+
 #add-cp-trans-require-contract #button-style11 {
     width: 273px;
 } 
+
 #update-cp-trans-require-contract #button-style11 {
     width: 364px;
 } 
+
 #add-cp-trans-require-contract #button-style12 #button-status-p a,
 #update-cp-trans-require-contract #button-style12 #button-status-p a {
     width: 120px;
 }
+
 #add-cp-trans-require-contract #button-style12,
 #update-cp-trans-require-contract #button-style12 {
     width: 217px;
@@ -4604,41 +5475,50 @@ a.link-disable:hover {
     padding-top: 29px;
     height: 42px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay2-current-label .form-label-discription-style {
     padding-top: 20px;
     height: 34px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay0-current-label .form-label-discription-style,
 #addupdate-cp-trans-repay-contract #status-repay-label .form-label-discription-style {
     float: none;
     height: 20px;
     padding-top: 8px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay0-current-input .form-input-style,
 #addupdate-cp-trans-repay-contract #status-repay-input .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
 }
+
 #addupdate-cp-trans-repay-contract .form-input-style span {
     color: #0000FF;
 }
+
 #addupdate-cp-trans-repay-contract .form-label-discription-style {
     width: 260px;
 }
+
 #addupdate-cp-trans-repay-contract .form-input-style {
     width: 399px;
     font-size: 12px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay23-current-label .form-label-discription-style {
     padding-top: 63px;
     height: 78px;
 }
+
 #addupdate-cp-trans-repay-contract #history-repay-label .form-label-discription-style,
 #addupdate-cp-trans-repay-contract #status-repay1-add #status-repay23-current-label .form-label-discription-style {
     padding-top: 77px;
     height: 86px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay1-current-input .form-input-style,
 #addupdate-cp-trans-repay-contract #history-repay-input .form-input-style,
 #addupdate-cp-trans-repay-contract #status-repay2-current-input .form-input-style,
@@ -4647,90 +5527,113 @@ a.link-disable:hover {
     line-height: 18px;
     height: 136px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay1-current-input .form-input-style {
     height: 66px;
 }
+
 #addupdate-cp-trans-repay-contract #status-repay2-current-input .form-input-style {
     height: 49px;
 }
+
 #addupdate-cp-trans-repay-contract #history-repay-input .form-input-style,
 #addupdate-cp-trans-repay-contract #status-repay1-add #status-repay23-current-input .form-input-style {
     height: 158px;
 }
+
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-label {
     height: 73px;
 }
+
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input {
     height: 66px;
     margin-top: 13px;
 }
+
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-input {
     height: 30px;
 }
+
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-label,
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-book-date-label {
     margin-top: 5px;
     height: 12px;
     line-height: 12px;  
 }
+
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-label {
     width: 180px;
 }
+
 #addupdate-cp-trans-repay-contract #notice-claim-debt #notice-claim-debt-input #pursuant-book-date-label {
     width: 40px;
 }
+
 #addupdate-cp-trans-repay-contract #payment-label .form-label-discription-style {
     padding-top: 31px;
     height: 43px;
 }
+
 #addupdate-cp-trans-repay-contract #payment-input .form-input-style {
     padding-top: 5px;
     line-height: 18px;
     height: 69px;
 }
+
 #addupdate-cp-trans-repay-contract #repay-date-label {
     height: 57px;
 }
+
 #addupdate-cp-trans-repay-contract #repay-date-input {
     height: 43px;
     margin-top: 20px;
 }
+
 #addupdate-cp-trans-repay-contract #reply-date-label {
     height: 73px;
 }
+
 #addupdate-cp-trans-repay-contract #reply-date-input {
     height: 51px;
     margin-top: 28px;
 }
+
 #addupdate-cp-trans-repay-contract #detail-reply-label {
     height: 57px;
 }
+
 #addupdate-cp-trans-repay-contract #detail-reply-input #reply-yes-label,
 #addupdate-cp-trans-repay-contract #detail-reply-input #reply-no-label {
     margin-top: 5px;
     height: 12px;
     line-height: 12px;
 }
+
 #addupdate-cp-trans-repay-contract #detail-reply-input {
     height: 53px;
     margin-top: 10px;
 } 
+
 #addupdate-cp-trans-repay-contract #detail-reply-input .radio {
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-repay-contract #detail-reply-input #reply-yes-input, 
 #addupdate-cp-trans-repay-contract #detail-reply-input #reply-yes-input {
     height: 20px;
 }
+
 #addupdate-cp-trans-repay-contract #detail-reply-input #reply-yes-input,
 #addupdate-cp-trans-repay-contract #detail-reply-input #reply-no-input {
     width: 20px;
 }
+
 #addupdate-cp-trans-repay-contract #button-style11 {
     position: relative;
     left: 202px;
     width: 273px;
 }
+
 #addupdate-cp-trans-repay-contract #button-style12 {
     position: relative;
     left: 293px;
@@ -4741,41 +5644,50 @@ a.link-disable:hover {
     padding-top: 29px;
     height: 42px;
 }
+
 #view-cp-trans-repay-contract #status-repay2-current-label .form-label-discription-style {
     padding-top: 20px;
     height: 34px;
 }
+
 #view-cp-trans-repay-contract #status-repay0-current-label .form-label-discription-style,
 #view-cp-trans-repay-contract #status-repay-label .form-label-discription-style {
     float: none;
     height: 20px;
     padding-top: 8px;
 }
+
 #view-cp-trans-repay-contract #status-repay0-current-input .form-input-style,
 #view-cp-trans-repay-contract #status-repay-input .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
 }
+
 #view-cp-trans-repay-contract .form-input-style span {
     color: #0000FF;
 }
+
 #view-cp-trans-repay-contract .form-label-discription-style {
     width: 260px;
 }
+
 #view-cp-trans-repay-contract .form-input-style {
     width: 399px;
     font-size: 12px;
 }
+
 #view-cp-trans-repay-contract #status-repay23-current-label .form-label-discription-style {
     padding-top: 54px;
     height: 69px;
 }
+
 #view-cp-trans-repay-contract #history-repay-label .form-label-discription-style,
 #view-cp-trans-repay-contract #status-repay1-add #status-repay23-current-label .form-label-discription-style {
     padding-top: 62px;
     height: 78px;
 }
+
 #view-cp-trans-repay-contract #status-repay1-current-input .form-input-style,
 #view-cp-trans-repay-contract #history-repay-input .form-input-style,
 #view-cp-trans-repay-contract #status-repay2-current-input .form-input-style,
@@ -4784,16 +5696,20 @@ a.link-disable:hover {
     line-height: 18px;
     height: 118px;
 }
+
 #view-cp-trans-repay-contract #history-repay-input .form-input-style,
 #view-cp-trans-repay-contract #status-repay1-add #status-repay23-current-input .form-input-style {
     height: 135px;
 }
+
 #view-cp-trans-repay-contract #status-repay1-current-input .form-input-style {
     height: 66px;
 }
+
 #view-cp-trans-repay-contract #status-repay2-current-input .form-input-style {
     height: 49px;
 }
+
 #view-cp-trans-repay-contract .button .button-style1 {
     position: relative;
     left: 294px;
@@ -4804,14 +5720,17 @@ a.link-disable:hover {
 #detail-cal-interest-overpayment .form-label-discription-style {
     width: 260px;
 }
+
 #detail-cal-interest-overpayment .form-input-style {
     width: 440px;
     font-size: 12px;
 }
+
 #detail-cal-interest-overpayment #payment-label .form-label-discription-style {
     padding-top: 18px;
     height: 33px;
 }
+
 #detail-cal-interest-overpayment #payment-input .form-input-style {
     float: none;
     padding-top: 5px;
@@ -4819,9 +5738,11 @@ a.link-disable:hover {
     height: 46px;
     font-size: 12px;
 }
+
 #detail-cal-interest-overpayment #payment-input .form-input-style span {
     color: #0000FF;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-start-label,
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-end-label,
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-year-day-label,
@@ -4839,6 +5760,7 @@ a.link-disable:hover {
     height: 12px;
     line-height: 12px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-start-input,
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-end-input,
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-year-input,
@@ -4849,14 +5771,17 @@ a.link-disable:hover {
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #total-payment-input {
     height: 30px;
 } 
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-label {
     height: 138px;
     margin-top: 82px;
 } 
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input {
     height: 216px;
     margin-top: 10px;
 } 
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-start-label,
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-year-day-label,
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-interest-label,
@@ -4865,39 +5790,51 @@ a.link-disable:hover {
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #total-payment-label {
     width: 158px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-end-label {
     width: 41px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-year-unit-label {
     width: 14px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-date-start-input {
     width: 114px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-year-input {
     width: 47px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-day-input {
     width: 54px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #overpayment-interest-input {
     width: 114px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #capital-input {
     width: 114px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #total-interest-overpayment-input {
     width: 114px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input #total-payment-input {
     width: 114px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input .button-style2 {
     margin-bottom: 10px;
 }
+
 #detail-cal-interest-overpayment #cal-interest-overpayment-input .button-style2 ul li a {
     width: 80px;
 }
+
 #detail-cal-interest-overpayment .button-style1 {
     position: relative;
     left: 268px;
@@ -4911,15 +5848,19 @@ a.link-disable:hover {
 #adddetail-cp-trans-payment-head .content-data-tabs-content ul li #link-tab3-adddetail-cp-trans-payment {
     width: 95px;
 }
+
 #cp-trans-payment-head .content-data-tab-head {
     border: 0;
 }
+
 #cp-trans-payment-head #tab1-cp-trans-payment-head {
     text-align: left;
 }
+
 #cp-trans-payment-head .button-style2 ul li a {
     width: 53px;
 }
+
 #cp-trans-payment-head #tab2-cp-trans-payment-head,
 #cp-trans-payment-head #tab2-cp-trans-payment-contents,
 #cp-trans-payment-content #tab2-cp-trans-payment-content {
@@ -4933,55 +5874,68 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #adddetail-cp-trans-payment-head .form-label-discription-style span {
     color: #0000FF;
 }
+
 #adddetail-cp-trans-payment-head .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
 }
+
 #adddetail-cp-trans-payment-head .form-input-style span {
     color: #0000FF;
 }
+
 #adddetail-cp-trans-payment-head #profile-student #picture-student {
     width: 155px;
     padding: 7px;
     background: #CCCCCC;
 }
+
 #adddetail-cp-trans-payment-head #profile-student #picture-student div {
     width: 153px;
     height: 157px;
     background: #FFFFFF;
     border: 1px solid #000000;
 }
+
 #adddetail-cp-trans-payment-head #profile-student #picture-student div img {
     width: 100%;
     height: 100%;
     border: 0px;
 }
+
 #adddetail-cp-trans-payment-head #profile-student #profile-student-label .form-label-discription-style {
     width: 110px;
     margin-right: 1px;
 }
+
 #adddetail-cp-trans-payment-head #profile-student #profile-student-input .form-label-discription-style {
     width: 676px;
 }
+
 #adddetail-cp-trans-payment-head #lawyer #lawyer-label .form-label-discription-style {
     padding-top: 18px;
     height: 33px;
 }
+
 #adddetail-cp-trans-payment-head #lawyer #lawyer-input .form-input-style {
     padding-top: 5px;
     height: 46px;
     line-height: 18px;
 }
+
 #adddetail-cp-trans-payment-head .content-data-tabs-content .first-tab {
     margin-left: 0;
 }
+
 #adddetail-cp-trans-payment-head .content-data-tab-head {
     border: 0;
 }
+
 #adddetail-cp-trans-payment-head #tab2-adddetail-cp-trans-payment-head,
 #adddetail-cp-trans-payment-head #tab2-adddetail-cp-trans-payment-contents,
 #adddetail-cp-trans-payment-content #tab2-adddetail-cp-trans-payment-content,
@@ -4990,6 +5944,7 @@ a.link-disable:hover {
 #adddetail-cp-trans-payment-content #tab3-adddetail-cp-trans-payment-content {
     display: none;
 }
+
 #adddetail-cp-trans-payment-content #tab1-adddetail-cp-trans-payment-content #detail-data-trans-payment,
 #adddetail-cp-trans-payment-content #tab2-adddetail-cp-trans-payment-content #add-data-trans-payment,
 #adddetail-cp-trans-payment-content #tab3-adddetail-cp-trans-payment-content prosecution {
@@ -4999,32 +5954,39 @@ a.link-disable:hover {
 #select-format-payment .form-label-discription-style {
     width: 200px;
 }
+
 #select-format-payment .form-input-style {
     width: 279px;
     font-size: 12px;
 }
+
 #select-format-payment #format-payment-input #format-payment-full-repay-label,
 #select-format-payment #format-payment-input #format-payment-pay-repay-label {
     margin-top: 5px;
     height: 12px;
     line-height: 12px;
 }
+
 #select-format-payment #format-payment-label {
     height: 45px;
     margin-top: 5px;
 }
+
 #select-format-payment #format-payment-input {
     height: 50px;
     margin-top: 6px;
 } 
+
 #select-format-payment #format-payment-input .radio {
     margin-top: 5px;
 }
+
 #select-format-payment #format-payment-input #format-payment-full-repay-input, 
 #select-format-payment #format-payment-input #format-payment-pay-repay-input {
     width: 20px;
     height: 20px;
 }
+
 #select-format-payment .button-style1 {
     position: relative;
     left: 158px;
@@ -5039,11 +6001,13 @@ a.link-disable:hover {
     padding-top: 8px;
     margin-right: 1px;
 }
+
 #detail-cp-trans-payment .form-input-style,
 #add-cp-trans-payment .form-input-style,
 #addupdate-cp-trans-prosecution .form-input-style {
     font-size: 12px;
 }
+
 #detail-cp-trans-payment .form-input-style,
 #add-cp-trans-payment #status-payment-input .form-input-style,
 #addupdate-cp-trans-prosecution .form-input-style {
@@ -5051,62 +6015,76 @@ a.link-disable:hover {
     line-height: 28px;
     margin-left: 0;
 }
+
 #detail-cp-trans-payment #certificate-reimbursement-input .form-input-style a {
     line-height: 28px;  
 }
+
 #detail-cp-trans-payment .form-input-style span,
 #add-cp-trans-payment .form-input-style span {
     color: #0000FF;
 }
+
 #detail-cp-trans-payment .form-label-discription-style,
 #add-cp-trans-payment .form-label-discription-style,
 #adddetail-cp-trans-payment-head #lawyer #lawyer-label .form-label-discription-style,
 #addupdate-cp-trans-prosecution .form-label-discription-style {
     width: 279px;
 }
+
 #detail-cp-trans-payment .form-input-style,
 #add-cp-trans-payment .form-input-style,
 #adddetail-cp-trans-payment-head #lawyer #lawyer-input .form-input-style,
 #addupdate-cp-trans-prosecution .form-input-style {
     width: 690px;
 }
+
 #list-cp-trans-payment .box3 {
     border-left: 0;
     border-right: 0;
 }
+
 #list-cp-trans-payment .tab-line {
     background: #1A4568;
 }
+
 #list-cp-trans-payment .content-data-tab-content {
     padding: 0 7px 0 7px;
     background: #1A4568;
 }
+
 #list-cp-trans-payment #box-list-trans-payment {
     height: 220px;
     background: #90A3B7;
     overflow: hidden;
 }
+
 #list-cp-trans-payment #box-list-trans-payment:hover {
     overflow-y: scroll;
 }
+
 #list-cp-trans-payment #box-list-trans-payment,
 #list-cp-trans-payment #box-list-trans-payment #list-trans-payment {
     width: 984px;
 }
+
 #add-cp-trans-payment #cal-interest-yesno-label .form-label-discription-style {
     padding-top: 18px;
     height: 34px;
 }
+
 #add-cp-trans-payment #cal-interest-yesno-input .form-input-style {
     padding-top: 5px;
     height: 47px;
 } 
+
 #add-cp-trans-payment #payment-label .form-label-discription-style {
     float: none;
     padding-top: 18px;
     height: 33px;
     margin-right: 1px;
 }
+
 #add-cp-trans-payment #payment-input .form-input-style {
     float: none;
     padding-top: 5px;
@@ -5115,14 +6093,17 @@ a.link-disable:hover {
     font-size: 12px;
     margin-left: 0;
 }
+
 #detail-cp-trans-payment #status-payment-record-label .form-label-discription-style {
     height: 45px;
     padding-top: 10px;
 }
+
 #detail-cp-trans-payment #status-payment-record-input .form-input-style {
     height: 50px;
     padding-top: 5px;
 }
+
 #detail-cp-trans-payment #status-payment-record-input .label,
 #add-cp-trans-payment #cal-interest-yesno-input #cal-interest-yes-label,
 #add-cp-trans-payment #cal-interest-yesno-input #cal-interest-no-label,
@@ -5159,6 +6140,7 @@ a.link-disable:hover {
     height: 12px;
     line-height: 12px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-input, #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-date-start-input,
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-end-input, #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-date-end-input,
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-year-input, #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-year-input,
@@ -5178,26 +6160,32 @@ a.link-disable:hover {
 #add-cp-trans-payment #detail-receipt-input #receipt-fund-input {
     height: 30px;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container {
     height: 28px;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .preloading-inline {
     padding-top: 2px;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .uploadfile-form,
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .form-discription-style {
     display: inline-block;
     padding-top: 4px;
     margin-top: 0;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse {
     width: 63px;
     height: 14px;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse input[type="file"] {
     width: 100%;
     height: 100%;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-preview-container {
     position: relative;
     background: #FFFFFF;
@@ -5209,6 +6197,7 @@ a.link-disable:hover {
     vertical-align: middle;
     text-align: center;    
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-preview {
     width: inherit;
     height: inherit;
@@ -5218,40 +6207,49 @@ a.link-disable:hover {
     top: 0;
     left: 0;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-nopreview,
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-linkpreview a {
     position: relative;
     font-size: 16px;
     line-height: 1.8;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-input #receipt-copy-nopreview {
     font-size: 14px;
     color: #000000;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input, #add-cp-trans-payment #cal-interest-pay-repay-input {
     height: 156px;
     margin-top: 10px;
 } 
+
 #add-cp-trans-payment #cal-interest-overpayment-label, #add-cp-trans-payment #cal-interest-pay-repay-label {
     height: 108px;
     margin-top: 52px;
 } 
+
 #add-cp-trans-payment #detail-payment-label {
     height: 146px;
     margin-top: 105px;
 } 
+
 #add-cp-trans-payment #detail-payment-input {
     height: 247px;
     margin-top: 10px;
 } 
+
 #add-cp-trans-payment #detail-receipt-label {
     height: 239px;
     margin-top: 198px;
 } 
+
 #add-cp-trans-payment #detail-receipt-input {
     height: 433px;
     margin-top: 10px;
 } 
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-label,
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-label,
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-year-day-label,
@@ -5270,6 +6268,7 @@ a.link-disable:hover {
 #add-cp-trans-payment #cal-interest-pay-repay-input #total-interest-pay-repay-label {
     width: 162px;
 }
+
 #add-cp-trans-payment #detail-receipt-input #receipt-no-label,
 #add-cp-trans-payment #detail-receipt-input #receipt-book-no-label,
 #add-cp-trans-payment #detail-receipt-input #receipt-date-label,
@@ -5278,26 +6277,32 @@ a.link-disable:hover {
 #add-cp-trans-payment #detail-receipt-input #receipt-copy-label {
     width: 103px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-end-label,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-date-end-label {
     width: 41px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-year-unit-label,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-year-unit-label {
     width: 14px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-input,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-date-start-input {
     width: 114px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-year-input,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-year-input {
     width: 47px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-day-input,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-day-input {
     width: 54px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-interest-input,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-interest-input,
 #add-cp-trans-payment #cal-interest-overpayment-input #total-interest-overpayment-input,
@@ -5310,11 +6315,13 @@ a.link-disable:hover {
 #add-cp-trans-payment #detail-payment-input #payment-date-input {
     width: 114px;
 }
+
 #detail-cp-trans-payment #status-payment-record-input .radio,
 #add-cp-trans-payment #cal-interest-yesno-input .radio,
 #add-cp-trans-payment #detail-payment-input #channel-input .radio {
     margin-top: 5px;
 }
+
 #detail-cp-trans-payment #status-payment-record-input .input,
 #add-cp-trans-payment #cal-interest-yesno-input #cal-interest-yes-input,
 #add-cp-trans-payment #cal-interest-yesno-input #cal-interest-no-input,
@@ -5324,21 +6331,26 @@ a.link-disable:hover {
     width: 20px;
     height: 20px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input .button-style2,
 #add-cp-trans-payment #cal-interest-pay-repay-input .button-style2 {
     margin-bottom: 10px;
 }
+
 #add-cp-trans-payment #cal-interest-overpayment-input .button-style2 ul li a,
 #add-cp-trans-payment #cal-interest-pay-repay-input .button-style2 ul li a {
     width: 80px;
 }
+
 #detail-cp-trans-payment .button,
 #add-cp-trans-payment .button {
     margin-top: 1px;
 }
+
 #add-cp-trans-payment .button-style1 #button-style11 a {
     width: 130px;
 }
+
 #add-cp-trans-payment .button-style1 {
     width: 409px;
 }
@@ -5348,14 +6360,17 @@ a.link-disable:hover {
     padding-top: 8px;
     width: 180px;
 }
+
 #add-detail-pay-channel .form-input-style {
     line-height: 28px;
     font-size: 12px;
     width: 356px;
 }
+
 #add-detail-pay-channel .form-input-style span {
     color: #0000FF;
 }
+
 #add-detail-pay-channel #pay-channel-1-receipt-no .form-label-discription-style,
 #add-detail-pay-channel #pay-channel-1-receipt-book-no .form-label-discription-style,
 #add-detail-pay-channel #pay-channel-1-receipt-date .form-label-discription-style,
@@ -5371,6 +6386,7 @@ a.link-disable:hover {
     padding-top: 15px;
     height: 28px;
 }
+
 #add-detail-pay-channel #pay-channel-1-receipt-no .form-input-style,
 #add-detail-pay-channel #pay-channel-1-receipt-book-no .form-input-style,
 #add-detail-pay-channel #pay-channel-1-receipt-date .form-input-style,
@@ -5386,6 +6402,7 @@ a.link-disable:hover {
     padding-top: 10px;
     height: 33px;
 }
+
 #add-detail-pay-channel .button-style1 {
     position: relative;
     left: 141px;
@@ -5399,6 +6416,7 @@ a.link-disable:hover {
     padding-top: 8px;
     margin-right: 1px;
 }
+
 #chk-balance #chk-balance-input .form-label-discription-style {
     float: none;
     background: #8FAEC9;
@@ -5407,12 +6425,15 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #chk-balance #chk-balance-input .chk-balance-val {
     color: #0000FF;
 }
+
 #chk-balance #chk-balance-input .chk-balance-unit {
     display: none;
 }
+
 #chk-balance .button-style1 {
     position: relative;
     left: 232px;
@@ -5425,56 +6446,68 @@ a.link-disable:hover {
     padding-top: 8px;
     width: 180px;
 }
+
 #detail-trans-payment .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
     width: 449px;
 }
+
 #detail-trans-payment .form-input-style span {
     color: #0000FF;
 }
+
 #detail-trans-payment #overpayment .form-label-discription-style {
     padding-top: 41px;
     height: 56px;
 }
+
 #detail-trans-payment #overpayment .form-input-style {
     padding-top: 5px;
     line-height: 18px;
     height: 92px;
 }
+
 #detail-trans-payment #pay-channel2 .form-label-discription-style {
     padding-top: 54px;
     height: 66px;
 }
+
 #detail-trans-payment #pay-channel2 .form-input-style {
     padding-top: 5px;
     line-height: 18px;
     height: 115px;
 }
+
 #detail-trans-payment #pay-channel3 .form-label-discription-style {
     padding-top: 65px;
     height: 80px;
 }
+
 #detail-trans-payment #pay-channel3 .form-input-style {
     padding-top: 5px;
     line-height: 18px;
     height: 140px;
 }
+
 #detail-trans-payment #detail-receipt .form-label-discription-style {
     padding-top: 65px;
     height: 80px;
 }
+
 #detail-trans-payment #detail-receipt .form-input-style {
     padding-top: 5px;
     line-height: 18px;
     height: 140px;
 }
+
 #detail-trans-payment .button-style1 {
     position: relative;
     left: 278px;
     width: 87px;
 }
+
 #detail-trans-payment #box-detail-trans-payment #list-detail-trans-payment {
     width: 650px;
 }
@@ -5482,32 +6515,40 @@ a.link-disable:hover {
 #addupdate-cp-trans-prosecution {
     position: relative;
 }
+
 #addupdate-cp-trans-prosecution .form-label-discription-style {
     margin-right: 1px;
 }
+
 #addupdate-cp-trans-prosecution .form-input-style {
     font-size: 12px;
     margin-left: 0;
 }
+
 #addupdate-cp-trans-prosecution .form-input-style span {
     color: #0000FF;
 }
+
 #addupdate-cp-trans-prosecution #complaint-label .form-label-discription-style {
     padding-top: 79px;
     height: 130px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-label .form-label-discription-style {
     padding-top: 243px;
     height: 294px;
 }
+
 #addupdate-cp-trans-prosecution #execution-label .form-label-discription-style {
     padding-top: 159px;
     height: 210px;
 }
+
 #addupdate-cp-trans-prosecution #executionwithdraw-label .form-label-discription-style {
     padding-top: 211px;
     height: 262px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input .form-input-style,
 #addupdate-cp-trans-prosecution #judgment-input .form-input-style,
 #addupdate-cp-trans-prosecution #judgment-input #judgment-remark-container,
@@ -5517,34 +6558,42 @@ a.link-disable:hover {
 #addupdate-cp-trans-prosecution #executionwithdraw-input .button-action {
     padding-top: 10px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input .form-input-style {
     height: 153px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input .form-input-style {
     height: 481px;
 }
+
 #addupdate-cp-trans-prosecution #execution-input .form-input-style {
     height: 313px;
 }
+
 #addupdate-cp-trans-prosecution #executionwithdraw-input .form-input-style {
     height: 417px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input .button-action,
 #addupdate-cp-trans-prosecution #judgment-input .button-action,
 #addupdate-cp-trans-prosecution #execution-input .button-action,
 #addupdate-cp-trans-prosecution #executionwithdraw-input .button-action {
     height: 35px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input .button-action .form-input-content,
 #addupdate-cp-trans-prosecution #judgment-input .button-action .form-input-content,
 #addupdate-cp-trans-prosecution #execution-input .button-action .form-input-content,
 #addupdate-cp-trans-prosecution #executionwithdraw-input .button-action .form-input-content {
     margin-right: 3px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-remark-container,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-container {
     padding-top: 7px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #black-case-no-label,
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-label,
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-input .label,
@@ -5565,11 +6614,13 @@ a.link-disable:hover {
     height: 12px;
     line-height: 12px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-label,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-label,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-label {
     margin-top: 8px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #black-case-no-input,
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-input .input,
 #addupdate-cp-trans-prosecution #judgment-input #red-case-no-input,
@@ -5577,6 +6628,7 @@ a.link-disable:hover {
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-date-input {
     height: 30px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #black-case-no-label,
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-input .label,
 #addupdate-cp-trans-prosecution #judgment-input #red-case-no-label,
@@ -5590,56 +6642,69 @@ a.link-disable:hover {
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-label {
     width: 113px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-label,
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-input {
     float: none;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-input {
     margin-top: 13px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-label {
     font-weight: bold;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input #capital-summary #capital-summary-input .unit {
     margin-left: 7px;
 }
+
 #addupdate-cp-trans-prosecution #complaint-input .button-action .button-style2,
 #addupdate-cp-trans-prosecution #judgment-input .button-action .button-style2,
 #addupdate-cp-trans-prosecution #execution-input .button-action .button-style2, 
 #addupdate-cp-trans-prosecution #executionwithdraw-input .button-action .button-style2 {
     float: right
 }
+
 #addupdate-cp-trans-prosecution #complaint-input .button-action .button-style2 a,
 #addupdate-cp-trans-prosecution #judgment-input .button-action .button-style2 a,
 #addupdate-cp-trans-prosecution #execution-input .button-action .button-style2 a,
 #addupdate-cp-trans-prosecution #executionwithdraw-input .button-action .button-style2 a {
     width: 80px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-remark-label {
     margin-top: 6px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-result-input {
     margin-bottom: 5px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-result-input .radio {
     margin-top: 5px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-result-input #judgment-result-dismiss-input,
 #addupdate-cp-trans-prosecution #judgment-input #judgment-result-input #judgment-result-lawful-input,
 #addupdate-cp-trans-prosecution #judgment-input #judgment-result-input #judgment-result-lawful-some-input {
     width: 20px;
     height: 20px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input .uploadfile-container,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input .uploadfile-container,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input .uploadfile-container {
     height: 28px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input .uploadfile-container .preloading-inline,
 #addupdate-cp-trans-prosecution #execution-input #execution-detail #execution-copy-input .uploadfile-container .preloading-inline,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input .uploadfile-container .preloading-inline {
     padding-top: 2px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input .uploadfile-container .uploadfile-form,
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input .uploadfile-container .form-discription-style,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input .uploadfile-container .uploadfile-form,
@@ -5650,18 +6715,21 @@ a.link-disable:hover {
     padding-top: 4px;
     margin-top: 0;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse {
     width: 63px;
     height: 14px;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse input[type="file"],
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse input[type="file"],
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input .uploadfile-container .uploadfile-form .uploadfile-button.browse input[type="file"] {
     width: 100%;
     height: 100%;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input #judgment-copy-preview-container,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input #execution-copy-preview-container,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input #executionwithdraw-copy-preview-container {
@@ -5675,6 +6743,7 @@ a.link-disable:hover {
     vertical-align: middle;
     text-align: center;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input #judgment-copy-preview,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input #execution-copy-preview,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input #executionwithdraw-copy-preview {
@@ -5686,6 +6755,7 @@ a.link-disable:hover {
     top: 0;
     left: 0;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input #judgment-copy-nopreview,
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input #judgment-copy-linkpreview a,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input #execution-copy-nopreview,
@@ -5696,6 +6766,7 @@ a.link-disable:hover {
     font-size: 16px;
     line-height: 1.8;
 }
+
 #addupdate-cp-trans-prosecution #judgment-input #judgment-copy-input #judgment-copy-nopreview,
 #addupdate-cp-trans-prosecution #execution-input #execution-copy-input #execution-copy-nopreview,
 #addupdate-cp-trans-prosecution #executionwithdraw-input #executionwithdraw-copy-input #executionwithdraw-copy-nopreview {
@@ -5706,9 +6777,11 @@ a.link-disable:hover {
 #cp-report-table-cal-capital-and-interest-head #tab1-cp-report-table-cal-capital-and-interest-head {
     text-align: left;
 }
+
 #cp-report-table-cal-capital-and-interest-head .button-style2 ul li a {
     width: 53px;
 }
+
 #cp-report-table-cal-capital-and-interest-head #tab2-cp-report-table-cal-capital-and-interest-head,
 #cp-report-table-cal-capital-and-interest-head #tab2-cp-report-table-cal-capital-and-interest-contents,
 #cp-report-table-cal-capital-and-interest-content #tab2-cp-report-table-cal-capital-and-interest-content {
@@ -5722,55 +6795,68 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student .form-label-discription-style span {
     color: #0000FF;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student .form-input-style span {
     color: #0000FF;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student #picture-student {
     width: 155px;
     padding: 7px;
     background: #CCCCCC;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student #picture-student div {
     width: 153px;
     height: 157px;
     background: #FFFFFF;
     border: 1px solid #000000;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student #picture-student div img {
     width: 100%;
     height: 100%;
     border: 0;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student #profile-student-label .form-label-discription-style {
     width: 110px;
     margin-right: 1px;
 }
+
 #cal-report-table-cal-capital-and-interest #profile-student #profile-student-input .form-label-discription-style {
     width: 676px;
 }
+
 #cal-report-table-cal-capital-and-interest #set-condition .form-label-discription-style {
     width: 279px;
 }
+
 #cal-report-table-cal-capital-and-interest #set-condition .form-input-style {
     font-size: 12px;
     width: 690px;
 }
+
 #cal-report-table-cal-capital-and-interest #set-condition-label {
     height: 98px;
     margin-top: 56px;
 } 
+
 #cal-report-table-cal-capital-and-interest #set-condition-input {
     height: 123px;
     margin-top: 10px;
 } 
+
 #cal-report-table-cal-capital-and-interest #capital-label,
 #cal-report-table-cal-capital-and-interest #interest-label,
 #cal-report-table-cal-capital-and-interest #condition-tablecalcapitalandinterest-label,
@@ -5778,6 +6864,7 @@ a.link-disable:hover {
 #cal-report-table-cal-capital-and-interest #payment-date-label {
     width: 138px;
 }
+
 #cal-report-table-cal-capital-and-interest #capital-input,
 #cal-report-table-cal-capital-and-interest #interest-input,
 #cal-report-table-cal-capital-and-interest #condition-tablecalcapitalandinterest-input #condition-select,
@@ -5786,12 +6873,14 @@ a.link-disable:hover {
 #cal-report-table-cal-capital-and-interest #payment-date-input {
     height: 30px;
 } 
+
 #cal-report-table-cal-capital-and-interest #capital-input,
 #cal-report-table-cal-capital-and-interest #interest-input,
 #cal-report-table-cal-capital-and-interest #pay-input,
 #cal-report-table-cal-capital-and-interest #period-input {
   width: 114px;
 }
+
 #cal-report-table-cal-capital-and-interest #capital-label,
 #cal-report-table-cal-capital-and-interest #capital-unit-label,
 #cal-report-table-cal-capital-and-interest #interest-label,
@@ -5804,38 +6893,48 @@ a.link-disable:hover {
     height: 12px;
     line-height: 12px;
 }
+
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest .box3 {
     border-left: 0px;
     border-right: 0px;
 }
+
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest .tab-line {
     background: #1A4568;
 }
+
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest .content-data-tab-content {
     padding: 0 7px 0 7px;
     background: #1A4568;
 }
+
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest #box-list-table-cal-capital-and-interest {
     height: 300px;
     background: #90A3B7;
     overflow: hidden;
 }
+
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest #box-list-table-cal-capital-and-interest:hover {
     overflow-y: scroll;
 }
+
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest #box-list-table-cal-capital-and-interest,
 #cal-report-table-cal-capital-and-interest #list-cp-report-table-cal-capital-and-interest #box-list-table-cal-capital-and-interest #list-table-cal-capital-and-interest {
     width: 984px;
 }
+
 #cal-report-table-cal-capital-and-interest #sumtotal-table-cal-capital-and-interest {
     margin-top: 1px;
 }
+
 #cal-report-table-cal-capital-and-interest #button-style11 .button-style1 {
     width: 182px;
 }
+
 #cal-report-table-cal-capital-and-interest #button-style12 {
     margin-top: 1px;
 }
+
 #cal-report-table-cal-capital-and-interest #button-style12 .button-style1 {
     width: 182px;
 }
@@ -5843,6 +6942,7 @@ a.link-disable:hover {
 #cp-report-statistic-repay-head #tab1-cp-report-statistic-repay-head {
     text-align: left;
 }
+
 #cp-report-statistic-repay-head #tab2-cp-report-statistic-repay-head,
 #cp-report-statistic-repay-head #tab2-cp-report-statistic-repay-contents,
 #cp-report-statistic-repay-content #tab2-cp-report-statistic-repay-content {
@@ -5852,6 +6952,7 @@ a.link-disable:hover {
 #cp-report-statistic-contract-head #tab1-cp-report-statistic-contract-head {
     text-align: left;
 }
+
 #cp-report-statistic-contract-head #tab2-cp-report-statistic-contract-head,
 #cp-report-statistic-contract-head #tab2-cp-report-statistic-contract-contents,
 #cp-report-statistic-contract-content #tab2-cp-report-statistic-contract-content {
@@ -5861,6 +6962,7 @@ a.link-disable:hover {
 #cp-report-step-of-work-head .button-style2 ul li a {
     width: 53px;
 }
+
 #list-report-step-of-work-on-statistic-repay-by-program #detail-statistic-repay-by-program .form-label-discription-style {
     float: none;
     height: 20px;
@@ -5868,6 +6970,7 @@ a.link-disable:hover {
     margin-right: 1px;
     width:201px;
 }
+
 #list-report-step-of-work-on-statistic-repay-by-program #detail-statistic-repay-by-program .form-input-style {
     float: none;
     line-height: 28px;
@@ -5875,32 +6978,40 @@ a.link-disable:hover {
     font-size: 12px;
     width: 528px;
 }
+
 #list-report-step-of-work-on-statistic-repay-by-program #detail-statistic-repay-by-program .form-input-style span {
     color: #0000FF;
 }
+
 #list-report-step-of-work .box3 {
     border-left: 0;
     border-right: 0;
 }
+
 #list-report-step-of-work .tab-line { 
     background: #1A4568;
 }
+
 #list-report-step-of-work .content-data-tab-content {
     padding: 0 9px 0 7px;
     background: #1A4568;
 }
+
 #list-report-step-of-work #box-list-data-search-report-step-of-work {
     height: 220px;
     background: #90A3B7;
     overflow:hidden;
 }
+
 #list-report-step-of-work #box-list-data-search-report-step-of-work:hover {
     overflow-y: scroll;
 }
+
 #list-report-step-of-work #box-list-data-search-report-step-of-work,
 #list-report-step-of-work #box-list-data-search-report-step-of-work #list-data-search-report-step-of-work {
     width: 744px;
 }
+
 #list-report-step-of-work #nav-page-search-report-step-of-work {
     height: 42px;
     background: #144670;
@@ -5913,48 +7024,58 @@ a.link-disable:hover {
     margin-right: 1px;
     width: 201px;
 }
+
 #list-report-student-on-statistic-contract-by-program-head #detail-statistic-contract-by-program .form-input-style {
     float: none;
     line-height: 28px;
     margin-left: 0;
     font-size: 12px;width:528px;
 }
+
 #list-report-student-on-statistic-contract-by-program-head #detail-statistic-contract-by-program .form-input-style span {
     color: #0000FF;
 }
+
 #list-report-student-on-statistic-contract-by-program-head .box3 {
     border-left: 0;
     border-right: 0;
 }
+
 #list-report-student-on-statistic-contract-by-program-head .content-data-tab-content {
     padding: 0 9px 0 7px;
 }
+
 #list-report-student-on-statistic-contract-by-program-content .box4  {
     border-left: 0;
     border-right:0;
     border-bottom: 0px;
 }
+
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-sign-contract,
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-contract-penalty {
     height: 210px;
     background: #90A3B7;
     overflow: hidden;
 }
+
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-sign-contract:hover,
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-contract-penalty:hover {
     overflow-y: scroll;
 }
+
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-sign-contract,
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-contract-penalty,
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-sign-contract #list-data-student-sign-contract,
 #list-report-student-on-statistic-contract-by-program-content #box-list-data-student-contract-penalty #list-data-student-contract-penalty {
     width: 744px;
 }
+
 #list-report-student-on-statistic-contract-by-program-content #nav-page-student-sign-contract,
 #list-report-student-on-statistic-contract-by-program-content #nav-page-student-contract-penalty {
     height: 42px;
     background: #144670;
 }
+
 #list-report-student-on-statistic-contract-by-program-head #tab2-report-student-on-statistic-contract-by-program-head,
 #list-report-student-on-statistic-contract-by-program-head #tab2-report-student-on-statistic-contract-by-program-contents,
 #list-report-student-on-statistic-contract-by-program-content #tab2-report-student-on-statistic-contract-by-program-content {
@@ -5968,66 +7089,81 @@ a.link-disable:hover {
     padding-top: 8px;
     text-align: left;
 }
+
 #view-trans-payment-by-date-head .form-label-discription-style span {
     color: #0000FF;
 }
+
 #view-trans-payment-by-date-head .form-input-style {
     float: none;
     line-height: 28px;
     font-size:12px;
 }
+
 #view-trans-payment-by-date-head .form-input-style span {
     color: #0000FF;
 }
+
 #view-trans-payment-by-date-head #profile-student #picture-student {
     width: 155px;
     padding: 7px;
     background: #CCCCCC;
 }
+
 #view-trans-payment-by-date-head #profile-student #picture-student div {
     width: 153px;
     height: 157px;
     background: #FFFFFF;
     border: 1px solid #000000;
 }
+
 #view-trans-payment-by-date-head #profile-student #picture-student div img {
     width: 100%;
     height: 100%;
     border: 0;
 }
+
 #view-trans-payment-by-date-head #profile-student #profile-student-label .form-label-discription-style {
     width: 111px;
     margin-right: 1px;
 }
+
 #view-trans-payment-by-date-head #profile-student #profile-student-input .form-label-discription-style {
     width: 635px;
 }
+
 #view-trans-payment-by-date-content {
     background: #90A3B7;
 }
+
 #view-trans-payment-by-date .box3,
 #view-trans-payment .box3 {
     border-left: 0;
     border-right: 0;
 }
+
 #view-trans-payment-by-date .tab-line,
 #view-trans-payment .tab-line {
     background: #1A4568;
 }
+
 #view-trans-payment-by-date .content-data-tab-content,
 #view-trans-payment .content-data-tab-content {
     padding: 0px 7px 0px 7px;background:#1A4568;
 }
+
 #view-trans-payment-by-date #box-list-trans-payment-by-date,
 #view-trans-payment #box-list-trans-payment {
     height: 220px;
     background: #90A3B7;
     overflow: hidden;
 }
+
 #view-trans-payment-by-date #box-list-trans-payment-by-date:hover,
 #view-trans-payment #box-list-trans-payment:hover {
     overflow-y: scroll;
 }
+
 #view-trans-payment-by-date #box-list-trans-payment-by-date, #view-trans-payment #box-list-trans-payment,
 #view-trans-payment-by-date #box-list-trans-payment-by-date #list-trans-payment-by-date, #view-trans-payment #box-list-trans-payment #list-trans-payment {
     width: 944px;
@@ -6036,6 +7172,7 @@ a.link-disable:hover {
 #cp-report-e-contract-head .button-style2 ul li a {
     width: 53px;
 }
+
 /*
 #list-report-step-of-work-on-statistic-repay-by-program #detail-statistic-repay-by-program .form-label-discription-style {
     float: none;
@@ -6043,39 +7180,48 @@ a.link-disable:hover {
     padding-top: 8px;
     margin-right: 1px;width:201px;
 }
+
 #list-report-step-of-work-on-statistic-repay-by-program #detail-statistic-repay-by-program .form-input-style {
     float: none;
     line-height: 28px;
     margin-left: 0;
     font-size: 12px;width:528px;
 }
+
 #list-report-step-of-work-on-statistic-repay-by-program #detail-statistic-repay-by-program .form-input-style span {
     color: #0000FF;
 }
 */
+
 #list-report-e-contract .box3 {
     border-left: 0;
     border-right: 0;
 }
+
 #list-report-e-contract .tab-line {
     background: #1A4568;
 }
+
 #list-report-e-contract .content-data-tab-content {
     padding: 0 9px 0 7px;
     background: #1A4568;
 }
+
 #list-report-e-contract #box-list-data-search-report-e-contract {
     height: 220px;
     background: #90A3B7;
     overflow: hidden;
 }
+
 #list-report-e-contract #box-list-data-search-report-e-contract:hover {
     overflow-y: scroll;
 }
+
 #list-report-e-contract #box-list-data-search-report-e-contract,
 #list-report-e-contract #box-list-data-search-report-e-contract #list-data-search-report-e-contract {
     width: 744px;
 }
+
 #list-report-e-contract #nav-page-search-report-e-contract {
     height: 42px;
     background: #144670;
@@ -6083,13 +7229,13 @@ a.link-disable:hover {
 
 #cp-report-debtor-contract-head #tab1-cp-report-debtor-contract-head {
     text-align: left;
-}                           
+}
+
 #cp-report-debtor-contract-head #tab2-cp-report-debtor-contract-head,
 #cp-report-debtor-contract-head #tab2-cp-report-debtor-contract-contents,
 #cp-report-debtor-contract-content #tab2-cp-report-debtor-contract-content {
     display: none;
 }
-
 
 #sticky {
     width: 990px;
@@ -6106,6 +7252,7 @@ a.link-disable:hover {
 .clear {
     clear: both;
 }
+
 .clearfix:after {
     content: ".";
     display: block;
@@ -6113,12 +7260,15 @@ a.link-disable:hover {
     clear: both;
     visibility: hidden;    
 }
+
 .clearfix {
     display: inline-block;
 }
+
 * html .clearfix {
     height: 1%;
 }
+
 .clearfix {
     display: block;
 }
@@ -6127,21 +7277,26 @@ a.link-disable:hover {
     overflow: hidden;
     background: #FFFFFF;
 }
+
 .class-dialog-form-manual .ui-dialog-content:hover {
     overflow-y: scroll;
 }
+
 #slide-manual #slide-tools-manual {
     width: 564px;
     height: 32px;
 }
+
 #slide-manual #slide-tools-manual #slide-tool-content-manual {
     width: 564px;
     height: 25px;
     background: rgba(158, 180, 222, 0.9);
 }
+
 #slide-manual #slide-tools-manual #slide-tool-manual {
     background: rgba(153, 153, 153, 0.9);
 }
+
 #slide-manual #slide-contents-manual {
     width: 548px;
     height: 776px;

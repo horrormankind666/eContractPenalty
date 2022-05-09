@@ -12,10 +12,8 @@ using System.Web;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
-namespace NExport2PDF
-{
-    public class Export2PDF
-    {
+namespace NExport2PDF {
+    public class Export2PDF {
         private static PdfReader _reader;
         private static Document _document;
         private static PdfWriter _writer;
@@ -23,8 +21,7 @@ namespace NExport2PDF
         private static Image _img;
         private static FileStream _fs;
 
-        public void ExportToPDFConnect(string _fileName)
-        {
+        public void ExportToPDFConnect(string _fileName) {
             HttpContext.Current.Response.ClearContent();
             HttpContext.Current.Response.ClearHeaders();
             HttpContext.Current.Response.Buffer = true;
@@ -32,17 +29,17 @@ namespace NExport2PDF
             HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=" + _fileName);
         }
 
-        public void ExportToPDFConnectWithSaveFile(string _fileName)
-        {
+        public void ExportToPDFConnectWithSaveFile(string _fileName) {
             _fs = new FileStream(_fileName, FileMode.Create);
         }
 
-        public void PDFConnectTemplate(string _template, string _type)
-        {
+        public void PDFConnectTemplate(
+            string _template,
+            string _type
+        ) {
             string _pdfTemplate = HttpContext.Current.Server.MapPath(_template);
 
-            if (_type.Equals("pdf") || _type.Equals("pdfwithsavefile"))
-            {
+            if (_type.Equals("pdf") || _type.Equals("pdfwithsavefile")) {
                 _reader = new PdfReader(_pdfTemplate);
                 _document = new Document();
 
@@ -57,10 +54,12 @@ namespace NExport2PDF
             }
         }
 
-        public void PDFAddTemplate(string _type, int _pageNumber, int _rotation)
-        {
-            if (_type.Equals("pdf"))
-            {
+        public void PDFAddTemplate(
+            string _type,
+            int _pageNumber,
+            int _rotation
+        ) {
+            if (_type.Equals("pdf")) {
                 _document.SetPageSize(_rotation.Equals(1) ? PageSize.A4 : PageSize.A4.Rotate());
                 PdfImportedPage _page = _writer.GetImportedPage(_reader, _pageNumber);
                 PDFNewPage();
@@ -68,13 +67,20 @@ namespace NExport2PDF
             }
         }
 
-        public void PDFNewPage()
-        {
+        public void PDFNewPage() {
             _document.NewPage();
         }
 
-        public void FillForm(string _font, float _fontSize, int _align, string _text, float _x, float _y, float _width, float _height)
-        {
+        public void FillForm(
+            string _font,
+            float _fontSize,
+            int _align,
+            string _text,
+            float _x,
+            float _y,
+            float _width,
+            float _height
+        ) {
             PdfPTable _table = new PdfPTable(1);
             PdfPCell _cell;
             string _pdfFont = HttpContext.Current.Server.MapPath(_font);
@@ -99,8 +105,16 @@ namespace NExport2PDF
             _table.WriteSelectedRows(0, -1, _x, _y, _cb);
         }
 
-        public void FillFormCellTop(string _font, float _fontSize, int _align, string _text, float _x, float _y, float _width, float _height)
-        {
+        public void FillFormCellTop(
+            string _font,
+            float _fontSize,
+            int _align,
+            string _text,
+            float _x,
+            float _y,
+            float _width,
+            float _height
+        ) {
             PdfPTable _table = new PdfPTable(1);
             PdfPCell _cell;
             string _pdfFont = HttpContext.Current.Server.MapPath(_font);
@@ -118,8 +132,17 @@ namespace NExport2PDF
             _table.WriteSelectedRows(0, -1, _x, _y, _cb);
         }
 
-        public void ShowMessage(string _font, float _fontSize, int _align, string _text, float _x, float _y, float _width, float _height, float _lineHeight)
-        {
+        public void ShowMessage(
+            string _font,
+            float _fontSize,
+            int _align,
+            string _text,
+            float _x,
+            float _y,
+            float _width,
+            float _height,
+            float _lineHeight
+        ) {
             string _pdfFont = HttpContext.Current.Server.MapPath(_font);
             BaseFont _bf = BaseFont.CreateFont(_pdfFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
 
@@ -129,15 +152,20 @@ namespace NExport2PDF
             _ct.Go();
         }
 
-        public void FillFormImage(int _align, string _source, string _imgFile, float _x, float _y, float _width, float _height)
-        {
-            try
-            {
+        public void FillFormImage(
+            int _align,
+            string _source,
+            string _imgFile,
+            float _x,
+            float _y,
+            float _width,
+            float _height
+        ) {
+            try {
                 PdfPTable _table = new PdfPTable(1);
                 PdfPCell _cell;
 
-                switch (_source)
-                {
+                switch (_source) {
                     case "url":
                         _img = Image.GetInstance(new Uri(_imgFile));
                         break;
@@ -159,13 +187,20 @@ namespace NExport2PDF
                 _table.AddCell(_cell);
                 _table.WriteSelectedRows(0, -1, _x, _y, _cb);
             }
-            catch
-            {
+            catch {
             }
         }
 
-        public void CreateTable(float _x, float _y, float _width, float _height, float _borderLeft, float _borderTop, float _borderRight, float _borderBottom)
-        {
+        public void CreateTable(
+            float _x,
+            float _y,
+            float _width,
+            float _height,
+            float _borderLeft,
+            float _borderTop,
+            float _borderRight,
+            float _borderBottom
+        ) {
             PdfPTable _table = new PdfPTable(1);
             PdfPCell _cell;
 
@@ -182,8 +217,7 @@ namespace NExport2PDF
             _table.WriteSelectedRows(0, -1, _x, _y, _cb);
         }
 
-        public void ExportToPdfDisconnect()
-        {
+        public void ExportToPdfDisconnect() {
             _reader.Close();
             _document.Close();
             _writer.Close();
@@ -191,8 +225,7 @@ namespace NExport2PDF
             HttpContext.Current.Response.End();
         }
 
-        public void ExportToPdfDisconnectWithSaveFile()
-        {
+        public void ExportToPdfDisconnectWithSaveFile() {
             _reader.Close();
             _document.Close();
             _writer.Close();

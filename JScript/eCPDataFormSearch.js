@@ -44,7 +44,9 @@ function ResetFrmSearchStudentWithResult() {
     $("#list-data-search-student-with-result").html("");
     $("#nav-page-search-student-with-result").html("");
 
-    //ResetListSearchStudentWithResult();
+    /*
+    ResetListSearchStudentWithResult();
+    */
 }
 
 function ResetListSearchStudentWithResult() {
