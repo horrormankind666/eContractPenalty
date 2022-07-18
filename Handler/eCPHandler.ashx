@@ -3,7 +3,7 @@
 /*
 Description         : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
 Date Created        : 06/08/2555
-Last Date Modified  : ๑๓/๑๑/๒๕๖๔
+Last Date Modified  : ๐๗/๐๗/๒๕๖๕
 Create By           : Yutthaphoom Tawana
 */
 
@@ -339,7 +339,7 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState {
                 break;
             case "detailtranspayment":
                 _frm = eCPDataPayment.DetailTransPayment(_c.Request["id"]);
-                _width = 650;
+                _width = 990;
                 _height = 0;
                 _title = "detail-trans-payment";
                 break;
@@ -953,7 +953,9 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState {
     }
 
     private void ShowPrint(HttpContext _c) {
-        //eCPDB.ConnectStoreProcAddUpdate(eCPDB.InsertTransactionLog("EXPORT", "", "SelectReportExport, " + Request.Form["export-order"], Request.Form["export-send"]));
+        /*
+        eCPDB.ConnectStoreProcAddUpdate(eCPDB.InsertTransactionLog("EXPORT", "", "SelectReportExport, " + Request.Form["export-order"], Request.Form["export-send"]));
+        */
 
         string _send = _c.Request["cp1id"] + ":" + _c.Request["action"];
 

@@ -1,11 +1,13 @@
 ﻿/*
 Description         : สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๒๒/๑๑/๒๕๖๔
+Last Date Modified  : ๑๐/๐๗/๒๕๖๕
 Create By           : Yutthaphoom Tawana
 */
 
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
+using System.Activities.Statements;
 using System.Collections;
 using System.Web;
 
@@ -325,268 +327,417 @@ public class eCPDataPayment {
         return _html;
     }
 
-    private static string FrmPayment() {
-        string _html = String.Empty;
+    private static string FrmPayment(string formatPayment) {
+        string html = String.Empty;
+        string formatPaymentName = String.Empty;
+        string lawyerFullname = String.Empty;
+        string lawyerPhoneNumber = String.Empty;
+        string lawyerMobileNumber = String.Empty;
+        string lawyerEmail = String.Empty;
 
-        _html += "<div>" +
-                 "  <input type='hidden' id='pay-channel-index-hidden' value=''>" +
-                 "  <input type='hidden' id='cheque-no-hidden' value=''>" +
-                 "  <input type='hidden' id='cheque-bank-hidden' value=''>" +
-                 "  <input type='hidden' id='cheque-bank-branch-hidden' value=''>" +
-                 "  <input type='hidden' id='cheque-date-hidden' value=''>" +
-                 "  <input type='hidden' id='cash-bank-hidden' value=''>" +
-                 "  <input type='hidden' id='cash-bank-branch-hidden' value=''>" +
-                 "  <input type='hidden' id='cash-bank-account-hidden' value=''>" +
-                 "  <input type='hidden' id='cash-bank-account-no-hidden' value=''>" +
-                 "  <input type='hidden' id='cash-bank-date-hidden' value=''>" +
-                 "  <div class='form-label-discription-style'>" +
-                 "      <div id='detail-payment-label'>" +
-                 "          <div class='form-label-style'>รายละเอียดการชำระหนี้</div>" +
-                 "          <div class='form-discription-style'>" +
-                 "              <div class='form-discription-line1-style'>กรุณาใส่รายละเอียดการชำระหนี้</div>" +
-                 "          </div>" +
-                 "      </div>" +
-                 "  </div>" +
-                 "  <div class='form-input-style'>" +
-                 "      <div class='form-input-content' id='detail-payment-input'>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='capital-label'>จำนวนเงินต้นคงเหลือยกมา</div>" +
-                 "              <div class='content-left' id='capital-input'><input class='inputbox textbox-numeric' type='text' id='capital' value='' style='width:100px' /></div>" +
-                 "              <div class='content-left' id='capital-unit-label'>บาท</div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='total-interest-label'>จำนวนเงินดอกเบี้ยครั้งนี้</div>" +
-                 "              <div class='content-left' id='total-interest-input'><input class='inputbox textbox-numeric' type='text' id='total-interest' value='' style='width:100px' /></div>" +
-                 "              <div class='content-left' id='total-interest-unit-label'>บาท</div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='total-accrued-interest-label'>จำนวนเงินดอกเบี้ยค้างจ่ายยกมา</div>" +
-                 "              <div class='content-left' id='total-accrued-interest-input'><input class='inputbox textbox-numeric' type='text' id='total-accrued-interest' value='' style='width:100px' /></div>" +
-                 "              <div class='content-left' id='total-accrued-interest-unit-label'>บาท</div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='total-payment-label'>รวมยอดเงินที่ต้องชำระครั้งนี้</div>" +
-                 "              <div class='content-left' id='total-payment-input'><input class='inputbox textbox-numeric' type='text' id='total-payment' value='' style='width:100px' /></div>" +
-                 "              <div class='content-left' id='total-payment-unit-label'>บาท</div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='pay-label'>จำนวนเงินที่ได้รับชำระ</div>" +
-                 "              <div class='content-left' id='pay-input'><input class='inputbox textbox-numeric' type='text' id='pay' onblur=Trim('pay');AddCommas('pay',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:100px' /></div>" +
-                 "              <div class='content-left' id='pay-unit-label'>บาท</div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='payment-date-label'>วันเดือนปีรับชำระหนี้</div>" +
-                 "              <div class='content-left' id='payment-date-input'><input class='inputbox calendar' type='text' id='payment-date' readonly value='' /></div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='channel-label'>จ่ายชำระด้วย</div>" +
-                 "              <div class='content-left' id='channel-input'>" +
-                 "                  <div>" +
-                 "                      <div class='content-left' id='pay-channel1-input'><input class='radio' type='radio' name='pay-channel' value='1' /></div>" +
-                 "                      <div class='content-left' id='pay-channel1-label'>" + eCPUtil._payChannel[0] + "</div>" +
-                 "                  </div>" +
-                 "                  <div class='clear'></div>" +
-                 "                  <div>" +
-                 "                      <div class='content-left' id='pay-channel2-input'><input class='radio' type='radio' name='pay-channel' value='2' /></div>" +
-                 "                      <div class='content-left' id='pay-channel2-label'>" + eCPUtil._payChannel[1] + "</div>" +
-                 "                  </div>" +
-                 "                  <div class='clear'></div>" +
-                 "                  <div>" +
-                 "                      <div class='content-left' id='pay-channel3-input'><input class='radio' type='radio' name='pay-channel' value='3' /></div>" +
-                 "                      <div class='content-left' id='pay-channel3-label'>" + eCPUtil._payChannel[2] + "</div>" +
-                 "                  </div>" +
-                 "                  <div class='clear'></div>" +
-                 "              </div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "      </div>" +
-                 "  </div>" +
-                 "</div>" +
-                 "<div class='clear'></div>" +
-                 "<div>" +
-                 "  <div class='form-label-discription-style clear-bottom'>" +
-                 "      <div id='detail-receipt-label'>" +
-                 "          <div class='form-label-style'>รายละเอียดใบเสร็จ</div>" +
-                 "          <div class='form-discription-style'>" +
-                 "              <div class='form-discription-line1-style'>กรุณาใส่รายละเอียดใบเสร็จ</div>" +
-                 "          </div>" +
-                 "      </div>" +
-                 "  </div>" +
-                 "  <div class='form-input-style clear-bottom'>" +
-                 "      <div class='form-input-content' id='detail-receipt-input'>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='receipt-no-label'>เลขที่ใบเสร็จ</div>" +
-                 "              <div class='content-left' id='receipt-no-input'><input class='inputbox' type='text' id='receipt-no' onblur=Trim('receipt-no'); value='' style='width:190px' /></div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='receipt-book-no-label'>เล่มที่</div>" +
-                 "              <div class='content-left' id='receipt-book-no-input'><input class='inputbox' type='text' id='receipt-book-no' onblur=Trim('receipt-book-no'); value='' style='width:190px' /></div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='receipt-date-label'>ลงวันที่</div>" +
-                 "              <div class='content-left' id='receipt-date-input'><input class='inputbox calendar' type='text' id='receipt-date' readonly value='' /></div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='receipt-send-no-label'>เลขที่ใบนำส่ง</div>" +
-                 "              <div class='content-left' id='receipt-send-no-input'><input class='inputbox' type='text' id='receipt-send-no' onblur=Trim('receipt-send-no'); value='' style='width:190px' /></div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='receipt-fund-label'>เข้ากองทุน</div>" +
-                 "              <div class='content-left' id='receipt-fund-input'><input class='inputbox' type='text' id='receipt-fund' onblur=Trim('receipt-fund'); value='' style='width:280px' /></div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "          <div>" +
-                 "              <div class='content-left' id='receipt-copy-label'>สำเนาใบเสร็จรับเงิน</div>" +
-                 "              <div class='content-left' id='receipt-copy-input'>" +
-                 "                  <input type='hidden' id='receipt-copy' value=''>" +
-                 "                  <div class='uploadfile-container'>" +
-                 "                      <img class='preloading-inline hidden' src='Image/PreloadingInline.gif' />" +
-                 "                      <form class='uploadfile-form' method='post' enctype='multipart/form-data'>" +
-                 "                          <div class='uploadfile-button browse'>" +
-                 "                              <span><a class='text-underline' href='javascript:void(0)'>เลือกเอกสาร<input type='file' id='receipt-copy-file' /></a></span>" +
-                 "                          </div>" +
-                 "                      </form>" +
-                 "                      <div class='form-discription-style'>" +
-                 "                          <div class='form-discription-line1-style'>( เฉพาะไฟล์นามสกุล .pdf )</div>" +
-                 "                      </div>" +
-                 "                  </div>" +
-                 "                  <div id='receipt-copy-preview-container'>" +
-                 "                      <canvas class='hidden' id='receipt-copy-preview'></canvas>" +
-                 "                      <div class='hidden' id='receipt-copy-nopreview'>ไม่สามารถแสดงตัวอย่างเอกสาร</div>" +
-                 "                      <div class='hidden' id='receipt-copy-linkpreview'>" +
-                 "                          <a class='text-underline' href='javascript:void(0)'>ดูเอกสาร</a>" +
-                 "                          <form id='download-receiptcopy-form' action='FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
-                 "                              <input type='hidden' id='action' name='action' value='download' />" +
-                 "                              <input type='hidden' id='filename' name='filename' value='ReceiptCopy' />" +
-                 "                              <input type='hidden' id='file' name='file' value='' />" +
-                 "                           </form>" +
-                 "                          <iframe class='export-target' id='download-receiptcopy' name='download-receiptcopy'></iframe>" +
-                 "                      </div>" +
-                 "                  </div>" +
-                 "              </div>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "      </div>" +
-                 "  </div>" +
-                 "</div>" +
-                 "<div class='clear'></div>";
+        switch (formatPayment) {
+            case "1":
+                formatPaymentName = "full";
+                break;
+            case "2":
+                formatPaymentName = "pay";
+                break;
+        }
 
-        return _html;
+        string userid = eCPUtil.GetUserID();
+        string[,] user = eCPDB.ListDetailCPTabUser(userid, "", "", "");
+        lawyerFullname = user[0, 3];
+        lawyerPhoneNumber = user[0, 6];
+        lawyerMobileNumber = user[0, 7];
+        lawyerEmail = user[0, 8];
+
+        html += "<div class='box3'></div>" +
+                "<div id='format-payment-" + formatPaymentName + "-repay'>" +
+                "   <input type='hidden' id='pay-channel-index-hidden' value=''>" +
+                "   <input type='hidden' id='cheque-no-hidden' value=''>" +
+                "   <input type='hidden' id='cheque-bank-hidden' value=''>" +
+                "   <input type='hidden' id='cheque-bank-branch-hidden' value=''>" +
+                "   <input type='hidden' id='cheque-date-hidden' value=''>" +
+                "   <input type='hidden' id='cash-bank-hidden' value=''>" +
+                "   <input type='hidden' id='cash-bank-branch-hidden' value=''>" +
+                "   <input type='hidden' id='cash-bank-account-hidden' value=''>" +
+                "   <input type='hidden' id='cash-bank-account-no-hidden' value=''>" +
+                "   <input type='hidden' id='cash-bank-date-hidden' value=''>" +
+                "   <input type='hidden' id='lawyer-fullname-hidden' value='" + lawyerFullname + "' />" +
+                "   <input type='hidden' id='lawyer-phonenumber-hidden' value='" + lawyerPhoneNumber + "' />" +
+                "   <input type='hidden' id='lawyer-mobilenumber-hidden' value='" + lawyerMobileNumber + "' />" +
+                "   <input type='hidden' id='lawyer-email-hidden' value='" + lawyerEmail + "' />" +
+                "   <div class='form-label-discription-style'>" +
+                "       <div id='detail-payment-label'>" +
+                "           <div class='form-label-style'>รายละเอียดการชำระหนี้</div>" +
+                "           <div class='form-discription-style'>" +
+                "               <div class='form-discription-line1-style'>กรุณาใส่รายละเอียดการชำระหนี้</div>" +
+                "           </div>" +
+                "       </div>" +
+                "   </div>" +
+                "   <div class='form-input-style'>" +
+                "       <div class='form-input-content' id='detail-payment-input'>" +
+                "           <div>" +
+                "               <div class='content-left' id='capital-label'>จำนวนเงินต้นคงเหลือที่ยกมา</div>" +
+                "               <div class='content-left' id='capital-input'><input class='inputbox textbox-numeric' type='text' id='capital' value='' style='width:110px' /></div>" +
+                "               <div class='content-left' id='capital-unit-label'>บาท</div>" +
+                "           </div>" +
+                "           <div class='clear'></div>";
+
+        if (formatPayment.Equals("1")) {
+            html += "       <div>" +
+                    "           <div class='content-left' id='total-payment-label'>จำนวนเงินที่ชำระ</div>" +
+                    "           <div class='content-left' id='total-payment-input'><input class='inputbox textbox-numeric' type='text' id='total-payment' onblur=Trim('total-payment');AddCommas('total-payment',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='total-payment-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='total-interest-overpayment-label'>จำนวนเงินที่หักชำระดอกเบี้ยผิดนัด</div>" +
+                    "           <div class='content-left' id='total-interest-overpayment-input'><input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment' onblur=Trim('total-interest-overpayment');AddCommas('total-interest-overpayment',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='total-interest-overpayment-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='pay-label'>จำนวนเงินที่หักชำระเงินต้น</div>" +
+                    "           <div class='content-left' id='pay-input'><input class='inputbox textbox-numeric' type='text' id='pay' onblur=Trim('pay');AddCommas('pay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='pay-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='overpay-label'>จำนวนเงินส่วนที่ชำระเกิน</div>" +
+                    "           <div class='content-left' id='overpay-input'><input class='inputbox textbox-numeric' type='text' id='overpay' onblur=Trim('overpay');AddCommas('overpay',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='overpay-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='remain-capital-label'>จำนวนเงินต้นคงเหลือ</div>" +
+                    "           <div class='content-left' id='remain-capital-input'><input class='inputbox textbox-numeric' type='text' id='remain-capital' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='remain-capital-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>";
+        }
+
+        if (formatPayment.Equals("2")) {
+            html += "       <div>" +
+                    "           <div class='content-left' id='total-accrued-interest-label'>จำนวนดอกเบี้ยคงค้างที่ยกมา</div>" +
+                    "           <div class='content-left' id='total-accrued-interest-input'><input class='inputbox textbox-numeric' type='text' id='total-accrued-interest' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='total-accrued-interest-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='pay-label'>จำนวนเงินที่ชำระในงวดนี้</div>" +
+                    "           <div class='content-left' id='pay-input'><input class='inputbox textbox-numeric' type='text' id='pay' onblur=Trim('pay');AddCommas('pay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='pay-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div id='interest-payment'>" +
+                    "           <div class='content-left' id='interest-payment-label'>จำนวนเงินที่หักชำระดอกเบี้ย</div>" +
+                    "           <div class='content-left' id='interest-payment-input'>" +
+                    "               <div>" +
+                    "                   <div class='content-left label' id='total-interest-overpayment-before-label'>ดอกเบี้ยผิดนัดก่อนผ่อนชำระ ( ถ้ามี )</div>" +
+                    "                   <div class='content-left input' id='total-interest-overpayment-before-input'><input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment-before' onblur=Trim('total-interest-overpayment-before');AddCommas('total-interest-overpayment-before',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "                   <div class='content-left unit' id='total-interest-overpayment-before-unit-label'>บาท</div>" +
+                    "               </div>" +
+                    "               <div class='clear'></div>" +
+                    "               <div>" +
+                    "                   <div class='content-left label' id='total-interest-pay-repay-label'>ดอกเบี้ยผ่อนชำระในงวดนี้</div>" +
+                    "                   <div class='content-left input' id='total-interest-pay-repay-input'><input class='inputbox textbox-numeric' type='text' id='total-interest-pay-repay' onblur=Trim('total-interest-pay-repay');AddCommas('total-interest-pay-repay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "                   <div class='content-left unit' id='total-interest-pay-repay-unit-label'>บาท</div>" +
+                    "               </div>" +
+                    "               <div class='clear'></div>" +
+                    "               <div>" +
+                    "                   <div class='content-left label' id='total-interest-overpayment-label'>ดอกเบี้ยผิดนัดผ่อนชำระ ( ถ้ามี )</div>" +
+                    "                   <div class='content-left input' id='total-interest-overpayment-input'><input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment' onblur=Trim('total-interest-overpayment');AddCommas('total-interest-overpayment',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "                   <div class='content-left unit' id='total-interest-overpayment-unit-label'>บาท</div>" +
+                    "               </div>" +
+                    "               <div class='clear'></div>" +
+                    "           </div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div style='margin-top: 10px'>" +
+                    "           <div class='content-left' id='pay-capital-label'>จำนวนเงินที่หักชำระเงินต้นในงวดนี้</div>" +
+                    "           <div class='content-left' id='pay-capital-input'><input class='inputbox textbox-numeric' type='text' id='pay-capital' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='pay-capital-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='remain-capital-label'>จำนวนเงินต้นคงเหลือ</div>" +
+                    "           <div class='content-left' id='remain-capital-input'><input class='inputbox textbox-numeric' type='text' id='remain-capital' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='remain-capital-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>" +
+                    "       <div>" +
+                    "           <div class='content-left' id='remain-accrued-interest-label'>จำนวนดอกเบี้ยคงค้าง ( ถ้ามี )</div>" +
+                    "           <div class='content-left' id='remain-accrued-interest-input'><input class='inputbox textbox-numeric' type='text' id='remain-accrued-interest' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='remain-accrued-interest-unit-label'>บาท</div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>";
+        }
+
+        /*
+        "           <div>" +
+        "               <div class='content-left' id='capital-label'>จำนวนเงินต้นคงเหลือยกมา</div>" +
+        "               <div class='content-left' id='capital-input'><input class='inputbox textbox-numeric' type='text' id='capital' value='' style='width:100px' /></div>" +
+        "               <div class='content-left' id='capital-unit-label'>บาท</div>" +
+        "           </div>" +
+        "           <div class='clear'></div>" +
+        "           <div>" +
+        "               <div class='content-left' id='total-interest-label'>จำนวนเงินดอกเบี้ยครั้งนี้</div>" +
+        "               <div class='content-left' id='total-interest-input'><input class='inputbox textbox-numeric' type='text' id='total-interest' value='' style='width:100px' /></div>" +
+        "               <div class='content-left' id='total-interest-unit-label'>บาท</div>" +
+        "           </div>" +
+        "           <div class='clear'></div>" +
+        "           <div>" +
+        "               <div class='content-left' id='total-accrued-interest-label'>จำนวนเงินดอกเบี้ยค้างจ่ายยกมา</div>" +
+        "               <div class='content-left' id='total-accrued-interest-input'><input class='inputbox textbox-numeric' type='text' id='total-accrued-interest' value='' style='width:100px' /></div>" +
+        "               <div class='content-left' id='total-accrued-interest-unit-label'>บาท</div>" +
+        "           </div>" +
+        "           <div class='clear'></div>" +
+        "           <div>" +
+        "               <div class='content-left' id='total-payment-label'>รวมยอดเงินที่ต้องชำระครั้งนี้</div>" +
+        "               <div class='content-left' id='total-payment-input'><input class='inputbox textbox-numeric' type='text' id='total-payment' value='' style='width:100px' /></div>" +
+        "               <div class='content-left' id='total-payment-unit-label'>บาท</div>" +
+        "           </div>" +
+        "           <div class='clear'></div>" +
+        "           <div>" +
+        "               <div class='content-left' id='pay-label'>จำนวนเงินที่ได้รับชำระ</div>" +
+        "               <div class='content-left' id='pay-input'><input class='inputbox textbox-numeric' type='text' id='pay' onblur=Trim('pay');AddCommas('pay',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:100px' /></div>" +
+        "               <div class='content-left' id='pay-unit-label'>บาท</div>" +
+        "           </div>" +
+        "           <div class='clear'></div>" +
+        */
+
+        html += "           <div>" +
+                "               <div class='content-left' id='payment-date-label'>วันเดือนปีรับชำระหนี้</div>" +
+                "               <div class='content-left' id='payment-date-input'><input class='inputbox calendar' type='text' id='payment-date' readonly value='' /></div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "           <div>" +
+                "               <div class='content-left' id='channel-label'>จ่ายชำระด้วย</div>" +
+                "               <div class='content-left' id='channel-input'>" +
+                "                   <div>" +
+                "                       <div class='content-left' id='pay-channel1-input'><input class='radio' type='radio' name='pay-channel' value='1' /></div>" +
+                "                       <div class='content-left' id='pay-channel1-label'>" + eCPUtil._payChannel[0] + "</div>" +
+                "                   </div>" +
+                "                   <div class='clear'></div>" +
+                "                   <div>" +
+                "                       <div class='content-left' id='pay-channel2-input'><input class='radio' type='radio' name='pay-channel' value='2' /></div>" +
+                "                       <div class='content-left' id='pay-channel2-label'>" + eCPUtil._payChannel[1] + "</div>" +
+                "                   </div>" +
+                "                   <div class='clear'></div>" +
+                "                   <div>" +
+                "                       <div class='content-left' id='pay-channel3-input'><input class='radio' type='radio' name='pay-channel' value='3' /></div>" +
+                "                       <div class='content-left' id='pay-channel3-label'>" + eCPUtil._payChannel[2] + "</div>" +
+                "                   </div>" +
+                "                   <div class='clear'></div>" +
+                "               </div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "       </div>" +
+                "   </div>" +
+                "</div>" +
+                "<div class='clear'></div>" +
+                "<div>" +
+                "   <div class='form-label-discription-style clear-bottom'>" +
+                "       <div id='detail-receipt-label'>" +
+                "           <div class='form-label-style'>รายละเอียดใบเสร็จ</div>" +
+                "           <div class='form-discription-style'>" +
+                "               <div class='form-discription-line1-style'>กรุณาใส่รายละเอียดใบเสร็จ</div>" +
+                "           </div>" +
+                "       </div>" +
+                "   </div>" +
+                "   <div class='form-input-style clear-bottom'>" +
+                "       <div class='form-input-content' id='detail-receipt-input'>" +
+                "           <div>" +
+                "               <div class='content-left' id='receipt-no-label'>เลขที่ใบเสร็จ</div>" +
+                "               <div class='content-left' id='receipt-no-input'><input class='inputbox' type='text' id='receipt-no' onblur=Trim('receipt-no'); value='' style='width:190px' /></div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "           <div>" +
+                "               <div class='content-left' id='receipt-book-no-label'>เล่มที่</div>" +
+                "               <div class='content-left' id='receipt-book-no-input'><input class='inputbox' type='text' id='receipt-book-no' onblur=Trim('receipt-book-no'); value='' style='width:190px' /></div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "           <div>" +
+                "               <div class='content-left' id='receipt-date-label'>ลงวันที่</div>" +
+                "               <div class='content-left' id='receipt-date-input'><input class='inputbox calendar' type='text' id='receipt-date' readonly value='' /></div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "           <div>" +
+                "               <div class='content-left' id='receipt-send-no-label'>เลขที่ใบนำส่ง</div>" +
+                "               <div class='content-left' id='receipt-send-no-input'><input class='inputbox' type='text' id='receipt-send-no' onblur=Trim('receipt-send-no'); value='' style='width:190px' /></div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "           <div>" +
+                "               <div class='content-left' id='receipt-fund-label'>เข้ากองทุน</div>" +
+                "               <div class='content-left' id='receipt-fund-input'><input class='inputbox' type='text' id='receipt-fund' onblur=Trim('receipt-fund'); value='' style='width:280px' /></div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "           <div>" +
+                "               <div class='content-left' id='receipt-copy-label'>สำเนาใบเสร็จรับเงิน</div>" +
+                "               <div class='content-left' id='receipt-copy-input'>" +
+                "                   <input type='hidden' id='receipt-copy' value=''>" +
+                "                   <div class='uploadfile-container'>" +
+                "                       <img class='preloading-inline hidden' src='Image/PreloadingInline.gif' />" +
+                "                       <form class='uploadfile-form' method='post' enctype='multipart/form-data'>" +
+                "                           <div class='uploadfile-button browse'>" +
+                "                               <span><a class='text-underline' href='javascript:void(0)'>เลือกเอกสาร<input type='file' id='receipt-copy-file' /></a></span>" +
+                "                           </div>" +
+                "                       </form>" +
+                "                       <div class='form-discription-style'>" +
+                "                           <div class='form-discription-line1-style'>( เฉพาะไฟล์นามสกุล .pdf )</div>" +
+                "                       </div>" +
+                "                   </div>" +
+                "                   <div id='receipt-copy-preview-container'>" +
+                "                       <canvas class='hidden' id='receipt-copy-preview'></canvas>" +
+                "                       <div class='hidden' id='receipt-copy-nopreview'>ไม่สามารถแสดงตัวอย่างเอกสาร</div>" +
+                "                       <div class='hidden' id='receipt-copy-linkpreview'>" +
+                "                           <a class='text-underline' href='javascript:void(0)'>ดูเอกสาร</a>" +
+                "                           <form id='download-receiptcopy-form' action='FileProcess.aspx' method='POST' target='download-receiptcopy'>" +
+                "                               <input type='hidden' id='action' name='action' value='download' />" +
+                "                               <input type='hidden' id='filename' name='filename' value='ReceiptCopy' />" +
+                "                               <input type='hidden' id='file' name='file' value='' />" +
+                "                           </form>" +
+                "                           <iframe class='export-target' id='download-receiptcopy' name='download-receiptcopy'></iframe>" +
+                "                       </div>" +
+                "                   </div>" +
+                "               </div>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +
+                "       </div>" +
+                "   </div>" +
+                "</div>" +
+                "<div class='clear'></div>";
+
+        return html;
     }
 
-    private static string AddCpTransPaymentPayRepay(string[,] _data) {
+    private static string AddCpTransPaymentPayRepay(string[,] data) {
         string _html = String.Empty;
+        string totalPenaltyDefault = data[0, 4];
+        string statusPayment = data[0, 7];
+        string remainDefault = data[0, 27];
+        string capitalDefault = statusPayment.Equals("1") ? totalPenaltyDefault : remainDefault;
+        string totalAccruedInterestDefault = statusPayment.Equals("1") ? "0.00" : data[0, 26];
+        string totalInterestOverpaymentBeforeDefault = "0.00";
+        string totalInterestPayRepayDefault = "0.00";
+        string totalInterestOverpaymentDefault = "0.00";        
+        string totalPaymentDefault = (double.Parse(capitalDefault) + double.Parse(totalAccruedInterestDefault)).ToString();
+
         /*
         string _totalPenaltyDefault = _data[0, 5];
         */
-        string _totalPenaltyDefault = _data[0, 4];
-        string _statusPayment = _data[0, 7];
-        string _replyDateDefault = _data[0, 24];
-        string _paymentDateDefault = _data[0, 25];
-        string _remainDefault = _data[0, 27];
-        string[] _repayDate;
-        string _repayDateStartDefault = String.Empty;
-        string _repayDateEndDefault = String.Empty;
-        string _overpaymentDateStartDefault = String.Empty;
-        string _overpaymentDateEndDefault = String.Empty;
-        string _overpaymentInterestDefault = String.Empty;
-        string _payRepayDateStartDefault = String.Empty;
-        string _payRepayDateEndDefault = String.Empty;
-        string _payRepayInterestDefault = String.Empty;
-        string _capitalDefault = _statusPayment.Equals("1") ? _totalPenaltyDefault : _remainDefault;
-        string _totalInterestDefault = String.Empty;
-        string _totalAccruedInterestDefault = _statusPayment.Equals("1") ? "0.00" : _data[0, 26];
-        string _totalPaymentDefault = String.Empty;
-        double[] _overpayment;
-        double _overpaymentYear = 0;
-        double _overpaymentDay = 0;
-        double[] _payRepay;
-        double _payRepayYear = 0;
-        double _payRepayDay = 0;
-        string[] _contractInterest;
+        /*
+        string totalPenaltyDefault = data[0, 4];
+        string statusPayment = data[0, 7];
+        string replyDateDefault = data[0, 24];
+        string paymentDateDefault = data[0, 25];
+        string remainDefault = data[0, 27];
+        string[] repayDate;
+        string repayDateStartDefault = String.Empty;
+        string repayDateEndDefault = String.Empty;
+        string overpaymentDateStartDefault = String.Empty;
+        string overpaymentDateEndDefault = String.Empty;
+        string overpaymentInterestDefault = String.Empty;
+        string payRepayDateStartDefault = String.Empty;
+        string payRepayDateEndDefault = String.Empty;
+        string payRepayInterestDefault = String.Empty;
+        string capitalDefault = statusPayment.Equals("1") ? totalPenaltyDefault : remainDefault;
+        string totalInterestDefault = String.Empty;
+        string totalAccruedInterestDefault = statusPayment.Equals("1") ? "0.00" : data[0, 26];
+        string totalPaymentDefault = String.Empty;
+        double[] overpayment;
+        double overpaymentYear = 0;
+        double overpaymentDay = 0;
+        double[] payRepay;
+        double payRepayYear = 0;
+        double payRepayDay = 0;
+        string[] contractInterest;
                
-        IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
-        DateTime _dateA;
-        DateTime _dateB;
+        IFormatProvider provider = new System.Globalization.CultureInfo("th-TH");
+        DateTime dateA;
+        DateTime dateB;
 
-        if (_statusPayment.Equals("1")) {
-            _repayDate = eCPUtil.RepayDate(_replyDateDefault);
-            _repayDateStartDefault = !String.IsNullOrEmpty(_repayDate[0]) ? _repayDate[0] : String.Empty;
-            _repayDateEndDefault = !String.IsNullOrEmpty(_repayDate[1]) ? _repayDate[1] : String.Empty;
-            _overpaymentDateStartDefault = !String.IsNullOrEmpty(_repayDate[2]) ? _repayDate[2] : String.Empty;
-            _overpaymentDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
+        if (statusPayment.Equals("1")) {
+            repayDate = eCPUtil.RepayDate(replyDateDefault);
+            repayDateStartDefault = !String.IsNullOrEmpty(repayDate[0]) ? repayDate[0] : String.Empty;
+            repayDateEndDefault = !String.IsNullOrEmpty(repayDate[1]) ? repayDate[1] : String.Empty;
+            overpaymentDateStartDefault = !String.IsNullOrEmpty(repayDate[2]) ? repayDate[2] : String.Empty;
+            overpaymentDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
             
-            _dateA = DateTime.Parse(_overpaymentDateStartDefault, _provider);
-            _dateB = DateTime.Parse(_overpaymentDateEndDefault, _provider);
+            dateA = DateTime.Parse(overpaymentDateStartDefault, provider);
+            dateB = DateTime.Parse(overpaymentDateEndDefault, provider);
 
-            _overpayment = Util.CalcDate(_dateA, _dateB);
-            _overpaymentYear = _overpayment[4];
-            _overpaymentDay = _overpayment[5];
+            overpayment = Util.CalcDate(dateA, dateB);
+            overpaymentYear = overpayment[4];
+            overpaymentDay = overpayment[5];
         }
 
-        if (_statusPayment.Equals("2") || (_overpaymentYear + _overpaymentDay) <= 0) {
-            _payRepayDateStartDefault = !String.IsNullOrEmpty(_paymentDateDefault) ? Util.ConvertDateTH(DateTime.Parse(_paymentDateDefault, _provider).AddDays(1).ToString()) : Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
-            _payRepayDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
+        if (statusPayment.Equals("2") || (overpaymentYear + overpaymentDay) <= 0) {
+            payRepayDateStartDefault = !String.IsNullOrEmpty(paymentDateDefault) ? Util.ConvertDateTH(DateTime.Parse(paymentDateDefault, provider).AddDays(1).ToString()) : Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
+            payRepayDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
 
-            _dateA = DateTime.Parse(_payRepayDateStartDefault, _provider);
-            _dateB = DateTime.Parse(_payRepayDateEndDefault, _provider);
+            dateA = DateTime.Parse(payRepayDateStartDefault, provider);
+            dateB = DateTime.Parse(payRepayDateEndDefault, provider);
 
-            if (_dateA > _dateB) {
-                _payRepayDateEndDefault = Util.ConvertDateTH(_dateA.ToString());
-                _dateB = _dateA;
+            if (dateA > dateB) {
+                payRepayDateEndDefault = Util.ConvertDateTH(dateA.ToString());
+                dateB = dateA;
             }
 
-            _payRepay = Util.CalcDate(_dateA, _dateB);
-            _payRepayYear = _payRepay[4];
-            _payRepayDay = _payRepay[5];
+            payRepay = Util.CalcDate(dateA, dateB);
+            payRepayYear = payRepay[4];
+            payRepayDay = payRepay[5];
         }
               
-        _contractInterest = eCPUtil.GetContractInterest();
-        _overpaymentInterestDefault = double.Parse(_contractInterest[1]).ToString("#,##0.00");
-        _payRepayInterestDefault = double.Parse(_contractInterest[0]).ToString("#,##0.00");
-        _paymentDateDefault = (_overpaymentYear + _overpaymentDay) > 0 ? _overpaymentDateEndDefault : _payRepayDateEndDefault;
-
+        contractInterest = eCPUtil.GetContractInterest();
+        overpaymentInterestDefault = double.Parse(contractInterest[1]).ToString("#,##0.00");
+        payRepayInterestDefault = double.Parse(contractInterest[0]).ToString("#,##0.00");
+        paymentDateDefault = (overpaymentYear + overpaymentDay) > 0 ? overpaymentDateEndDefault : payRepayDateEndDefault;
+        */
         _html += "<div class='form-content' id='add-cp-trans-payment'>" +
                  "  <div id='add-trans-payment'>" +
-                 "      <input type='hidden' id='statuspayment-hidden' value='" + _statusPayment + "' />" +
-                 "      <input type='hidden' id='repay-date-end-hidden' value='" + _repayDateEndDefault + "' />" +
-                 "      <input type='hidden' id='overpayment-hidden' value='" + (_overpaymentYear + _overpaymentDay) + "' />" +
-                 "      <input type='hidden' id='overpayment-date-start-hidden' value='" + _overpaymentDateStartDefault + "' />" +
-                 "      <input type='hidden' id='overpayment-date-end-hidden' value='" + _overpaymentDateEndDefault + "' />" +
-                 "      <input type='hidden' id='overpayment-year-hidden' value='" + _overpaymentYear + "' />" +
-                 "      <input type='hidden' id='overpayment-day-hidden' value='" + _overpaymentDay + "' />" +
-                 "      <input type='hidden' id='overpayment-interest-hidden' value='" + _overpaymentInterestDefault + "' />" +
-                 "      <input type='hidden' id='pay-repay-date-start-hidden' value='" + _payRepayDateStartDefault + "' />" +
-                 "      <input type='hidden' id='pay-repay-date-end-hidden' value='" + _payRepayDateEndDefault + "' />" +
-                 "      <input type='hidden' id='pay-repay-year-hidden' value='" + _payRepayYear + "' />" +
-                 "      <input type='hidden' id='pay-repay-day-hidden' value='" + _payRepayDay + "' />" +
-                 "      <input type='hidden' id='pay-repay-interest-hidden' value='" + _payRepayInterestDefault + "' />" +
-                 "      <input type='hidden' id='capital-hidden' value='" + double.Parse(_capitalDefault).ToString("#,##0.00") + "' />" +
-                 "      <input type='hidden' id='total-interest-hidden' value='" + _totalInterestDefault + "' />" +
-                 "      <input type='hidden' id='total-accrued-interest-hidden' value='" + double.Parse(_totalAccruedInterestDefault).ToString("#,##0.00") + "' />" +
-                 "      <input type='hidden' id='total-payment-hidden' value='" + _totalPaymentDefault + "' />" +
+                 "      <input type='hidden' id='statuspayment-hidden' value='" + statusPayment + "' />" +
+                 /*
+                 "      <input type='hidden' id='repay-date-end-hidden' value='" + repayDateEndDefault + "' />" +
+                 "      <input type='hidden' id='overpayment-hidden' value='" + (overpaymentYear + overpaymentDay) + "' />" +
+                 "      <input type='hidden' id='overpayment-date-start-hidden' value='" + overpaymentDateStartDefault + "' />" +
+                 "      <input type='hidden' id='overpayment-date-end-hidden' value='" + overpaymentDateEndDefault + "' />" +
+                 "      <input type='hidden' id='overpayment-year-hidden' value='" + overpaymentYear + "' />" +
+                 "      <input type='hidden' id='overpayment-day-hidden' value='" + overpaymentDay + "' />" +
+                 "      <input type='hidden' id='overpayment-interest-hidden' value='" + overpaymentInterestDefault + "' />" +
+                 "      <input type='hidden' id='pay-repay-date-start-hidden' value='" + payRepayDateStartDefault + "' />" +
+                 "      <input type='hidden' id='pay-repay-date-end-hidden' value='" + payRepayDateEndDefault + "' />" +
+                 "      <input type='hidden' id='pay-repay-year-hidden' value='" + payRepayYear + "' />" +
+                 "      <input type='hidden' id='pay-repay-day-hidden' value='" + payRepayDay + "' />" +
+                 "      <input type='hidden' id='pay-repay-interest-hidden' value='" + payRepayInterestDefault + "' />" +
+                 "      <input type='hidden' id='subtotal-penalty-hidden' value='" + double.Parse(totalPenaltyDefault).ToString("#,##0.00") + "' />" +
+                 */
+                 "      <input type='hidden' id='capital-hidden' value='" + double.Parse(capitalDefault).ToString("#,##0.00") + "' />" +
+                 "      <input type='hidden' id='total-payment-hidden' value='" + double.Parse(totalPaymentDefault).ToString("#,##0.00") + "' />" +
+                 "      <input type='hidden' id='total-accrued-interest-hidden' value='" + double.Parse(totalAccruedInterestDefault).ToString("#,##0.00") + "' />" +
+                 "      <input type='hidden' id='total-interest-overpayment-before-hidden' value='" + totalInterestOverpaymentBeforeDefault + "' />" +
+                 "      <input type='hidden' id='total-interest-pay-repay-hidden' value='" + totalInterestPayRepayDefault + "' />" +
+                 "      <input type='hidden' id='total-interest-overpayment-hidden' value='" + totalInterestOverpaymentDefault + "' />" +                                  
+                 "      <input type='hidden' id='payment-date-hidden' value='" + Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")) + "' />" +
+                 /*
                  "      <input type='hidden' id='payment-date-hidden' value='" + _paymentDateDefault + "' />" +
+                 */
                  "      <input type='hidden' id='pay-repay-least-hidden' value='" + eCPUtil.PAY_REPAY_LEAST.ToString("#,##0") + "' />" +
 
-                        DetailPenaltyAndFormatPayment(_data, false) +
+                        DetailPenaltyAndFormatPayment(data, false) +
+                        /*
                         FrmOverpayment("2", _statusPayment, _repayDateStartDefault, _repayDateEndDefault, _overpaymentYear, _overpaymentDay) +
-                        FrmPayment() +
+                        */
+                        FrmPayment("2") +
 
                  "  </div>" +
                  "  <div class='button'>" +
                  "      <div class='button-style1'>" +
                  "          <ul>" +
+                 /*
                  "              <li id='button-style11'><a href='javascript:void(0)' onclick='ChkBalanceCPTransPaymentPayRepay()'>ตรวจสอบยอดคงเหลือ</a></li>" +
+                 */
                  "              <li><a href='javascript:void(0)' onclick='ConfirmActionCPTransPaymentPayRepay()'>บันทึก</a></li>" +
                  "              <li><a href='javascript:void(0)' onclick=ResetFrmAddCPTransPayment()>ล้าง</a></li>" +
                  "              <li><a href='javascript:void(0)' onclick=CloseFrm(false,'add-cp-trans-payment')>ปิด</a></li>" +
@@ -598,79 +749,93 @@ public class eCPDataPayment {
         return _html;
     }
 
-    private static string AddCpTransPaymentFullRepay(string[,] _data) {
-        string _html = String.Empty;
+    private static string AddCpTransPaymentFullRepay(string[,] data) {
+        string html = String.Empty;
+        string totalPenaltyDefault = data[0, 4];
+        string statusPayment = data[0, 7];
+        string capitalDefault = totalPenaltyDefault;
+        string totalInterestOverpaymentDefault = "0.00";
+        string totalPaymentDefault = capitalDefault;
         /*
         string _totalPenaltyDefault = _data[0, 5];
         */
-        string _totalPenaltyDefault = _data[0, 4];
-        string _statusPayment = _data[0, 7];
-        string _replyDateDefault = _data[0, 24];
-        string[] _repayDate = eCPUtil.RepayDate(_replyDateDefault);
-        string _repayDateStartDefault = !String.IsNullOrEmpty(_repayDate[0]) ? _repayDate[0] : String.Empty;
-        string _repayDateEndDefault = !String.IsNullOrEmpty(_repayDate[1]) ? _repayDate[1] : String.Empty;
-        string _overpaymentDateStartDefault = !String.IsNullOrEmpty(_repayDate[2]) ? _repayDate[2] : String.Empty;
-        string _overpaymentDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
-        string _overpaymentInterestDefault = String.Empty;
-        string _capitalDefault = String.Empty;
-        string _totalInterestDefault = String.Empty;
-        string _totalAccruedInterestDefault = String.Empty;
-        string _totalPaymentDefault = String.Empty;
-        double[] _overpayment;
-        double _overpaymentYear = 0;
-        double _overpaymentDay = 0;
-        string[] _contractInterest;
+        /*
+        string totalPenaltyDefault = data[0, 4];
+        string statusPayment = data[0, 7];
+        string replyDateDefault = data[0, 24];
+        string[] repayDate = eCPUtil.RepayDate(replyDateDefault);
+        string repayDateStartDefault = !String.IsNullOrEmpty(repayDate[0]) ? repayDate[0] : String.Empty;
+        string repayDateEndDefault = !String.IsNullOrEmpty(repayDate[1]) ? repayDate[1] : String.Empty;
+        string overpaymentDateStartDefault = !String.IsNullOrEmpty(repayDate[2]) ? repayDate[2] : String.Empty;
+        string overpaymentDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
+        string overpaymentInterestDefault = String.Empty;
+        string capitalDefault = String.Empty;
+        string totalInterestDefault = String.Empty;
+        string totalAccruedInterestDefault = String.Empty;
+        string totalPaymentDefault = String.Empty;        
+        double[] overpayment;
+        double overpaymentYear = 0;
+        double overpaymentDay = 0;
+        string[] contractInterest;        
 
-        IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
-        DateTime _dateA = DateTime.Parse(_overpaymentDateStartDefault, _provider);
-        DateTime _dateB = DateTime.Parse(_overpaymentDateEndDefault, _provider);
+        IFormatProvider provider = new System.Globalization.CultureInfo("th-TH");
+        DateTime dateA = DateTime.Parse(overpaymentDateStartDefault, provider);
+        DateTime dateB = DateTime.Parse(overpaymentDateEndDefault, provider);
 
-        _overpayment = Util.CalcDate(_dateA, _dateB);
-        _overpaymentYear = _overpayment[4];
-        _overpaymentDay = _overpayment[5];
-        _capitalDefault = _totalPenaltyDefault;
-        _totalInterestDefault = (_overpayment[4] + _overpayment[5]) > 0 ? _totalInterestDefault : "0.00";
-        _totalAccruedInterestDefault = "0.00";
-        _totalPaymentDefault = (_overpayment[4] + _overpayment[5]) > 0 ? _totalPaymentDefault : (double.Parse(_capitalDefault) + double.Parse(_totalInterestDefault) + double.Parse(_totalAccruedInterestDefault)).ToString("#,##0.00");
+        overpayment = Util.CalcDate(dateA, dateB);
+        overpaymentYear = overpayment[4];
+        overpaymentDay = overpayment[5];
+        capitalDefault = totalPenaltyDefault;
+        totalInterestDefault = (overpayment[4] + overpayment[5]) > 0 ? totalInterestDefault : "0.00";
+        totalAccruedInterestDefault = "0.00";
+        totalPaymentDefault = (overpayment[4] + overpayment[5]) > 0 ? totalPaymentDefault : (double.Parse(capitalDefault) + double.Parse(totalInterestDefault) + double.Parse(totalAccruedInterestDefault)).ToString("#,##0.00");
+        contractInterest = eCPUtil.GetContractInterest();
+        overpaymentInterestDefault = double.Parse(contractInterest[1]).ToString("#,##0.00");
+        */
 
-        _contractInterest = eCPUtil.GetContractInterest();
-        _overpaymentInterestDefault = double.Parse(_contractInterest[1]).ToString("#,##0.00");
-
-        _html += "<div class='form-content' id='add-cp-trans-payment'>" +
-                 "  <div id='add-trans-payment'>" +
-                 "      <input type='hidden' id='statuspayment-hidden' value='" + _statusPayment + "' />" +
-                 "      <input type='hidden' id='repay-date-end-hidden' value='" + _repayDateEndDefault + "' />" +
-                 "      <input type='hidden' id='overpayment-hidden' value='" + (_overpaymentYear + _overpaymentDay) + "' />" +
-                 "      <input type='hidden' id='overpayment-date-start-hidden' value='" + _overpaymentDateStartDefault + "' />" +
-                 "      <input type='hidden' id='overpayment-date-end-hidden' value='" + _overpaymentDateEndDefault + "' />" +
-                 "      <input type='hidden' id='overpayment-year-hidden' value='" + _overpaymentYear + "' />" +
-                 "      <input type='hidden' id='overpayment-day-hidden' value='" + _overpaymentDay + "' />" +
-                 "      <input type='hidden' id='overpayment-interest-hidden' value='" + _overpaymentInterestDefault + "' />" +
-                 "      <input type='hidden' id='subtotal-penalty-hidden' value='" + _totalPenaltyDefault + "' />" +
-                 "      <input type='hidden' id='capital-hidden' value='" + double.Parse(_capitalDefault).ToString("#,##0.00") + "' />" +
-                 "      <input type='hidden' id='total-interest-hidden' value='" + _totalInterestDefault + "' />" +
-                 "      <input type='hidden' id='total-accrued-interest-hidden' value='" + _totalAccruedInterestDefault + "' />" +
-                 "      <input type='hidden' id='total-payment-hidden' value='" + _totalPaymentDefault + "' />" +
-                 "      <input type='hidden' id='payment-date-hidden' value='" + Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")) + "' />" +
+        html += "<div class='form-content' id='add-cp-trans-payment'>" +
+                "   <div id='add-trans-payment'>" +
+                "       <input type='hidden' id='statuspayment-hidden' value='" + statusPayment + "' />" +                
+                /*
+                "       <input type='hidden' id='repay-date-end-hidden' value='" + repayDateEndDefault + "' />" +
+                "       <input type='hidden' id='overpayment-hidden' value='" + (overpaymentYear + overpaymentDay) + "' />" +
+                "       <input type='hidden' id='overpayment-date-start-hidden' value='" + overpaymentDateStartDefault + "' />" +
+                "       <input type='hidden' id='overpayment-date-end-hidden' value='" + overpaymentDateEndDefault + "' />" +
+                "       <input type='hidden' id='overpayment-year-hidden' value='" + overpaymentYear + "' />" +
+                "       <input type='hidden' id='overpayment-day-hidden' value='" + overpaymentDay + "' />" +
+                "       <input type='hidden' id='overpayment-interest-hidden' value='" + overpaymentInterestDefault + "' />" +
+                "       <input type='hidden' id='subtotal-penalty-hidden' value='" + double.Parse(totalPenaltyDefault).ToString("#,##0.00") + "' />" +
+                */
+                "       <input type='hidden' id='capital-hidden' value='" + double.Parse(capitalDefault).ToString("#,##0.00") + "' />" +
+                "       <input type='hidden' id='total-payment-hidden' value='" + double.Parse(totalPaymentDefault).ToString("#,##0.00") + "' />" +
+                "       <input type='hidden' id='total-interest-overpayment-hidden' value='" + totalInterestOverpaymentDefault + "' />" +
+                /*
+                "       <input type='hidden' id='total-accrued-interest-hidden' value='" + totalAccruedInterestDefault + "' />" +
+                */                
+                "       <input type='hidden' id='payment-date-hidden' value='" + Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd")) + "' />" +
                         
-                        DetailPenaltyAndFormatPayment(_data, false) +
+                        DetailPenaltyAndFormatPayment(data, false) +
+                        /*
                         FrmOverpayment("1", _statusPayment, _repayDateStartDefault, _repayDateEndDefault, _overpaymentYear, _overpaymentDay) +
-                        FrmPayment() +
+                        */
+                        FrmPayment("1") +
                  
-                 "  </div>" +
-                 "  <div class='button'>" +
-                 "      <div class='button-style1'>" +
-                 "          <ul>" +
-                 "              <li id='button-style11'><a href='javascript:void(0)' onclick='ChkBalanceCPTransPaymentFullRepay()'>ตรวจสอบยอดคงเหลือ</a></li>" +
-                 "              <li><a href='javascript:void(0)' onclick='ConfirmActionCPTransPaymentFullRepay()'>บันทึก</a></li>" +
-                 "              <li><a href='javascript:void(0)' onclick=ResetFrmAddCPTransPayment()>ล้าง</a></li>" +
-                 "              <li><a href='javascript:void(0)' onclick=CloseFrm(false,'add-cp-trans-payment')>ปิด</a></li>" +
-                 "          </ul>" +
-                 "      </div>" +
-                 "  </div>" +
-                 "</div>";
+                "   </div>" +
+                "   <div class='button'>" +
+                "       <div class='button-style1'>" +
+                "           <ul>" +
+                /*
+                "               <li id='button-style11'><a href='javascript:void(0)' onclick='ChkBalanceCPTransPaymentFullRepay()'>ตรวจสอบยอดคงเหลือ</a></li>" +
+                */
+                "               <li><a href='javascript:void(0)' onclick='ConfirmActionCPTransPaymentFullRepay()'>บันทึก</a></li>" +
+                "               <li><a href='javascript:void(0)' onclick=ResetFrmAddCPTransPayment()>ล้าง</a></li>" +
+                "               <li><a href='javascript:void(0)' onclick=CloseFrm(false,'add-cp-trans-payment')>ปิด</a></li>" +
+                "           </ul>" +
+                "       </div>" +
+                "   </div>" +
+                "</div>";
 
-        return _html;
+        return html;
     }
 
     public static string DetailTransPayment(string _cp2id) {
@@ -680,19 +845,23 @@ public class eCPDataPayment {
         _data = eCPDB.ListDetailTransPayment(_cp2id);
 
         if (_data.GetLength(0) > 0) {
+            string _formatPayment = _data[0, 43];
+            string _subtotalPenaltyDefault = double.Parse(_data[0, 44]).ToString("#,##0.00");
+            string _totalPenaltyDefault = double.Parse(_data[0, 45]).ToString("#,##0.00");
             string _calInterestYesNoDefault = !String.IsNullOrEmpty(_data[0, 2]) ? eCPUtil._calInterestYesNo[Util.FindIndexArray2D(1, eCPUtil._calInterestYesNo, _data[0, 2]) - 1, 0] : String.Empty;
+            string _overpaymentTotalInterestBeforeDefault = !String.IsNullOrEmpty(_data[0, 46]) ? double.Parse(_data[0, 46]).ToString("#,##0.00") : "0.00";
             string _overpaymentDateStartDefault = !String.IsNullOrEmpty(_data[0, 3]) ? Util.LongDateTH(_data[0, 3]) : String.Empty;
             string _overpaymentDateEndDefault = !String.IsNullOrEmpty(_data[0, 4]) ? Util.LongDateTH(_data[0, 4]) : String.Empty;
             string _overpaymentYearDefault = !String.IsNullOrEmpty(_data[0, 5]) ? double.Parse(_data[0, 5]).ToString("#,##0") : String.Empty;
             string _overpaymentDayDefault = !String.IsNullOrEmpty(_data[0, 6]) ? double.Parse(_data[0, 6]).ToString("#,##0") : String.Empty;
             string _overpaymentInterestDefault = !String.IsNullOrEmpty(_data[0, 7]) ? double.Parse(_data[0, 7]).ToString("#,##0.00") : String.Empty;
-            string _overpaymentTotalInterestDefault = !String.IsNullOrEmpty(_data[0, 8]) ? double.Parse(_data[0, 8]).ToString("#,##0.00") : String.Empty;
+            string _overpaymentTotalInterestDefault = !String.IsNullOrEmpty(_data[0, 8]) ? double.Parse(_data[0, 8]).ToString("#,##0.00") : "0.00";
             string _payRepayDateStartDefault = !String.IsNullOrEmpty(_data[0, 9]) ? Util.LongDateTH(_data[0, 9]) : String.Empty;
             string _payRepayDateEndDefault = !String.IsNullOrEmpty(_data[0, 10]) ? Util.LongDateTH(_data[0, 10]) : String.Empty;
             string _payRepayYearDefault = !String.IsNullOrEmpty(_data[0, 11]) ? double.Parse(_data[0, 11]).ToString("#,##0") : String.Empty;
             string _payRepayDayDefault = !String.IsNullOrEmpty(_data[0, 12]) ? double.Parse(_data[0, 12]).ToString("#,##0") : String.Empty;
             string _payRepayInterestDefault = !String.IsNullOrEmpty(_data[0, 13]) ? double.Parse(_data[0, 13]).ToString("#,##0.00") : String.Empty;
-            string _payRepayTotalInterestDefault = !String.IsNullOrEmpty(_data[0, 14]) ? double.Parse(_data[0, 14]).ToString("#,##0.00") : String.Empty;
+            string _payRepayTotalInterestDefault = !String.IsNullOrEmpty(_data[0, 14]) ? double.Parse(_data[0, 14]).ToString("#,##0.00") : "0.00";
             string _dateTimePaymentDefault = Util.LongDateTH(_data[0, 15]);
             string _capitalDefault = double.Parse(_data[0, 16]).ToString("#,##0.00");
             string _interestDefault = double.Parse(_data[0, 17]).ToString("#,##0.00");
@@ -701,6 +870,7 @@ public class eCPDataPayment {
             string _payCapitalDefault = double.Parse(_data[0, 20]).ToString("#,##0.00");
             string _payInterestDefault = double.Parse(_data[0, 21]).ToString("#,##0.00");
             string _totalPayDefault = double.Parse(_data[0, 22]).ToString("#,##0.00");
+            string _overpayDefault = !String.IsNullOrEmpty(_data[0, 47]) ? double.Parse(_data[0, 47]).ToString("#,##0.00") : "0.00";
             string _remainCapitalDefault = double.Parse(_data[0, 23]).ToString("#,##0.00");
             string _accruedInterestDefault = double.Parse(_data[0, 24]).ToString("#,##0.00");
             string _remainAccruedInterestDefault = double.Parse(_data[0, 25]).ToString("#,##0.00");
@@ -721,6 +891,28 @@ public class eCPDataPayment {
             string _cashBankAccountDefault = !String.IsNullOrEmpty(_data[0, 39]) ? _data[0, 39] : "-";
             string _cashBankAccountNoDefault = !String.IsNullOrEmpty(_data[0, 40]) ? _data[0, 40] : "-";
             string _cashBankDateDefault = !String.IsNullOrEmpty(_data[0, 41]) ? Util.LongDateTH(_data[0, 41]) : "-";
+            string _lawyerFullnameDefault = _data[0, 48];
+            string _lawyerPhoneNumberDefault = _data[0, 49];
+            string _lawyerMobileNumberDefault = _data[0, 50];
+            string _lawyerEmailDefault = _data[0, 51];
+            string _lawyerDefault = String.Empty;
+
+            ArrayList _lawyerPhoneNumber = new ArrayList();
+
+            if (!String.IsNullOrEmpty(_lawyerPhoneNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerPhoneNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerMobileNumberDefault))
+                _lawyerPhoneNumber.Add(_lawyerMobileNumberDefault);
+
+            if (!String.IsNullOrEmpty(_lawyerFullnameDefault))
+                _lawyerDefault += "คุณ<span>" + _lawyerFullnameDefault + "</span>";
+
+            if (_lawyerPhoneNumber.Count > 0)
+                _lawyerDefault += " ( <span>" + String.Join(", ", _lawyerPhoneNumber.ToArray()) + "</span> )";
+
+            if (!String.IsNullOrEmpty(_lawyerEmailDefault))
+                _lawyerDefault += " อีเมล์ <span>" + _lawyerEmailDefault + "</span>";
 
             _html += "<div class='form-content' id='detail-trans-payment'>" +
                      "  <div id='box-detail-trans-payment'>" +
@@ -734,7 +926,7 @@ public class eCPDataPayment {
                      "              </div>" +
                      "          </div>" +
                      "          <div class='clear'></div>";
-
+            /*
             if (!String.IsNullOrEmpty(_calInterestYesNoDefault)) {
                 _html += "      <div>" +
                          "          <div class='content-left'>" +
@@ -816,6 +1008,62 @@ public class eCPDataPayment {
                      "              </div>" +
                      "          </div>" +
                      "          <div class='clear'></div>" +                       
+            */
+
+            _html += "          <div>" +
+                     "              <div class='content-left'>" +
+                     "                  <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินค่าปรับผิดสัญญา</div></div>" +
+                     "                  <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินต้นที่ต้องรับผิดชอบชดใช้</div></div>";
+
+            if (_formatPayment.Equals("1")) {
+                _html += "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่ชำระ</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่หักชำระดอกเบี้ยผิดนัด</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่หักชำระเงินต้น</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินส่วนที่ชำระเกิน</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินต้นคงเหลือ</div></div>";
+            }
+
+            if (_formatPayment.Equals("2")) {
+                _html += "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินต้นคงเหลือที่ยกมา</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนดอกเบี้ยคงค้างที่ยกมา</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่ชำระในงวดนี้</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่หักชำระดอกเบี้ยผิดนัดก่อนผ่อนชำระ ( ถ้ามี )</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่หักชำระดอกเบี้ยผ่อนชำระในงวดนี้</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่หักชำระดอกเบี้ยผิดนัดผ่อนชำระ ( ถ้ามี )</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินที่หักชำระเงินต้นในงวดนี้</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนเงินต้นคงเหลือจากการหักชำระเงินงวดนี้</div></div>" +
+                         "              <div class='form-label-discription-style'><div class='form-label-style'>จำนวนดอกเบี้ยคงค้าง ( ถ้ามี )</div></div>";
+            }
+
+            _html += "              </div>" +
+                     "              <div class='content-left'>" +
+                     "                  <div class='form-input-style'><div class='form-input-content'><span>" + _subtotalPenaltyDefault + "</span> บาท</div></div>" +
+                     "                  <div class='form-input-style'><div class='form-input-content'><span>" + _totalPenaltyDefault + "</span> บาท</div></div>";
+
+            if (_formatPayment.Equals("1")) {
+                _html += "              <div class='form-input-style'><div class='form-input-content'><span>" + _totalPayDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _overpaymentTotalInterestDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _payCapitalDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _overpayDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _remainCapitalDefault + "</span> บาท</div></div>";
+
+            }
+
+            if (_formatPayment.Equals("2")) {
+                _html += "              <div class='form-input-style'><div class='form-input-content'><span>" + _capitalDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _totalAccruedInterestDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _totalPayDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _overpaymentTotalInterestBeforeDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _payRepayTotalInterestDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _overpaymentTotalInterestDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _payCapitalDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _remainCapitalDefault + "</span> บาท</div></div>" +
+                         "              <div class='form-input-style'><div class='form-input-content'><span>" + _remainAccruedInterestDefault + "</span> บาท</div></div>";
+            }
+
+            _html += "              </div>" +
+                     "          </div>" +
+                     "          <div class='clear'></div>" +
                      "          <div id='pay-channel" + _channelDefault + "'>" +
                      "              <div class='content-left'>" +
                      "                  <div class='form-label-discription-style'><div class='form-label-style'>จ่ายชำระด้วย</div></div>" +
@@ -872,11 +1120,26 @@ public class eCPDataPayment {
                      "              </div>" +
                      "          </div>" +
                      "          <div class='clear'></div>" +
+                     "          <div id='lawyer'>" +
+                     "              <div class='content-left'>" +
+                     "                  <div class='form-label-discription-style'><div class='form-label-style'>นิติกรผู้รับผิดชอบ</div></div>" +
+                     "              </div>" +
+                     "              <div class='content-left'>" +
+                     "                  <div class='form-input-style'><div class='form-input-content'>" + (!String.IsNullOrEmpty(_lawyerDefault) ? _lawyerDefault : "<span>-</span>") + "</div></div>" +
+                     "              </div>" +
+                     "          </div>" +
+                     "          <div class='clear'></div>" +
                      "      </div>" +
                      "  </div>" +
                      "  <div class='button'>" +
-                     "      <div class='button-style1'>" +
+                     "      <div class='button-style1 period-not-last'>" +
                      "          <ul>" +
+                     "              <li><a href='javascript:void(0)' onclick=CloseFrm(true,'')>ปิด</a></li>" +
+                     "          </ul>" +
+                     "      </div>" +
+                     "      <div class='button-style1 period-last'>" +
+                     "          <ul>" +
+                     "              <li><a href='javascript:void(0)' onclick=doConfirmActionCPTransPayment('del','" + _data[0, 0] + "')>ลบ</a></li>" +
                      "              <li><a href='javascript:void(0)' onclick=CloseFrm(true,'')>ปิด</a></li>" +
                      "          </ul>" +
                      "      </div>" +
@@ -887,126 +1150,126 @@ public class eCPDataPayment {
         return _html;
     }
 
-    public static string ListTransPayment(string[,] _data) {
-        int _i;
-        string _html = String.Empty;
-        string _highlight = String.Empty;
-        string _callFunc = String.Empty;
-        double _totalInterest = 0;
-        double _totalPayCapital = 0;
-        double _totalPayInterest = 0;
-        double _totalPay = 0;
+    public static string ListTransPayment(string[,] data) {
+        int i;
+        string html = String.Empty;
+        string highlight = String.Empty;
+        string callFunc = String.Empty;
+        double totalInterest = 0;
+        double totalPayCapital = 0;
+        double totalPayInterest = 0;
+        double totalPay = 0;
 
-        _html += "<div class='table-content'>";
+        html += "<div class='table-content'>";
 
-        for (_i = 0; _i < _data.GetLength(0); _i++) {
-            _highlight = (_i % 2) == 0 ? "highlight1" : "highlight2";
-            _callFunc = "ShowDetailTransPayment('" + _data[_i, 1] + "','" + double.Parse(_data[_i, 0]).ToString("#,##0") + "')";
-            _totalInterest = (_totalInterest + double.Parse(_data[_i, 5]));
-            _totalPayCapital = (_totalPayCapital + double.Parse(_data[_i, 8]));
-            _totalPayInterest = (_totalPayInterest + double.Parse(_data[_i, 9]));
-            _totalPay = (_totalPay + double.Parse(_data[_i, 10]));
-            _html += "<ul class='table-row-content " + _highlight + "' id='detail-trans-payment" + _data[_i, 1] + "'>" +
-                     "  <li id='table-content-trans-payment-col1' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 0]).ToString("#,##0") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col2' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 4]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col3' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 5]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col4' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 8]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col5' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 9]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col6' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 10]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col7' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 11]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col8' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 6]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col9' onclick=" + _callFunc + "><div>" + double.Parse(_data[_i, 12]).ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col10' onclick=" + _callFunc + "><div>" + _data[_i, 3] + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-col11' onclick=" + _callFunc + "><div>" + eCPUtil._payChannel[int.Parse(_data[_i, 14]) - 1] + "</div></li>" +
-                     "</ul>";
+        for (i = 0; i < data.GetLength(0); i++) {
+            highlight = (i % 2) == 0 ? "highlight1" : "highlight2";
+            callFunc = "ShowDetailTransPayment('" + data[i, 1] + "','" + double.Parse(data[i, 0]).ToString("#,##0") + "')";
+            totalInterest = (totalInterest + double.Parse(data[i, 5]));
+            totalPayCapital = (totalPayCapital + double.Parse(data[i, 8]));
+            totalPayInterest = (totalPayInterest + double.Parse(data[i, 9]));
+            totalPay = (totalPay + double.Parse(data[i, 10]));
+            html += "<ul class='table-row-content " + highlight + " detail-trans-payment' id='detail-trans-payment" + data[i, 1] + "'>" +
+                    "   <li id='table-content-trans-payment-col1' onclick=" + callFunc + "><div>" + double.Parse(data[i, 0]).ToString("#,##0") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col2' onclick=" + callFunc + "><div>" + double.Parse(data[i, 4]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col3' onclick=" + callFunc + "><div>" + double.Parse(data[i, 5]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col4' onclick=" + callFunc + "><div>" + double.Parse(data[i, 8]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col5' onclick=" + callFunc + "><div>" + double.Parse(data[i, 9]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col6' onclick=" + callFunc + "><div>" + double.Parse(data[i, 10]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col7' onclick=" + callFunc + "><div>" + double.Parse(data[i, 11]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col8' onclick=" + callFunc + "><div>" + double.Parse(data[i, 6]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col9' onclick=" + callFunc + "><div>" + double.Parse(data[i, 12]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col10' onclick=" + callFunc + "><div>" + data[i, 3] + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col11' onclick=" + callFunc + "><div>" + eCPUtil._payChannel[int.Parse(data[i, 14]) - 1] + "</div></li>" +
+                    "</ul>";
         }
 
-        if (_data.GetLength(0) > 0) {
-            _html += "<ul class='table-row-content table-row-total' id='detail-trans-payment-total'>" +
-                     "  <li id='table-content-trans-payment-total-col1'><div>รวม</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col2'></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col3'><div>" + _totalInterest.ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col4'><div>" + _totalPayCapital.ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col5'><div>" + _totalPayInterest.ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col6'><div>" + _totalPay.ToString("#,##0.00") + "</div></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col7'></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col8'></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col9'></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col10'></li>" +
-                     "  <li class='table-col' id='table-content-trans-payment-total-col11'></li>" +
-                     "</ul>";
+        if (data.GetLength(0) > 0) {
+            html += "<ul class='table-row-content table-row-total' id='detail-trans-payment-total'>" +
+                    "   <li id='table-content-trans-payment-total-col1'><div>รวม</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col2'></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col3'><div>" + totalInterest.ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col4'><div>" + totalPayCapital.ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col5'><div>" + totalPayInterest.ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col6'><div>" + totalPay.ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col7'></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col8'></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col9'></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col10'></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-total-col11'></li>" +
+                    "</ul>";
         }
         
-        _html += "</div>";
+        html += "</div>";
 
-        return _html;
+        return html;
     }
 
-    private static string DetailCpTransPayment(string[,] _data) {
-        string _html = String.Empty;
-        string _cp2id = _data[0, 1];
-        string _statusRepay = _data[0, 6];
-        string _statusPayment = _data[0, 7];
-        string _formatPayment = _data[0, 8];
-        string _statusPaymentRecord = _data[0, 33];
-        string _statusPaymentrecordLawyerDefault = _data[0, 34];
-        string _statusPaymentrecordLawyerFullname = String.Empty;
-        string _statusPaymentrecordLawyerPhoneNumber = String.Empty;
-        string _statusPaymentrecordLawyerMobileNumber = String.Empty;
-        string _statusPaymentrecordLawyerEmail = String.Empty;
-        string[,] _data1, _data2;
-        int _recordCount;
+    private static string DetailCpTransPayment(string[,] data) {
+        string html = String.Empty;
+        string cp2id = data[0, 1];
+        string statusRepay = data[0, 6];
+        string statusPayment = data[0, 7];
+        string formatPayment = data[0, 8];
+        string statusPaymentRecord = data[0, 33];
+        string statusPaymentrecordLawyerDefault = data[0, 34];
+        string statusPaymentrecordLawyerFullname = String.Empty;
+        string statusPaymentrecordLawyerPhoneNumber = String.Empty;
+        string statusPaymentrecordLawyerMobileNumber = String.Empty;
+        string statusPaymentrecordLawyerEmail = String.Empty;
+        string[,] data1, data2;
+        int recordCount;
 
-        string _userid = eCPUtil.GetUserID();
-        _data1 = eCPDB.ListDetailCPTabUser(_userid, "", "", "");
-        _statusPaymentrecordLawyerFullname = _data1[0, 3];
-        _statusPaymentrecordLawyerPhoneNumber = _data1[0, 6];
-        _statusPaymentrecordLawyerMobileNumber = _data1[0, 7];
-        _statusPaymentrecordLawyerEmail = _data1[0, 8];
+        string userid = eCPUtil.GetUserID();
+        data1 = eCPDB.ListDetailCPTabUser(userid, "", "", "");
+        statusPaymentrecordLawyerFullname = data1[0, 3];
+        statusPaymentrecordLawyerPhoneNumber = data1[0, 6];
+        statusPaymentrecordLawyerMobileNumber = data1[0, 7];
+        statusPaymentrecordLawyerEmail = data1[0, 8];
         
-        _data2 = eCPDB.ListTransPayment(_cp2id, "", "");
-        _recordCount = _data2.GetLength(0);
+        data2 = eCPDB.ListTransPayment(cp2id, "", "");
+        recordCount = data2.GetLength(0);
 
-        _html += "<div class='form-content' id='detail-cp-trans-payment'>" +
-                 "  <input type='hidden' id='statuspayment-hidden' value='" + _statusPayment + "' />" +
-                 "  <input type='hidden' id='statuspaymentrecord-hidden' value='" + _statusPaymentRecord + "' />" +
-                 "  <input type='hidden' id='statuspaymentrecord-lawyer-hidden' value='" + (!String.IsNullOrEmpty(_statusPaymentrecordLawyerDefault) ? _statusPaymentrecordLawyerDefault : _statusPaymentrecordLawyerFullname) + "' />" +
-                 "  <input type='hidden' id='statuspaymentrecord-lawyer-fullname-hidden' value='" + _statusPaymentrecordLawyerFullname + "' />" +
-                 "  <input type='hidden' id='statuspaymentrecord-lawyer-phonenumber-hidden' value='" + _statusPaymentrecordLawyerPhoneNumber + "' />" +
-                 "  <input type='hidden' id='statuspaymentrecord-lawyer-mobilenumber-hidden' value='" + _statusPaymentrecordLawyerMobileNumber + "' />" +
-                 "  <input type='hidden' id='statuspaymentrecord-lawyer-email-hidden' value='" + _statusPaymentrecordLawyerEmail + "' />" +
-                    DetailPenaltyAndFormatPayment(_data, true) +
-                 "  <div id='list-cp-trans-payment'>" +
-                 "      <div class='tab-line'></div>" +
-                 "      <div class='content-data-tab-content'>" +
-                 "          <div class='content-left'><div class='content-data-tab-content-msg'>ตารางการชำระหนี้</div></div>" +
-                 "          <div class='content-right'><div class='content-data-tab-content-msg'>ค้นหาพบ " + _recordCount + " รายการ</div></div>" +
-                 "      </div>" +
-                 "      <div class='clear'></div>" +
-                 "      <div class='tab-line'></div>" +
-                 "      <div class='box3'>" +
-                 "          <div class='table-head'>" +
-                 "              <ul>" +
-                 "                  <li id='table-head-trans-payment-col1'><div class='table-head-line1'>งวดที่</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col2'><div class='table-head-line1'>เงินต้น</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col3'><div class='table-head-line1'>ดอกเบี้ย</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col4'><div class='table-head-line1'>เงินต้นรับชำระ</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col5'><div class='table-head-line1'>ดอกเบี้ยรับชำระ</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col6'><div class='table-head-line1'>ยอดเงินรับชำระ</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col7'><div class='table-head-line1'>เงินต้นคงเหลือ</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col8'><div class='table-head-line1'>ดอกเบี้ยคงเหลือ</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col9'><div class='table-head-line1'>ดอกเบี้ยค้างจ่าย</div><div>( บาท )</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col10'><div class='table-head-line1'>วันเดือนปี</div><div>ที่รับชำระหนี้</div></li>" +
-                 "                  <li class='table-col' id='table-head-trans-payment-col11'><div class='table-head-line1'>จ่ายชำระด้วย</div></li>" +
-                 "              </ul>" +
-                 "          </div>" +
-                 "          <div class='clear'></div>" +
-                 "      </div>" +
-                 "      <div id='box-list-trans-payment'><div id='list-trans-payment'>" + ListTransPayment(_data2) + "</div></div>" +
-                 "  </div>" +
-                 "</div>";
+        html += "<div class='form-content' id='detail-cp-trans-payment'>" +
+                "   <input type='hidden' id='statuspayment-hidden' value='" + statusPayment + "' />" +
+                "   <input type='hidden' id='statuspaymentrecord-hidden' value='" + statusPaymentRecord + "' />" +
+                "   <input type='hidden' id='statuspaymentrecord-lawyer-hidden' value='" + (!String.IsNullOrEmpty(statusPaymentrecordLawyerDefault) ? statusPaymentrecordLawyerDefault : statusPaymentrecordLawyerFullname) + "' />" +
+                "   <input type='hidden' id='statuspaymentrecord-lawyer-fullname-hidden' value='" + statusPaymentrecordLawyerFullname + "' />" +
+                "   <input type='hidden' id='statuspaymentrecord-lawyer-phonenumber-hidden' value='" + statusPaymentrecordLawyerPhoneNumber + "' />" +
+                "   <input type='hidden' id='statuspaymentrecord-lawyer-mobilenumber-hidden' value='" + statusPaymentrecordLawyerMobileNumber + "' />" +
+                "   <input type='hidden' id='statuspaymentrecord-lawyer-email-hidden' value='" + statusPaymentrecordLawyerEmail + "' />" +
+                    DetailPenaltyAndFormatPayment(data, true) +
+                "   <div id='list-cp-trans-payment'>" +
+                "       <div class='tab-line'></div>" +
+                "       <div class='content-data-tab-content'>" +
+                "           <div class='content-left'><div class='content-data-tab-content-msg'>ตารางการชำระหนี้" + "</div></div>" +
+                "           <div class='content-right'><div class='content-data-tab-content-msg'>ค้นหาพบ " + recordCount + " รายการ</div></div>" +
+                "       </div>" +
+                "       <div class='clear'></div>" +
+                "       <div class='tab-line'></div>" +
+                "       <div class='box3'>" +
+                "           <div class='table-head'>" +
+                "               <ul>" +                            
+                "                   <li id='table-head-trans-payment-col1'><div class='table-head-line1'>งวดที่</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col2'><div class='table-head-line1'>เงินต้น</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col3'><div class='table-head-line1'>ดอกเบี้ย</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col4'><div class='table-head-line1'>เงินต้นรับชำระ</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col5'><div class='table-head-line1'>ดอกเบี้ยรับชำระ</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col6'><div class='table-head-line1'>ยอดเงินรับชำระ</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col7'><div class='table-head-line1'>เงินต้นคงเหลือ</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col8'><div class='table-head-line1'>ดอกเบี้ยคงเหลือ</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col9'><div class='table-head-line1'>ดอกเบี้ยค้างจ่าย</div><div>( บาท )</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col10'><div class='table-head-line1'>วันเดือนปี</div><div>ที่รับชำระหนี้</div></li>" +
+                "                   <li class='table-col' id='table-head-trans-payment-col11'><div class='table-head-line1'>จ่ายชำระด้วย</div></li>" +
+                "               </ul>" +
+                "           </div>" +
+                "           <div class='clear'></div>" +                
+                "       </div>" +
+                "       <div id='box-list-trans-payment'><div id='list-trans-payment'>" + ListTransPayment(data2) + "</div></div>" +
+                "   </div>" +
+                "</div>";
 
-        return _html;
+        return html;
     }
 
     private static string DetailPenaltyAndFormatPayment(

@@ -1,30 +1,30 @@
 ﻿function ResetFrmSelectFormatPayment() {
-    var _formatPayment = $("input[name=format-payment]:radio");
+    var formatPayment = $("input[name=format-payment]:radio");
 
-    _formatPayment.attr("checked", false);
+    formatPayment.attr("checked", false);
 }
 
-function CaptionFormatPayment() {
-    var _send = new Array();
-    _send[_send.length] = "formatpayment=" + $("#format-payment-hidden").val();
-    
+function CaptionFormatPayment() {    
+    var send = new Array();
+    send[send.length] = "formatpayment=" + $("#format-payment-hidden").val();
+
     SetMsgLoading("");
 
-    ViewData("formatpayment", _send, function (_result) {
-        $("#format-payment-input span").html(_result);
+    ViewData("formatpayment", send, function (result) {
+        $("#format-payment-input span").html(result);
     });
 }
 
 function ResetFormatPayment() {
     if (($("#format-payment-hidden").val().length == 0) || ($("#format-payment-hidden").val() == "0")) {
-        var _formatPayment = $("input[name=format-payment]:checked");
-        var _valCheck;
-
-        _formatPayment.each(function (i) {
-            _valCheck = this.value;
+        var formatPayment = $("input[name=format-payment]:checked");
+        var valCheck;
+        
+        formatPayment.each(function (i) {
+            valCheck = this.value;
         });
 
-        $("#format-payment-hidden").val(_valCheck);
+        $("#format-payment-hidden").val(valCheck);
     }
 }
 
@@ -261,22 +261,101 @@ function InitReceiptCopy() {
     });
 }
 
+function doCalculatePayment() {
+    var formatPayment = $("#format-payment-hidden").val();
+    var capital = $("#capital").val();
+    var pay = $("#pay").val();
+
+    capital = ((capital.length === 0 || capital === "0.00") ? 0 : DelCommas("capital"));
+    pay = ((pay.length === 0 || pay === "0.00") ? 0 : DelCommas("pay"));
+
+    if (formatPayment === "1") {
+        $("#remain-capital").val((parseFloat(capital) - parseFloat(pay)).toFixed(2));
+        Trim("remain-capital");
+        AddCommas("remain-capital", 2);
+    }
+
+    if (formatPayment === "2") {
+        var totalAccruedInterest = $("#total-accrued-interest").val();
+        var totalInterestOverpaymentBefore = $("#total-interest-overpayment-before").val();
+        var totalInterestPayRepay = $("#total-interest-pay-repay").val();
+        var totalInterestOverpayment = $("#total-interest-overpayment").val();        
+        var payCapital = 0;
+        var remainAccruedInterest = 0;
+
+        totalAccruedInterest = ((totalAccruedInterest.length === 0 || totalAccruedInterest === "0.00") ? 0 : DelCommas("total-accrued-interest"));
+        totalInterestOverpaymentBefore = ((totalInterestOverpaymentBefore.length === 0 || totalInterestOverpaymentBefore === "0.00") ? 0 : DelCommas("total-interest-overpayment-before"));
+        totalInterestPayRepay = ((totalInterestPayRepay.length === 0 || totalInterestPayRepay === "0.00") ? 0 : DelCommas("total-interest-pay-repay"));        
+        totalInterestOverpayment = ((totalInterestOverpayment.length === 0 || totalInterestOverpayment === "0.00") ? 0 : DelCommas("total-interest-overpayment"));        
+
+        payCapital = (parseFloat(pay) - parseFloat(totalAccruedInterest) - parseFloat(totalInterestOverpaymentBefore) - parseFloat(totalInterestPayRepay) - parseFloat(totalInterestOverpayment));
+        payCapital = (parseFloat(payCapital) < 0 ? 0 : payCapital);
+        $("#pay-capital").val(parseFloat(payCapital).toFixed(2));
+        Trim("pay-capital");
+        AddCommas("pay-capital", 2);
+
+        $("#remain-capital").val((parseFloat(capital) - parseFloat(payCapital)).toFixed(2));
+        Trim("remain-capital");
+        AddCommas("remain-capital", 2);
+        /*        
+        remainAccruedInterest = ((parseFloat(totalAccruedInterest) + parseFloat(totalInterestOverpaymentBefore) + parseFloat(totalInterestPayRepay) + parseFloat(totalInterestOverpayment)) - parseFloat(pay));
+        remainAccruedInterest = (parseFloat(remainAccruedInterest) < 0 ? 0 : remainAccruedInterest);
+        $("#remain-accrued-interest").val(parseFloat(remainAccruedInterest).toFixed(2));
+        */
+        Trim("remain-accrued-interest");
+        AddCommas("remain-accrued-interest", 2);
+    }
+}
+
 function ResetFrmAddCPTransPayment() {
     GoToTopElement("html, body");
-
-    var _statusPayment = $("#statuspayment-hidden").val();
-    var _overpayment = $("#overpayment-hidden").val();
-    var _formatPayment = $("#format-payment-hidden").val();
+    /*
+    var statusPayment = $("#statuspayment-hidden").val();
+    var overpayment = $("#overpayment-hidden").val();
+    */
+    var formatPayment = $("#format-payment-hidden").val();
 
     CaptionFormatPayment();
 
+    $("#capital").val($("#capital-hidden").val());
+    TextboxDisable("#capital");
+    $("#total-payment").val($("#total-payment-hidden").val());
+    $("#pay").val($("#total-payment-hidden").val());
+    $("#remain-capital").val("");
+    TextboxDisable("#remain-capital");
+    $("#payment-date").val($("#payment-date-hidden").val());
+    InitCalendar("#payment-date");
+
+    if (formatPayment === "1") {
+        $("#total-interest-overpayment").val($("#total-interest-overpayment-hidden").val());
+        $("#overpay").val("");
+        AddCommas("overpay", 2);
+    }
+
+    if (formatPayment === "2") {
+        $("#total-accrued-interest").val($("#total-accrued-interest-hidden").val());
+        TextboxDisable("#total-accrued-interest");
+        $("#total-interest-overpayment-before").val($("#total-interest-overpayment-before-hidden").val());
+        $("#total-interest-pay-repay").val($("#total-interest-pay-repay-hidden").val());
+        $("#total-interest-overpayment").val($("#total-interest-overpayment-hidden").val());        
+        $("#pay-capital").val("");
+        TextboxDisable("#pay-capital");
+        $("#remain-accrued-interest").val("");
+        /*
+        TextboxDisable("#remain-accrued-interest");
+        */
+    }
+
+    doCalculatePayment();
+
+    /*
     if ($("#cal-interest-yesno").length > 0) {
         $("input[name=cal-interest-yesno]:radio")[0].checked = true;
         ResetFrmCalInterestYesNo();
     }
-
-    if (_statusPayment == "1") {
-        if (parseInt(_overpayment) > 0) {
+    
+    if (statusPayment == "1") {
+        if (parseInt(overpayment) > 0) {
             $("#overpayment-date-start").val($("#overpayment-date-start-hidden").val());
             $("#overpayment-date-end").val($("#overpayment-date-end-hidden").val());
             InitCalendarFromTo("#overpayment-date-start", false, "#overpayment-date-end", false);
@@ -291,18 +370,21 @@ function ResetFrmAddCPTransPayment() {
             InitCalendarFromTo("#overpayment-date-end", false, "#payment-date", false);
         }
         else {
-            if (_formatPayment == "1") {
+            if (formatPayment == "1") {
                 $("#payment-date").val($("#payment-date-hidden").val());
                 InitCalendar("#payment-date");
             }
         }
     }
 
-    if (_statusPayment == "2" || (_formatPayment == "2" && parseInt(_overpayment) <= 0)) {
+    if (statusPayment == "2" || (formatPayment == "2" && parseInt(overpayment) <= 0)) {
         $("#pay-repay-date-start").val($("#pay-repay-date-start-hidden").val());
         $("#pay-repay-date-end").val($("#pay-repay-date-end-hidden").val());
         InitCalendarFromTo("#pay-repay-date-start", false, "#pay-repay-date-end", false);
-        if (_statusPayment == "2") CalendarDisable("#pay-repay-date-start");
+
+        if (statusPayment == "2")
+            CalendarDisable("#pay-repay-date-start");
+
         $("#pay-repay-year").val($("#pay-repay-year-hidden").val());
         TextboxDisable("#pay-repay-year");
         $("#pay-repay-day").val($("#pay-repay-day-hidden").val());
@@ -313,7 +395,7 @@ function ResetFrmAddCPTransPayment() {
         $("#payment-date").val($("#payment-date-hidden").val());
         InitCalendarFromTo("#pay-repay-date-end", false, "#payment-date", false);
     }
-
+    
     $("#capital").val($("#capital-hidden").val());
     TextboxDisable("#capital");
     $("#total-interest").val($("#total-interest-hidden").val());
@@ -323,7 +405,8 @@ function ResetFrmAddCPTransPayment() {
     $("#total-payment").val($("#total-payment-hidden").val());
     TextboxDisable("#total-payment");
     $("#pay").val($("#total-payment").val());
-    $("input[name=pay-channel]:radio").attr("checked", false);    
+    */
+    $("input[name=pay-channel]:radio").attr("checked", false);
     $("#cheque-no-hidden").val("");
     $("#cheque-bank-hidden").val("");
     $("#cheque-bank-branch-hidden").val("");
@@ -341,14 +424,15 @@ function ResetFrmAddCPTransPayment() {
     $("#receipt-fund").val("");
     $("#receipt-copy").val("");
     $("#receipt-copy-preview, #receipt-copy-nopreview, #receipt-copy-linkpreview").addClass("hidden");
- 
+    /*
     $(".calendar").change(function () {
         if ($(this).attr("id") == "overpayment-date-end")
             $("#payment-date").val($("#overpayment-date-end").val());
 
         if ($(this).attr("id") == "pay-repay-date-end")
             $("#payment-date").val($("#pay-repay-date-end").val());
-    });        
+    });
+    */
 }
 
 function ResetFrmAddDetailPayChannel() {
@@ -555,114 +639,133 @@ function ValidateSelectFormatPayment() {
 }
 
 function ValidateCPTransPaymentFullRepay() {
+    /*
     var _calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
     var _result = (_calInterestYesNo == "Y" ? ValidateCalInterestOverpayment() : true);
+    */
+    var result = true;
 
-    if (_result == true) {   
-        var _error = false;
-        var _msg;
-        var _focus;
-        var _interestDateEnd = $("#overpayment-date-end").length > 0 ? $("#overpayment-date-end").val() : "";
-        var _paymentDate = $("#payment-date").val();
-        var _dayDiff = 0;
-        var _totalPayment = DelCommas("total-payment");
-        var _pay = DelCommas("pay");
-        var _payChannel = $("input[name=pay-channel]:checked");
-        var _chequeNo = $("#cheque-no-hidden").val();
-        var _chequeBank = $("#cheque-bank-hidden").val();
-        var _chequeBankBranch = $("#cheque-bank-branch-hidden").val();
-        var _chequeDate = $("#cheque-date-hidden").val();
-        var _cashBank = $("#cash-bank-hidden").val();
-        var _cashBankBranch = $("#cash-bank-branch-hidden").val();
-        var _cashBankAccount = $("#cash-bank-account-hidden").val();
-        var _cashBankAccountNo = $("#cash-bank-account-no-hidden").val();
-        var _cashBankDate = $("#cash-bank-date-hidden").val();
-        var _receiptNo = $("#receipt-no").val();
-        var _receiptBookNo = $("#receipt-book-no").val();
-        var _receiptDate = $("#receipt-date").val();
-        var _receiptSendNo = $("#receipt-send-no").val();
-        var _receiptFund = $("#receipt-fund").val();        
-
-        if (_interestDateEnd.length > 0) {
-            _interestDateEnd = GetDateObject(_interestDateEnd);
-            _paymentDate = GetDateObject(_paymentDate);
-            _dayDiff = DateDiff(_interestDateEnd, _paymentDate, "days");
-        }
-
-        if (_error == false && (_pay.length == 0 || _pay == "0.00")) {
-            _error = true;
-            _msg = "กรุณาใส่จำนวนเงินที่ต้องการชำระ";
-            _focus = "#pay";
-        }
-
-        if (_error == false && ((parseFloat(_totalPayment) - parseFloat(_pay)) > 0)) {
-            _error = true;
-            _msg = "กรุณาใส่จำนวนเงินที่ต้องการชำระให้เท่ากับยอดเงินที่ต้องชำระ";
-            _focus = "#pay";
-        }
-
-        if (_error == false && _payChannel.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่ช่องทางหรือวิธีการชำระหนี้";
-            _focus = "#pay-channel1-input";
-        }
+    if (result == true) {   
+        var error = false;
+        var msg;
+        var focus;
         /*
-        if (_error == false && _payChannel.val() == 1 && (_receiptNo.length == 0 || _receiptBookNo.length == 0)) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
-            _focus = "";
+        var interestDateEnd = $("#overpayment-date-end").length > 0 ? $("#overpayment-date-end").val() : "";
+        var paymentDate = $("#payment-date").val();
+        var dayDiff = 0;
+        */
+        var totalPayment = DelCommas("total-payment");
+        var pay = DelCommas("pay");
+        var remainCapital = DelCommas("remain-capital");
+        var payChannel = $("input[name=pay-channel]:checked");
+        var chequeNo = $("#cheque-no-hidden").val();
+        var chequeBank = $("#cheque-bank-hidden").val();
+        var chequeBankBranch = $("#cheque-bank-branch-hidden").val();
+        var chequeDate = $("#cheque-date-hidden").val();
+        var cashBank = $("#cash-bank-hidden").val();
+        var cashBankBranch = $("#cash-bank-branch-hidden").val();
+        var cashBankAccount = $("#cash-bank-account-hidden").val();
+        var cashBankAccountNo = $("#cash-bank-account-no-hidden").val();
+        var cashBankDate = $("#cash-bank-date-hidden").val();
+        var receiptNo = $("#receipt-no").val();
+        var receiptBookNo = $("#receipt-book-no").val();
+        var receiptDate = $("#receipt-date").val();
+        var receiptSendNo = $("#receipt-send-no").val();
+        var receiptFund = $("#receipt-fund").val();        
+        /*
+        if (interestDateEnd.length > 0) {
+            interestDateEnd = GetDateObject(interestDateEnd);
+            paymentDate = GetDateObject(paymentDate);
+            dayDiff = DateDiff(interestDateEnd, _paymentDate, "days");
         }
         */
-        if (_error == false && _payChannel.val() == 2 && (_chequeNo.length == 0 || _chequeBank.length == 0 || _chequeBankBranch.length == 0 || _chequeDate.length == 0)) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
-            _focus = "";;
+
+        if (error === false && (totalPayment.length === 0 || parseFloat(totalPayment) === 0)) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระ";
+            focus = "#total-payment";
         }
 
-        if (_error == false && _payChannel.val() == 3 && (_cashBank.length == 0 || _cashBankBranch.length == 0 || _cashBankAccount.length == 0 || _cashBankAccountNo.length == 0 || _cashBankDate.length == 0)) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
-            _focus = "";;
+        if (error === false && (pay.length === 0 || parseFloat(pay) === 0)) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่หักชำระเงินต้น";
+            focus = "#pay";
         }
 
-        if (_error == false && _dayDiff < 0) {
-            _error = true;
-            _msg = "<div>กรุณาใส่วันที่ทำการชำระหนี้ให้มากกว่าหรือเท่ากับ</div><div>วันที่สิ้นสุดการคิดดอกเบี้ย</div>";
-            _focus = "#payment-date";
+        if (error === false && (parseFloat(pay) !== parseFloat(totalPayment))) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่หักชำระเงินต้นให้เท่ากับจำนวนเงินที่ชำระ";
+            focus = "#pay";
         }
 
-        if (_error == false && _receiptNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบเสร็จ";
-            _focus = "#receipt-no";
+        if (error === false && (remainCapital.length === 0 || parseFloat(remainCapital) !== 0)) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่หักชำระเงินต้นให้เท่ากับ<br />จำนวนเงินต้นคงเหลือยกมา";
+            focus = "#pay";
         }
 
-        if (_error == false && _receiptBookNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เล่มที่";
-            _focus = "#receipt-book-no";
+        if (error == false && payChannel.length == 0) {
+            error = true;
+            msg = "กรุณาใส่ช่องทางหรือวิธีการชำระหนี้";
+            focus = "#pay-channel1-input";
+        }
+        /*
+        if (error == false && payChannel.val() == 1 && (receiptNo.length == 0 || receiptBookNo.length == 0)) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
+            focus = "";
+        }
+        */
+        if (error == false && payChannel.val() == 2 && (chequeNo.length == 0 || chequeBank.length == 0 || chequeBankBranch.length == 0 || chequeDate.length == 0)) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
+            focus = "";;
         }
 
-        if (_error == false && _receiptDate.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - ลงวันที่";
-            _focus = "#receipt-date";
+        if (error == false && payChannel.val() == 3 && (cashBank.length == 0 || cashBankBranch.length == 0 || cashBankAccount.length == 0 || cashBankAccountNo.length == 0 || cashBankDate.length == 0)) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
+            focus = "";;
+        }
+        /*
+        if (error == false && dayDiff < 0) {
+            error = true;
+            msg = "<div>กรุณาใส่วันที่ทำการชำระหนี้ให้มากกว่าหรือเท่ากับ</div><div>วันที่สิ้นสุดการคิดดอกเบี้ย</div>";
+            focus = "#payment-date";
+        }
+        */
+        if (error == false && receiptNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบเสร็จ";
+            focus = "#receipt-no";
         }
 
-        if (_error == false && _receiptSendNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบนำส่ง";
-            _focus = "#receipt-send-no";
+        if (error == false && receiptBookNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เล่มที่";
+            focus = "#receipt-book-no";
         }
 
-        if (_error == false && _receiptFund.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เข้ากองทุน";
-            _focus = "#receipt-fund";
+        if (error == false && receiptDate.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - ลงวันที่";
+            focus = "#receipt-date";
         }
 
-        if (_error == true) {
-            DialogMessage(_msg, _focus, false, "");
+        if (error == false && receiptSendNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบนำส่ง";
+            focus = "#receipt-send-no";
+        }
+
+        if (error == false && receiptFund.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เข้ากองทุน";
+            focus = "#receipt-fund";
+        }
+
+        if (error == true) {
+            DialogMessage(msg, focus, false, "");
             return false;
         }
 
@@ -680,70 +783,82 @@ function ConfirmActionCPTransPaymentFullRepay() {
                 $(this).dialog("close");
 
                 if (ValidateCPTransPaymentFullRepay() == true) {
-                    var _overpayment = $("#overpayment-hidden").val();
-                    var _payChannel = $("input[name=pay-channel]:checked");
-                    var _receiptCopy = $("#receipt-copy").val();                
+                    /*
+                    var overpayment = $("#overpayment-hidden").val();
+                    */
+                    var payChannel = $("input[name=pay-channel]:checked");
+                    var receiptCopy = $("#receipt-copy").val();
 
-                    if (_receiptCopy.length > 0)
-                        _receiptCopy = btoa(_receiptCopy);
+                    if (receiptCopy.length > 0)
+                        receiptCopy = btoa(receiptCopy);
 
-                    var _send = new Array();
-                    _send[_send.length] = "cp2id=" + $("#cp2id").val();
-                    _send[_send.length] = "overpayment=" + _overpayment;
+                    var send = new Array();
+                    send[send.length] = "cp2id=" + $("#cp2id").val();
+                    /*
+                    send[send.length] = "overpayment=" + overpayment;
+                    
+                    if (parseInt(overpayment) > 0) {
+                        var calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
 
-                    if (parseInt(_overpayment) > 0) {
-                        var _calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
+                        send[send.length] = "calinterestyesno=" + calInterestYesNo;
 
-                        _send[_send.length] = "calinterestyesno=" + _calInterestYesNo;
-
-                        if (_calInterestYesNo == "Y") {
-                            _send[_send.length] = "overpaymentdatestart=" + $("#overpayment-date-start").val();
-                            _send[_send.length] = "overpaymentdateend=" + $("#overpayment-date-end").val();
-                            _send[_send.length] = "overpaymentyear=" + DelCommas("overpayment-year");
-                            _send[_send.length] = "overpaymentday=" + DelCommas("overpayment-day");
-                            _send[_send.length] = "overpaymentinterest=" + DelCommas("overpayment-interest");
-                            _send[_send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
+                        if (calInterestYesNo == "Y") {
+                            send[_send.length] = "overpaymentdatestart=" + $("#overpayment-date-start").val();
+                            send[_send.length] = "overpaymentdateend=" + $("#overpayment-date-end").val();
+                            send[_send.length] = "overpaymentyear=" + DelCommas("overpayment-year");
+                            send[_send.length] = "overpaymentday=" + DelCommas("overpayment-day");
+                            send[_send.length] = "overpaymentinterest=" + DelCommas("overpayment-interest");
+                            send[_send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
                         }
                     }
-
-                    _send[_send.length] = "datetimepayment=" + $("#payment-date").val();
-                    _send[_send.length] = "capital=" + DelCommas("capital");
-                    _send[_send.length] = "totalinterest=" + DelCommas("total-interest");
-                    _send[_send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");                    
-                    _send[_send.length] = "totalpayment=" + DelCommas("total-payment");
-                    _send[_send.length] = "pay=" + DelCommas("pay");
-                    _send[_send.length] = "channel=" + _payChannel.val();
-                    _send[_send.length] = "receiptno=" + $("#receipt-no").val();
-                    _send[_send.length] = "receiptbookno=" + $("#receipt-book-no").val();
-                    _send[_send.length] = "receiptdate=" + $("#receipt-date").val();
-                    _send[_send.length] = "receiptsendno=" + $("#receipt-send-no").val();
-                    _send[_send.length] = "receiptfund=" + $("#receipt-fund").val();
-                    _send[_send.length] = "receiptcopy=" + _receiptCopy;
-
+                    */
+                                        
+                    send[send.length] = "capital=" + DelCommas("capital");
                     /*
-                    if (_payChannel.val() == 1) {
-                        _send[_send.length] = "receiptno=" + $("#receipt-no-hidden").val();
-                        _send[_send.length] = "receiptbookno=" + $("#receipt-book-no-hidden").val();
-                        _send[_send.length] = "receiptdate=" + $("#receipt-date-hidden").val();
+                    send[send.length] = "totalaccruedinterest=" + (totalAccruedInterest.length > 0 ? totalAccruedInterest : "0.00");
+                    */
+                    send[send.length] = "totalpayment=" + DelCommas("total-payment");
+                    send[send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
+                    send[send.length] = "pay=" + DelCommas("pay");
+                    send[send.length] = "overpay=" + DelCommas("overpay");
+                    send[send.length] = "datetimepayment=" + $("#payment-date").val();
+                    send[send.length] = "channel=" + payChannel.val();
+                    send[send.length] = "receiptno=" + $("#receipt-no").val();
+                    send[send.length] = "receiptbookno=" + $("#receipt-book-no").val();
+                    send[send.length] = "receiptdate=" + $("#receipt-date").val();
+                    send[send.length] = "receiptsendno=" + $("#receipt-send-no").val();
+                    send[send.length] = "receiptfund=" + $("#receipt-fund").val();
+                    send[send.length] = "receiptcopy=" + receiptCopy;
+                    
+                    /*
+                    if (payChannel.val() == 1) {
+                        send[send.length] = "receiptno=" + $("#receipt-no-hidden").val();
+                        send[send.length] = "receiptbookno=" + $("#receipt-book-no-hidden").val();
+                        send[send.length] = "receiptdate=" + $("#receipt-date-hidden").val();
                     }
                     */
-
-                    if (_payChannel.val() == 2) {
-                        _send[_send.length] = "chequeno=" + $("#cheque-no-hidden").val();
-                        _send[_send.length] = "chequebank=" + $("#cheque-bank-hidden").val();
-                        _send[_send.length] = "chequebankbranch=" + $("#cheque-bank-branch-hidden").val();
-                        _send[_send.length] = "chequedate=" + $("#cheque-date-hidden").val();
+                    
+                    if (payChannel.val() == 2) {
+                        send[send.length] = "chequeno=" + $("#cheque-no-hidden").val();
+                        send[send.length] = "chequebank=" + $("#cheque-bank-hidden").val();
+                        send[send.length] = "chequebankbranch=" + $("#cheque-bank-branch-hidden").val();
+                        send[send.length] = "chequedate=" + $("#cheque-date-hidden").val();
                     }
 
-                    if (_payChannel.val() == 3) {
-                        _send[_send.length] = "cashbank=" + $("#cash-bank-hidden").val();
-                        _send[_send.length] = "cashbankbranch=" + $("#cash-bank-branch-hidden").val();
-                        _send[_send.length] = "cashbankaccount=" + $("#cash-bank-account-hidden").val();
-                        _send[_send.length] = "cashbankaccountno=" + $("#cash-bank-account-no-hidden").val();
-                        _send[_send.length] = "cashbankdate=" + $("#cash-bank-date-hidden").val();
+                    if (payChannel.val() == 3) {
+                        send[send.length] = "cashbank=" + $("#cash-bank-hidden").val();
+                        send[send.length] = "cashbankbranch=" + $("#cash-bank-branch-hidden").val();
+                        send[send.length] = "cashbankaccount=" + $("#cash-bank-account-hidden").val();
+                        send[send.length] = "cashbankaccountno=" + $("#cash-bank-account-no-hidden").val();
+                        send[send.length] = "cashbankdate=" + $("#cash-bank-date-hidden").val();
                     }
 
-                    AddCPTransPayment(_send, "fullrepay");
+                    send[send.length] = "lawyerfullname=" + $("#lawyer-fullname-hidden").val();
+                    send[send.length] = "lawyerphonenumber=" + $("#lawyer-phonenumber-hidden").val();
+                    send[send.length] = "lawyermobilenumber=" + $("#lawyer-mobilenumber-hidden").val();
+                    send[send.length] = "lawyeremail=" + $("#lawyer-email-hidden").val();
+
+                    AddCPTransPayment(send, "fullrepay");
                 }
             },
             "ยกเลิก": function () {
@@ -754,135 +869,168 @@ function ConfirmActionCPTransPaymentFullRepay() {
 }
 
 function ValidateCPTransPaymentPayRepay() {
-    var _calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
-    var _statusPayment = $("#statuspayment-hidden").val();
-    var _overpayment = $("#overpayment-hidden").val();
-    var _interestDateEnd;
-    var _paymentDate = $("#payment-date").val();
-    var _dayDiff = 0;
-    var _result = true;
-
-    if (_calInterestYesNo == "Y") {
-        if (_statusPayment == "1" && parseInt(_overpayment) > 0) {
-            _interestDateEnd = $("#overpayment-date-end").length > 0 ? $("#overpayment-date-end").val() : "";
-            _result = ValidateCalInterestOverpayment();
+    /*
+    var calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
+    var statusPayment = $("#statuspayment-hidden").val();
+    var overpayment = $("#overpayment-hidden").val();
+    var interestDateEnd;
+    var paymentDate = $("#payment-date").val();
+    var dayDiff = 0;
+    */
+    var result = true;
+    /*
+    if (calInterestYesNo == "Y") {
+        if (statusPayment == "1" && parseInt(overpayment) > 0) {
+            interestDateEnd = $("#overpayment-date-end").length > 0 ? $("#overpayment-date-end").val() : "";
+            result = ValidateCalInterestOverpayment();
         }
 
-        if (_statusPayment == "2" || parseInt(_overpayment) <= 0) {
-            _interestDateEnd = $("#pay-repay-date-end").length > 0 ? $("#pay-repay-date-end").val() : "";        
-            _result = ValidateCalInterestPayRepay();
+        if (statusPayment == "2" || parseInt(overpayment) <= 0) {
+            interestDateEnd = $("#pay-repay-date-end").length > 0 ? $("#pay-repay-date-end").val() : "";        
+            result = ValidateCalInterestPayRepay();
         }
     }
-
-    if (_result == true) {
-        var _error = false;
-        var _msg;
-        var _focus;
-        var _totalPayment = DelCommas("total-payment");
-        var _pay = DelCommas("pay");
-        var _payRepayLeast = DelCommas("pay-repay-least-hidden");
-        var _payChannel = $("input[name=pay-channel]:checked");
-        var _chequeNo = $("#cheque-no-hidden").val();
-        var _chequeBank = $("#cheque-bank-hidden").val();
-        var _chequeBankBranch = $("#cheque-bank-branch-hidden").val();
-        var _chequeDate = $("#cheque-date-hidden").val();
-        var _cashBank = $("#cash-bank-hidden").val();
-        var _cashBankBranch = $("#cash-bank-branch-hidden").val();
-        var _cashBankAccount = $("#cash-bank-account-hidden").val();
-        var _cashBankAccountNo = $("#cash-bank-account-no-hidden").val();
-        var _cashBankDate = $("#cash-bank-date-hidden").val();
-        var _receiptNo = $("#receipt-no").val();
-        var _receiptBookNo = $("#receipt-book-no").val();
-        var _receiptDate = $("#receipt-date").val();
-        var _receiptSendNo = $("#receipt-send-no").val();
-        var _receiptFund = $("#receipt-fund").val();        
-
-        if (_calInterestYesNo == "Y" && _interestDateEnd.length > 0) {
-            _interestDateEnd = GetDateObject(_interestDateEnd);
-            _paymentDate = GetDateObject(_paymentDate);
-            _dayDiff = DateDiff(_interestDateEnd, _paymentDate, "days");
-        }
-
-        if (_error == false && (_pay.length == 0 || _pay == "0.00")) {
-            _error = true;
-            _msg = "กรุณาใส่จำนวนเงินที่ต้องการชำระ";
-            _focus = "#pay";
-        }
+    */
+    if (result == true) {
+        var error = false;
+        var msg;
+        var focus;
+        var capital = DelCommas("capital");
+        var pay = DelCommas("pay");
+        var totalAccruedInterest = DelCommas("total-accrued-interest");
+        var totalInterestOverpaymentBefore = DelCommas("total-interest-overpayment-before");
+        var totalInterestPayRepay = DelCommas("total-interest-pay-repay");
+        var totalInterestOverpayment = DelCommas("total-interest-overpayment");
+        var totalInterrest = (parseFloat(totalAccruedInterest) + parseFloat(totalInterestOverpaymentBefore) + parseFloat(totalInterestPayRepay) + parseFloat(totalInterestOverpayment));
+        var payCapital = DelCommas("pay-capital");
+        var remainCapital = DelCommas("remain-capital");
+        var payRepayLeast = DelCommas("pay-repay-least-hidden");
+        var payChannel = $("input[name=pay-channel]:checked");
+        var chequeNo = $("#cheque-no-hidden").val();
+        var chequeBank = $("#cheque-bank-hidden").val();
+        var chequeBankBranch = $("#cheque-bank-branch-hidden").val();
+        var chequeDate = $("#cheque-date-hidden").val();
+        var cashBank = $("#cash-bank-hidden").val();
+        var cashBankBranch = $("#cash-bank-branch-hidden").val();
+        var cashBankAccount = $("#cash-bank-account-hidden").val();
+        var cashBankAccountNo = $("#cash-bank-account-no-hidden").val();
+        var cashBankDate = $("#cash-bank-date-hidden").val();
+        var receiptNo = $("#receipt-no").val();
+        var receiptBookNo = $("#receipt-book-no").val();
+        var receiptDate = $("#receipt-date").val();
+        var receiptSendNo = $("#receipt-send-no").val();
+        var receiptFund = $("#receipt-fund").val();        
         /*
-        if (_error == false && ((parseFloat(_totalPayment) - parseFloat(_pay)) < 0)) {
-            _error = true;
-            _msg = "<div>กรุณาใส่จำนวนเงินที่ต้องการชำระให้น้อยกว่าหรือเท่ากับ</div><div>ยอดเงินที่ต้องชำระ</div>";
-            _focus = "#pay";
+        if (calInterestYesNo == "Y" && interestDateEnd.length > 0) {
+            interestDateEnd = GetDateObject(_interestDateEnd);
+            paymentDate = GetDateObject(_paymentDate);
+            dayDiff = DateDiff(interestDateEnd, paymentDate, "days");
         }
         */
-        if (_error == false && ((parseFloat(_totalPayment) >= parseFloat(_payRepayLeast)) && (parseFloat(_pay) < parseFloat(_payRepayLeast)))) {
-            _error = true;
-            _msg = "กรุณาใส่จำนวนเงินที่ต้องการชำระไม่น้อยกว่า " + $("#pay-repay-least-hidden").val() + " บาท";
-            _focus = "#pay";
+        if (error == false && (pay.length == 0 || parseFloat(pay) === 0)) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระในงวดนี้";
+            focus = "#pay";
         }
 
-        if (_error == false && _payChannel.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่ช่องทางหรือวิธีการชำระหนี้";
-            _focus = "#pay-channel1-input";
+        if (error === false && (payCapital.length > 0 && parseFloat(payCapital) > parseFloat(capital))) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระในงวดนี้ให้ถูกต้อง<br />เนื่องจากจำนวนเงินต้นคงเหลือที่ยกมาต้องมากกว่าหรือเท่ากับ<br />จำนวนเงินที่หักชำระเงินต้นในงวดนี้";
+            focus = "#pay";
+        }
+
+        if (error === false && (remainCapital.length > 0 && parseFloat(remainCapital) < 0)) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระในงวดนี้ให้ถูกต้อง<br />เนื่องจากจำนวนเงินต้นคงเหลือน้อยกว่า 0";
+            focus = "#pay";
         }
         /*
-        if (_error == false && _payChannel.val() == 1 && (_receiptNo.length == 0 || _receiptBookNo.length == 0)) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
-            _focus = "";
+        if (error == false && ((parseFloat(totalPayment) - parseFloat(pay)) < 0)) {
+            error = true;
+            msg = "<div>กรุณาใส่จำนวนเงินที่ต้องการชำระให้น้อยกว่าหรือเท่ากับ</div><div>ยอดเงินที่ต้องชำระ</div>";
+            focus = "#pay";
         }
         */
-        if (_error == false && _payChannel.val() == 2 && (_chequeNo.length == 0 || _chequeBank.length == 0 || _chequeBankBranch.length == 0 || _chequeDate.length == 0)) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
-            _focus = "";
+        if (error == false && (parseFloat(pay) < parseFloat(payRepayLeast))) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระในงวดนี้ไม่น้อยกว่า " + $("#pay-repay-least-hidden").val() + " บาท";
+            focus = "#pay";
         }
 
-        if (_error == false && _payChannel.val() == 3 && (_cashBank.length == 0 || _cashBankBranch.length == 0 || _cashBankAccount.length == 0 || _cashBankAccountNo.length == 0 || _cashBankDate.length == 0)) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
-            _focus = "";
+        if (error === false && (parseFloat(pay) < parseFloat(totalInterrest))) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระในงวดนี้ไม่น้อยกว่าจำนวนเงินที่หักชำระดอกเบี้ย";
+            focus = "#pay";
+        }
+        /*
+        if (error == false && ((parseFloat(totalPayment) >= parseFloat(payRepayLeast)) && (parseFloat(pay) < parseFloat(payRepayLeast)))) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ต้องการชำระไม่น้อยกว่า " + $("#pay-repay-least-hidden").val() + " บาท";
+            focus = "#pay";
+        }
+        */
+        if (error == false && payChannel.length == 0) {
+            error = true;
+            msg = "กรุณาใส่ช่องทางหรือวิธีการชำระหนี้";
+            focus = "#pay-channel1-input";
+        }
+        /*
+        if (error == false && payChannel.val() == 1 && (receiptNo.length == 0 || receiptBookNo.length == 0)) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
+            focus = "";
+        }
+        */
+        if (error == false && payChannel.val() == 2 && (chequeNo.length == 0 || chequeBank.length == 0 || chequeBankBranch.length == 0 || chequeDate.length == 0)) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
+            focus = "";
         }
 
-        if (_error == false && _dayDiff < 0) {
-            _error = true;
-            _msg = "<div>กรุณาใส่วันที่ทำการชำระหนี้ให้มากกว่าหรือเท่ากับ</div><div>วันที่สิ้นสุดการคิดดอกเบี้ย</div>";
-            _focus = "#payment-date";
+        if (error == false && payChannel.val() == 3 && (cashBank.length == 0 || cashBankBranch.length == 0 || cashBankAccount.length == 0 || cashBankAccountNo.length == 0 || cashBankDate.length == 0)) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดช่องทางหรือวิธีการชำระหนี้";
+            focus = "";
+        }
+        /*
+        if (error == false && dayDiff < 0) {
+            error = true;
+            msg = "<div>กรุณาใส่วันที่ทำการชำระหนี้ให้มากกว่าหรือเท่ากับ</div><div>วันที่สิ้นสุดการคิดดอกเบี้ย</div>";
+            focus = "#payment-date";
+        }
+        */
+        if (error == false && receiptNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบเสร็จ";
+            focus = "#receipt-no";
         }
 
-        if (_error == false && _receiptNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบเสร็จ";
-            _focus = "#receipt-no";
+        if (error == false && receiptBookNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เล่มที่";
+            focus = "#receipt-book-no";
         }
 
-        if (_error == false && _receiptBookNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เล่มที่";
-            _focus = "#receipt-book-no";
+        if (error == false && receiptDate.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - ลงวันที่";
+            focus = "#receipt-date";
         }
 
-        if (_error == false && _receiptDate.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - ลงวันที่";
-            _focus = "#receipt-date";
+        if (error == false && receiptSendNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบนำส่ง";
+            focus = "#receipt-send-no";
         }
 
-        if (_error == false && _receiptSendNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เลขที่ใบนำส่ง";
-            _focus = "#receipt-send-no";
+        if (error == false && receiptFund.length == 0) {
+            error = true;
+            msg = "กรุณาใส่รายละเอียดใบเสร็จ - เข้ากองทุน";
+            focus = "#receipt-fund";
         }
 
-        if (_error == false && _receiptFund.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่รายละเอียดใบเสร็จ - เข้ากองทุน";
-            _focus = "#receipt-fund";
-        }
-
-        if (_error == true) {
-            DialogMessage(_msg, _focus, false, "");
+        if (error == true) {
+            DialogMessage(msg, focus, false, "");
             return false;
         }
 
@@ -900,88 +1048,99 @@ function ConfirmActionCPTransPaymentPayRepay() {
                 $(this).dialog("close");
 
                 if (ValidateCPTransPaymentPayRepay() == true) {
-                    var _calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
-                    var _statusPayment = $("#statuspayment-hidden").val();
-                    var _payChannel = $("input[name=pay-channel]:checked");
-                    var _receiptCopy = $("#receipt-copy").val();
+                    /*
+                    var calInterestYesNo = $("input[name=cal-interest-yesno]:checked").val();
+                    */
+                    var statusPayment = $("#statuspayment-hidden").val();
+                    var payChannel = $("input[name=pay-channel]:checked");
+                    var receiptCopy = $("#receipt-copy").val();
 
-                    if (_receiptCopy.length > 0)
-                        _receiptCopy = btoa(_receiptCopy);
+                    if (receiptCopy.length > 0)
+                        receiptCopy = btoa(receiptCopy);
 
-                    var _send = new Array();
-                    _send[_send.length] = "cp2id=" + $("#cp2id").val();
-                    _send[_send.length] = "statuspayment=" + _statusPayment;
+                    var send = new Array();
+                    send[send.length] = "cp2id=" + $("#cp2id").val();
+                    send[send.length] = "statuspayment=" + statusPayment;
+                    /*
+                    if (statusPayment == "1") {
+                        var overpayment = $("#overpayment-hidden").val();
 
-                    if (_statusPayment == "1") {
-                        var _overpayment = $("#overpayment-hidden").val();
+                        send[send.length] = "overpayment=" + overpayment;
 
-                        _send[_send.length] = "overpayment=" + _overpayment;
+                        if (parseInt(overpayment) > 0) {
+                            send[send.length] = "calinterestyesno=" + calInterestYesNo;
 
-                        if (parseInt(_overpayment) > 0) {
-                            _send[_send.length] = "calinterestyesno=" + _calInterestYesNo;
-
-                            if (_calInterestYesNo == "Y") {
-                                _send[_send.length] = "overpaymentdatestart=" + $("#overpayment-date-start").val();
-                                _send[_send.length] = "overpaymentdateend=" + $("#overpayment-date-end").val();
-                                _send[_send.length] = "overpaymentyear=" + DelCommas("overpayment-year");
-                                _send[_send.length] = "overpaymentday=" + DelCommas("overpayment-day");
-                                _send[_send.length] = "overpaymentinterest=" + DelCommas("overpayment-interest");
-                                _send[_send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
+                            if (calInterestYesNo == "Y") {
+                                send[send.length] = "overpaymentdatestart=" + $("#overpayment-date-start").val();
+                                send[send.length] = "overpaymentdateend=" + $("#overpayment-date-end").val();
+                                send[send.length] = "overpaymentyear=" + DelCommas("overpayment-year");
+                                send[send.length] = "overpaymentday=" + DelCommas("overpayment-day");
+                                send[send.length] = "overpaymentinterest=" + DelCommas("overpayment-interest");
+                                send[send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
                             }
                         }
                     }
 
-                    if (_statusPayment == "2" || parseInt(_overpayment) <= 0) {
-                        _send[_send.length] = "calinterestyesno=" + _calInterestYesNo;
+                    if (statusPayment == "2" || parseInt(overpayment) <= 0) {
+                        send[send.length] = "calinterestyesno=" + calInterestYesNo;
 
-                        if (_calInterestYesNo == "Y") {
-                            _send[_send.length] = "payrepaydatestart=" + $("#pay-repay-date-start").val();
-                            _send[_send.length] = "payrepaydateend=" + $("#pay-repay-date-end").val();
-                            _send[_send.length] = "payrepayyear=" + DelCommas("pay-repay-year");
-                            _send[_send.length] = "payrepayday=" + DelCommas("pay-repay-day");
-                            _send[_send.length] = "payrepayinterest=" + DelCommas("pay-repay-interest");
-                            _send[_send.length] = "payrepaytotalinterest=" + DelCommas("total-interest-pay-repay");
+                        if (calInterestYesNo == "Y") {
+                            send[send.length] = "payrepaydatestart=" + $("#pay-repay-date-start").val();
+                            send[send.length] = "payrepaydateend=" + $("#pay-repay-date-end").val();
+                            send[send.length] = "payrepayyear=" + DelCommas("pay-repay-year");
+                            send[send.length] = "payrepayday=" + DelCommas("pay-repay-day");
+                            send[send.length] = "payrepayinterest=" + DelCommas("pay-repay-interest");
+                            send[send.length] = "payrepaytotalinterest=" + DelCommas("total-interest-pay-repay");
                         }
                     }
-
-                    _send[_send.length] = "datetimepayment=" + $("#payment-date").val();
-                    _send[_send.length] = "capital=" + DelCommas("capital");
-                    _send[_send.length] = "totalinterest=" + DelCommas("total-interest");
-                    _send[_send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");
-                    _send[_send.length] = "totalpayment=" + DelCommas("total-payment");
-                    _send[_send.length] = "pay=" + DelCommas("pay");
-                    _send[_send.length] = "channel=" + _payChannel.val();
-                    _send[_send.length] = "receiptno=" + $("#receipt-no").val();
-                    _send[_send.length] = "receiptbookno=" + $("#receipt-book-no").val();
-                    _send[_send.length] = "receiptdate=" + $("#receipt-date").val();
-                    _send[_send.length] = "receiptsendno=" + $("#receipt-send-no").val();
-                    _send[_send.length] = "receiptfund=" + $("#receipt-fund").val();
-                    _send[_send.length] = "receiptcopy=" + _receiptCopy;
-
+                    */
+                    send[send.length] = "capital=" + DelCommas("capital");
+                    send[send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");
+                    send[send.length] = "pay=" + DelCommas("pay");
+                    send[send.length] = "overpaymenttotalinterestbefore=" + DelCommas("total-interest-overpayment-before");
+                    send[send.length] = "payrepaytotalinterest=" + DelCommas("total-interest-pay-repay");
+                    send[send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
+                    send[send.length] = "remainaccruedinterest=" + DelCommas("remain-accrued-interest");                    
                     /*
-                    if (_payChannel.val() == 1) {
-                        _send[_send.length] = "receiptno=" + $("#receipt-no-hidden").val();
-                        _send[_send.length] = "receiptbookno=" + $("#receipt-book-no-hidden").val();
-                        _send[_send.length] = "receiptdate=" + $("#receipt-date-hidden").val();
+                    send[send.length] = "totalpayment=" + DelCommas("total-payment");
+                    */                    
+                    send[send.length] = "datetimepayment=" + $("#payment-date").val();
+                    send[send.length] = "channel=" + payChannel.val();
+                    send[send.length] = "receiptno=" + $("#receipt-no").val();
+                    send[send.length] = "receiptbookno=" + $("#receipt-book-no").val();
+                    send[send.length] = "receiptdate=" + $("#receipt-date").val();
+                    send[send.length] = "receiptsendno=" + $("#receipt-send-no").val();
+                    send[send.length] = "receiptfund=" + $("#receipt-fund").val();
+                    send[send.length] = "receiptcopy=" + receiptCopy;                    
+                    /*
+                    if (payChannel.val() == 1) {
+                        send[send.length] = "receiptno=" + $("#receipt-no-hidden").val();
+                        send[send.length] = "receiptbookno=" + $("#receipt-book-no-hidden").val();
+                        send[send.length] = "receiptdate=" + $("#receipt-date-hidden").val();
                     }
                     */
-
-                    if (_payChannel.val() == 2) {
-                        _send[_send.length] = "chequeno=" + $("#cheque-no-hidden").val();
-                        _send[_send.length] = "chequebank=" + $("#cheque-bank-hidden").val();
-                        _send[_send.length] = "chequebankbranch=" + $("#cheque-bank-branch-hidden").val();
-                        _send[_send.length] = "chequedate=" + $("#cheque-date-hidden").val();
+                    
+                    if (payChannel.val() == 2) {
+                        send[send.length] = "chequeno=" + $("#cheque-no-hidden").val();
+                        send[send.length] = "chequebank=" + $("#cheque-bank-hidden").val();
+                        send[send.length] = "chequebankbranch=" + $("#cheque-bank-branch-hidden").val();
+                        send[send.length] = "chequedate=" + $("#cheque-date-hidden").val();
                     }
 
-                    if (_payChannel.val() == 3) {
-                        _send[_send.length] = "cashbank=" + $("#cash-bank-hidden").val();
-                        _send[_send.length] = "cashbankbranch=" + $("#cash-bank-branch-hidden").val();
-                        _send[_send.length] = "cashbankaccount=" + $("#cash-bank-account-hidden").val();
-                        _send[_send.length] = "cashbankaccountno=" + $("#cash-bank-account-no-hidden").val();
-                        _send[_send.length] = "cashbankdate=" + $("#cash-bank-date-hidden").val();
+                    if (payChannel.val() == 3) {
+                        send[send.length] = "cashbank=" + $("#cash-bank-hidden").val();
+                        send[send.length] = "cashbankbranch=" + $("#cash-bank-branch-hidden").val();
+                        send[send.length] = "cashbankaccount=" + $("#cash-bank-account-hidden").val();
+                        send[send.length] = "cashbankaccountno=" + $("#cash-bank-account-no-hidden").val();
+                        send[send.length] = "cashbankdate=" + $("#cash-bank-date-hidden").val();
                     }
 
-                    AddCPTransPayment(_send, "payrepay");
+                    send[send.length] = "lawyerfullname=" + $("#lawyer-fullname-hidden").val();
+                    send[send.length] = "lawyerphonenumber=" + $("#lawyer-phonenumber-hidden").val();
+                    send[send.length] = "lawyermobilenumber=" + $("#lawyer-mobilenumber-hidden").val();
+                    send[send.length] = "lawyeremail=" + $("#lawyer-email-hidden").val();
+
+                    AddCPTransPayment(send, "payrepay");
                 }
             },
             "ยกเลิก": function () {
@@ -991,11 +1150,11 @@ function ConfirmActionCPTransPaymentPayRepay() {
     });
 }
 
-function AddCPTransPayment(_send, _formatPayment) {
-    AddUpdateData("add", "addcptranspayment" + _formatPayment, _send, false, "", "", "", false, function (_result) {
-        var _data = _result.split("<cmd>");
+function AddCPTransPayment(send, formatPayment) {
+    AddUpdateData("add", "addcptranspayment" + formatPayment, send, false, "", "", "", false, function (result) {
+        var data = result.split("<cmd>");
 
-        if (_result == "1") {
+        if (result === "1") {
             GotoSignin();
             return;
         }
@@ -1016,16 +1175,20 @@ function AddCPTransPayment(_send, _formatPayment) {
 
 function ShowDetailTransPayment(_cp2id, _period) {
     $("#period-hidden").val(_period);
-    
+
     LoadForm(($("#dialog-form1").dialog("isOpen") == true ? 2 : 1), "detailtranspayment", true, "", _cp2id, "detail-trans-payment" + _cp2id);
 }
 
 function ResetDetailTransPayment() {
-    $("#period").html($("#period-hidden").val());
-    $("#button-style11").show();
+    var period = $("#period-hidden").val();
+    var periodTotal = $("#list-trans-payment .detail-trans-payment").length;
+
+    $("#dialog-form" + ($("#dialog-form2").is(":visible") ? "2" : "1") + " #period").html(period);
+    $("#detail-trans-payment .button-style1").hide();
+    $("#detail-trans-payment .button-style1." + (parseInt(period) === parseInt(periodTotal) ? "period-last" : "period-not-last")).show();
     $("#button-style12").hide();
     InitCalendar("#pursuant-book-date, #input-date, #state-location-date, #contract-date");
-    InitCalendarFromTo("#education-date-start", false, "#education-date-end", false);
+    InitCalendarFromTo("#education-date-start", false, "#education-date-end", false);    
 
     /*
     $("#channel-detail").slimScroll({
@@ -1132,4 +1295,97 @@ function DownloadReceiptCopy(_file) {
     window.setTimeout(function () {
         $("#dialog-loading").dialog("close");
     }, 500);
+}
+
+function doConfirmActionCPTransPayment(action, ecpTransPaymentID) {
+    var actionMsg = (action == "add" || action == "update") ? "บันทึก" : "ลบ";
+
+    DialogConfirm("ต้องการ" + actionMsg + "ข้อมูลนี้หรือไม่");
+    $("#dialog-confirm").dialog({
+        buttons: {
+            "ตกลง": function () {
+                $(this).dialog("close");
+                               
+                var statusPayment = $("#statuspayment-hidden").val();
+                var period = $("#period-hidden").val();
+                var periodTotal = $("#list-trans-payment .detail-trans-payment").length;                
+                var send = new Array();
+                send[send.length] = "cp2id=" + $("#cp2id").val();
+                send[send.length] = "statuspayment=" + statusPayment;
+                send[send.length] = "ecpTransPaymentID=" + ecpTransPaymentID;
+                send[send.length] = "period=" + period;
+                send[send.length] = "periodtotal=" + periodTotal;
+
+                AddUpdateData(action, (action + "cptranspayment"), send, false, "", "", "", false, function (result) {
+                    if (result == "1") {
+                        GotoSignin();
+                        return;
+                    }
+
+                    DialogConfirm(actionMsg + "ข้อมูลเรียบร้อย");
+                    $("#dialog-confirm").dialog({
+                        buttons: {
+                            "ตกลง": function () {
+                                $(this).dialog("close");
+
+                                CloseFrm(true, '');
+
+                                if (parseInt(periodTotal) === 1)
+                                    GoToPage(1, 9);
+                                else                                   
+                                    LoadForm(1, "adddetailcptranspayment", false, "adddetail-data-trans-payment", $("#cp2id").val(), "");
+                            }
+                        }
+                    });
+                });    
+            },
+            "ยกเลิก": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    /*
+    DialogConfirm("ต้องการลบข้อมูลนี้หรือไม่");
+    $("#dialog-confirm").dialog({
+        buttons: {
+            "ตกลง": function () {
+                $(this).dialog("close");
+
+
+                if (ValidateCPTransPaymentPayRepay() == true) {
+                    var statusPayment = $("#statuspayment-hidden").val();
+                    var payChannel = $("input[name=pay-channel]:checked");
+                    var receiptCopy = $("#receipt-copy").val();
+
+                    if (receiptCopy.length > 0)
+                        receiptCopy = btoa(receiptCopy);
+
+                    var send = new Array();
+                    send[send.length] = "cp2id=" + $("#cp2id").val();
+                    send[send.length] = "statuspayment=" + statusPayment;
+                    send[send.length] = "capital=" + DelCommas("capital");
+                    send[send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");
+                    send[send.length] = "pay=" + DelCommas("pay");
+                    send[send.length] = "overpaymenttotalinterestbefore=" + DelCommas("total-interest-overpayment-before");
+                    send[send.length] = "payrepaytotalinterest=" + DelCommas("total-interest-pay-repay");
+                    send[send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");                    
+                    send[send.length] = "datetimepayment=" + $("#payment-date").val();
+                    send[send.length] = "channel=" + payChannel.val();
+                    send[send.length] = "receiptno=" + $("#receipt-no").val();
+                    send[send.length] = "receiptbookno=" + $("#receipt-book-no").val();
+                    send[send.length] = "receiptdate=" + $("#receipt-date").val();
+                    send[send.length] = "receiptsendno=" + $("#receipt-send-no").val();
+                    send[send.length] = "receiptfund=" + $("#receipt-fund").val();
+                    send[send.length] = "receiptcopy=" + receiptCopy;                    
+
+                    AddCPTransPayment(send, "payrepay");
+                }
+            },
+            "ยกเลิก": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    */
 }

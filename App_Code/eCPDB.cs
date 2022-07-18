@@ -1,7 +1,7 @@
 ﻿/*
 Description         : สำหรับจัดการฐานข้อมูล
 Date Created        : ๐๖/๐๘/๒๕๕๕
-Last Date Modified  : ๒๓/๑๑/๒๕๖๔
+Last Date Modified  : ๑๑/๐๗/๒๕๖๕
 Create By           : Yutthaphoom Tawana
 */
 
@@ -14,14 +14,14 @@ using System.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class eCPDB
-{
+public class eCPDB {
+    public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=DB4Dev;User ID=A;Password=gv@12345;Connect Timeout=600;Asynchronous Processing=true;";
     /*
-    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
-    */
     public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=Infinity;User ID=MUstudent53;Password=oydL7dKk53;Connect Timeout=600;Asynchronous Processing=true;";
+    */
     /*
     public const string CONNECTION_STRING = "Server=stddb.mahidol;Database=MUStudent;User ID=MUstudent53;Password=oydL7dKk53;Asynchronous Processing=true;";
+    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Connect Timeout=600;Asynchronous Processing=true;";
     public const string CONNECTION_STRING = "Server=.\\SQLEXPRESS;Database=eContractPenalty;User ID=sa;Password=123456;Asynchronous Processing=true;";
     */
     private const string STORE_PROC = "sp_ecpEContractPenalty";
@@ -1820,7 +1820,7 @@ public class eCPDB
             new SqlParameter("@cp2id", (!String.IsNullOrEmpty(_cp2id) ? _cp2id : null))
         );
 
-        string[,] _data = new string[_ds.Tables[0].Rows.Count, 43];
+        string[,] _data = new string[_ds.Tables[0].Rows.Count, 52];
 
         foreach (DataRow _dr in _ds.Tables[0].Rows) {
             _data[_i, 0] = _dr["ID"].ToString();
@@ -1866,6 +1866,16 @@ public class eCPDB
             _data[_i, 40] = _dr["CashBankAccountNo"].ToString();
             _data[_i, 41] = _dr["CashBankDate"].ToString();
             _data[_i, 42] = _dr["ReceiptCopy"].ToString();
+            _data[_i, 43] = _dr["FormatPayment"].ToString();
+            _data[_i, 43] = _dr["FormatPayment"].ToString();
+            _data[_i, 44] = _dr["SubtotalPenalty"].ToString();
+            _data[_i, 45] = _dr["TotalPenalty"].ToString();
+            _data[_i, 46] = _dr["OverpaymentTotalInterestBefore"].ToString();
+            _data[_i, 47] = _dr["Overpay"].ToString();
+            _data[_i, 48] = _dr["LawyerFullname"].ToString();
+            _data[_i, 49] = _dr["LawyerPhoneNumber"].ToString();
+            _data[_i, 50] = _dr["LawyerMobileNumber"].ToString();
+            _data[_i, 51] = _dr["LawyerEmail"].ToString();
         }
 
         _ds.Dispose();
@@ -4117,28 +4127,31 @@ public class eCPDB
         }
 
         if (_c.Request["cmd"].Equals("addcptranspaymentfullrepay")) {
-            string _capital = _c.Request["capital"];
-            string _totalInterest = _c.Request["totalinterest"];
-            string _totalAccruedInterest = _c.Request["totalaccruedinterest"];
-            string _totalPayment = _c.Request["totalpayment"];
-            string _pay = _c.Request["pay"];
-            string[] _payRemain = new string[5];
-            string[] _channelDetail = new string[2];
-
-            _payRemain = eCPUtil.CalChkBalance(_capital, _totalInterest, _totalAccruedInterest, _totalPayment, _pay);
-
+            string capital = _c.Request["capital"];
+            /*
+            string totalAccruedInterest = _c.Request["totalaccruedinterest"];
+            */
+            string totalPayment = _c.Request["totalpayment"];
+            string totalInterestOverpayment = _c.Request["overpaymenttotalinterest"];
+            string pay = _c.Request["pay"];
+            string overpay = _c.Request["overpay"];
+            string[] payRemain = new string[5];
+            string[] channelDetail = new string[2];
+            /*
+            payRemain = eCPUtil.CalChkBalance(capital, totalInterest, totalAccruedInterest, totalPayment, pay);
+            */
             switch (int.Parse(_c.Request["channel"])) {
                 case 1: 
-                    _channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
+                    channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
                 case 2:
-                    _channelDetail[0] = "ChequeNo, ChequeBank, ChequeBankBranch, ChequeDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["chequeno"] + "', '" + _c.Request["chequebank"] + "', '" + _c.Request["chequebankbranch"] + "', '" + _c.Request["chequedate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    channelDetail[0] = "ChequeNo, ChequeBank, ChequeBankBranch, ChequeDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
+                    channelDetail[1] = "'" + _c.Request["chequeno"] + "', '" + _c.Request["chequebank"] + "', '" + _c.Request["chequebankbranch"] + "', '" + _c.Request["chequedate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
                 case 3:
-                    _channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', " + (String.IsNullOrEmpty(_c.Request["cashbankaccountno"]) ? "NULL" : ("'" + _c.Request["cashbankaccountno"] + "'")) + ", '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
+                    channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', " + (String.IsNullOrEmpty(_c.Request["cashbankaccountno"]) ? "NULL" : ("'" + _c.Request["cashbankaccountno"] + "'")) + ", '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
             }
 
@@ -4149,11 +4162,36 @@ public class eCPDB
                         "StatusPayment = 3, " +
                         "FormatPayment = 1 " +
                         "WHERE ID = " + _c.Request["cp2id"] + "; " +
-                        "INSERT INTO ecpTransPayment ";
+                        "INSERT INTO ecpTransPayment " +
+                        "(RCID, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail)" +
+                        "VALUES " +
+                        "(" +
+                        _c.Request["cp2id"] + ", " +
+                        totalInterestOverpayment + ", " +
+                        "'" + _c.Request["datetimepayment"] + "', " +
+                        capital + ", " +
+                        totalInterestOverpayment + ", " +
+                        "0, " +
+                        totalPayment + ", " +
+                        capital + ", " +
+                        totalInterestOverpayment + ", " +
+                        pay + ", " +
+                        overpay + ", " +
+                        "0, " +
+                        "0, " +
+                        "0, " +
+                        "0, " +
+                        _c.Request["channel"] + ", " +
+                        channelDetail[1] + ", " +
+                        "'" + _c.Request["lawyerfullname"] + "', " +
+                        (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["lawyeremail"]) ? "NULL" : ("'" + _c.Request["lawyeremail"] + "'")) + ")";
 
+            /*
             if (int.Parse(_c.Request["overpayment"]) > 0) {
                 if (_c.Request["calinterestyesno"].Equals("Y")) {
-                    _command += "(RCID, CalInterestYesNo, OverpaymentDateStart, OverpaymentDateEnd, OverpaymentYear, OverpaymentDay, OverpaymentInterest, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+                    _command += "(RCID, CalInterestYesNo, OverpaymentDateStart, OverpaymentDateEnd, OverpaymentYear, OverpaymentDay, OverpaymentInterest, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
                                 _c.Request["cp2id"] + ", " +
@@ -4165,93 +4203,191 @@ public class eCPDB
                                 _c.Request["overpaymentinterest"] + ", " +
                                 _c.Request["overpaymenttotalinterest"] + ", " +
                                 "'" + _c.Request["datetimepayment"] + "', " +
-                                _capital + ", " +
-                                _totalInterest + ", " +
-                                _totalAccruedInterest + ", " +
-                                _totalPayment + ", " +
-                                _payRemain[0] + ", " +
-                                _payRemain[1] + ", " +
-                                _pay + ", " +
-                                _payRemain[2] + ", " +
-                                _payRemain[3] + ", " +
-                                _payRemain[4] + ", " +
-                                _payRemain[2] + ", " +
-                                _c.Request["channel"] + ", " +
-                                _channelDetail[1] + ")";
+                                capital + ", " +
+                                totalInterest + ", " +
+                                totalAccruedInterest + ", " +
+                                totalPayment + ", " +
+                                payRemain[0] + ", " +
+                                payRemain[1] + ", " +
+                                pay + ", " +
+                                overpay + ", " +
+                                payRemain[2] + ", " +
+                                payRemain[3] + ", " +
+                                payRemain[4] + ", " +
+                                payRemain[2] + ", " +
+                                c.Request["channel"] + ", " +
+                                channelDetail[1] + ")";
                 }
 
                 if (_c.Request["calinterestyesno"].Equals("N")) {
-                    _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+                    _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
                                 _c.Request["cp2id"] + ", " +
                                 "'" + _c.Request["calinterestyesno"] + "', " +
                                 "'" + _c.Request["datetimepayment"] + "', " +
-                                _capital + ", " +
-                                _totalInterest + ", " +
-                                _totalAccruedInterest + ", " +
-                                _totalPayment + ", " +
-                                _payRemain[0] + ", " +
-                                _payRemain[1] + ", " +
-                                _pay + ", " +
-                                _payRemain[2] + ", " +
-                                _payRemain[3] + ", " +
-                                _payRemain[4] + ", " +
-                                _payRemain[2] + ", " +
+                                capital + ", " +
+                                totalInterest + ", " +
+                                totalAccruedInterest + ", " +
+                                totalPayment + ", " +
+                                payRemain[0] + ", " +
+                                payRemain[1] + ", " +
+                                pay + ", " +
+                                overpay + ", " +
+                                payRemain[2] + ", " +
+                                payRemain[3] + ", " +
+                                payRemain[4] + ", " +
+                                payRemain[2] + ", " +
                                 _c.Request["channel"] + ", " +
-                                _channelDetail[1] + ")";
+                                channelDetail[1] + ")";
                 }
             }
 
             if (int.Parse(_c.Request["overpayment"]) <= 0) {
-                _command += "(RCID, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+                _command += "(RCID, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                             "VALUES " +
                             "(" +
                             _c.Request["cp2id"] + ", " +
                             "'" + _c.Request["datetimepayment"] + "', " +
-                            _capital + ", " +
-                            _totalInterest + ", " +
-                            _totalAccruedInterest + ", " +
-                            _totalPayment + ", " +
-                            _payRemain[0] + ", " +
-                            _payRemain[1] + ", " +
-                            _pay + ", " +
-                            _payRemain[2] + ", " +
-                            _payRemain[3] + ", " +
-                            _payRemain[4] + ", " +
-                            _payRemain[2] + ", " +
+                            capital + ", " +
+                            totalInterest + ", " +
+                            totalAccruedInterest + ", " +
+                            totalPayment + ", " +
+                            payRemain[0] + ", " +
+                            payRemain[1] + ", " +
+                            pay + ", " +
+                            overpay + ", " +
+                            payRemain[2] + ", " +
+                            payRemain[3] + ", " +
+                            payRemain[4] + ", " +
+                            payRemain[2] + ", " +
                             _c.Request["channel"] + ", " +
-                            _channelDetail[1] + ")";
+                            channelDetail[1] + ")";
             }
+            */
         }
 
         if (_c.Request["cmd"].Equals("addcptranspaymentpayrepay")) {
-            string _statusPayment = _c.Request["statuspayment"];
-            string _capital = _c.Request["capital"];
-            string _totalInterest = _c.Request["totalinterest"];
-            string _totalAccruedInterest = _c.Request["totalaccruedinterest"];
-            string _totalPayment = _c.Request["totalpayment"];
-            string _pay = _c.Request["pay"];
-            string[] _payRemain = new string[5];
-            string[] _channelDetail = new string[2];
-
+            string statusPayment = _c.Request["statuspayment"];            
+            string capital = _c.Request["capital"];
+            string totalAccruedInterest = _c.Request["totalaccruedinterest"];
+            string totalInterestOverpaymentBefore = _c.Request["overpaymenttotalinterestbefore"];
+            string totalInterestPayRepay = _c.Request["payrepaytotalinterest"];
+            string totalInterestOverpayment = _c.Request["overpaymenttotalinterest"];
+            string remainAccruedInterest = _c.Request["remainaccruedinterest"];
+            /*
+            string totalPayment = _c.Request["totalpayment"];
+            */
+            string pay = _c.Request["pay"];
+            /*
+            string[] payRemain = new string[5];
+            */
+            string[] channelDetail = new string[2];
+            /*
             _payRemain = eCPUtil.CalChkBalance(_capital, _totalInterest, _totalAccruedInterest, _totalPayment, _pay);
-            
+            */
+
+            double interest;
+            double totalPayment;
+            double payCapital;
+            double payInterest;
+            double remainCapital;            
+
+            interest = (
+                (!String.IsNullOrEmpty(totalInterestOverpaymentBefore) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpaymentBefore))) : 0) +
+                (!String.IsNullOrEmpty(totalInterestPayRepay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestPayRepay))) : 0) +
+                (!String.IsNullOrEmpty(totalInterestOverpayment) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpayment))) : 0)
+            );
+            totalPayment = (
+                (!String.IsNullOrEmpty(capital) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(capital))) : 0) +
+                interest
+            );
+            payCapital = (
+                (!String.IsNullOrEmpty(pay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : 0) -
+                (!String.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalAccruedInterest))) : 0) -
+                (!String.IsNullOrEmpty(totalInterestOverpaymentBefore) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpaymentBefore))) : 0) -
+                (!String.IsNullOrEmpty(totalInterestPayRepay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestPayRepay))) : 0) -
+                (!String.IsNullOrEmpty(totalInterestOverpayment) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpayment))) : 0)
+            );
+            payCapital = (payCapital < 0 ? 0 : payCapital);
+            remainCapital = (
+                (!String.IsNullOrEmpty(capital) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(capital))) : 0) -
+                payCapital
+            );
+            remainCapital = (remainCapital < 0 ? 0 : remainCapital);
+            /*
+            remainAccruedInterest = (
+                (
+                    (!String.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalAccruedInterest))) : 0) +
+                    (!String.IsNullOrEmpty(totalInterestOverpaymentBefore) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpaymentBefore))) : 0) +
+                    (!String.IsNullOrEmpty(totalInterestPayRepay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestPayRepay))) : 0) +
+                    (!String.IsNullOrEmpty(totalInterestOverpayment) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpayment))) : 0)
+                ) -
+                (!String.IsNullOrEmpty(pay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : 0)
+            );
+            remainAccruedInterest = (remainAccruedInterest < 0 ? 0 : remainAccruedInterest);
+            */
+            payInterest = (
+                interest +
+                (!String.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalAccruedInterest))) : 0)
+                /*
+                (
+                    interest +
+                    (!String.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalAccruedInterest))) : 0)
+                ) -
+                remainAccruedInterest
+                */
+            );
+
             switch (int.Parse(_c.Request["channel"])) {
                 case 1:
-                    _channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
+                    channelDetail[1] = "'" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
                 case 2:
-                    _channelDetail[0] = "ChequeNo, ChequeBank, ChequeBankBranch, ChequeDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["chequeno"] + "', '" + _c.Request["chequebank"] + "', '" + _c.Request["chequebankbranch"] + "', '" + _c.Request["chequedate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    channelDetail[0] = "ChequeNo, ChequeBank, ChequeBankBranch, ChequeDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
+                    channelDetail[1] = "'" + _c.Request["chequeno"] + "', '" + _c.Request["chequebank"] + "', '" + _c.Request["chequebankbranch"] + "', '" + _c.Request["chequedate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
                 case 3:
-                    _channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
-                    _channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', " + (String.IsNullOrEmpty(_c.Request["cashbankaccountno"]) ? "NULL" : ("'" + _c.Request["cashbankaccountno"] + "'")) + ", '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
+                    channelDetail[0] = "CashBank, CashBankBranch, CashBankAccount, CashBankAccountNo, CashBankDate, ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
+                    channelDetail[1] = "'" + _c.Request["cashbank"] + "', '" + _c.Request["cashbankbranch"] + "', '" + _c.Request["cashbankaccount"] + "', " + (String.IsNullOrEmpty(_c.Request["cashbankaccountno"]) ? "NULL" : ("'" + _c.Request["cashbankaccountno"] + "'")) + ", '" + _c.Request["cashbankdate"] + "', '" + _c.Request["receiptno"] + "', '" + _c.Request["receiptbookno"] + "', '" + _c.Request["receiptdate"] + "', '" + _c.Request["receiptsendno"] + "', '" + _c.Request["receiptfund"] + "', " + (String.IsNullOrEmpty(_c.Request["receiptcopy"]) ? "NULL" : ("'" + _c.Request["receiptcopy"] + "'"));
                     break;
             }
 
+            _what = "UPDATE, INSERT";
+            _where = "ecpTransRequireContract, ecpTransPayment";
+            _function = "AddUpdateData, addcptranspaymentpayrepay";
+            _command += "UPDATE ecpTransRequireContract SET " +
+                        "StatusPayment = " + ((remainCapital.Equals(0) && double.Parse(remainAccruedInterest).Equals(0)) ? "3" : "2") + ", " +
+                        "FormatPayment = 2 " +
+                        "WHERE ID = " + _c.Request["cp2id"] + "; " +
+                        "INSERT INTO ecpTransPayment " +
+                        "(RCID, OverpaymentTotalInterestBefore, OverpaymentTotalInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail)" +
+                        "VALUES " +
+                        "(" +
+                        _c.Request["cp2id"] + ", " +
+                        totalInterestOverpaymentBefore + ", " +
+                        totalInterestOverpayment + ", " +
+                        totalInterestPayRepay + ", " +
+                        "'" + _c.Request["datetimepayment"] + "', " +
+                        capital + ", " +
+                        interest.ToString() + ", " +
+                        totalAccruedInterest + ", " +
+                        totalPayment.ToString() + ", " +
+                        payCapital.ToString() + ", " +
+                        payInterest.ToString() + ", " +
+                        pay + ", " +
+                        remainCapital.ToString() + ", " +
+                        "0, " +
+                        remainAccruedInterest + ", " +                        
+                        remainCapital.ToString() + ", " +
+                        _c.Request["channel"] + ", " +
+                        channelDetail[1] + ", " +
+                        "'" + _c.Request["lawyerfullname"] + "', " +
+                        (String.IsNullOrEmpty(_c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + _c.Request["lawyerphonenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + _c.Request["lawyermobilenumber"] + "'")) + ", " +
+                        (String.IsNullOrEmpty(_c.Request["lawyeremail"]) ? "NULL" : ("'" + _c.Request["lawyeremail"] + "'")) + ")";
+            /*
             _what = "UPDATE, INSERT";
             _where = "ecpTransRequireContract, ecpTransPayment";
             _function = "AddUpdateData, addcptranspaymentpayrepay";
@@ -4261,10 +4397,10 @@ public class eCPDB
                         "WHERE ID = " + _c.Request["cp2id"] + "; " +
                         "INSERT INTO ecpTransPayment ";
 
-            if (_statusPayment.Equals("1")) {
-                if (int.Parse(_c.Request["overpayment"]) > 0) {
-                    if (_c.Request["calinterestyesno"].Equals("Y")) {
-                        _command += "(RCID, CalInterestYesNo, OverpaymentDateStart, OverpaymentDateEnd, OverpaymentYear, OverpaymentDay, OverpaymentInterest, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+            if (statusPayment.Equals("1")) {
+                if (int.Parse(c.Request["overpayment"]) > 0) {
+                    if (c.Request["calinterestyesno"].Equals("Y")) {
+                        command += "(RCID, CalInterestYesNo, OverpaymentDateStart, OverpaymentDateEnd, OverpaymentYear, OverpaymentDay, OverpaymentInterest, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                     "VALUES " +
                                     "(" +
                                     _c.Request["cp2id"] + ", " +
@@ -4276,48 +4412,48 @@ public class eCPDB
                                     _c.Request["overpaymentinterest"] + ", " +
                                     _c.Request["overpaymenttotalinterest"] + ", " +
                                     "'" + _c.Request["datetimepayment"] + "', " +
-                                    _capital + ", " +
-                                    _totalInterest + ", " +
-                                    _totalAccruedInterest + ", " +
-                                    _totalPayment + ", " +
-                                    _payRemain[0] + ", " +
-                                    _payRemain[1] + ", " +
-                                    _pay + ", " +
-                                    _payRemain[2] + ", " +
-                                    _payRemain[3] + ", " +
-                                    _payRemain[4] + ", " +
-                                    _payRemain[2] + ", " +
+                                    capital + ", " +
+                                    totalInterest + ", " +
+                                    totalAccruedInterest + ", " +
+                                    totalPayment + ", " +
+                                    payRemain[0] + ", " +
+                                    payRemain[1] + ", " +
+                                    pay + ", " +
+                                    payRemain[2] + ", " +
+                                    payRemain[3] + ", " +
+                                    payRemain[4] + ", " +
+                                    payRemain[2] + ", " +
                                     _c.Request["channel"] + ", " +
-                                    _channelDetail[1] + ")";
+                                    channelDetail[1] + ")";
                     }
 
                     if (_c.Request["calinterestyesno"].Equals("N")) {
-                        _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+                        command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                     "VALUES " +
                                     "(" +
                                     _c.Request["cp2id"] + ", " +
                                     "'" + _c.Request["calinterestyesno"] + "', " +
                                     "'" + _c.Request["datetimepayment"] + "', " +
-                                    _capital + ", " +
-                                    _totalInterest + ", " +
-                                    _totalAccruedInterest + ", " +
-                                    _totalPayment + ", " +
-                                    _payRemain[0] + ", " +
-                                    _payRemain[1] + ", " +
-                                    _pay + ", " +
-                                    _payRemain[2] + ", " +
-                                    _payRemain[3] + ", " +
-                                    _payRemain[4] + ", " +
-                                    _payRemain[2] + ", " +
-                                    _c.Request["channel"] + ", " +
-                                    _channelDetail[1] + ")";
+                                    capital + ", " +
+                                    totalInterest + ", " +
+                                    totalAccruedInterest + ", " +
+                                    totalPayment + ", " +
+                                    payRemain[0] + ", " +
+                                    payRemain[1] + ", " +
+                                    pay + ", " +
+                                    payRemain[2] + ", " +
+                                    payRemain[3] + ", " +
+                                    payRemain[4] + ", " +
+                                    payRemain[2] + ", " +
+                                    c.Request["channel"] + ", " +
+                                    channelDetail[1] + ")";
                     }
                 }
             }
 
-            if (_statusPayment.Equals("2") || int.Parse(_c.Request["overpayment"]) <= 0) {
+            if (statusPayment.Equals("2") || int.Parse(_c.Request["overpayment"]) <= 0) {
                 if (_c.Request["calinterestyesno"].Equals("Y")) {
-                    _command += "(RCID, CalInterestYesNo, PayRepayDateStart, PayRepayDateEnd, PayRepayYear, PayRepayDay, PayRepayInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+                    command += "(RCID, CalInterestYesNo, PayRepayDateStart, PayRepayDateEnd, PayRepayYear, PayRepayDay, PayRepayInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
                                 _c.Request["cp2id"] + ", " +
@@ -4329,43 +4465,80 @@ public class eCPDB
                                 _c.Request["payrepayinterest"] + ", " +
                                 _c.Request["payrepaytotalinterest"] + ", " +
                                 "'" + _c.Request["datetimepayment"] + "', " +
-                                _capital + ", " +
-                                _totalInterest + ", " +
-                                _totalAccruedInterest + ", " +
-                                _totalPayment + ", " +
-                                _payRemain[0] + ", " +
-                                _payRemain[1] + ", " +
-                                _pay + ", " +
-                                _payRemain[2] + ", " +
-                                _payRemain[3] + ", " +
-                                _payRemain[4] + ", " +
-                                _payRemain[2] + ", " +
+                                capital + ", " +
+                                totalInterest + ", " +
+                                totalAccruedInterest + ", " +
+                                totalPayment + ", " +
+                                payRemain[0] + ", " +
+                                payRemain[1] + ", " +
+                                pay + ", " +
+                                payRemain[2] + ", " +
+                                payRemain[3] + ", " +
+                                payRemain[4] + ", " +
+                                payRemain[2] + ", " +
                                 _c.Request["channel"] + ", " +
                                 _channelDetail[1] + ")";
                 }
 
                 if (_c.Request["calinterestyesno"].Equals("N")) {
-                    _command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
+                    command += "(RCID, CalInterestYesNo, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + _channelDetail[0] + ")" +
                                 "VALUES " +
                                 "(" +
                                 _c.Request["cp2id"] + ", " +
                                 "'" + _c.Request["calinterestyesno"] + "', " +
                                 "'" + _c.Request["datetimepayment"] + "', " +
-                                _capital + ", " +
-                                _totalInterest + ", " +
-                                _totalAccruedInterest + ", " +
-                                _totalPayment + ", " +
-                                _payRemain[0] + ", " +
-                                _payRemain[1] + ", " +
-                                _pay + ", " +
-                                _payRemain[2] + ", " +
-                                _payRemain[3] + ", " +
-                                _payRemain[4] + ", " +
-                                _payRemain[2] + ", " +
+                                capital + ", " +
+                                totalInterest + ", " +
+                                totalAccruedInterest + ", " +
+                                totalPayment + ", " +
+                                payRemain[0] + ", " +
+                                payRemain[1] + ", " +
+                                pay + ", " +
+                                payRemain[2] + ", " +
+                                payRemain[3] + ", " +
+                                payRemain[4] + ", " +
+                                payRemain[2] + ", " +
                                 _c.Request["channel"] + ", " +
-                                _channelDetail[1] + ")";
+                                channelDetail[1] + ")";
                 }
             } 
+            */
+        }
+
+        if (_c.Request["cmd"].Equals("delcptranspayment")) {
+            string statusPayment = _c.Request["statuspayment"];
+            int period = int.Parse(_c.Request["period"]);
+            int periodTotal = int.Parse(_c.Request["periodtotal"]);
+
+            if (periodTotal.Equals(1)) {
+                _what = "UPDATE, DELETE";
+                _where = "ecpTransRequireContract, ecpTransPayment";
+                _function = "AddUpdateData, updatecptransrequirecontract, delcptranspayment";
+                _command += "UPDATE ecpTransRequireContract SET " +
+                            "StatusPayment = 1, " +
+                            "FormatPayment = 0 " +
+                            "WHERE ID = " + _c.Request["cp2id"] + "; ";
+            }
+
+            if (periodTotal > 1) {
+                if (statusPayment.Equals("3")) {
+                    _what = "UPDATE, DELETE";
+                    _where = "ecpTransRequireContract, ecpTransPayment";
+                    _function = "AddUpdateData, updatecptransrequirecontract, delcptranspayment";
+                    _command += "UPDATE ecpTransRequireContract SET " +
+                                "StatusPayment = 2 " +
+                                "WHERE ID = " + _c.Request["cp2id"] + "; ";
+                }
+                else {
+                    _what = "DELETE";
+                    _where = "ecpTransPayment";
+                    _function = "AddUpdateData, delcptranspayment";
+                }
+            }
+
+            _command += "DELETE " +
+                        "FROM ecpTransPayment " +
+                        "WHERE (ID = " + _c.Request["ecpTransPaymentID"] + ") AND (RCID = " + _c.Request["cp2id"] + ")";
         }
 
         if (_c.Request["cmd"].Equals("addcptransprosecution")) {

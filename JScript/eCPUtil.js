@@ -1368,7 +1368,7 @@ function LoadForm(
     _send[_send.length] = "action=form";
     _send[_send.length] = "frm=" + _frm;
     _send[_send.length] = "id=" + _id;
-
+    
     SetMsgLoading("กำลังโหลด...");
 
     LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
@@ -2363,17 +2363,22 @@ function FillCalInterestOverpaymentAndPayRepay(_result) {
 }
 
 function CalculateChkBalance() {
-    var _send = new Array();
-    _send[_send.length] = "capital=" + DelCommas("capital");
-    _send[_send.length] = "totalinterest=" + DelCommas("total-interest");
-    _send[_send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");
-    _send[_send.length] = "totalpayment=" + DelCommas("total-payment");
-    _send[_send.length] = "pay=" + DelCommas("pay");
+    var capital = ($("#capital").length > 0 ? DelCommas("capital") : "");
+    var totalInterest = ($("#total-interest").length > 0 ? DelCommas("total-interest") : "");
+    var totalAccruedInterest = ($("#total-accrued-interest").length > 0 ? DelCommas("total-accrued-interest") : "");
+    var totalPayment = ($("#total-payment").length > 0 ? DelCommas("total-payment") : "");
+    var pay = ($("#pay").length > 0 ? DelCommas("pay") : "");
+    var send = new Array();
+    send[send.length] = "capital=" + (capital.length > 0 ? capital : "0.00");
+    send[send.length] = "totalinterest=" + (totalInterest.length > 0 ? totalInterest : "0.00");
+    send[send.length] = "totalaccruedinterest=" + (totalAccruedInterest.length > 0 ? totalAccruedInterest : "0.00");
+    send[send.length] = "totalpayment=" + (totalPayment.length > 0 ? totalPayment : "0.00");
+    send[send.length] = "pay=" + (pay.length > 0 ? pay : "0.00");
 
     SetMsgLoading("");
 
-    CalculateFrm("chkbalance", _send, function (_result) {
-        FillCalChkBalance(_result);        
+    CalculateFrm("chkbalance", send, function (result) {
+        FillCalChkBalance(result);
     });
 }
 
@@ -2497,7 +2502,11 @@ function ShowDocEContract(
     _file
 ) {
     $("#report-e-contract" + _sid).addClass("active");
+    $("#report-e-contract" + _sid).removeClass("active");
 
+    window.open((_path + _file), "_blank");
+    
+    /*
     var _send = new Array();
     _send[_send.length] = "action=econtract";
     _send[_send.length] = "path=" + _path;
@@ -2515,4 +2524,6 @@ function ShowDocEContract(
 
         window.open(_path + _file, "_blank");
     });
+    */
+
 }

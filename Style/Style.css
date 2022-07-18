@@ -6118,18 +6118,31 @@ a.link-disable:hover {
 #add-cp-trans-payment #cal-interest-overpayment-input #total-interest-overpayment-unit-label, #add-cp-trans-payment #cal-interest-pay-repay-input #total-interest-pay-repay-unit-label,
 #add-cp-trans-payment #detail-payment-input #capital-label,
 #add-cp-trans-payment #detail-payment-input #capital-unit-label,
-#add-cp-trans-payment #detail-payment-input #total-interest-label,
-#add-cp-trans-payment #detail-payment-input #total-interest-unit-label,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-before-label,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-before-unit-label,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-label,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-unit-label,
 #add-cp-trans-payment #detail-payment-input #total-accrued-interest-label,
 #add-cp-trans-payment #detail-payment-input #total-payment-label,
 #add-cp-trans-payment #detail-payment-input #total-payment-unit-label,
 #add-cp-trans-payment #detail-payment-input #pay-label,
 #add-cp-trans-payment #detail-payment-input #pay-unit-label,
+#add-cp-trans-payment #detail-payment-input #overpay-label,
+#add-cp-trans-payment #detail-payment-input #overpay-unit-label,
+#add-cp-trans-payment #detail-payment-input #pay-capital-label,
+#add-cp-trans-payment #detail-payment-input #pay-capital-unit-label,
+#add-cp-trans-payment #detail-payment-input #remain-capital-label,
+#add-cp-trans-payment #detail-payment-input #remain-capital-unit-label,
+#add-cp-trans-payment #detail-payment-input #remain-accrued-interest-label,
+#add-cp-trans-payment #detail-payment-input #remain-accrued-interest-unit-label,
 #add-cp-trans-payment #detail-payment-input #payment-date-label,
 #add-cp-trans-payment #detail-payment-input #channel-label,
 #add-cp-trans-payment #detail-payment-input #channel-input #pay-channel1-label,
 #add-cp-trans-payment #detail-payment-input #channel-input #pay-channel2-label,
 #add-cp-trans-payment #detail-payment-input #channel-input #pay-channel3-label,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-label,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input .label,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input .unit,
 #add-cp-trans-payment #detail-receipt-input #receipt-no-label,
 #add-cp-trans-payment #detail-receipt-input #receipt-book-no-label,
 #add-cp-trans-payment #detail-receipt-input #receipt-date-label,
@@ -6148,11 +6161,17 @@ a.link-disable:hover {
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-interest-input, #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-interest-input,
 #add-cp-trans-payment #cal-interest-overpayment-input #total-interest-overpayment-input, #add-cp-trans-payment #cal-interest-pay-repay-input #total-interest-pay-repay-input,
 #add-cp-trans-payment #detail-payment-input #capital-input,
-#add-cp-trans-payment #detail-payment-input #total-interest-input,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-before-input,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-input,
 #add-cp-trans-payment #detail-payment-input #total-accrued-interest-input,
 #add-cp-trans-payment #detail-payment-input #total-payment-input,
 #add-cp-trans-payment #detail-payment-input #pay-input,
+#add-cp-trans-payment #detail-payment-input #overpay-input,
+#add-cp-trans-payment #detail-payment-input #pay-capital-input,
+#add-cp-trans-payment #detail-payment-input #remain-capital-input,
+#add-cp-trans-payment #detail-payment-input #remain-accrued-interest-input,
 #add-cp-trans-payment #detail-payment-input #payment-date-input,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input .input,
 #add-cp-trans-payment #detail-receipt-input #receipt-no-input,
 #add-cp-trans-payment #detail-receipt-input #receipt-book-no-input,
 #add-cp-trans-payment #detail-receipt-input #receipt-date-input,
@@ -6220,25 +6239,37 @@ a.link-disable:hover {
     color: #000000;
 }
 
-#add-cp-trans-payment #cal-interest-overpayment-input, #add-cp-trans-payment #cal-interest-pay-repay-input {
+#add-cp-trans-payment #cal-interest-overpayment-input,
+#add-cp-trans-payment #cal-interest-pay-repay-input {
     height: 156px;
     margin-top: 10px;
 } 
 
-#add-cp-trans-payment #cal-interest-overpayment-label, #add-cp-trans-payment #cal-interest-pay-repay-label {
+#add-cp-trans-payment #cal-interest-overpayment-label,
+#add-cp-trans-payment #cal-interest-pay-repay-label {
     height: 108px;
     margin-top: 52px;
-} 
+}
 
-#add-cp-trans-payment #detail-payment-label {
-    height: 146px;
-    margin-top: 105px;
-} 
+#add-cp-trans-payment #format-payment-full-repay #detail-payment-label {
+    height: 162px;
+    margin-top: 121px;
+}
 
-#add-cp-trans-payment #detail-payment-input {
-    height: 247px;
+#add-cp-trans-payment #format-payment-pay-repay #detail-payment-label {
+    height: 227px;
+    margin-top: 186px;
+}
+
+#add-cp-trans-payment #format-payment-full-repay #detail-payment-input,
+#add-cp-trans-payment #format-payment-pay-repay #detail-payment-input {
+    height: 279px;
     margin-top: 10px;
-} 
+}
+
+#add-cp-trans-payment #format-payment-pay-repay #detail-payment-input {
+    height: 409px;
+}
 
 #add-cp-trans-payment #detail-receipt-label {
     height: 239px;
@@ -6248,7 +6279,7 @@ a.link-disable:hover {
 #add-cp-trans-payment #detail-receipt-input {
     height: 433px;
     margin-top: 10px;
-} 
+}
 
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-label,
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-date-start-label,
@@ -6256,17 +6287,23 @@ a.link-disable:hover {
 #add-cp-trans-payment #cal-interest-overpayment-input #overpayment-interest-label,
 #add-cp-trans-payment #cal-interest-overpayment-input #total-interest-overpayment-label,
 #add-cp-trans-payment #detail-payment-input #capital-label,
-#add-cp-trans-payment #detail-payment-input #total-interest-label,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-before-label,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-label,
 #add-cp-trans-payment #detail-payment-input #total-accrued-interest-label,
 #add-cp-trans-payment #detail-payment-input #total-payment-label,
 #add-cp-trans-payment #detail-payment-input #pay-label,
+#add-cp-trans-payment #detail-payment-input #overpay-label,
+#add-cp-trans-payment #detail-payment-input #pay-capital-label,
+#add-cp-trans-payment #detail-payment-input #remain-accrued-interest-label,
+#add-cp-trans-payment #detail-payment-input #remain-capital-label,
 #add-cp-trans-payment #detail-payment-input #payment-date-label,
 #add-cp-trans-payment #detail-payment-input #channel-label,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input .label,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-date-start-label,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-year-day-label,
 #add-cp-trans-payment #cal-interest-pay-repay-input #pay-repay-interest-label,
 #add-cp-trans-payment #cal-interest-pay-repay-input #total-interest-pay-repay-label {
-    width: 162px;
+    width: 183px;
 }
 
 #add-cp-trans-payment #detail-receipt-input #receipt-no-label,
@@ -6308,12 +6345,17 @@ a.link-disable:hover {
 #add-cp-trans-payment #cal-interest-overpayment-input #total-interest-overpayment-input,
 #add-cp-trans-payment #cal-interest-pay-repay-input #total-interest-pay-repay-input,
 #add-cp-trans-payment #detail-payment-input #capital-input,
-#add-cp-trans-payment #detail-payment-input #total-interest-input,
+#add-cp-trans-payment #detail-payment-input #total-interest-overpayment-input,
 #add-cp-trans-payment #detail-payment-input #total-accrued-interest-input,
+#add-cp-trans-payment #detail-payment-input #remain-accrued-interest-input,
 #add-cp-trans-payment #detail-payment-input #total-payment-input,
 #add-cp-trans-payment #detail-payment-input #pay-input,
-#add-cp-trans-payment #detail-payment-input #payment-date-input {
-    width: 114px;
+#add-cp-trans-payment #detail-payment-input #overpay-input,
+#add-cp-trans-payment #detail-payment-input #total-pay-capital-input,
+#add-cp-trans-payment #detail-payment-input #remain-capital-input,
+#add-cp-trans-payment #detail-payment-input #payment-date-input,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input .input {
+    width: 125px;
 }
 
 #detail-cp-trans-payment #status-payment-record-input .radio,
@@ -6352,7 +6394,20 @@ a.link-disable:hover {
 }
 
 #add-cp-trans-payment .button-style1 {
-    width: 409px;
+    width: 273px;
+}
+
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-label,
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input {
+    float: none;
+}
+
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-label {    
+    font-weight: bold;
+}
+
+#add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input {
+    margin-top: 13px;
 }
 
 #add-detail-pay-channel .form-label-discription-style {
@@ -6444,14 +6499,14 @@ a.link-disable:hover {
     float: none;
     height: 20px;
     padding-top: 8px;
-    width: 180px;
+    width: 279px;
 }
 
 #detail-trans-payment .form-input-style {
     float: none;
     line-height: 28px;
     font-size: 12px;
-    width: 449px;
+    width: 690px;
 }
 
 #detail-trans-payment .form-input-style span {
@@ -6503,13 +6558,21 @@ a.link-disable:hover {
 }
 
 #detail-trans-payment .button-style1 {
-    position: relative;
-    left: 278px;
+    position: relative;    
+}
+
+#detail-trans-payment .button-style1.period-not-last {
     width: 87px;
+    left: 448px;
+}
+
+#detail-trans-payment .button-style1.period-last {
+    width: 182px;
+    left: 403px;
 }
 
 #detail-trans-payment #box-detail-trans-payment #list-detail-trans-payment {
-    width: 650px;
+    width: 985px;
 }
 
 #addupdate-cp-trans-prosecution {
