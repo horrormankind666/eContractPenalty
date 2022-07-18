@@ -17,7 +17,9 @@
     <script src="JScript/eCPUtil.js" language="javascript" type="text/javascript"></script>    
 </head>
 <body>
-    <div class="body-main" align="center">
+    <div
+        class="body-main"
+        align="center">
         <div class="main-indent">
             <div class="content-layout">
                 <div id="top-page"></div>
@@ -25,10 +27,23 @@
             </div>
         </div>
     </div>
-    <div class="body-footer" align="center"><div class="footer-content"></div></div>
-    <div id="dialog-loading" style="display:none"></div>
-    <div id="dialog-message" style="display:none"></div>
-    <div id="dialog-form1" style="display:none;"></div>
+    <div
+        class="body-footer"
+        align="center">
+        <div class="footer-content"></div>
+    </div>
+    <div
+        id="dialog-loading"
+        style="display:none">
+    </div>
+    <div
+        id="dialog-message"
+        style="display:none">
+    </div>
+    <div
+        id="dialog-form1"
+        style="display:none;">
+    </div>
 </body>
 <script language="javascript" type="text/javascript">
     $(window).resize(function () {

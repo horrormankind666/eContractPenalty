@@ -32,25 +32,58 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.sandbox.min.js" language="javascript" type="text/javascript"></script>
 </head>
 <body>
-    <div class="body-main" align="center">
+    <div
+        class="body-main"
+        align="center">
         <div class="main-indent">
             <div class="content-layout">
                 <div id="sticky">
-                    <div class="head" id="head-content"></div>
-                    <div class="menu-bar-main" id="menu-bar-content"></div>
+                    <div
+                        class="head"
+                        id="head-content">
+                    </div>
+                    <div
+                        class="menu-bar-main"
+                        id="menu-bar-content">
+                    </div>
                 </div>
                 <div id="top-page"></div>
-                <div class="content" id="content-content"></div>
+                <div
+                    class="content"
+                    id="content-content">
+                </div>
             </div>
         </div>
     </div>
-    <div class="body-footer" align="center"><div class="footer-content"></div></div>
-    <div id="dialog-loading" style="display:none"></div>
-    <div id="dialog-message" style="display:none"></div>
-    <div id="dialog-confirm" style="display:none"></div>
-    <div id="dialog-form1" style="display:none;"></div>
-    <div id="dialog-form2" style="display:none"></div>
-    <div id="dialog-form3" style="display:none"></div>
+    <div
+        class="body-footer"
+        align="center">
+        <div class="footer-content"></div>
+    </div>
+    <div
+        id="dialog-loading"
+        style="display:none">
+    </div>
+    <div
+        id="dialog-message"
+        style="display:none">
+    </div>
+    <div
+        id="dialog-confirm"
+        style="display:none">
+    </div>
+    <div
+        id="dialog-form1"
+        style="display:none;">
+    </div>
+    <div
+        id="dialog-form2"
+        style="display:none">
+    </div>
+    <div
+        id="dialog-form3"
+        style="display:none">
+    </div>
 </body>
 <script language="javascript" type="text/javascript">
     $(window).resize(function () {

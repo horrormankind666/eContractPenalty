@@ -6,11 +6,9 @@ public partial class Signin: Page {
         object sender,
         EventArgs e
     ) {
-        bool _loginResult;
+        bool loginResult = eCPDB.ChkLogin();
 
-        _loginResult = eCPDB.ChkLogin();
-
-        if (_loginResult)
+        if (loginResult)
             Response.Redirect("index.aspx");
     }
 }
