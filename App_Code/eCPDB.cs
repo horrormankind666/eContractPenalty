@@ -4140,6 +4140,15 @@ public class eCPDB {
             /*
             payRemain = eCPUtil.CalChkBalance(capital, totalInterest, totalAccruedInterest, totalPayment, pay);
             */
+
+            double totalPay;
+
+            totalPay = (
+                (!String.IsNullOrEmpty(totalInterestOverpayment) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpayment))) : 0) +
+                (!String.IsNullOrEmpty(pay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : 0) +
+                (!String.IsNullOrEmpty(overpay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(overpay))) : 0)
+            );
+
             switch (int.Parse(_c.Request["channel"])) {
                 case 1: 
                     channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
@@ -4175,7 +4184,7 @@ public class eCPDB {
                         totalPayment + ", " +
                         capital + ", " +
                         totalInterestOverpayment + ", " +
-                        pay + ", " +
+                        totalPay + ", " +
                         overpay + ", " +
                         "0, " +
                         "0, " +

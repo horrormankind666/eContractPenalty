@@ -5,9 +5,7 @@ Last Date Modified  : ๑๐/๐๗/๒๕๖๕
 Create By           : Yutthaphoom Tawana
 */
 
-using Org.BouncyCastle.Asn1.Ocsp;
 using System;
-using System.Activities.Statements;
 using System.Collections;
 using System.Web;
 
@@ -393,7 +391,7 @@ public class eCPDataPayment {
                     "       <div class='clear'></div>" +
                     "       <div>" +
                     "           <div class='content-left' id='total-interest-overpayment-label'>จำนวนเงินที่หักชำระดอกเบี้ยผิดนัด</div>" +
-                    "           <div class='content-left' id='total-interest-overpayment-input'><input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment' onblur=Trim('total-interest-overpayment');AddCommas('total-interest-overpayment',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='total-interest-overpayment-input'><input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment' onblur=Trim('total-interest-overpayment');AddCommas('total-interest-overpayment',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
                     "           <div class='content-left' id='total-interest-overpayment-unit-label'>บาท</div>" +
                     "       </div>" +
                     "       <div class='clear'></div>" +
@@ -405,7 +403,7 @@ public class eCPDataPayment {
                     "       <div class='clear'></div>" +
                     "       <div>" +
                     "           <div class='content-left' id='overpay-label'>จำนวนเงินส่วนที่ชำระเกิน</div>" +
-                    "           <div class='content-left' id='overpay-input'><input class='inputbox textbox-numeric' type='text' id='overpay' onblur=Trim('overpay');AddCommas('overpay',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
+                    "           <div class='content-left' id='overpay-input'><input class='inputbox textbox-numeric' type='text' id='overpay' onblur=Trim('overpay');AddCommas('overpay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' /></div>" +
                     "           <div class='content-left' id='overpay-unit-label'>บาท</div>" +
                     "       </div>" +
                     "       <div class='clear'></div>" +
@@ -1159,6 +1157,7 @@ public class eCPDataPayment {
         double totalPayCapital = 0;
         double totalPayInterest = 0;
         double totalPay = 0;
+        double totalPayment = 0;
 
         html += "<div class='table-content'>";
 
@@ -1169,13 +1168,14 @@ public class eCPDataPayment {
             totalPayCapital = (totalPayCapital + double.Parse(data[i, 8]));
             totalPayInterest = (totalPayInterest + double.Parse(data[i, 9]));
             totalPay = (totalPay + double.Parse(data[i, 10]));
+            totalPayment = (totalPayment + double.Parse(data[i, 7]));
             html += "<ul class='table-row-content " + highlight + " detail-trans-payment' id='detail-trans-payment" + data[i, 1] + "'>" +
                     "   <li id='table-content-trans-payment-col1' onclick=" + callFunc + "><div>" + double.Parse(data[i, 0]).ToString("#,##0") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col2' onclick=" + callFunc + "><div>" + double.Parse(data[i, 4]).ToString("#,##0.00") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col3' onclick=" + callFunc + "><div>" + double.Parse(data[i, 5]).ToString("#,##0.00") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col4' onclick=" + callFunc + "><div>" + double.Parse(data[i, 8]).ToString("#,##0.00") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col5' onclick=" + callFunc + "><div>" + double.Parse(data[i, 9]).ToString("#,##0.00") + "</div></li>" +
-                    "   <li class='table-col' id='table-content-trans-payment-col6' onclick=" + callFunc + "><div>" + double.Parse(data[i, 10]).ToString("#,##0.00") + "</div></li>" +
+                    "   <li class='table-col' id='table-content-trans-payment-col6' onclick=" + callFunc + "><div>" + double.Parse(data[i, 7]).ToString("#,##0.00") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col7' onclick=" + callFunc + "><div>" + double.Parse(data[i, 11]).ToString("#,##0.00") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col8' onclick=" + callFunc + "><div>" + double.Parse(data[i, 6]).ToString("#,##0.00") + "</div></li>" +
                     "   <li class='table-col' id='table-content-trans-payment-col9' onclick=" + callFunc + "><div>" + double.Parse(data[i, 12]).ToString("#,##0.00") + "</div></li>" +

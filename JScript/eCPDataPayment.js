@@ -263,13 +263,23 @@ function InitReceiptCopy() {
 
 function doCalculatePayment() {
     var formatPayment = $("#format-payment-hidden").val();
-    var capital = $("#capital").val();
+    var capital = $("#capital").val();    
     var pay = $("#pay").val();
 
     capital = ((capital.length === 0 || capital === "0.00") ? 0 : DelCommas("capital"));
     pay = ((pay.length === 0 || pay === "0.00") ? 0 : DelCommas("pay"));
 
     if (formatPayment === "1") {
+        var totalInterestOverpayment = $("#total-interest-overpayment").val();
+        var overpay = $("#overpay").val();
+
+        totalInterestOverpayment = ((totalInterestOverpayment.length === 0 || totalInterestOverpayment === "0.00") ? 0 : DelCommas("total-interest-overpayment"));
+        overpay = ((overpay.length === 0 || overpay === "0.00") ? 0 : DelCommas("overpay"));
+
+        $("#total-payment").val((parseFloat(totalInterestOverpayment) + parseFloat(pay) + parseFloat(overpay)).toFixed(2));
+        Trim("total-payment");
+        AddCommas("total-payment", 2);
+
         $("#remain-capital").val((parseFloat(capital) - parseFloat(pay)).toFixed(2));
         Trim("remain-capital");
         AddCommas("remain-capital", 2);
@@ -655,7 +665,9 @@ function ValidateCPTransPaymentFullRepay() {
         var dayDiff = 0;
         */
         var totalPayment = DelCommas("total-payment");
+        var totalInterestOverpayment = DelCommas("total-interest-overpayment");
         var pay = DelCommas("pay");
+        var overpay = DelCommas("overpay");
         var remainCapital = DelCommas("remain-capital");
         var payChannel = $("input[name=pay-channel]:checked");
         var chequeNo = $("#cheque-no-hidden").val();
@@ -692,12 +704,19 @@ function ValidateCPTransPaymentFullRepay() {
             focus = "#pay";
         }
 
+        if (error === false && (parseFloat(totalPayment) !== (parseFloat(totalInterestOverpayment) + parseFloat(pay) + parseFloat(overpay)))) {
+            error = true;
+            msg = "กรุณาใส่จำนวนเงินที่ชำระให้ถูกต้อง";
+            focus = "#total-payment";
+        }
+
+        /*
         if (error === false && (parseFloat(pay) !== parseFloat(totalPayment))) {
             error = true;
             msg = "กรุณาใส่จำนวนเงินที่หักชำระเงินต้นให้เท่ากับจำนวนเงินที่ชำระ";
             focus = "#pay";
         }
-
+        */
         if (error === false && (remainCapital.length === 0 || parseFloat(remainCapital) !== 0)) {
             error = true;
             msg = "กรุณาใส่จำนวนเงินที่หักชำระเงินต้นให้เท่ากับ<br />จำนวนเงินต้นคงเหลือยกมา";
