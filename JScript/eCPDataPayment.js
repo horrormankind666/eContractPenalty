@@ -704,12 +704,11 @@ function ValidateCPTransPaymentFullRepay() {
             focus = "#pay";
         }
 
-        if (error === false && (parseFloat(totalPayment) !== (parseFloat(totalInterestOverpayment) + parseFloat(pay) + parseFloat(overpay)))) {
+        if (error === false && (parseFloat(totalPayment) !== parseFloat((parseFloat(totalInterestOverpayment) + parseFloat(pay) + parseFloat(overpay)).toFixed(2)))) {
             error = true;
             msg = "กรุณาใส่จำนวนเงินที่ชำระให้ถูกต้อง";
             focus = "#total-payment";
         }
-
         /*
         if (error === false && (parseFloat(pay) !== parseFloat(totalPayment))) {
             error = true;
@@ -920,7 +919,7 @@ function ValidateCPTransPaymentPayRepay() {
         var totalInterestOverpaymentBefore = DelCommas("total-interest-overpayment-before");
         var totalInterestPayRepay = DelCommas("total-interest-pay-repay");
         var totalInterestOverpayment = DelCommas("total-interest-overpayment");
-        var totalInterrest = (parseFloat(totalAccruedInterest) + parseFloat(totalInterestOverpaymentBefore) + parseFloat(totalInterestPayRepay) + parseFloat(totalInterestOverpayment));
+        var totalInterrest = parseFloat((parseFloat(totalAccruedInterest) + parseFloat(totalInterestOverpaymentBefore) + parseFloat(totalInterestPayRepay) + parseFloat(totalInterestOverpayment)).toFixed(2));
         var payCapital = DelCommas("pay-capital");
         var remainCapital = DelCommas("remain-capital");
         var payRepayLeast = DelCommas("pay-repay-least-hidden");
