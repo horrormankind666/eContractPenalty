@@ -1861,7 +1861,7 @@ public class eCPDataReportNoticeClaimDebt {
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
-                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(นายคณพศ เฟื่องฟุ้ง)</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(" + eCPUtil.DIRECTOR + ")</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ปฏิบัติหน้าที่แทนอธิการบดีมหาวิทยาลัยมหิดล</div>" +
                      "              </td>" +
@@ -1963,7 +1963,7 @@ public class eCPDataReportNoticeClaimDebt {
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
-                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(นายคณพศ เฟื่องฟุ้ง)</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(" + eCPUtil.DIRECTOR + ")</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div>" +
                      "              </td>" +
                      "          </tr>" +
@@ -4526,7 +4526,7 @@ public class eCPDataReportCertificateReimbursement {
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
                      "                  <div style='font:normal 15pt " + _font + ";'>&nbsp;</div>" +
-                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(นายคณพศ เฟื่องฟุ้ง)</div>" +
+                     "                  <div align='center' style='font:normal 15pt " + _font + ";'>(" + eCPUtil.DIRECTOR + ")</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ผู้อำนวยการกองกฎหมาย</div>" +
                      "                  <div align='center' style='font:normal 15pt " + _font + ";'>ปฏิบัติหน้าที่แทนอธิการบดีมหาวิทยาลัยมหิดล</div>" +
                      "              </td>" +

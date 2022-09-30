@@ -21,6 +21,7 @@ public class eCPUtil {
     public const double PAYMENT_AT_LEAST = 30;
     public const double PAY_REPAY_LEAST = 500;
     public const int PERIOD_REPAY_LEAST = 40;
+    public const string DIRECTOR = "นายอวยชัย อิสรวิริยะสกุล";
         
     private static string[,] _pageOrder = new string[,] {
         {
