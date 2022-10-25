@@ -4313,7 +4313,9 @@ public class eCPDB {
                 interest +
                 (!String.IsNullOrEmpty(overpay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(overpay))) : 0)
             );
+            /*
             totalPayment = (totalPayment > double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : totalPayment);
+            */
             payCapital = (
                 (!String.IsNullOrEmpty(pay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : 0) -
                 (!String.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalAccruedInterest))) : 0) -
