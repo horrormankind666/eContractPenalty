@@ -4288,6 +4288,7 @@ public class eCPDB {
             string totalPayment = _c.Request["totalpayment"];
             */
             string pay = _c.Request["pay"];
+            string overpay = _c.Request["overpay"];
             /*
             string[] payRemain = new string[5];
             */
@@ -4309,8 +4310,10 @@ public class eCPDB {
             );
             totalPayment = (
                 (!String.IsNullOrEmpty(capital) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(capital))) : 0) +
-                interest
+                interest +
+                (!String.IsNullOrEmpty(overpay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(overpay))) : 0)
             );
+            totalPayment = (totalPayment > double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : totalPayment);
             payCapital = (
                 (!String.IsNullOrEmpty(pay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : 0) -
                 (!String.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalAccruedInterest))) : 0) -
@@ -4319,6 +4322,10 @@ public class eCPDB {
                 (!String.IsNullOrEmpty(totalInterestOverpayment) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(totalInterestOverpayment))) : 0)
             );
             payCapital = (payCapital < 0 ? 0 : payCapital);
+            payCapital = (
+                payCapital -
+                (!String.IsNullOrEmpty(overpay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(overpay))) : 0)
+            );
             remainCapital = (
                 (!String.IsNullOrEmpty(capital) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(capital))) : 0) -
                 payCapital
@@ -4371,7 +4378,7 @@ public class eCPDB {
                         "FormatPayment = 2 " +
                         "WHERE ID = " + _c.Request["cp2id"] + "; " +
                         "INSERT INTO ecpTransPayment " +
-                        "(RCID, OverpaymentTotalInterestBefore, OverpaymentTotalInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail)" +
+                        "(RCID, OverpaymentTotalInterestBefore, OverpaymentTotalInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail)" +
                         "VALUES " +
                         "(" +
                         _c.Request["cp2id"] + ", " +
@@ -4386,6 +4393,7 @@ public class eCPDB {
                         payCapital.ToString() + ", " +
                         payInterest.ToString() + ", " +
                         pay + ", " +
+                        overpay + ", " +
                         remainCapital.ToString() + ", " +
                         "0, " +
                         remainAccruedInterest + ", " +                        

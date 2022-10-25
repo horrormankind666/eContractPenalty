@@ -6257,8 +6257,8 @@ a.link-disable:hover {
 }
 
 #add-cp-trans-payment #format-payment-pay-repay #detail-payment-label {
-    height: 227px;
-    margin-top: 186px;
+    height: 242px;
+    margin-top: 201px;
 }
 
 #add-cp-trans-payment #format-payment-full-repay #detail-payment-input,
@@ -6268,7 +6268,7 @@ a.link-disable:hover {
 }
 
 #add-cp-trans-payment #format-payment-pay-repay #detail-payment-input {
-    height: 409px;
+    height: 439px;
 }
 
 #add-cp-trans-payment #detail-receipt-label {
@@ -6352,6 +6352,7 @@ a.link-disable:hover {
 #add-cp-trans-payment #detail-payment-input #pay-input,
 #add-cp-trans-payment #detail-payment-input #overpay-input,
 #add-cp-trans-payment #detail-payment-input #total-pay-capital-input,
+#add-cp-trans-payment #detail-payment-input #pay-capital-input,
 #add-cp-trans-payment #detail-payment-input #remain-capital-input,
 #add-cp-trans-payment #detail-payment-input #payment-date-input,
 #add-cp-trans-payment #detail-payment-input #interest-payment #interest-payment-input .input {

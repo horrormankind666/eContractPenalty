@@ -265,16 +265,16 @@ function doCalculatePayment() {
     var formatPayment = $("#format-payment-hidden").val();
     var capital = $("#capital").val();    
     var pay = $("#pay").val();
+    var overpay = $("#overpay").val();
 
     capital = ((capital.length === 0 || capital === "0.00") ? 0 : DelCommas("capital"));
     pay = ((pay.length === 0 || pay === "0.00") ? 0 : DelCommas("pay"));
+    overpay = ((overpay.length === 0 || overpay === "0.00") ? 0 : DelCommas("overpay"));
 
     if (formatPayment === "1") {
         var totalInterestOverpayment = $("#total-interest-overpayment").val();
-        var overpay = $("#overpay").val();
 
         totalInterestOverpayment = ((totalInterestOverpayment.length === 0 || totalInterestOverpayment === "0.00") ? 0 : DelCommas("total-interest-overpayment"));
-        overpay = ((overpay.length === 0 || overpay === "0.00") ? 0 : DelCommas("overpay"));
 
         $("#total-payment").val((parseFloat(totalInterestOverpayment) + parseFloat(pay) + parseFloat(overpay)).toFixed(2));
         Trim("total-payment");
@@ -289,7 +289,7 @@ function doCalculatePayment() {
         var totalAccruedInterest = $("#total-accrued-interest").val();
         var totalInterestOverpaymentBefore = $("#total-interest-overpayment-before").val();
         var totalInterestPayRepay = $("#total-interest-pay-repay").val();
-        var totalInterestOverpayment = $("#total-interest-overpayment").val();        
+        var totalInterestOverpayment = $("#total-interest-overpayment").val();         
         var payCapital = 0;
         var remainAccruedInterest = 0;
 
@@ -300,10 +300,18 @@ function doCalculatePayment() {
 
         payCapital = (parseFloat(pay) - parseFloat(totalAccruedInterest) - parseFloat(totalInterestOverpaymentBefore) - parseFloat(totalInterestPayRepay) - parseFloat(totalInterestOverpayment));
         payCapital = (parseFloat(payCapital) < 0 ? 0 : payCapital);
+        
+        overpay = (parseFloat(payCapital) - parseFloat(capital));
+        overpay = (parseFloat(overpay) < 0 ? 0 : overpay);
+        $("#overpay").val(parseFloat(overpay).toFixed(2));
+        Trim("overpay");
+        AddCommas("overpay", 2);
+
+        payCapital = (parseFloat(payCapital) - parseFloat(overpay))
         $("#pay-capital").val(parseFloat(payCapital).toFixed(2));
         Trim("pay-capital");
         AddCommas("pay-capital", 2);
-
+        
         $("#remain-capital").val((parseFloat(capital) - parseFloat(payCapital)).toFixed(2));
         Trim("remain-capital");
         AddCommas("remain-capital", 2);
@@ -350,6 +358,9 @@ function ResetFrmAddCPTransPayment() {
         $("#total-interest-overpayment").val($("#total-interest-overpayment-hidden").val());        
         $("#pay-capital").val("");
         TextboxDisable("#pay-capital");
+        $("#overpay").val("");
+        AddCommas("overpay", 2);
+        TextboxDisable("#overpay");
         $("#remain-accrued-interest").val("");
         /*
         TextboxDisable("#remain-accrued-interest");
@@ -1115,6 +1126,7 @@ function ConfirmActionCPTransPaymentPayRepay() {
                     send[send.length] = "capital=" + DelCommas("capital");
                     send[send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");
                     send[send.length] = "pay=" + DelCommas("pay");
+                    send[send.length] = "overpay=" + DelCommas("overpay");
                     send[send.length] = "overpaymenttotalinterestbefore=" + DelCommas("total-interest-overpayment-before");
                     send[send.length] = "payrepaytotalinterest=" + DelCommas("total-interest-pay-repay");
                     send[send.length] = "overpaymenttotalinterest=" + DelCommas("total-interest-overpayment");
