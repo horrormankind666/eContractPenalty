@@ -814,7 +814,7 @@ public class eCPDataBreakContract {
                     _html += "          <div class='form-input-content-line'>ระยะเวลาที่ต้องปฏิบัติงานชดใช้ <span>" + (!String.IsNullOrEmpty(_allActualDateDefault) ? double.Parse(_allActualDateDefault).ToString("#,##0") : "-") + "</span> วัน ปฏิบัติงานชดใช้แล้ว <span>" + (!String.IsNullOrEmpty(_actualDateDefault) ? double.Parse(_actualDateDefault).ToString("#,##0") : "-") + "</span> วัน ขาด <span>" + (!String.IsNullOrEmpty(_remainDateDefault) ? double.Parse(_remainDateDefault).ToString("#,##0") : "-") + "</span> วัน</div>";
 
                 if (_setAmtIndemnitorYear.Equals("N")) {
-                    _html += "          <div class='form-input-content-line'>ระยะเวลาที่ใช้ในการศึกษา <span>" + double.Parse(_actualDayDefault).ToString("#,##0") + "</span> วัน</div>";
+                    _html += "          <div class='form-input-content-line'>ระยะเวลาที่ใช้ในการศึกษา <span>" + (!String.IsNullOrEmpty(_actualDayDefault) ? double.Parse(_actualDayDefault).ToString("#,##0") : "-") + "</span> วัน</div>";
 
                     if (_civilDefault.Equals("1"))
                         _html += "      <div class='form-input-content-line'>ระยะเวลาที่ปฏิบัติงานชดใช้ <span>" + (!String.IsNullOrEmpty(_actualDateDefault) ? double.Parse(_actualDateDefault).ToString("#,##0") : "-") + "</span> วัน</div>";
