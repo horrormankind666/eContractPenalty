@@ -106,7 +106,13 @@
 
         $(RemoveSticky());
     });
-    
+
+    $(document).ready(function () {
+        $("#downloadauto").click(function () {
+            alert("click");
+        });
+    });
+
     $(SetPage());
 </script>
 </html>

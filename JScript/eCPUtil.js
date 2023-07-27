@@ -1,38 +1,38 @@
-﻿var _oldMenu = 0;
-var _manual = new Array();
+﻿var oldMenu = 0;
+var manual = new Array();
 
 function Signin() {
-    var _username = ($("#username").val($.trim($("#username").val()))).val();
-    var _password = ($("#password").val($.trim($("#password").val()))).val();
-    var _d = new Date();
-    var _authen = window.btoa(window.btoa(_d.getDate() + _d.getMonth() + _d.getFullYear()) + "." + window.btoa(_username).split("").reverse().join("") + "." + window.btoa(_password).split("").reverse().join("") + "." + window.btoa(_d.getHours() + _d.getMinutes() + _d.getSeconds() + _d.getMilliseconds()));
-    var _send = new Array();
-    _send[_send.length] = "action=signin";
-    _send[_send.length] = "authen=" + _authen;
+    var username = ($("#username").val($.trim($("#username").val()))).val();
+    var password = ($("#password").val($.trim($("#password").val()))).val();
+    var d = new Date();
+    var authen = window.btoa(window.btoa(d.getDate() + d.getMonth() + d.getFullYear()) + "." + window.btoa(username).split("").reverse().join("") + "." + window.btoa(password).split("").reverse().join("") + "." + window.btoa(d.getHours() + d.getMinutes() + d.getSeconds() + d.getMilliseconds()));
+    var send = new Array();
+    send[send.length] = ("action=signin");
+    send[send.length] = ("authen=" + authen);
     /*
-    _send[_send.length] = "username=" + ($("#username").val($.trim($("#username").val()))).val();
-    _send[_send.length] = "password=" + ($("#password").val($.trim($("#password").val()))).val();
+    send[send.length] = ("username=" + ($("#username").val($.trim($("#username").val()))).val());
+    send[send.length] = ("password=" + ($("#password").val($.trim($("#password").val()))).val());
     */
 
-    var _msg;
-    var _error = false;
-    var _focus;
+    var msg;
+    var error = false;
+    var focus;
   
     SetMsgLoading("กำลังเข้าสู่ระบบ...");
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
-        var _dataError = _result.split("<error>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (result) {
+        var dataError = result.split("<error>");
 
-        switch (_dataError[1]) {
+        switch (dataError[1]) {
             case "1":
-                _error = true;
-                _msg = "ไม่พบผู้ใช้งานนี้";
-                _focus = "username";
+                error = true;
+                msg = "ไม่พบผู้ใช้งานนี้";
+                focus = "username";
                 break;
         }
 
-        if (_error == true) {
-            DialogMessage(_msg, _focus, false, "");
+        if (error == true) {
+            DialogMessage(msg, focus, false, "");
             return;
         }
         
@@ -41,7 +41,9 @@ function Signin() {
 }
 
 function Signout() {
-    if (_oldMenu != 0) $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
+    if (oldMenu != 0)
+        $("#menu" + oldMenu).removeClass("active").addClass("noactive");
+
     $("#menu8").removeClass("noactive").addClass("active");
         
     DialogConfirm("ต้องการออกจากระบบหรือไม่");
@@ -50,12 +52,12 @@ function Signout() {
 	        "ตกลง": function () {
 		        $(this).dialog("close");
 			            
-                var _send = new Array();
-                _send[_send.length] = "action=signout";
+                var send = new Array();
+                send[send.length] = "action=signout";
 
 			    SetMsgLoading("กำลังออกจากระบบ...");
 
-			    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
+			    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (result) {
 			        GotoSignin();
 			    });
 		    },
@@ -65,186 +67,190 @@ function Signout() {
 	    },
         close:  function () {
             $("#menu8").removeClass("active").addClass("noactive");
-            $("#menu" + _oldMenu).removeClass("noactive").addClass("active");
+            $("#menu" + oldMenu).removeClass("noactive").addClass("active");
         }
     });
 }
 
 function ShowManual() {
-    if (_oldMenu != 0)
-        $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
+    if (oldMenu != 0)
+        $("#menu" + oldMenu).removeClass("active").addClass("noactive");
 
     $("#menu7").removeClass("noactive").addClass("active");
 
-    for (var _i = 0; _i < 50; _i++) {
-        _manual[_i] = "Manual/UserManual" + (_i + 1) + ".png";
+    for (var i = 0; i < 50; i++) {
+        manual[i] = ("Manual/UserManual" + (i + 1) + ".png");
     }
 
     LoadForm(1, "manual", true, "", "", "");
 }
 
 function SetPage() {
-    var _send = new Array();
-    _send[_send.length] = "action=setpage";
+    var send = new Array();
+    send[send.length] = "action=setpage";
     
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (_result) {
-        var _dataSection = _result.split("<section>");
-        var _dataPage = _result.split("<page>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (result) {
+        var dataSection = result.split("<section>");
+        var dataPage = result.split("<page>");
 
-        GoToPage(parseInt(_dataSection[1]), parseInt(_dataPage[1]));
+        GoToPage(parseInt(dataSection[1]), parseInt(dataPage[1]));
     });
 }
 
-function GoToPage(_section, _order) {
-    var _area;
-    var _pid;
+function GoToPage(section, order) {
+    var area;
+    var pid;
 
-    if (_order == 0) { _pid = 1; _area = "all"; }
+    if (order == 0) {
+        pid = 1;
+        area = "all";
+    }
 
     /*
     เจ้าหน้าที่กองกฏหมาย
     */
-    if (_order != 0 && _section == 1) {
-        switch (_order) {
+    if (order != 0 &&
+        section == 1) {
+        switch (order) {
             /*
             หน้าแรก
             */
             case 1:
-                _pid = 1;
-                _area = "sec";
+                pid = 1;
+                area = "sec";
                 break;
             /*
             บัญชีผู้ใช้งาน
             */
             case 2:
-                _pid = 2;
-                _area = "sec";
+                pid = 2;
+                area = "sec";
                 break;
             /*
             ตั้งค่าระบบ - กำหนดหลักสูตรที่ให้มีการทำสัญญาการศึกษา
             */
             case 3:
-                _pid = 3;
-                _area = "sec";
+                pid = 3;
+                area = "sec";
                 break;
             /*
             ตั้งค่าระบบ - เงื่อนไขการคิดระยะเวลาตามสัญญาและสูตรคำนวณเงินชดใช้ตามสัญญา
             */
             case 4:
-                _pid = 4;
-                _area = "sec";
+                pid = 4;
+                area = "sec";
                 break;
             /*
             ตั้งค่าระบบ - กำหนดดอกเบี้ยจากการผิดนัดชำระ
             */
             case 5:
-                _pid = 5;
-                _area = "sec";
+                pid = 5;
+                area = "sec";
                 break;
             /*
             ตั้งค่าระบบ - เกณฑ์การชดใช้ตามสัญญา
             */
             case 6:
-                _pid = 6;
-                _area = "sec";
+                pid = 6;
+                area = "sec";
                 break;
             /*
             ตั้งค่าระบบ - กำหนดทุนการศึกษาแต่ละหลักสูตร
             */
             case 7:
-                _pid = 7;
-                _area = "sec";
+                pid = 7;
+                area = "sec";
                 break;
             /*
             รับแจ้งนักศึกษาผิดสัญญา
             */
             case 8:
-                _pid = 8;
-                _area = "sec";
+                pid = 8;
+                area = "sec";
                 break;
             /*
             บันทึกการชำระหนี้ / ดอกเบี้ย
             */
             case 9:
-                _pid = 9;
-                _area = "sec";
+                pid = 9;
+                area = "sec";
                 break;
             /*
             รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
             */
             case 10:
-                _pid = 10;
-                _area = "sec";
+                pid = 10;
+                area = "sec";
                 break;
             /*
             รายงาน - ตารางคำนวณเงินต้นและดอกเบี้ย
             */
             case 11:
-                _pid = 11;
-                _area = "sec";
+                pid = 11;
+                area = "sec";
                 break;
             /*
             รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
             */
             case 12:
-                _pid = 12;
-                _area = "sec";
+                pid = 12;
+                area = "sec";
                 break;
             /*
             รายงาน - หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
             */
             case 13:
-                _pid = 13;
-                _area = "sec";
+                pid = 13;
+                area = "sec";
                 break;
             /*
             รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
             */
             case 14:
-                _pid = 14;
-                _area = "sec";
+                pid = 14;
+                area = "sec";
                 break;
             /*
             รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
             */
             case 15:
-                _pid = 15;
-                _area = "sec";
+                pid = 15;
+                area = "sec";
                 break;
             /*
             รายงาน - เอกสารสัญญาการเป็นนักศึกษา
             */
             case 16:
-                _pid = 16;
-                _area = "sec";
+                pid = 16;
+                area = "sec";
                 break;
             /*
             รายงาน - ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
             */
             case 17:
-                _pid = 17;
-                _area = "sec";
+                pid = 17;
+                area = "sec";
                 break;
             /*
             รายงาน - การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
             */
             case 18:
-                _pid = 18;
-                _area = "sec";
+                pid = 18;
+                area = "sec";
                 break;
             /*
             รายงาน - ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้
             */
             case 19:
-                _pid = 19;
-                _area = "sec";
+                pid = 19;
+                area = "sec";
                 break;
             /*
             รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
             */
             case 20:
-                _pid = 20;
-                _area = "sec";
+                pid = 20;
+                area = "sec";
                 break;
         }
     }
@@ -252,70 +258,71 @@ function GoToPage(_section, _order) {
     /*
     เจ้าหน้าที่กองบริหารการศึกษา
     */
-    if (_order != 0 && _section == 2) {
-        switch (_order) {
+    if (order != 0 &&
+        section == 2) {
+        switch (order) {
             /*
             หน้าแรก
             */
             case 1:
-                _pid = 1;
-                _area = "sec";
+                pid = 1;
+                area = "sec";
                 break;
             /*
             บัญชีผู้ใช้งาน
             */
             case 2:
-                _pid = 2;
-                _area = "sec";
+                pid = 2;
+                area = "sec";
                 break;
             /*
             แจ้งนักศึกษาผิดสัญญา
             */
             case 3:
-                _pid = 3;
-                _area = "sec";
+                pid = 3;
+                area = "sec";
                 break;
             /*
             รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
             */
             case 4:
-                _pid = 4;
-                _area = "sec";
+                pid = 4;
+                area = "sec";
                 break;
             /*
             รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
             */
             case 5:
-                _pid = 5;
-                _area = "sec";
+                pid = 5;
+                area = "sec";
                 break;
             /*
             รายงาน - หนังสือแจ้งต้นสังกัดและคณะกรรมการพิจารณา
             */
             case 6:
-                _pid = 6;
-                _area = "sec";
+                pid = 6;
+                area = "sec";
                 break;
             /*
             รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
             */
             case 7:
-                _pid = 7;
-                _area = "sec";
+                pid = 7;
+                area = "sec";
                 break;
             /*
             รายงาน - สถิติการชำระหนี้ตามช่วงวันที่
             */
             case 8:
-                _pid = 8;
-                _area = "sec";
+                pid = 8;
+                area = "sec";
                 break;
             /*
             รายงาน - เอกสารสัญญาการเป็นนักศึกษา
             */
             case 9:
-                _pid = 9;
-                _area = "sec";
+                pid = 9;
+                area = "sec";
                 break;
         }
     }
@@ -323,58 +330,62 @@ function GoToPage(_section, _order) {
     /*
     เจ้าหน้าที่กองคลัง
     */
-    if (_order != 0 && _section == 3) {
-        switch (_order) {
+    if (order != 0 &&
+        section == 3) {
+        switch (order) {
             /*
             หน้าแรก
             */
             case 1:
-                _pid = 1;
-                _area = "sec";
+                pid = 1;
+                area = "sec";
                 break;
             /*
             บัญชีผู้ใช้งาน
             */
             case 2:
-                _pid = 2;
-                _area = "sec";
+                pid = 2;
+                area = "sec";
                 break;
             /*
             รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
             */
             case 3:
-                _pid = 3;
-                _area = "sec";
+                pid = 3;
+                area = "sec";
                 break;
             /*
             รายงาน - การรับชำระเงินจากลูกหนี้ ตามการผิดสัญญาการศึกษามหาวิทยาลัยมหิดล
             */
             case 4:
-                _pid = 4;
-                _area = "sec";
+                pid = 4;
+                area = "sec";
                 break;
             /*
             รายงาน - ลูกหนี้ผิดสัญญาการศึกษามหาวิทยาลัยมหิดลคงค้าง
             */
             case 5:
-                _pid = 5;
-                _area = "sec";
+                pid = 5;
+                area = "sec";
                 break;
             /*
             รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
             */
             case 6:
-                _pid = 6;
-                _area = "sec";
+                pid = 6;
+                area = "sec";
                 break;
         }
     }
     
-    LoadPage(_area, _section, _pid);
+    LoadPage(area, section, pid);
 }
 
 function GotoSignin() {
+    DialogConfirm("กรุณาเข้าระบบนักศึกษา");
+    /*
     DialogConfirm("เข้าสู่ระบบใหม่อีกครั้ง");
+    */    
     $("#dialog-confirm").dialog({
         buttons: {
             "ตกลง": function () {
@@ -382,7 +393,10 @@ function GotoSignin() {
             }
         },
         close: function () {
+            top.location.href = "https://smartedu.mahidol.ac.th/Authen/Staff/login.aspx"
+            /*
             top.location.href = "Signin.aspx";
+            */
         }
     });    
 }
@@ -391,13 +405,13 @@ function LoadSignin() {
     $(".head").hide();
     $(".menu-bar-main").hide();
 
-    var _send = new Array();
-    _send[_send.length] = "action=page";
+    var send = new Array();
+    send[send.length] = "action=page";
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (_result) {
-        var _dataContent = _result.split("<content>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (result) {
+        var dataContent = result.split("<content>");
 
-        $("#content-content").html(_dataContent[1]);
+        $("#content-content").html(dataContent[1]);
 
         InitTextSelect();
         /*
@@ -408,42 +422,45 @@ function LoadSignin() {
 }
 
 function LoadPage(
-    _area,
-    _section,
-    _pid
+    area,
+    section,
+    pid
 ) {
-    var _send = new Array();
-    _send[_send.length] = "action=page";
-    _send[_send.length] = "area=" + _area;
-    _send[_send.length] = "section=" + _section;
-    _send[_send.length] = "pid=" + _pid;
+    var send = new Array();
+    send[send.length] = "action=page";
+    send[send.length] = ("area=" + area);
+    send[send.length] = ("section=" + section);
+    send[send.length] = ("pid=" + pid);
 
-    var _error = false;
-    var _msg;
+    var error = false;
+    var msg;
     
-    if (_oldMenu != 0)
-        $("#menu" + _oldMenu).removeClass("active").addClass("noactive");
+    if (oldMenu != 0)
+        $("#menu" + oldMenu).removeClass("active").addClass("noactive");
   
     SetMsgLoading("กำลังโหลด...");
   
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
-        var _dataError = _result.split("<error>");
-        var _dataHead = _result.split("<head>");
-        var _dataMenuBar = _result.split("<menubar>");
-        var _dataMenu = _result.split("<menu>");
-        var _dataContent = _result.split("<content>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (result) {
+        var dataError = result.split("<error>");
+        var dataHead = result.split("<head>");
+        var dataMenuBar = result.split("<menubar>");
+        var dataMenu = result.split("<menu>");
+        var dataContent = result.split("<content>");
 
-        if (_dataError[1] == "1") {
+        if (dataError[1] == "1")
             GotoSignin();
-            return;
-        }
 
-        $("#head-content").html(_dataHead[1]);
-        $("#menu-bar-content").html(_dataMenuBar[1]);
-        $("#menu" + _dataMenu[1]).removeClass("noactive").addClass("active");
-        _oldMenu = _dataMenu[1];
+        if (dataError[1] == "2")
+            DialogMessage("ไม่พบผู้ใช้งานนี้", "", false, "");
 
-        if (_dataHead[1].length > 0) {
+        
+        $("#head-content").html(dataHead[1]);
+        $("#menu-bar-content").html(dataMenuBar[1]);
+        $("#menu" + dataMenu[1]).removeClass("noactive").addClass("active");
+
+        oldMenu = dataMenu[1];
+
+        if (dataHead[1].length > 0) {
             $(".head").show();
             $(".menu-bar-main").show();
         }
@@ -452,262 +469,264 @@ function LoadPage(
             $(".menu-bar-main").hide();
         }
 
-        $("#content-content").html(_dataContent[1]);
+        if (dataError[1] == "0") {
+            $("#content-content").html(dataContent[1]);
 
-        /*
-        InitSticky();
-        */
-        InitTab(false);
+            InitTab(false);
 
-        if (_section == 1) {
-            switch (_pid) {
-                case 2:
-                    OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
-                    break;
-                case 8:
-                    OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
-                    break;
-                case 9:
-                case 20:
-                    OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
-                    break;
-                case 10:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportStepOfWork();
-                    break;
-                case 11:
-                    OpenTab("link-tab1-cp-report-table-cal-capital-and-interest", "#tab1-cp-report-table-cal-capital-and-interest", "", true, "", "", "");
-                    break;
-                case 12:
-                    OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
-                    break;
-                case 13:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportNoticeClaimDebt();
-                    break;
-                case 14:
-                    OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
-                    break;
-                case 15:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportStatisticPaymentByDate();
-                    break;
-                case 16:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportEContract();
-                    break;
-                case 17:
-                case 18:
-                case 19:
-                    OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
-                    break;
+            if (section == 1) {
+                switch (pid) {
+                    case 2:
+                        OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
+                        break;
+                    case 8:
+                        OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
+                        break;
+                    case 9:
+                    case 20:
+                        OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
+                        break;
+                    case 10:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportStepOfWork();
+                        break;
+                    case 11:
+                        OpenTab("link-tab1-cp-report-table-cal-capital-and-interest", "#tab1-cp-report-table-cal-capital-and-interest", "", true, "", "", "");
+                        break;
+                    case 12:
+                        OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
+                        break;
+                    case 13:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportNoticeClaimDebt();
+                        break;
+                    case 14:
+                        OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
+                        break;
+                    case 15:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportStatisticPaymentByDate();
+                        break;
+                    case 16:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportEContract();
+                        break;
+                    case 17:
+                    case 18:
+                    case 19:
+                        OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
+                        break;
+                }
             }
-        }
-        
-        if (_section == 2) {
-            switch (_pid) {
-                case 2:
-                    OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
-                    break;
-                case 3:
-                    OpenTab("link-tab1-cp-trans-break-contract", "#tab1-cp-trans-break-contract", "", true, "", "", "");
-                    break;
-                case 4:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportStepOfWork();
-                    break;
-                case 5:
-                    OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
-                    break;
-                case 6:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportNoticeRepayComplete();
-                    break;
-                case 7:
-                    OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
-                    break;
-                case 8:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportStatisticPaymentByDate();
-                    break;
-                case 9:
-                    SetMsgLoading("กำลังโหลด...");
-                    SearchReportEContract();
-                    break;
-            }
-        }
 
-        if (_section == 3) {
-            switch (_pid) {
-                case 2:
-                    OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                    OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
-                    break;
-                case 6:
-                    OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
-                    break;
-
+            if (section == 2) {
+                switch (pid) {
+                    case 2:
+                        OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
+                        break;
+                    case 3:
+                        OpenTab("link-tab1-cp-trans-break-contract", "#tab1-cp-trans-break-contract", "", true, "", "", "");
+                        break;
+                    case 4:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportStepOfWork();
+                        break;
+                    case 5:
+                        OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
+                        break;
+                    case 6:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportNoticeRepayComplete();
+                        break;
+                    case 7:
+                        OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
+                        break;
+                    case 8:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportStatisticPaymentByDate();
+                        break;
+                    case 9:
+                        SetMsgLoading("กำลังโหลด...");
+                        SearchReportEContract();
+                        break;
+                }
             }
+
+            if (section == 3) {
+                switch (pid) {
+                    case 2:
+                        OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                        OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
+                        break;
+                    case 6:
+                        OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
+                        break;
+
+                }
+            }
+
+            GoToTopElement("html, body");
         }
-        
-        GoToTopElement("html, body");
     });
 }
 
 function LoadCombobox(
-    _listData,
-    _param,
-    _target,
-    _value,
-    _widthInput,
-    _widthList
+    listData,
+    param,
+    target,
+    value,
+    widthInput,
+    widthList
 ) {
-    var _send = new Array();
-    _send[_send.length] = "action=combobox";
-    _send[_send.length] = "list=" + _listData;
-    _send[_send.length] = _param;
+    var send = new Array();
+    send[send.length] = "action=combobox";
+    send[send.length] = ("list=" + listData);
+    send[send.length] = param;
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (_result) {
-        var _dataList = _result.split("<list>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (result) {
+        var dataList = result.split("<list>");
 
-        $("#" + _target).html(_dataList[1]);
-        InitCombobox(_listData, _value, _value, _widthInput, _widthList);
+        $("#" + target).html(dataList[1]);
+        InitCombobox(listData, value, value, widthInput, widthList);
     });
 }
 
 function LoadList(
-    _listData,
-    _recordCountID,
-    _listID,
-    _navPageID
+    listData,
+    recordCountID,
+    listID,
+    navPageID
 ) {
-    $("#" + _recordCountID).html("");
-    $("#" + _listID).html("");
-    if (_navPageID.length > 0) $("#" + _navPageID).html("");
+    $("#" + recordCountID).html("");
+    $("#" + listID).html("");
 
-    var _send = new Array();
-    _send[_send.length] = "action=list";
-    _send[_send.length] = "list=" + _listData;
+    if (navPageID.length > 0)
+        $("#" + navPageID).html("");
+
+    var send = new Array();
+    send[send.length] = "action=list";
+    send[send.length] = ("list=" + listData);
     
     SetMsgLoading("กำลังโหลด...");
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
-        var _dataRecordCount = _result.split("<recordcount>");
-        var _dataList = _result.split("<list>");
-        var _dataPageNav = _result.split("<pagenav>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (result) {
+        var dataRecordCount = result.split("<recordcount>");
+        var dataList = result.split("<list>");
+        var dataPageNav = result.split("<pagenav>");
 
-        $("#" + _recordCountID).html("ค้นหาพบ " + _dataRecordCount[1] + " รายการ");
-        $("#" + _listID).html(_dataList[1]);
+        $("#" + recordCountID).html("ค้นหาพบ " + dataRecordCount[1] + " รายการ");
+        $("#" + listID).html(dataList[1]);
 
-        if (_navPageID.length > 0) 
-            $("#" + _navPageID).html(_dataPageNav[1]);
+        if (navPageID.length > 0) 
+            $("#" + navPageID).html(dataPageNav[1]);
     });
 }
 
-function InitTab(_subTab) {
-    if (_subTab == false)
+function InitTab(subTab) {
+    if (subTab == false)
         $(".tab-hidden").hide();
 
-    var _contentDataTab = (_subTab == false ? "content-data-tabs" : "content-data-subtabs");
+    var contentDataTab = (subTab == false ? "content-data-tabs" : "content-data-subtabs");
 
     $(document).ready(function () {
-        $("." + _contentDataTab + " ul li a").click(function () {
-            var _dropID = $(this).closest("a").attr("id");
-            var _linkTab = $(this).closest("a").attr("alt");
-            var _action = "";
-            var _id = "";
-            var _trackingStatus = "";
+        $("." + contentDataTab + " ul li a").click(function () {
+            var dropID = $(this).closest("a").attr("id");
+            var linkTab = $(this).closest("a").attr("alt");
+            var action = "";
+            var id = "";
+            var trackingStatus = "";
 
-            if (_subTab == false) {
-                switch (_dropID) { 
+            if (subTab == false) {
+                switch (dropID) { 
                     case "link-tab3-cp-tab-user":
-                        _action = $("#action").val();
-                        _id = $("#username-hidden").val() + ":" + $("#password-hidden").val();
-                        _trackingStatus = "";
+                        action = $("#action").val();
+                        id = $("#username-hidden").val() + ":" + $("#password-hidden").val();
+                        trackingStatus = "";
                         break;
                     case "link-tab3-cp-tab-program":
                     case "link-tab3-cp-tab-interest":
                     case "link-tab3-cp-tab-pay-break-contract":
                     case "link-tab3-cp-tab-scholarship":
-                        _action = $("#action").val();
-                        _id = $("#cp1id").val();
-                        _trackingStatus = "";
+                        action = $("#action").val();
+                        id = $("#cp1id").val();
+                        trackingStatus = "";
                         break;
                     case "link-tab3-cp-trans-break-contract":
-                        _action = $("#action").val();
-                        _id = $("#cp1id").val();
-                        _trackingStatus = $("#trackingstatus").val();
+                        action = $("#action").val();
+                        id = $("#cp1id").val();
+                        trackingStatus = $("#trackingstatus").val();
                         break;
                     case "link-tab3-cp-trans-require-contract":
-                        _action = $("#action").val();
-                        _id = $("#cp1id").val();
-                        _trackingStatus = $("#trackingstatus").val();
+                        action = $("#action").val();
+                        id = $("#cp1id").val();
+                        trackingStatus = $("#trackingstatus").val();
                         break;
                     case "link-tab2-cp-trans-payment":
                     case "link-tab1-adddetail-cp-trans-payment": 
                     case "link-tab2-adddetail-cp-trans-payment":
                     case "link-tab3-adddetail-cp-trans-payment":
                     case "link-tab2-cp-report-table-cal-capital-and-interest":
-                        _action = "";
-                        _id = $("#cp2id").val();
-                        _trackingStatus = "";
+                        action = "";
+                        id = $("#cp2id").val();
+                        trackingStatus = "";
                         break;
                 }
 
-                OpenTab(_dropID, _linkTab, "", true, _action, _id, _trackingStatus);
+                OpenTab(dropID, linkTab, "", true, action, id, trackingStatus);
             }
 
-            if (_subTab == true) {
-                switch (_dropID) {
+            if (subTab == true) {
+                switch (dropID) {
                     case "link-tab1-adddetail-cp-trans-payment":
                     case "link-tab2-adddetail-cp-trans-payment":
                     case "link-tab3-adddetail-cp-trans-payment":
-                        _action = "";
-                        _id = $("#cp2id").val();
-                        _trackingStatus = "";
+                        action = "";
+                        id = $("#cp2id").val();
+                        trackingStatus = "";
                         break;
                 }
 
-                OpenSubTab(_dropID, _linkTab, _id);
+                OpenSubTab(dropID, linkTab, id);
             }
         });
     });
 }
 
 function OpenTab(
-    _dropID,
-    _linkTab,
-    _tabTitle,
-    _tabHidden,
-    _action,
-    _id,
-    _trackingStatus
+    dropID,
+    linkTab,
+    tabTitle,
+    tabHidden,
+    action,
+    id,
+    trackingStatus
 ) {
     GoToTopElement("html, body");
 
     $(".tab-content").hide();
-    if ($("#" + _dropID).hasClass("active") == false) {
-        if (_tabHidden == true)
+
+    if ($("#" + dropID).hasClass("active") == false) {
+        if (tabHidden == true)
             $(".tab-hidden").hide()
         else
             $(".tab-hidden").show();
 
-        if (_tabTitle.length > 0)
-            $("#" + _dropID).html(_tabTitle);
+        if (tabTitle.length > 0)            
+            $("#" + dropID).html(tabTitle);
 
         $(".content-data-tabs ul li a").removeClass("active");
-        $("#" + _dropID).addClass("active");
+        $("#" + dropID).addClass("active");
     }
 
-    $(_linkTab + "-head").show();
-    $(_linkTab + "-contents").show();
-    $(_linkTab + "-content").show();
+    $(linkTab + "-head").show();
+    $(linkTab + "-contents").show();
+    $(linkTab + "-content").show();
 
-    switch (_dropID) {
+    switch (dropID) {
         case "link-tab1-cp-tab-user":
             SetMsgLoading("กำลังโหลด...");
             SearchCPTabUser();
@@ -718,7 +737,7 @@ function OpenTab(
             break;
         case "link-tab3-cp-tab-user":
             $(".addupdate-data-tab-user").html("");
-            LoadForm(1, "updatecptabuser", false, "update-data-tab-user", _id, "");
+            LoadForm(1, "updatecptabuser", false, "update-data-tab-user", id, "");
             break;
         case "link-tab1-cp-tab-program":
             LoadList("cpprogram", "record-count-program", "list-data-tab-program", "");
@@ -729,7 +748,7 @@ function OpenTab(
             break;
         case "link-tab3-cp-tab-program":
             $(".addupdate-data-tab-program").html("");
-            LoadForm(1, "updatecptabprogram", false, "update-data-tab-program", _id, "");
+            LoadForm(1, "updatecptabprogram", false, "update-data-tab-program", id, "");
             break;
         case "link-tab1-cp-tab-interest":
             LoadList("interest", "record-count-interest", "list-data-tab-interest", "");
@@ -740,7 +759,7 @@ function OpenTab(
             break;
         case "link-tab3-cp-tab-interest":
             $(".addupdate-data-tab-interest").html("");
-            LoadForm(1, "updatecptabinterest", false, "update-data-tab-interest", _id, "");
+            LoadForm(1, "updatecptabinterest", false, "update-data-tab-interest", id, "");
             break;
         case "link-tab1-cp-tab-pay-break-contract":
             LoadList("pay-break-contract", "record-count-pay-break-contract", "list-data-tab-pay-break-contract", "");
@@ -751,7 +770,7 @@ function OpenTab(
             break;
         case "link-tab3-cp-tab-pay-break-contract":
             $(".addupdate-data-tab-pay-break-contract").html("");
-            LoadForm(1, "updatecptabpaybreakcontract", false, "update-data-tab-pay-break-contract", _id, "");
+            LoadForm(1, "updatecptabpaybreakcontract", false, "update-data-tab-pay-break-contract", id, "");
             break;
         case "link-tab1-cp-tab-scholarship":
             LoadList("scholarship", "record-count-scholarship", "list-data-tab-scholarship", "");
@@ -762,7 +781,7 @@ function OpenTab(
             break;
         case "link-tab3-cp-tab-scholarship":
             $(".addupdate-data-tab-scholarship").html("");
-            LoadForm(1, "updatecptabscholarship", false, "update-data-tab-scholarship", _id, "");
+            LoadForm(1, "updatecptabscholarship", false, "update-data-tab-scholarship", id, "");
             break;
         case "link-tab1-cp-trans-break-contract":
         case "link-tab1-cp-trans-require-contract":
@@ -774,10 +793,10 @@ function OpenTab(
             LoadForm(1, "addcptransbreakcontract", false, "add-data-trans-break-contract", "", "");
             break;
         case "link-tab3-cp-trans-break-contract":
-            ChkTrackingStatusViewTransBreakContract(_id, _trackingStatus, "trans-break-contract" + _id, function (_result) {
-                if (_result == "0") {
+            ChkTrackingStatusViewTransBreakContract(id, trackingStatus, ("trans-break-contract" + id), function (result) {
+                if (result == "0") {
                     $(".addupdate-data-trans-break-contract").html("");
-                    LoadForm(1, "updatecptransbreakcontract", false, "update-data-trans-break-contract", _id, "");
+                    LoadForm(1, "updatecptransbreakcontract", false, "update-data-trans-break-contract", id, "");
                 }        
             });
             break;
@@ -786,20 +805,20 @@ function OpenTab(
             SearchRepay();
             break;
         case "link-tab3-cp-trans-require-contract":
-            if (_action == "add") {
-                ChkTrackingStatusViewTransBreakContract(_id, _trackingStatus, "trans-break-contract" + _id, function (_result) {
-                    if (_result == "0") {
+            if (action == "add") {
+                ChkTrackingStatusViewTransBreakContract(id, trackingStatus, ("trans-break-contract" + id), function (result) {
+                    if (result == "0") {
                         $("#addupdate-data-trans-require-contract").html("");
-                        LoadForm(1, "addcptransrequirecontract", false, "addupdate-data-trans-require-contract", _id, "");
+                        LoadForm(1, "addcptransrequirecontract", false, "addupdate-data-trans-require-contract", id, "");
                     }            
                 });
             }
 
-            if (_action == "update") {
-                ChkTrackingStatusViewTransBreakContract(_id, _trackingStatus, "trans-break-contract" + _id, function (_result) {
-                    if (_result == "0") {
+            if (action == "update") {
+                ChkTrackingStatusViewTransBreakContract(id, trackingStatus, ("trans-break-contract" + id), function (result) {
+                    if (result == "0") {
                         $(".addupdate-data-trans-require-contract").html("");
-                        LoadForm(1, "updatecptransrequirecontract", false, "addupdate-data-trans-require-contract", _id, "");
+                        LoadForm(1, "updatecptransrequirecontract", false, "addupdate-data-trans-require-contract", id, "");
                     }
                 });
             }
@@ -810,7 +829,7 @@ function OpenTab(
             break;
         case "link-tab2-cp-trans-payment":
             $("#adddetail-data-trans-payment").html("");
-            LoadForm(1, "adddetailcptranspayment", false, "adddetail-data-trans-payment", _id, "");
+            LoadForm(1, "adddetailcptranspayment", false, "adddetail-data-trans-payment", id, "");
             break;
         case "link-tab1-cp-report-table-cal-capital-and-interest":
             SetMsgLoading("กำลังโหลด...");
@@ -818,7 +837,7 @@ function OpenTab(
             break;
         case "link-tab2-cp-report-table-cal-capital-and-interest":
             $("#cal-data-report-table-cal-capital-and-interest").html("");
-            LoadForm(1, "calreporttablecalcapitalandinterest", false, "cal-data-report-table-cal-capital-and-interest", _id, "");
+            LoadForm(1, "calreporttablecalcapitalandinterest", false, "cal-data-report-table-cal-capital-and-interest", id, "");
             break;
         case "link-tab1-cp-report-statistic-repay":
             LoadList("cpreportstatisticrepay", "record-count-cp-report-statistic-repay", "list-data-report-statistic-repay", "");
@@ -846,35 +865,35 @@ function OpenTab(
 }
 
 function OpenSubTab(
-    _dropID,
-    _linkTab,
-    _id
+    dropID,
+    linkTab,
+    id
 ) {
     $(".subtab-content").hide();
 
-    if ($("#" + _dropID).hasClass("active") == false)  {
+    if ($("#" + dropID).hasClass("active") == false)  {
         $(".content-data-subtabs ul li a").removeClass("active");
-        $("#" + _dropID).addClass("active");
+        $("#" + dropID).addClass("active");
     }
 
-    $(_linkTab + "-head").show();
-    $(_linkTab + "-contents").show();
-    $(_linkTab + "-content").show();
+    $(linkTab + "-head").show();
+    $(linkTab + "-contents").show();
+    $(linkTab + "-content").show();
 
-    switch (_dropID) {
+    switch (dropID) {
         case "link-tab1-adddetail-cp-trans-payment":
             $(".adddetail-cp-trans-payment-content").html("");
-            LoadForm(1, "detailcptranspayment", false, "detail-data-trans-payment", _id, "");
+            LoadForm(1, "detailcptranspayment", false, "detail-data-trans-payment", id, "");
             break;
         case "link-tab2-adddetail-cp-trans-payment":
-            var _formatPayment = $("#format-payment-hidden").val() == "1" ? "fullrepay" : "payrepay";
+            var formatPayment = $("#format-payment-hidden").val() == "1" ? "fullrepay" : "payrepay";
     
             $(".adddetail-cp-trans-payment-content").html("");
-            LoadForm(1, "addcptranspayment" + _formatPayment, false, "add-data-trans-payment", _id, "");
+            LoadForm(1, "addcptranspayment" + formatPayment, false, "add-data-trans-payment", id, "");
             break;
         case "link-tab3-adddetail-cp-trans-payment":
             $(".adddetail-cp-trans-payment-content").html("");
-            LoadForm(1, "addupdatecptransprosecution", false, "addupdate-data-trans-prosecution", _id, "");
+            LoadForm(1, "addupdatecptransprosecution", false, "addupdate-data-trans-prosecution", id, "");
             break;
         case "link-tab1-report-student-on-statistic-contract-by-program":
         case "link-tab2-report-student-on-statistic-contract-by-program":
@@ -889,148 +908,148 @@ function OpenSubTab(
     }
 }
 
-function SetNullCombobox(_id) {
-    if (ComboboxGetSelectedValue(_id) == null) {
-        ComboboxSetSelectedValue(_id, "0");
-        SetSelectCombobox(_id, "0");
+function SetNullCombobox(id) {
+    if (ComboboxGetSelectedValue(id) == null) {
+        ComboboxSetSelectedValue(id, "0");
+        SetSelectCombobox(id, "0");
     }
 }
 
 function SetSelectCombobox(
-    _id,
-    _value
+    id,
+    value
 ) {
-    if (_id == "dlevel" ||
-        _id == "faculty" ||
-        _id == "facultycptabprogram" ||
-        _id == "facultytransbreakcontract" ||
-        _id == "facultytransrepaycontract" ||
-        _id == "facultytranspayment" ||
-        _id == "facultyreporttablecalcapitalandinterest" ||
-        _id == "facultyreportstepofwork" ||
-        _id == "facultysearchstudent" ||
-        _id == "facultyprofilestudent" ||
-        _id == "facultyreportnoticerepaycomplete" ||
-        _id == "facultyreportnoticeclaimdebt" ||
-        _id == "facultyreportstatisticpaymentbydate" ||
-        _id == "facultyreportecontract") {
-        var _dlevel;
-        var _facultyArray;
-        var _faculty;
-        var _program;
-        var _listProgram;
-        var _comboboxWidthInput = 390;
-        var _comboboxWidthList = 415;
+    if (id == "dlevel" ||
+        id == "faculty" ||
+        id == "facultycptabprogram" ||
+        id == "facultytransbreakcontract" ||
+        id == "facultytransrepaycontract" ||
+        id == "facultytranspayment" ||
+        id == "facultyreporttablecalcapitalandinterest" ||
+        id == "facultyreportstepofwork" ||
+        id == "facultysearchstudent" ||
+        id == "facultyprofilestudent" ||
+        id == "facultyreportnoticerepaycomplete" ||
+        id == "facultyreportnoticeclaimdebt" ||
+        id == "facultyreportstatisticpaymentbydate" ||
+        id == "facultyreportecontract") {
+        var dlevel;
+        var facultyArray;
+        var faculty;
+        var program;
+        var listProgram;
+        var comboboxWidthInput = 390;
+        var comboboxWidthList = 415;
 
-        if (_id == "dlevel") {
-            _dlevel = _value;
+        if (id == "dlevel") {
+            dlevel = value;
 
             if ($("#faculty").length > 0) {
-                _facultyArray = ComboboxGetSelectedValue("faculty").split(";");
-                _faculty = _facultyArray[0];
-                _program = "program";
-                _listProgram = "list-program";
+                facultyArray = ComboboxGetSelectedValue("faculty").split(";");
+                faculty = facultyArray[0];
+                program = "program";
+                listProgram = "list-program";
             }
 
             if ($("#facultycptabprogram").length > 0) {
-                _facultyArray = ComboboxGetSelectedValue("facultycptabprogram").split(";");
-                _faculty = _facultyArray[0];
-                _program = "programcptabprogram";
-                _listProgram = "list-program";
+                facultyArray = ComboboxGetSelectedValue("facultycptabprogram").split(";");
+                faculty = facultyArray[0];
+                program = "programcptabprogram";
+                listProgram = "list-program";
             }
         }
         
-        if (_id == "faculty" ||
-            _id == "facultycptabprogram" ||
-            _id == "facultytransbreakcontract" ||
-            _id == "facultytransrepaycontract" ||
-            _id == "facultytranspayment" ||
-            _id == "facultyreporttablecalcapitalandinterest" ||
-            _id == "facultyreportstepofwork" ||
-            _id == "facultysearchstudent" ||
-            _id == "facultyprofilestudent" ||
-            _id == "facultyreportnoticerepaycomplete" ||
-            _id == "facultyreportnoticeclaimdebt" ||
-            _id == "facultyreportstatisticpaymentbydate" ||
-            _id == "facultyreportecontract") {
-            _dlevel = $("#dlevel").length > 0 ? ComboboxGetSelectedValue("dlevel") : "";
-            _faculty = _value;
+        if (id == "faculty" ||
+            id == "facultycptabprogram" ||
+            id == "facultytransbreakcontract" ||
+            id == "facultytransrepaycontract" ||
+            id == "facultytranspayment" ||
+            id == "facultyreporttablecalcapitalandinterest" ||
+            id == "facultyreportstepofwork" ||
+            id == "facultysearchstudent" ||
+            id == "facultyprofilestudent" ||
+            id == "facultyreportnoticerepaycomplete" ||
+            id == "facultyreportnoticeclaimdebt" ||
+            id == "facultyreportstatisticpaymentbydate" ||
+            id == "facultyreportecontract") {
+            dlevel = ($("#dlevel").length > 0 ? ComboboxGetSelectedValue("dlevel") : "");
+            faculty = value;
             
-            if (_id == "faculty") {
-                _program = "program";
-                _listProgram = "list-program";
+            if (id == "faculty") {
+                program = "program";
+                listProgram = "list-program";
             }
 
-            if (_id == "facultycptabprogram") {
-                _program = "programcptabprogram";
-                _listProgram = "list-program";
+            if (id == "facultycptabprogram") {
+                program = "programcptabprogram";
+                listProgram = "list-program";
             }
 
-            if (_id == "facultytransbreakcontract") {
-                _program = "programtransbreakcontract";
-                _listProgram = "list-program-trans-break-contract";
+            if (id == "facultytransbreakcontract") {
+                program = "programtransbreakcontract";
+                listProgram = "list-program-trans-break-contract";
             }
 
-            if (_id == "facultytransrepaycontract") {
-                _program = "programtransrepaycontract";
-                _listProgram = "list-program-trans-repay-contract";
+            if (id == "facultytransrepaycontract") {
+                program = "programtransrepaycontract";
+                listProgram = "list-program-trans-repay-contract";
             }
 
-            if (_id == "facultytranspayment") {
-                _program = "programtranspayment";
-                _listProgram = "list-program-trans-payment";        
-                _comboboxWidthInput = 336;
-                _comboboxWidthList = 361;        
+            if (id == "facultytranspayment") {
+                program = "programtranspayment";
+                listProgram = "list-program-trans-payment";        
+                comboboxWidthInput = 336;
+                comboboxWidthList = 361;        
             }
 
-            if (_id == "facultyreporttablecalcapitalandinterest") {
-                _program = "programreporttablecalcapitalandinterest";
-                _listProgram = "list-program-report-table-cal-capital-and-interest";
+            if (id == "facultyreporttablecalcapitalandinterest") {
+                program = "programreporttablecalcapitalandinterest";
+                listProgram = "list-program-report-table-cal-capital-and-interest";
             }
 
-            if (_id == "facultyreportstepofwork") {
-                _program = "programreportstepofwork";
-                _listProgram = "list-program-report-step-of-work";
+            if (id == "facultyreportstepofwork") {
+                program = "programreportstepofwork";
+                listProgram = "list-program-report-step-of-work";
             }
 
-            if (_id == "facultysearchstudent") {                
-                _program = "programsearchstudent";
-                _listProgram = "list-program-search-student";
+            if (id == "facultysearchstudent") {                
+                program = "programsearchstudent";
+                listProgram = "list-program-search-student";
             }
 
-            if (_id == "facultyprofilestudent") {
-                _program = "programprofilestudent";
-                _listProgram = "list-program-profile-student";
+            if (id == "facultyprofilestudent") {
+                program = "programprofilestudent";
+                listProgram = "list-program-profile-student";
             }
 
-            if (_id == "facultyreportnoticerepaycomplete") {
-                _program = "programreportnoticerepaycomplete";
-                _listProgram = "list-program-report-notice-repay-complete";
+            if (id == "facultyreportnoticerepaycomplete") {
+                program = "programreportnoticerepaycomplete";
+                listProgram = "list-program-report-notice-repay-complete";
             }
 
-            if (_id == "facultyreportnoticeclaimdebt") {
-                _program = "programreportnoticeclaimdebt";
-                _listProgram = "list-program-report-notice-claim-debt";
+            if (id == "facultyreportnoticeclaimdebt") {
+                program = "programreportnoticeclaimdebt";
+                listProgram = "list-program-report-notice-claim-debt";
             }
 
-            if (_id == "facultyreportstatisticpaymentbydate") {
-                _program = "programreportstatisticpaymentbydate";
-                _listProgram = "list-program-report-statistic-payment-by-date";
+            if (id == "facultyreportstatisticpaymentbydate") {
+                program = "programreportstatisticpaymentbydate";
+                listProgram = "list-program-report-statistic-payment-by-date";
             }
 
-            if (_id == "facultyreportecontract") {
-                _program = "programreportecontract";
-                _listProgram = "list-program-report-e-contract";
+            if (id == "facultyreportecontract") {
+                program = "programreportecontract";
+                listProgram = "list-program-report-e-contract";
             }
         }
 
-        LoadCombobox(_program, "dlevel=" + _dlevel + "&faculty=" + _faculty, _listProgram, "0", _comboboxWidthInput, _comboboxWidthList);
+        LoadCombobox(program, ("dlevel=" + dlevel + "&faculty=" + faculty), listProgram, "0", comboboxWidthInput, comboboxWidthList);
     }
 
-    if (_id == "case-graduate") {
-        var _caseGraduate = _value;
+    if (id == "case-graduate") {
+        var caseGraduate = value;
 
-        if (_caseGraduate == "2")
+        if (caseGraduate == "2")
             $("input[name=set-amt-indemnitor-year]:radio").prop("disabled", false);
         else {
             $("input[name=set-amt-indemnitor-year]:radio").prop({
@@ -1042,16 +1061,16 @@ function SetSelectCombobox(
         }
     }
 
-    if (_id == "scholar") {
-        var _faculty = $("#profile-student-faculty-hidden").val();
-        var _program = $("#profile-student-program-hidden").val();
-        var _scholar = _value;
+    if (id == "scholar") {
+        var faculty = $("#profile-student-faculty-hidden").val();
+        var program = $("#profile-student-program-hidden").val();
+        var scholar = value;
 
-        if (_scholar == "1") {
+        if (scholar == "1") {
             TextboxEnable("#scholarship-money");
             TextboxEnable("#scholarship-year");
             TextboxEnable("#scholarship-month");
-            ViewScholarship(_faculty, _program, _scholar);
+            ViewScholarship(faculty, program, scholar);
         }
         else {
             $("#scholarship-money").val("");
@@ -1063,10 +1082,10 @@ function SetSelectCombobox(
         }
     }
 
-    if (_id == "case-graduate-break-contract") {
-        var _faculty = $("#profile-student-faculty-hidden").val();
-        var _program = $("#profile-student-program-hidden").val();
-        var _caseGraduateBreakContract = _value;
+    if (id == "case-graduate-break-contract") {
+        var faculty = $("#profile-student-faculty-hidden").val();
+        var program = $("#profile-student-program-hidden").val();
+        var caseGraduateBreakContract = value;
 
         ComboboxDisable("civil");
         $("#contract-force-date-start").val("");
@@ -1074,15 +1093,16 @@ function SetSelectCombobox(
         CalendarDisable("#contract-force-date-start");
         CalendarDisable("#contract-force-date-end");
 
-        if (_caseGraduateBreakContract == "1" || _caseGraduateBreakContract == "2") {
-            if (_caseGraduateBreakContract == "2") {
+        if (caseGraduateBreakContract == "1" ||
+            caseGraduateBreakContract == "2") {
+            if (caseGraduateBreakContract == "2") {
                 ComboboxEnable("civil")
 
                 if ($("#education-date-end").val().length > 0) {
-                    var _contractForceDateStart = $("#education-date-end").datepicker("getDate", "+1d");
-                    _contractForceDateStart.setDate(_contractForceDateStart.getDate() + 1);
+                    var contractForceDateStart = $("#education-date-end").datepicker("getDate", "+1d");
+                    contractForceDateStart.setDate(contractForceDateStart.getDate() + 1);
 
-                    $("#contract-force-date-start").datepicker("setDate", _contractForceDateStart);
+                    $("#contract-force-date-start").datepicker("setDate", contractForceDateStart);
                 }
                 
                 InitCalendar("#contract-force-date-start, #contract-force-date-end");
@@ -1100,13 +1120,13 @@ function SetSelectCombobox(
             }
         }
 
-        ViewPayBreakContract(_faculty, _program, _caseGraduateBreakContract);
+        ViewPayBreakContract(faculty, program, caseGraduateBreakContract);
     }
 
-    if (_id == "condition-tablecalcapitalandinterest") {
-        var _conditionTableCalCapitalAndInterest = _value;
+    if (id == "condition-tablecalcapitalandinterest") {
+        var conditionTableCalCapitalAndInterest = value;
 
-        if (_conditionTableCalCapitalAndInterest == "0") {
+        if (conditionTableCalCapitalAndInterest == "0") {
             $("#condition-select-0").show();
             $("#pay-period").val("");
             TextboxDisable("#pay-period");
@@ -1116,7 +1136,7 @@ function SetSelectCombobox(
         else {
             $("#condition-select-0").hide();
 
-            if (_conditionTableCalCapitalAndInterest == "1") {
+            if (conditionTableCalCapitalAndInterest == "1") {
                 $("#condition-select-1").show();
                 $("#pay").val("");
                 $("#condition-select-2").hide();
@@ -1130,157 +1150,158 @@ function SetSelectCombobox(
     }
 }
 
-function SetSelectDefaultCombobox(_id) {
-    if (_id == "faculty" ||
-        _id == "facultycptabprogram" ||
-        _id == "facultytransbreakcontract" ||
-        _id == "facultytransrepaycontract" ||
-        _id == "facultytranspayment" ||
-        _id == "facultyreporttablecalcapitalandinterest" ||
-        _id == "facultyreportstepofwork" ||
-        _id == "facultysearchstudent" ||
-        _id == "facultyprofilestudent" ||
-        _id == "facultyreportnoticerepaycomplete" ||
-        _id == "facultyreportnoticeclaimdebt" ||
-        _id == "facultyreportstatisticpaymentbydate" ||
-        _id == "facultyreportecontract") {
-        var _dlevel = $("#dlevel").length > 0 ? ComboboxGetSelectedValue("dlevel") : "";
-        var _facultyArray;
-        var _faculty;
-        var _program;
-        var _programValue;
-        var _listProgram;
-        var _comboboxWidthInput = 390;
-        var _comboboxWidthList = 415;
+function SetSelectDefaultCombobox(id) {
+    if (id == "faculty" ||
+        id == "facultycptabprogram" ||
+        id == "facultytransbreakcontract" ||
+        id == "facultytransrepaycontract" ||
+        id == "facultytranspayment" ||
+        id == "facultyreporttablecalcapitalandinterest" ||
+        id == "facultyreportstepofwork" ||
+        id == "facultysearchstudent" ||
+        id == "facultyprofilestudent" ||
+        id == "facultyreportnoticerepaycomplete" ||
+        id == "facultyreportnoticeclaimdebt" ||
+        id == "facultyreportstatisticpaymentbydate" ||
+        id == "facultyreportecontract") {
+        var dlevel = ($("#dlevel").length > 0 ? ComboboxGetSelectedValue("dlevel") : "");
+        var facultyArray;
+        var faculty;
+        var program;
+        var programValue;
+        var listProgram;
+        var comboboxWidthInput = 390;
+        var comboboxWidthList = 415;
 
-        if (_id == "faculty") {
-            _facultyArray = ComboboxGetSelectedValue("faculty").split(";");
-            _faculty = _facultyArray[0];
-            _program = "program";
-            _listProgram = "list-program";
-            _programValue = "program-hidden";
+        if (id == "faculty") {
+            facultyArray = ComboboxGetSelectedValue("faculty").split(";");
+            faculty = facultyArray[0];
+            program = "program";
+            listProgram = "list-program";
+            programValue = "program-hidden";
         }
 
-        if (_id == "facultycptabprogram") {
-            _facultyArray = ComboboxGetSelectedValue("facultycptabprogram").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programcptabprogram";
-            _listProgram = "list-program";
-            _programValue = "program-hidden";
+        if (id == "facultycptabprogram") {
+            facultyArray = ComboboxGetSelectedValue("facultycptabprogram").split(";");
+            faculty = facultyArray[0];
+            program = "programcptabprogram";
+            listProgram = "list-program";
+            programValue = "program-hidden";
         }
 
-        if (_id == "facultytransbreakcontract") {
-            _facultyArray = ComboboxGetSelectedValue("facultytransbreakcontract").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programtransbreakcontract";
-            _listProgram = "list-program-trans-break-contract";
-            _programValue = "program-trans-break-contract-hidden";
+        if (id == "facultytransbreakcontract") {
+            facultyArray = ComboboxGetSelectedValue("facultytransbreakcontract").split(";");
+            faculty = facultyArray[0];
+            program = "programtransbreakcontract";
+            listProgram = "list-program-trans-break-contract";
+            programValue = "program-trans-break-contract-hidden";
         }
 
-        if (_id == "facultytransrepaycontract") {
-            _facultyArray = ComboboxGetSelectedValue("facultytransrepaycontract").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programtransrepaycontract";
-            _listProgram = "list-program-trans-repay-contract";
-            _programValue = "program-trans-repay-contract-hidden";
+        if (id == "facultytransrepaycontract") {
+            facultyArray = ComboboxGetSelectedValue("facultytransrepaycontract").split(";");
+            faculty = facultyArray[0];
+            program = "programtransrepaycontract";
+            listProgram = "list-program-trans-repay-contract";
+            programValue = "program-trans-repay-contract-hidden";
         }
 
-        if (_id == "facultytranspayment") {
-            _facultyArray = ComboboxGetSelectedValue("facultytranspayment").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programtranspayment";
-            _listProgram = "list-program-trans-payment";
-            _programValue = "program-trans-payment-hidden";
-            _comboboxWidthInput = 336;
-            _comboboxWidthList = 361;
+        if (id == "facultytranspayment") {
+            facultyArray = ComboboxGetSelectedValue("facultytranspayment").split(";");
+            faculty = facultyArray[0];
+            program = "programtranspayment";
+            listProgram = "list-program-trans-payment";
+            programValue = "program-trans-payment-hidden";
+            comboboxWidthInput = 336;
+            comboboxWidthList = 361;
         }
 
-        if (_id == "facultyreporttablecalcapitalandinterest") {
-            _facultyArray = ComboboxGetSelectedValue("facultyreporttablecalcapitalandinterest").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programreporttablecalcapitalandinterest";
-            _listProgram = "list-program-report-table-cal-capital-and-interest";
-            _programValue = "program-report-table-cal-capital-and-interest-hidden";
+        if (id == "facultyreporttablecalcapitalandinterest") {
+            facultyArray = ComboboxGetSelectedValue("facultyreporttablecalcapitalandinterest").split(";");
+            faculty = facultyArray[0];
+            program = "programreporttablecalcapitalandinterest";
+            listProgram = "list-program-report-table-cal-capital-and-interest";
+            programValue = "program-report-table-cal-capital-and-interest-hidden";
         }
 
-        if (_id == "facultyreportstepofwork") {
-            _facultyArray = ComboboxGetSelectedValue("facultyreportstepofwork").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programreportstepofwork";
-            _listProgram = "list-program-report-step-of-work";
-            _programValue = "program-report-step-of-work-hidden";
+        if (id == "facultyreportstepofwork") {
+            facultyArray = ComboboxGetSelectedValue("facultyreportstepofwork").split(";");
+            faculty = facultyArray[0];
+            program = "programreportstepofwork";
+            listProgram = "list-program-report-step-of-work";
+            programValue = "program-report-step-of-work-hidden";
         }
 
-        if (_id == "facultysearchstudent") {
-            _faculty = "0";
-            _program = "programsearchstudent";
-            _listProgram = "list-program-search-student";
-            _programValue = "";
+        if (id == "facultysearchstudent") {
+            faculty = "0";
+            program = "programsearchstudent";
+            listProgram = "list-program-search-student";
+            programValue = "";
         }
 
-        if (_id == "facultyprofilestudent") {
-            _facultyArray = ComboboxGetSelectedValue("facultyprofilestudent").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programprofilestudent";
-            _listProgram = "list-program-profile-student";
-            _programValue = "profile-student-program-hidden";
+        if (id == "facultyprofilestudent") {
+            facultyArray = ComboboxGetSelectedValue("facultyprofilestudent").split(";");
+            faculty = facultyArray[0];
+            program = "programprofilestudent";
+            listProgram = "list-program-profile-student";
+            programValue = "profile-student-program-hidden";
         }
 
-        if (_id == "facultyreportnoticerepaycomplete") {
-            _facultyArray = ComboboxGetSelectedValue("facultyreportnoticerepaycomplete").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programreportnoticerepaycomplete";
-            _listProgram = "list-program-report-notice-repay-complete";
-            _programValue = "program-report-notice-repay-complete-hidden";
+        if (id == "facultyreportnoticerepaycomplete") {
+            facultyArray = ComboboxGetSelectedValue("facultyreportnoticerepaycomplete").split(";");
+            faculty = facultyArray[0];
+            program = "programreportnoticerepaycomplete";
+            listProgram = "list-program-report-notice-repay-complete";
+            programValue = "program-report-notice-repay-complete-hidden";
         }
 
-        if (_id == "facultyreportnoticeclaimdebt") {
-            _facultyArray = ComboboxGetSelectedValue("facultyreportnoticeclaimdebt").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programreportnoticeclaimdebt";
-            _listProgram = "list-program-report-notice-claim-debt";
-            _programValue = "program-report-notice-claim-debt-hidden";
+        if (id == "facultyreportnoticeclaimdebt") {
+            facultyArray = ComboboxGetSelectedValue("facultyreportnoticeclaimdebt").split(";");
+            faculty = facultyArray[0];
+            program = "programreportnoticeclaimdebt";
+            listProgram = "list-program-report-notice-claim-debt";
+            programValue = "program-report-notice-claim-debt-hidden";
         }
 
-        if (_id == "facultyreportstatisticpaymentbydate") {
-            _facultyArray = ComboboxGetSelectedValue("facultyreportstatisticpaymentbydate").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programreportstatisticpaymentbydate";
-            _listProgram = "list-program-report-statistic-payment-by-date";
-            _programValue = "program-report-statistic-payment-by-date-hidden";
+        if (id == "facultyreportstatisticpaymentbydate") {
+            facultyArray = ComboboxGetSelectedValue("facultyreportstatisticpaymentbydate").split(";");
+            faculty = facultyArray[0];
+            program = "programreportstatisticpaymentbydate";
+            listProgram = "list-program-report-statistic-payment-by-date";
+            programValue = "program-report-statistic-payment-by-date-hidden";
         }
 
-        if (_id == "facultyreportecontract") {
-            _facultyArray = ComboboxGetSelectedValue("facultyreportecontract").split(";");
-            _faculty = _facultyArray[0];
-            _program = "programreportecontract";
-            _listProgram = "list-program-report-e-contract";
-            _programValue = "program-report-e-contract-hidden";
+        if (id == "facultyreportecontract") {
+            facultyArray = ComboboxGetSelectedValue("facultyreportecontract").split(";");
+            faculty = facultyArray[0];
+            program = "programreportecontract";
+            listProgram = "list-program-report-e-contract";
+            programValue = "program-report-e-contract-hidden";
         }
 
-        LoadCombobox(_program, "dlevel=" + _dlevel + "&faculty=" + _faculty, _listProgram, (_faculty != "0" ? ($("#" + _programValue).val().length > 0 ? $("#" + _programValue).val() : "0") : "0"), _comboboxWidthInput, _comboboxWidthList);
+        LoadCombobox(program, ("dlevel=" + dlevel + "&faculty=" + faculty), listProgram, (faculty != "0" ? ($("#" + programValue).val().length > 0 ? $("#" + programValue).val() : "0") : "0"), comboboxWidthInput, comboboxWidthList);
     }
 
-    if (_id == "case-graduate") {
+    if (id == "case-graduate") {
         if (ComboboxGetSelectedValue("case-graduate") == "2") {
             $("input[name=set-amt-indemnitor-year]:radio").prop("disabled", false);
             TextboxEnable("#amt-indemnitor-year");        
         }
         else {
             $("input[name=set-amt-indemnitor-year]:radio").prop({
-            "checked": false,
-            "disabled": true
+                "checked": false,
+                "disabled": true
             });
             $("#amt-indemnitor-year").val("");
             TextboxDisable("#amt-indemnitor-year");
         }
     }
 
-    if (_id == "case-graduate-break-contract") {
+    if (id == "case-graduate-break-contract") {
         CalendarDisable("#contract-force-date-start");
         CalendarDisable("#contract-force-date-end");
 
-        if (ComboboxGetSelectedValue("case-graduate-break-contract") == "1" || ComboboxGetSelectedValue("case-graduate-break-contract") == "2") {
+        if (ComboboxGetSelectedValue("case-graduate-break-contract") == "1" ||
+            ComboboxGetSelectedValue("case-graduate-break-contract") == "2") {
             if (ComboboxGetSelectedValue("case-graduate-break-contract") == "2") {
                 InitCalendar("#contract-force-date-start, #contract-force-date-end");
                 CalendarEnable("#contract-force-date-start");
@@ -1294,7 +1315,7 @@ function SetSelectDefaultCombobox(_id) {
         }
     }
 
-    if (_id == "scholar") {
+    if (id == "scholar") {
         if (ComboboxGetSelectedValue("scholar") == "1") {
             TextboxEnable("#scholarship-money");
             TextboxEnable("#scholarship-year");
@@ -1309,7 +1330,7 @@ function SetSelectDefaultCombobox(_id) {
         }
     }
 
-    if (_id == "civil") {
+    if (id == "civil") {
         if (ComboboxGetSelectedValue("case-graduate-break-contract") == "2")
             ComboboxEnable("civil")
         else {
@@ -1318,7 +1339,7 @@ function SetSelectDefaultCombobox(_id) {
         }
     }
 
-    if (_id == "condition-tablecalcapitalandinterest") {
+    if (id == "condition-tablecalcapitalandinterest") {
         if (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "0") {
             $("#condition-select-0").show();
             $("#pay-period").val("");
@@ -1329,86 +1350,88 @@ function SetSelectDefaultCombobox(_id) {
     }
 }
 
-function InitComboboxOnClick(_id) {
+function InitComboboxOnClick(id) {
     $(document).ready(function () {
-        $("." + _id + "-combobox-input").autocomplete({
+        $("." + id + "-combobox-input").autocomplete({
             change: function (event, ui) {
-                SetNullCombobox(_id);
+                SetNullCombobox(id);
             },
             close: function (event, ui) {
-                SetNullCombobox(_id);
+                SetNullCombobox(id);
             }
         });
 
-        $("#" + _id).combobox({
+        $("#" + id).combobox({
             selected: function (event, ui) {
-                SetSelectCombobox(_id, ui.item.value);
+                SetSelectCombobox(id, ui.item.value);
             }
         });
 
-        SetSelectDefaultCombobox(_id)
+        SetSelectDefaultCombobox(id)
     });
 }
 
 function LoadForm(
-    _frmIndex,
-    _frm,
-    _dialogFrm,
-    _frmID,
-    _id,
-    _idActive
+    frmIndex,
+    frm,
+    dialogFrm,
+    frmID,
+    id,
+    idActive
 ) {
-    if (_idActive.length > 0)
-        $("#" + _idActive).addClass("active");
+    if (idActive.length > 0)
+        $("#" + idActive).addClass("active");
 
-    if (_dialogFrm == false)
-        $("#" + _frmID).html("");
+    if (dialogFrm == false)
+        $("#" + frmID).html("");
 
-    var _send = new Array();
-    _send[_send.length] = "action=form";
-    _send[_send.length] = "frm=" + _frm;
-    _send[_send.length] = "id=" + _id;
+    var send = new Array();
+    send[send.length] = "action=form";
+    send[send.length] = ("frm=" + frm);
+    send[send.length] = ("id=" + id);
     
     SetMsgLoading("กำลังโหลด...");
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
-        var _dataForm = _result.split("<form>");
-        var _dataWidth = _result.split("<width>");
-        var _dataHeight = _result.split("<height>");
-        var _dataTitle = _result.split("<title>");
-        var _height = parseInt(_dataHeight[1]);
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (result) {
+        var dataForm = result.split("<form>");
+        var dataWidth = result.split("<width>");
+        var dataHeight = result.split("<height>");
+        var dataTitle = result.split("<title>");
+        var height = parseInt(dataHeight[1]);
 
-        if (_dataForm[1].length == 0) {
-            DialogMessage("ไม่พบข้อมูล", "", false, _idActive);
+        if (dataForm[1].length == 0) {
+            DialogMessage("ไม่พบข้อมูล", "", false, idActive);
 
             /*
-            if (_idActive.length > 0)
-                $("#" + _idActive).removeClass("active");
+            if (idActive.length > 0)
+                $("#" + idActive).removeClass("active");
             */
 
             return;
         }
 
-        if (_dialogFrm == true) {
-            if (_frm == "manual") _height = ($(window).height() - 40);
-                DialogForm(_frmIndex, _dataForm[1], parseInt(_dataWidth[1]), _height, _dataTitle[1], _idActive, "")
+        if (dialogFrm == true) {
+            if (frm == "manual")
+                height = ($(window).height() - 40);
 
-            if (_frm == "manual") {
-                $("#dialog-form" + _frmIndex).dialog({
+            DialogForm(frmIndex, dataForm[1], parseInt(dataWidth[1]), height, dataTitle[1], idActive, "");
+
+            if (frm == "manual") {
+                $("#dialog-form" + frmIndex).dialog({
                     close: function () {
-                        $(".dialog-overlay" + _frmIndex).remove();
+                        $(".dialog-overlay" + frmIndex).remove();
                         $("body").css("overflow", "auto");
 
                         $("#menu7").removeClass("active").addClass("noactive");
-                        $("#menu" + _oldMenu).removeClass("noactive").addClass("active");
+                        $("#menu" + oldMenu).removeClass("noactive").addClass("active");
                     }
                 });    
             }
         }
         else
-            $("#" + _frmID).html(_dataForm[1]);
+            $("#" + frmID).html(dataForm[1]);
 
-        switch (_frm) {
+        switch (frm) {
             case "searchcptabuser":
                 ResetFrmSearchCPTabUser("");
                 break;
@@ -1525,7 +1548,7 @@ function LoadForm(
                 ResetFrmSearchCPReportStatisticPaymentByDate("");
                 break;
             case "manual":
-                InitSlide(".class-dialog-form-manual .ui-dialog-content", _manual, true, "Manual/UserManual.zip");
+                InitSlide(".class-dialog-form-manual .ui-dialog-content", manual, true, "Manual/UserManual.zip");
                 break;
             case "searchcpreportecontract":
                 ResetFrmSearchCPReportEContract("");
@@ -1543,407 +1566,410 @@ function LoadForm(
 }
 
 function AddUpdateData(
-    _action,
-    _cmd,
-    _valueSend,
-    _listUpdate,
-    _recordCount,
-    _listData,
-    _navPage,
-    _closeFrm,
-    _callbackFunc
+    action,
+    cmd,
+    valueSend,
+    listUpdate,
+    recordCount,
+    listData,
+    navPage,
+    closeFrm,
+    callbackFunc
 ) {
-    var _i;
-    var _msgAction = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
-    var _send = new Array();
-    _send[_send.length] = "action=" + _action;
-    _send[_send.length] = "cmd=" + _cmd;
+    var msgAction = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
+    var send = new Array();
+    send[send.length] = ("action=" + action);
+    send[send.length] = ("cmd=" + cmd);
 
-    if (_valueSend.length > 0) {
-        for (_i = 0; _i < _valueSend.length; _i++) {
-            _send[_send.length] = _valueSend[_i];
+    if (valueSend.length > 0) {
+        for (var i = 0; i < valueSend.length; i++) {
+            send[send.length] = valueSend[i];
         }
     }
 
-    SetMsgLoading("กำลัง" + _msgAction + "...");
+    SetMsgLoading("กำลัง" + msgAction + "...");
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (_result) {
-        var _dataError = _result.split("<error>");
-        var _dataRecordCount = _result.split("<recordcount>");
-        var _dataList = _result.split("<list>");
-        var _dataPageNav = _result.split("<pagenav>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", true, true, function (result) {
+        var dataError = result.split("<error>");
+        var dataRecordCount = result.split("<recordcount>");
+        var dataList = result.split("<list>");
+        var dataPageNav = result.split("<pagenav>");
 
-        if (_dataError[1] == "0") {
-            if (_closeFrm == true)
+        if (dataError[1] == "0") {
+            if (closeFrm == true)
                 $("#dialog-form1").dialog("close");
 
-            if (_listUpdate == true) {
-                $("#" + _recordCount).html("ค้นหาพบ " + _dataRecordCount[1] + " รายการ");
-                $("#" + _listData).html(_dataList[1]);
+            if (listUpdate == true) {
+                $("#" + recordCount).html("ค้นหาพบ " + dataRecordCount[1] + " รายการ");
+                $("#" + listData).html(dataList[1]);
 
-                if (_navPage.length > 0)
-                    $("#" + _navPage).html(_dataPageNav[1]);
+                if (navPage.length > 0)
+                    $("#" + navPage).html(dataPageNav[1]);
             }
         }
 
-        _callbackFunc(_dataError[1]);
+        callbackFunc(dataError[1]);
     });
 }
 
 function SearchData(
-    _from,
-    _valueSend,
-    _recordSearch,
-    _listSearch,
-    _navPage
+    from,
+    valueSend,
+    recordSearch,
+    listSearch,
+    navPage
 ) {
-    $("#" + _recordSearch).html("");
+    $("#" + recordSearch).html("");
 
-    if (_from != "studentwithresult")
-        $("#" + _listSearch).html("");
+    if (from != "studentwithresult")
+        $("#" + listSearch).html("");
 
-    $("#" + _navPage).html("");
+    $("#" + navPage).html("");
 
-    var _i;
-    var _j = 2;
-    var _send = new Array();
-    _send[_send.length] = "action=search";
-    _send[_send.length] = "from=" + _from;
+    var send = new Array();
+    send[send.length] = "action=search";
+    send[send.length] = ("from=" + from);
     
-    if (_valueSend.length > 0) {
-        for (_i = 0; _i < _valueSend.length; _i++) {
-            _send[_j] = _valueSend[_i];
-            _j++;
+    if (valueSend.length > 0) {
+        var j = 2;
+
+        for (var i = 0; i < valueSend.length; i++) {
+            send[j] = valueSend[i];
+            j++;
         }
     }
     
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", (_msgLoading.length > 0 ? true : false), (_msgLoading.length > 0 ? true : false), function (_result) {
-        var _dataRecordCount = _result.split("<recordcount>");
-        var _dataList = _result.split("<list>");
-        var _dataPageNav = _result.split("<pagenav>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", (msgLoading.length > 0 ? true : false), (msgLoading.length > 0 ? true : false), function (result) {
+        var dataRecordCount = result.split("<recordcount>");
+        var dataList = result.split("<list>");
+        var dataPageNav = result.split("<pagenav>");
 
-        $("#" + _recordSearch).html("ค้นหาพบ " + _dataRecordCount[1] + " รายการ");
-        $("#" + _listSearch).html(_dataList[1]);
-        $("#" + _navPage).html(_dataPageNav[1]);
+        $("#" + recordSearch).html("ค้นหาพบ " + dataRecordCount[1] + " รายการ");
+        $("#" + listSearch).html(dataList[1]);
+        $("#" + navPage).html(dataPageNav[1]);
     });
 }
 
-function ViewData(_from, _valueSend, _callbackFunc) {
-    var _i;
-    var _j = 2;
-    var _send = new Array();
-    _send[_send.length] = "action=search";
-    _send[_send.length] = "from=" + _from;
+function ViewData(
+    from,
+    valueSend,
+    callbackFunc
+) {
+    var send = new Array();
+    send[send.length] = "action=search";
+    send[send.length] = ("from=" + from);
 
-    if (_valueSend.length > 0) {
-        for (_i = 0; _i < _valueSend.length; _i++) {
-            _send[_j] = _valueSend[_i];
-            _j++;
+    if (valueSend.length > 0) {
+        var j = 2;
+
+        for (var i = 0; i < valueSend.length; i++) {
+            send[j] = valueSend[i];
+            j++;
         }
     }
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", (_msgLoading.length > 0 ? true : false), (_msgLoading.length > 0 ? true : false), function (_result) {
-        _callbackFunc(_result);
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", (msgLoading.length > 0 ? true : false), (msgLoading.length > 0 ? true : false), function (result) {
+        callbackFunc(result);
     });
 }
 
 function PageNav(
-    _pageContent,
-    _currentPage,
-    _startRow,
-    _endRow
+    pageContent,
+    currentPage,
+    startRow,
+    endRow
 ) {
-    var _send = new Array();
-    _send[_send.length] = "currentpage=" + _currentPage;
-    _send[_send.length] = "startrow=" + _startRow;
-    _send[_send.length] = "endrow=" + _endRow;
+    var send = new Array();
+    send[send.length] = ("currentpage=" + currentPage);
+    send[send.length] = ("startrow=" + startRow);
+    send[send.length] = ("endrow=" + endRow);
 
-    if (_pageContent == "tabuser") {
-        _send[_send.length] = "name=" + $("#name-tab-user-hidden").val();
+    if (pageContent == "tabuser") {
+        send[send.length] = ("name=" + $("#name-tab-user-hidden").val());
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("tabuser", _send, "record-count-cp-tab-user", "list-data-tab-user", "nav-page-tab-user");
+        SearchData("tabuser", send, "record-count-cp-tab-user", "list-data-tab-user", "nav-page-tab-user");
     }
     
-    if (_pageContent == "studentwithresult") {
-        var _faculty = ComboboxGetSelectedValue("facultysearchstudent") != "0" ? ComboboxGetSelectedValue("facultysearchstudent") : "";
-        var _program = ComboboxGetSelectedValue("programsearchstudent") != "0" ? ComboboxGetSelectedValue("programsearchstudent") : "";
+    if (pageContent == "studentwithresult") {
+        var faculty = (ComboboxGetSelectedValue("facultysearchstudent") != "0" ? ComboboxGetSelectedValue("facultysearchstudent") : "");
+        var program = (ComboboxGetSelectedValue("programsearchstudent") != "0" ? ComboboxGetSelectedValue("programsearchstudent") : "");
 
-        _faculty = _faculty.length > 0 ? _faculty.split(";") : "";
-        _program = _program.length > 0 ? _program.split(";") : "";
+        faculty = (faculty.length > 0 ? faculty.split(";") : "");
+        program = (program.length > 0 ? program.split(";") : "");
 
-        _send[_send.length] = "studentid=" + $("#id-name-search-student").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-
-        SetMsgLoading("กำลังโหลด...");
-
-        SearchData("studentwithresult", _send, "record-count-student-with-result", "list-data-search-student-with-result", "nav-page-search-student-with-result");
-    }
-
-    if (_pageContent == "transbreakcontract") {
-        var _faculty = $("#faculty-trans-break-contract-hidden").val().length > 0 ? $("#faculty-trans-break-contract-hidden").val().split(";") : "";
-        var _program = $("#program-trans-break-contract-hidden").val().length > 0 ? $("#program-trans-break-contract-hidden").val().split(";") : "";
-
-        _send[_send.length] = "statussend=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "1" ? "1" : ($("#trackingstatus-trans-break-contract-hidden").val() == "6" ? "1" : ""));
-        _send[_send.length] = "statusreceiver=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "2" ? "1" : ($("#trackingstatus-trans-break-contract-hidden").val() == "3" ? "2" : ""));
-        _send[_send.length] = "statusedit=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "4" ? "2" : ($("#trackingstatus-trans-break-contract-hidden").val() == "6" ? "2" : ""));
-        _send[_send.length] = "statuscancel=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "5" ? "2" : ($("#trackingstatus-trans-break-contract-hidden").val() == "6" ? "2" : ""));
-        _send[_send.length] = "studentid=" + $("#id-name-trans-break-contract-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : ""); ;
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-        _send[_send.length] = "datestart=" + $("#date-start-trans-break-contract-hidden").val();
-        _send[_send.length] = "dateend=" + $("#date-end-trans-break-contract-hidden").val();
+        send[send.length] = ("studentid=" + $("#id-name-search-student").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("transbreakcontract", _send, "record-count-cp-trans-break-contract", "list-data-trans-break-contract", "nav-page-trans-break-contract");
+        SearchData("studentwithresult", send, "record-count-student-with-result", "list-data-search-student-with-result", "nav-page-search-student-with-result");
     }
 
-    if (_pageContent == "transrepaycontract") {
-        var _faculty = $("#faculty-trans-repay-contract-hidden").val().length > 0 ? $("#faculty-trans-repay-contract-hidden").val().split(";") : "";        
-        var _program = $("#program-trans-repay-contract-hidden").val().length > 0 ? $("#program-trans-repay-contract-hidden").val().split(";") : "";
-        var _statusRepay = SetStatusRepay();
+    if (pageContent == "transbreakcontract") {
+        var faculty = ($("#faculty-trans-break-contract-hidden").val().length > 0 ? $("#faculty-trans-break-contract-hidden").val().split(";") : "");
+        var program = ($("#program-trans-break-contract-hidden").val().length > 0 ? $("#program-trans-break-contract-hidden").val().split(";") : "");
 
-        _send[_send.length] = "statusrepay=" + _statusRepay[0];
-        _send[_send.length] = "statusreply=" + _statusRepay[1];
-        _send[_send.length] = "replyresult=" + _statusRepay[2];
-        _send[_send.length] = "statuspayment=" + _statusRepay[3];
-        _send[_send.length] = "studentid=" + $("#id-name-trans-repay-contract-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-        _send[_send.length] = "datestart=" + $("#date-start-trans-repay-contract-hidden").val();
-        _send[_send.length] = "dateend=" + $("#date-end-trans-repay-contract-hidden").val();
+        send[send.length] = ("statussend=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "1" ? "1" : ($("#trackingstatus-trans-break-contract-hidden").val() == "6" ? "1" : "")));
+        send[send.length] = ("statusreceiver=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "2" ? "1" : ($("#trackingstatus-trans-break-contract-hidden").val() == "3" ? "2" : "")));
+        send[send.length] = ("statusedit=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "4" ? "2" : ($("#trackingstatus-trans-break-contract-hidden").val() == "6" ? "2" : "")));
+        send[send.length] = ("statuscancel=" + ($("#trackingstatus-trans-break-contract-hidden").val() == "5" ? "2" : ($("#trackingstatus-trans-break-contract-hidden").val() == "6" ? "2" : "")));
+        send[send.length] = ("studentid=" + $("#id-name-trans-break-contract-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+        send[send.length] = ("datestart=" + $("#date-start-trans-break-contract-hidden").val());
+        send[send.length] = ("dateend=" + $("#date-end-trans-break-contract-hidden").val());
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("transrepaycontract", _send, "record-count-cp-trans-repay-contract", "list-data-trans-repay-contract", "nav-page-trans-repay-contract");
+        SearchData("transbreakcontract", send, "record-count-cp-trans-break-contract", "list-data-trans-break-contract", "nav-page-trans-break-contract");
     }
 
-    if (_pageContent == "transpayment") {
-        var _faculty = $("#faculty-trans-payment-hidden").val().length > 0 ? $("#faculty-trans-payment-hidden").val().split(";") : "";
-        var _program = $("#program-trans-payment-hidden").val().length > 0 ? $("#program-trans-payment-hidden").val().split(";") : "";
+    if (pageContent == "transrepaycontract") {
+        var faculty = ($("#faculty-trans-repay-contract-hidden").val().length > 0 ? $("#faculty-trans-repay-contract-hidden").val().split(";") : "");        
+        var program = ($("#program-trans-repay-contract-hidden").val().length > 0 ? $("#program-trans-repay-contract-hidden").val().split(";") : "");
+        var statusRepay = SetStatusRepay();
 
-        _send[_send.length] = "statuspayment=" + $("#paymentstatus-trans-payment-hidden").val();
-        _send[_send.length] = "studentid=" + $("#id-name-trans-payment-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-        _send[_send.length] = "datestart=" + $("#date-start-trans-repay1-reply-hidden").val();
-        _send[_send.length] = "dateend=" + $("#date-end-trans-repay1-reply-hidden").val();
+        send[send.length] = ("statusrepay=" + statusRepay[0]);
+        send[send.length] = ("statusreply=" + statusRepay[1]);
+        send[send.length] = ("replyresult=" + statusRepay[2]);
+        send[send.length] = ("statuspayment=" + statusRepay[3]);
+        send[send.length] = ("studentid=" + $("#id-name-trans-repay-contract-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+        send[send.length] = ("datestart=" + $("#date-start-trans-repay-contract-hidden").val());
+        send[send.length] = ("dateend=" + $("#date-end-trans-repay-contract-hidden").val());
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("transpayment", _send, "record-count-cp-trans-payment", "list-data-trans-payment", "nav-page-trans-payment");
+        SearchData("transrepaycontract", send, "record-count-cp-trans-repay-contract", "list-data-trans-repay-contract", "nav-page-trans-repay-contract");
     }
 
-    if (_pageContent == "reporttablecalcapitalandinterest") {
-        var _faculty = $("#faculty-report-table-cal-capital-and-interest-hidden").val().length > 0 ? $("#faculty-report-table-cal-capital-and-interest-hidden").val().split(";") : "";
-        var _program = $("#program-report-table-cal-capital-and-interest-hidden").val().length > 0 ? $("#program-report-table-cal-capital-and-interest-hidden").val().split(";") : "";
+    if (pageContent == "transpayment") {
+        var faculty = ($("#faculty-trans-payment-hidden").val().length > 0 ? $("#faculty-trans-payment-hidden").val().split(";") : "");
+        var program = ($("#program-trans-payment-hidden").val().length > 0 ? $("#program-trans-payment-hidden").val().split(";") : "");
 
-        _send[_send.length] = "studentid=" + $("#id-name-report-table-cal-capital-and-interest-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
+        send[send.length] = ("statuspayment=" + $("#paymentstatus-trans-payment-hidden").val());
+        send[send.length] = ("studentid=" + $("#id-name-trans-payment-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+        send[send.length] = ("datestart=" + $("#date-start-trans-repay1-reply-hidden").val());
+        send[send.length] = ("dateend=" + $("#date-end-trans-repay1-reply-hidden").val());
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reporttablecalcapitalandinterest", _send, "record-count-cp-report-table-cal-capital-and-interest", "list-data-report-table-cal-capital-and-interest", "nav-page-report-table-cal-capital-and-interest");
+        SearchData("transpayment", send, "record-count-cp-trans-payment", "list-data-trans-payment", "nav-page-trans-payment");
     }
 
-    if (_pageContent == "reportstepofwork") {
-        var _faculty = $("#faculty-report-step-of-work-hidden").val().length > 0 ? $("#faculty-report-step-of-work-hidden").val().split(";") : "";
-        var _program = $("#program-report-step-of-work-hidden").val().length > 0 ? $("#program-report-step-of-work-hidden").val().split(";") : "";
+    if (pageContent == "reporttablecalcapitalandinterest") {
+        var faculty = ($("#faculty-report-table-cal-capital-and-interest-hidden").val().length > 0 ? $("#faculty-report-table-cal-capital-and-interest-hidden").val().split(";") : "");
+        var program = ($("#program-report-table-cal-capital-and-interest-hidden").val().length > 0 ? $("#program-report-table-cal-capital-and-interest-hidden").val().split(";") : "");
 
-        _send[_send.length] = "statusstepofwork=" + $("#stepofworkstatus-report-step-of-work-hidden").val();
-        _send[_send.length] = "studentid=" + $("#id-name-report-step-of-work-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
+        send[send.length] = ("studentid=" + $("#id-name-report-table-cal-capital-and-interest-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+
+        SetMsgLoading("กำลังโหลด...");
+
+        SearchData("reporttablecalcapitalandinterest", send, "record-count-cp-report-table-cal-capital-and-interest", "list-data-report-table-cal-capital-and-interest", "nav-page-report-table-cal-capital-and-interest");
+    }
+
+    if (pageContent == "reportstepofwork") {
+        var faculty = ($("#faculty-report-step-of-work-hidden").val().length > 0 ? $("#faculty-report-step-of-work-hidden").val().split(";") : "");
+        var program = ($("#program-report-step-of-work-hidden").val().length > 0 ? $("#program-report-step-of-work-hidden").val().split(";") : "");
+
+        send[send.length] = ("statusstepofwork=" + $("#stepofworkstatus-report-step-of-work-hidden").val());
+        send[send.length] = ("studentid=" + $("#id-name-report-step-of-work-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
        
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportstepofwork", _send, "record-count-cp-report-step-of-work", "list-data-report-step-of-work", "nav-page-report-step-of-work");
+        SearchData("reportstepofwork", send, "record-count-cp-report-step-of-work", "list-data-report-step-of-work", "nav-page-report-step-of-work");
     }
 
-    if (_pageContent == "reportstepofworkonstatisticrepaybyprogram") {
-        var _faculty = $("#faculty-report-step-of-work-on-statistic-repay-by-program-hidden").val().split(";");
-        var _program = $("#program-report-step-of-work-on-statistic-repay-by-program-hidden").val().split(";");
+    if (pageContent == "reportstepofworkonstatisticrepaybyprogram") {
+        var faculty = $("#faculty-report-step-of-work-on-statistic-repay-by-program-hidden").val().split(";");
+        var program = $("#program-report-step-of-work-on-statistic-repay-by-program-hidden").val().split(";");
 
-        _send[_send.length] = "acadamicyear=" + $("#acadamicyear-hidden").val();
-        _send[_send.length] = "studentid=" + $("#id-name-search-report-step-of-work").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : ""); ;
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
+        send[send.length] = ("acadamicyear=" + $("#acadamicyear-hidden").val());
+        send[send.length] = ("studentid=" + $("#id-name-search-report-step-of-work").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
 
         SetMsgLoading("กำลังโหลด...");
         
-        SearchData("reportstepofworkonstatisticrepaybyprogram", _send, "record-count-report-step-of-work", "list-data-search-report-step-of-work", "nav-page-search-report-step-of-work");
+        SearchData("reportstepofworkonstatisticrepaybyprogram", send, "record-count-report-step-of-work", "list-data-search-report-step-of-work", "nav-page-search-report-step-of-work");
     }
 
-    if (_pageContent == "reportstudentonstatisticcontractbyprogram") {
-        var _faculty = $("#faculty-report-student-on-statistic-contract-by-program-hidden").val().split(";");
-        var _program = $("#program-report-student-on-statistic-contract-by-program-hidden").val().split(";");
-        var _searchTab = $("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true ? 1 : 2;
+    if (pageContent == "reportstudentonstatisticcontractbyprogram") {
+        var faculty = $("#faculty-report-student-on-statistic-contract-by-program-hidden").val().split(";");
+        var program = $("#program-report-student-on-statistic-contract-by-program-hidden").val().split(";");
+        var searchTab = ($("#link-tab1-report-student-on-statistic-contract-by-program").hasClass("active") == true ? 1 : 2);
 
-        _send[_send.length] = "acadamicyear=" + $("#acadamicyear-hidden").val();
-        _send[_send.length] = "studentid=" + $("#id-name-search-report-student-contract").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : ""); ;
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-        _send[_send.length] = "searchtab=" + _searchTab;
+        send[send.length] = ("acadamicyear=" + $("#acadamicyear-hidden").val());
+        send[send.length] = ("studentid=" + $("#id-name-search-report-student-contract").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+        send[send.length] = ("searchtab=" + searchTab);
 
-        var _idRecordCount;
-        var _idListSearch;
-        var _idNavPageSearch;
+        var idRecordCount;
+        var idListSearch;
+        var idNavPageSearch;
 
-        if (_searchTab == 1) {
-            _idRecordCount = "record-count-student-sign-contract";
-            _idListSearch = "list-data-student-sign-contract";
-            _idNavPageSearch = "nav-page-student-sign-contract";
+        if (searchTab == 1) {
+            idRecordCount = "record-count-student-sign-contract";
+            idListSearch = "list-data-student-sign-contract";
+            idNavPageSearch = "nav-page-student-sign-contract";
         }
 
-        if (_searchTab == 2) {
-            _idRecordCount = "record-count-student-contract-penalty";
-            _idListSearch = "list-data-student-contract-penalty";
-            _idNavPageSearch = "nav-page-student-contract-penalty";
+        if (searchTab == 2) {
+            idRecordCount = "record-count-student-contract-penalty";
+            idListSearch = "list-data-student-contract-penalty";
+            idNavPageSearch = "nav-page-student-contract-penalty";
         }
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportstudentonstatisticcontractbyprogram", _send, _idRecordCount, _idListSearch, _idNavPageSearch);
+        SearchData("reportstudentonstatisticcontractbyprogram", send, idRecordCount, idListSearch, idNavPageSearch);
     }
 
-    if (_pageContent == "reportnoticerepaycomplete") {
-        var _faculty = $("#faculty-report-notice-repay-complete-hidden").val().split(";");
-        var _program = $("#program-report-notice-repay-complete-hidden").val().split(";");
+    if (pageContent == "reportnoticerepaycomplete") {
+        var faculty = $("#faculty-report-notice-repay-complete-hidden").val().split(";");
+        var program = $("#program-report-notice-repay-complete-hidden").val().split(";");
 
-        _send[_send.length] = "studentid=" + $("#id-name-report-notice-repay-complete-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : ""); ;
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
+        send[send.length] = ("studentid=" + $("#id-name-report-notice-repay-complete-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportnoticerepaycomplete", _send, "record-count-cp-report-notice-repay-complete", "list-data-report-notice-repay-complete", "nav-page-report-notice-repay-complete");
+        SearchData("reportnoticerepaycomplete", send, "record-count-cp-report-notice-repay-complete", "list-data-report-notice-repay-complete", "nav-page-report-notice-repay-complete");
     }
 
-    if (_pageContent == "reportnoticeclaimdebt") {
-        var _faculty = $("#faculty-report-notice-claim-debt-hidden").val().split(";");
-        var _program = $("#program-report-notice-claim-debt-hidden").val().split(";");
+    if (pageContent == "reportnoticeclaimdebt") {
+        var faculty = $("#faculty-report-notice-claim-debt-hidden").val().split(";");
+        var program = $("#program-report-notice-claim-debt-hidden").val().split(";");
 
-        _send[_send.length] = "studentid=" + $("#id-name-report-notice-claim-debt-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
+        send[send.length] = ("studentid=" + $("#id-name-report-notice-claim-debt-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportnoticeclaimdebt", _send, "record-count-cp-report-notice-claim-debt", "list-data-report-notice-claim-debt", "nav-page-report-notice-claim-debt");
+        SearchData("reportnoticeclaimdebt", send, "record-count-cp-report-notice-claim-debt", "list-data-report-notice-claim-debt", "nav-page-report-notice-claim-debt");
     }
 
-    if (_pageContent == "reportstatisticpaymentbydate") {
-        var _faculty = $("#faculty-report-statistic-payment-by-date-hidden").val().split(";");
-        var _program = $("#program-report-statistic-payment-by-date-hidden").val().split(";");
-        var _formatPayment = $("#format-payment-report-statistic-payment-by-date-hidden").val().split(";");
+    if (pageContent == "reportstatisticpaymentbydate") {
+        var faculty = $("#faculty-report-statistic-payment-by-date-hidden").val().split(";");
+        var program = $("#program-report-statistic-payment-by-date-hidden").val().split(";");
+        var formatPayment = $("#format-payment-report-statistic-payment-by-date-hidden").val().split(";");
 
-        _send[_send.length] = "studentid=" + $("#id-name-report-statistic-payment-by-date-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-        _send[_send.length] = "formatpayment=" + (_formatPayment[0] != null ? _formatPayment[0] : "");
-        _send[_send.length] = "datestart=" + $("#date-start-report-statistic-payment-by-date-hidden").val();
-        _send[_send.length] = "dateend=" + $("#date-end-report-statistic-payment-by-date-hidden").val();
+        send[send.length] = ("studentid=" + $("#id-name-report-statistic-payment-by-date-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+        send[send.length] = ("formatpayment=" + (formatPayment[0] != null ? formatPayment[0] : ""));
+        send[send.length] = ("datestart=" + $("#date-start-report-statistic-payment-by-date-hidden").val());
+        send[send.length] = ("dateend=" + $("#date-end-report-statistic-payment-by-date-hidden").val());
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportstatisticpaymentbydate", _send, "record-count-cp-report-statistic-payment-by-date", "list-data-report-statistic-payment-by-date", "nav-page-report-statistic-payment-by-date");
+        SearchData("reportstatisticpaymentbydate", send, "record-count-cp-report-statistic-payment-by-date", "list-data-report-statistic-payment-by-date", "nav-page-report-statistic-payment-by-date");
     }
     
-    if (_pageContent == "reportecontract") {
-        var _faculty = $("#faculty-report-e-contract-hidden").val().length > 0 ? $("#faculty-report-e-contract-hidden").val().split(";") : "";
-        var _program = $("#program-report-e-contract-hidden").val().length > 0 ? $("#program-report-e-contract-hidden").val().split(";") : "";
+    if (pageContent == "reportecontract") {
+        var faculty = ($("#faculty-report-e-contract-hidden").val().length > 0 ? $("#faculty-report-e-contract-hidden").val().split(";") : "");
+        var program = ($("#program-report-e-contract-hidden").val().length > 0 ? $("#program-report-e-contract-hidden").val().split(";") : "");
 
-        _send[_send.length] = "acadamicyear=" + $("#acadamicyear-report-e-contract-hidden").val();
-        _send[_send.length] = "studentid=" + $("#id-name-report-e-contract-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
+        send[send.length] = ("acadamicyear=" + $("#acadamicyear-report-e-contract-hidden").val());
+        send[send.length] = ("studentid=" + $("#id-name-report-e-contract-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
         /*
-        _send[_send.length] = "formatpayment=" + (_formatPayment[0] != null ? _formatPayment[0] : "");
+        send[send.length] = ("formatpayment=" + (formatPayment[0] != null ? formatPayment[0] : ""));
         */
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportecontract", _send, "record-count-cp-report-e-contract", "list-data-report-e-contract", "nav-page-report-e-contract");
+        SearchData("reportecontract", send, "record-count-cp-report-e-contract", "list-data-report-e-contract", "nav-page-report-e-contract");
     }
 
-    if (_pageContent == "reportdebtorcontractbyprogram") {
-        var _reportOrder = $("#report-debtor-contract-order").val();
-        var _faculty = $("#faculty-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#faculty-report-debtor-contract-by-program-hidden").val().split(";") : "";
-        var _program = $("#program-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#program-report-debtor-contract-by-program-hidden").val().split(";") : "";
-        var _formatPayment = $("#format-payment-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#format-payment-report-debtor-contract-by-program-hidden").val().split(";") : "";
+    if (pageContent == "reportdebtorcontractbyprogram") {
+        var reportOrder = $("#report-debtor-contract-order").val();
+        var faculty = ($("#faculty-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#faculty-report-debtor-contract-by-program-hidden").val().split(";") : "");
+        var program = ($("#program-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#program-report-debtor-contract-by-program-hidden").val().split(";") : "");
+        var formatPayment = ($("#format-payment-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#format-payment-report-debtor-contract-by-program-hidden").val().split(";") : "");
 
-        _send[_send.length] = "reportorder=" + _reportOrder;
-        _send[_send.length] = "datestart=" + $("#date-start-report-debtor-contract-hidden").val();
-        _send[_send.length] = "dateend=" + $("#date-end-report-debtor-contract-hidden").val();
-        _send[_send.length] = "studentid=" + $("#id-name-report-debtor-contract-by-program-hidden").val();
-        _send[_send.length] = "faculty=" + (_faculty[0] != null ? _faculty[0] : "");
-        _send[_send.length] = "programcode=" + (_program[0] != null ? _program[0] : "");
-        _send[_send.length] = "majorcode=" + (_program[2] != null ? _program[2] : "");
-        _send[_send.length] = "groupnum=" + (_program[3] != null ? _program[3] : "");
-        _send[_send.length] = "formatpayment=" + (_formatPayment[0] != null ? _formatPayment[0] : "");
+        send[send.length] = ("reportorder=" + reportOrder);
+        send[send.length] = ("datestart=" + $("#date-start-report-debtor-contract-hidden").val());
+        send[send.length] = ("dateend=" + $("#date-end-report-debtor-contract-hidden").val());
+        send[send.length] = ("studentid=" + $("#id-name-report-debtor-contract-by-program-hidden").val());
+        send[send.length] = ("faculty=" + (faculty[0] != null ? faculty[0] : ""));
+        send[send.length] = ("programcode=" + (program[0] != null ? program[0] : ""));
+        send[send.length] = ("majorcode=" + (program[2] != null ? program[2] : ""));
+        send[send.length] = ("groupnum=" + (program[3] != null ? program[3] : ""));
+        send[send.length] = ("formatpayment=" + (formatPayment[0] != null ? formatPayment[0] : ""));
 
         SetMsgLoading("กำลังโหลด...");
 
-        SearchData("reportdebtorcontractbyprogram", _send, "record-count-cp-report-debtor-contract-by-program", "list-data-report-debtor-contract-by-program", "nav-page-report-debtor-contract-by-program");
+        SearchData("reportdebtorcontractbyprogram", send, "record-count-cp-report-debtor-contract-by-program", "list-data-report-debtor-contract-by-program", "nav-page-report-debtor-contract-by-program");
     }
 }
 
 function CalculateFrm(
-    _cal,
-    _valueSend,
-    _callbackFunc
+    cal,
+    valueSend,
+    callbackFunc
 ) {
-    var _i;
-    var _j = 2;
-    var _send = new Array();
-    _send[_send.length] = "action=calculate";
-    _send[_send.length] = "cal=" + _cal;
+    var send = new Array();
+    send[send.length] = "action=calculate";
+    send[send.length] = ("cal=" + cal);
 
-    if (_valueSend.length > 0) {
-        for (_i = 0; _i < _valueSend.length; _i++) {
-            _send[_j] = _valueSend[_i];
-            _j++;
+    if (valueSend.length > 0) {
+        var j = 2;
+
+        for (var i = 0; i < valueSend.length; i++) {
+            send[j] = valueSend[i];
+            j++;
         }
     }
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", (_msgLoading.length > 0 ? true : false), (_msgLoading.length > 0 ? true : false), function (_result) {
-        _callbackFunc(_result);
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", (msgLoading.length > 0 ? true : false), (msgLoading.length > 0 ? true : false), function (result) {
+        callbackFunc(result);
     });
 }
 
 function CloseFrm(
-    _dialogFrm,
-    _frmClose
+    dialogFrm,
+    frmClose
 ) {
-    if (_dialogFrm == true) {
+    if (dialogFrm == true) {
         if ($("#dialog-form2").dialog("isOpen") == true) {
             $("#dialog-form2").dialog("close");
             return;
@@ -1955,7 +1981,7 @@ function CloseFrm(
         }
     }
 
-    switch (_frmClose) {
+    switch (frmClose) {
         case "addupdate-cp-tab-user":
             $("#link-tab1-cp-tab-user").click();
             break;
@@ -1987,40 +2013,45 @@ function CloseFrm(
 }
 
 function ValidateCalInterestOverpayment() {
-    var _error = false;
-    var _msg;
-    var _focus;
-    var _overpayment = $("#overpayment-hidden").val();
+    var error = false;
+    var msg;
+    var focus;
+    var overpayment = $("#overpayment-hidden").val();
 
-    if (parseInt(_overpayment) > 0) {
-        var _totalInterestOverpayment = DelCommas("total-interest-overpayment");
+    if (parseInt(overpayment) > 0) {
+        var totalInterestOverpayment = DelCommas("total-interest-overpayment");
 
-        if (_error == false && (_totalInterestOverpayment.length == 0 || _totalInterestOverpayment == "0.00")) {
-            _error = true;
-            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระ";
-            _focus = "";
+        if (error == false &&
+            (totalInterestOverpayment.length == 0 || totalInterestOverpayment == "0.00")) {
+            error = true;
+            msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระ";
+            focus = "";
         }
 
-        if (_error == false && ($("#overpayment-date-start-old").val() != $("#overpayment-date-start").val())) {
-            _error = true;
-            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
-            _focus = "";
+        if (error == false &&
+            $("#overpayment-date-start-old").val() != $("#overpayment-date-start").val()) {
+            error = true;
+            msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
+            focus = "";
         }
 
-        if (_error == false && ($("#overpayment-date-end-old").val() != $("#overpayment-date-end").val())) {
-            _error = true;
-            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";_focus = "";
+        if (error == false &&
+            $("#overpayment-date-end-old").val() != $("#overpayment-date-end").val()) {
+            error = true;
+            msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
+            focus = "";
         }
 
-        if (_error == false && ($("#overpayment-interest-old").val() != DelCommas("overpayment-interest"))) {
-            _error = true;
-            _msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
-            _focus = "";
+        if (error == false &&
+            $("#overpayment-interest-old").val() != DelCommas("overpayment-interest")) {
+            error = true;
+            msg = "กรุณาคำนวณดอกเบี้ยผิดนัดชำระใหม่อีกครั้ง";
+            focus = "";
         }
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return false;
     }
 
@@ -2036,33 +2067,36 @@ function CalInterestOverpayment() {
 }
 
 function ValidateCalculateInterestOverpayment() {
-    var _error = false;
-    var _msg;
-    var _focus;
-    var _repayDateEnd = GetDateObject($("#repay-date-end-hidden").val());
-    var _overpaymentDateStart = GetDateObject($("#overpayment-date-start").val());
+    var error = false;
+    var msg;
+    var focus;
+    var repayDateEnd = GetDateObject($("#repay-date-end-hidden").val());
+    var overpaymentDateStart = GetDateObject($("#overpayment-date-start").val());
 
-    if (_error == false && (DateDiff(_repayDateEnd, _overpaymentDateStart, "days") <= 0)) {
-        _error = true;
-        _msg = "กรุณาใส่วันที่เริ่มผิดนัดชำระให้ถูกต้อง";
-        _focus = "#overpayment-date-start";
+    if (error == false &&
+        DateDiff(repayDateEnd, overpaymentDateStart, "days") <= 0) {
+        error = true;
+        msg = "กรุณาใส่วันที่เริ่มผิดนัดชำระให้ถูกต้อง";
+        focus = "#overpayment-date-start";
     }
 
-    if (_error == false && (($("#overpayment-interest").val().length == 0) || ($("#overpayment-interest").val() == "0.00"))) {
-        _error = true;
-        _msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระ";
-        _focus = "#overpayment-interest";
+    if (error == false &&
+        ($("#overpayment-interest").val().length == 0 || $("#overpayment-interest").val() == "0.00")) {
+        error = true;
+        msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระ";
+        focus = "#overpayment-interest";
     }
 
-    if (_error == false && parseFloat($("#overpayment-interest").val()) > 100) {
-        _error = true;
-        _msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระไม่เกิน 100";
-        _focus = "#overpayment-interest";
+    if (error == false &&
+        parseFloat($("#overpayment-interest").val()) > 100) {
+        error = true;
+        msg = "กรุณาใส่อัตราดอกเบี้ยผิดนัดชำระไม่เกิน 100";
+        focus = "#overpayment-interest";
     }
 
-    if (_error == true) {
+    if (error == true) {
         FillCalInterestOverpayment("");
-        DialogMessage(_msg, _focus, false, "");
+        DialogMessage(msg, focus, false, "");
         return false;
     }
 
@@ -2071,20 +2105,20 @@ function ValidateCalculateInterestOverpayment() {
 
 function CalculateInterestOverpayment() {
     if (ValidateCalculateInterestOverpayment() == true) {        
-        var _send = new Array();
-        _send[_send.length] = "capital=" + DelCommas("capital");
-        _send[_send.length] = "overpaymentyear=" + DelCommas("overpayment-year");
-        _send[_send.length] = "overpaymentday=" + DelCommas("overpayment-day");
-        _send[_send.length] = "overpaymentinterest=" + DelCommas("overpayment-interest");
-        _send[_send.length] = "overpaymentdatestart=" + $("#overpayment-date-start").val();
-        _send[_send.length] = "overpaymentdateend=" + $("#overpayment-date-end").val();
-        _send[_send.length] = "totalinterestpayrepay=" + ($("#total-interest-pay-repay").length > 0 ? ($("#total-interest-pay-repay").val().length > 0 ? DelCommas("total-interest-pay-repay") : "0.00") : "0.00");
-        _send[_send.length] = "totalaccruedinterest=" + ($("#total-accrued-interest").length > 0 ? DelCommas("total-accrued-interest") : "0.00");
+        var send = new Array();
+        send[send.length] = ("capital=" + DelCommas("capital"));
+        send[send.length] = ("overpaymentyear=" + DelCommas("overpayment-year"));
+        send[send.length] = ("overpaymentday=" + DelCommas("overpayment-day"));
+        send[send.length] = ("overpaymentinterest=" + DelCommas("overpayment-interest"));
+        send[send.length] = ("overpaymentdatestart=" + $("#overpayment-date-start").val());
+        send[send.length] = ("overpaymentdateend=" + $("#overpayment-date-end").val());
+        send[send.length] = ("totalinterestpayrepay=" + ($("#total-interest-pay-repay").length > 0 ? ($("#total-interest-pay-repay").val().length > 0 ? DelCommas("total-interest-pay-repay") : "0.00") : "0.00"));
+        send[send.length] = ("totalaccruedinterest=" + ($("#total-accrued-interest").length > 0 ? DelCommas("total-accrued-interest") : "0.00"));
 
         SetMsgLoading("กำลังคำนวณ...");
 
-        CalculateFrm("interestoverpayment", _send, function (_result) {
-            FillCalInterestOverpayment(_result);
+        CalculateFrm("interestoverpayment", send, function (result) {
+            FillCalInterestOverpayment(result);
         });
 
         return true;
@@ -2093,7 +2127,7 @@ function CalculateInterestOverpayment() {
     return false;
 }
 
-function FillCalInterestOverpayment(_result) {
+function FillCalInterestOverpayment(result) {
     if ($("#overpayment-year").length > 0)
         $("#overpayment-year").val("");
 
@@ -2112,59 +2146,62 @@ function FillCalInterestOverpayment(_result) {
     if ($("#pay").length > 0)
         $("#pay").val("");
 
-    if (_result.length > 0) {
-        var _dataOverpaymentYear = _result.split("<overpaymentyear>");
-        var _dataOverpaymentDay = _result.split("<overpaymentday>");
-        var _dataTotalInterestOverpayment = _result.split("<totalinterestoverpayment>");
-        var _dataTotalInterest = _result.split("<totalinterest>");
-        var _dataTotalPayment = _result.split("<totalpayment>");
+    if (result.length > 0) {
+        var dataOverpaymentYear = result.split("<overpaymentyear>");
+        var dataOverpaymentDay = result.split("<overpaymentday>");
+        var dataTotalInterestOverpayment = result.split("<totalinterestoverpayment>");
+        var dataTotalInterest = result.split("<totalinterest>");
+        var dataTotalPayment = result.split("<totalpayment>");
 
         if ($("#overpayment-year").length > 0)
-            $("#overpayment-year").val(_dataOverpaymentYear[1]);
+            $("#overpayment-year").val(dataOverpaymentYear[1]);
 
         if ($("#overpayment-day").length > 0)
-            $("#overpayment-day").val(_dataOverpaymentDay[1]);
+            $("#overpayment-day").val(dataOverpaymentDay[1]);
 
         if ($("#total-interest-overpayment").length > 0)
-            $("#total-interest-overpayment").val(_dataTotalInterestOverpayment[1]);
+            $("#total-interest-overpayment").val(dataTotalInterestOverpayment[1]);
 
         if ($("#total-interest").length > 0)
-            $("#total-interest").val(_dataTotalInterest[1]);
+            $("#total-interest").val(dataTotalInterest[1]);
 
         if ($("#total-payment").length > 0)
-            $("#total-payment").val(_dataTotalPayment[1]);
+            $("#total-payment").val(dataTotalPayment[1]);
 
         if ($("#pay").length > 0)
-            $("#pay").val(_dataTotalPayment[1]);
+            $("#pay").val(dataTotalPayment[1]);
     }
 }
 
 function ValidateCalInterestPayRepay() {
-    var _error = false;
-    var _msg;
-    var _focus;
-    var _totalInterestPayRepay = DelCommas("total-interest-pay-repay");
+    var error = false;
+    var msg;
+    var focus;
+    var totalInterestPayRepay = DelCommas("total-interest-pay-repay");
 
-    if (_error == false && (_totalInterestPayRepay.length == 0 || _totalInterestPayRepay == "0.00")) {
-        _error = true;
-        _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระ";
-        _focus = "";
+    if (error == false &&
+        (totalInterestPayRepay.length == 0 || totalInterestPayRepay == "0.00")) {
+        error = true;
+        msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระ";
+        focus = "";
     }
 
-    if (_error == false && ($("#pay-repay-date-end-old").val() != $("#pay-repay-date-end").val())) {
-        _error = true;
-        _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง";
-        _focus = "";
+    if (error == false &&
+        $("#pay-repay-date-end-old").val() != $("#pay-repay-date-end").val()) {
+        error = true;
+        msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง";
+        focus = "";
     }
 
-    if (_error == false && ($("#pay-repay-interest-old").val() != DelCommas("pay-repay-interest"))) {
-        _error = true;
-        _msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง";
-        _focus = "";
+    if (error == false &&
+        $("#pay-repay-interest-old").val() != DelCommas("pay-repay-interest")) {
+        error = true;
+        msg = "กรุณาคำนวณดอกเบี้ยผ่อนชำระใหม่อีกครั้ง";
+        focus = "";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return false;
     }
 
@@ -2179,25 +2216,27 @@ function CalInterestPayRepay() {
 }
 
 function ValidateCalculateInterestPayRepay() {
-    var _error = false;
-    var _msg;
-    var _focus;
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_error == false && (($("#pay-repay-interest").val().length == 0) || ($("#pay-repay-interest").val() == "0.00"))) {
-        _error = true;
-        _msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระ";
-        _focus = "#pay-repay-interest";
+    if (error == false &&
+        ($("#pay-repay-interest").val().length == 0 || $("#pay-repay-interest").val() == "0.00")) {
+        error = true;
+        msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระ";
+        focus = "#pay-repay-interest";
     }
 
-    if (_error == false && parseFloat($("#pay-repay-interest").val()) > 100) {
-        _error = true;
-        _msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระไม่เกิน 100";
-        _focus = "#pay-repay-interest";
+    if (error == false &&
+        parseFloat($("#pay-repay-interest").val()) > 100) {
+        error = true;
+        msg = "กรุณาใส่อัตราดอกเบี้ยผ่อนชำระไม่เกิน 100";
+        focus = "#pay-repay-interest";
     }
 
-    if (_error == true) {
+    if (error == true) {
         FillCalInterestPayRepay("");
-        DialogMessage(_msg, _focus, false, "");
+        DialogMessage(msg, focus, false, "");
         return false;
     }
 
@@ -2206,20 +2245,20 @@ function ValidateCalculateInterestPayRepay() {
 
 function CalculateInterestPayRepay() {
     if (ValidateCalculateInterestPayRepay() == true) {        
-        var _send = new Array();
-        _send[_send.length] = "capital=" + DelCommas("capital");
-        _send[_send.length] = "payrepayyear=" + DelCommas("pay-repay-year");
-        _send[_send.length] = "payrepayday=" + DelCommas("pay-repay-day");
-        _send[_send.length] = "payrepayinterest=" + DelCommas("pay-repay-interest");
-        _send[_send.length] = "payrepaydatestart=" + $("#pay-repay-date-start").val();
-        _send[_send.length] = "payrepaydateend=" + $("#pay-repay-date-end").val();
-        _send[_send.length] = "totalinterestoverpayment=" + ($("#total-interest-overpayment").length > 0 ? ($("#total-interest-overpayment").val().length > 0 ? DelCommas("total-interest-overpayment") : "0.00") : "0.00");
-        _send[_send.length] = "totalaccruedinterest=" + ($("#total-accrued-interest").length > 0 ? DelCommas("total-accrued-interest") : "0.00");
+        var send = new Array();
+        send[send.length] = ("capital=" + DelCommas("capital"));
+        send[send.length] = ("payrepayyear=" + DelCommas("pay-repay-year"));
+        send[send.length] = ("payrepayday=" + DelCommas("pay-repay-day"));
+        send[send.length] = ("payrepayinterest=" + DelCommas("pay-repay-interest"));
+        send[send.length] = ("payrepaydatestart=" + $("#pay-repay-date-start").val());
+        send[send.length] = ("payrepaydateend=" + $("#pay-repay-date-end").val());
+        send[send.length] = ("totalinterestoverpayment=" + ($("#total-interest-overpayment").length > 0 ? ($("#total-interest-overpayment").val().length > 0 ? DelCommas("total-interest-overpayment") : "0.00") : "0.00"));
+        send[send.length] = ("totalaccruedinterest=" + ($("#total-accrued-interest").length > 0 ? DelCommas("total-accrued-interest") : "0.00"));
 
         SetMsgLoading("กำลังคำนวณ...");
 
-        CalculateFrm("interestpayrepay", _send, function (_result) {
-            FillCalInterestPayRepay(_result);
+        CalculateFrm("interestpayrepay", send, function (result) {
+            FillCalInterestPayRepay(result);
         });
 
         return true;
@@ -2228,7 +2267,7 @@ function CalculateInterestPayRepay() {
     return false;
 }
 
-function FillCalInterestPayRepay(_result) {
+function FillCalInterestPayRepay(result) {
     if ($("#pay-repay-year").length > 0)
         $("#pay-repay-year").val("");
 
@@ -2247,52 +2286,53 @@ function FillCalInterestPayRepay(_result) {
     if ($("#pay").length > 0)
         $("#pay").val("");
 
-    if (_result.length > 0) {
-        var _dataPayRepayYear = _result.split("<payrepayyear>");
-        var _dataPayRepayDay = _result.split("<payrepayday>");
-        var _dataTotalInterestPayRepay = _result.split("<totalinterestpayrepay>");
-        var _dataTotalInterest = _result.split("<totalinterest>");
-        var _dataTotalPayment = _result.split("<totalpayment>");
+    if (result.length > 0) {
+        var dataPayRepayYear = result.split("<payrepayyear>");
+        var dataPayRepayDay = result.split("<payrepayday>");
+        var dataTotalInterestPayRepay = result.split("<totalinterestpayrepay>");
+        var dataTotalInterest = result.split("<totalinterest>");
+        var dataTotalPayment = result.split("<totalpayment>");
 
         if ($("#pay-repay-year").length > 0)
-            $("#pay-repay-year").val(_dataPayRepayYear[1]);
+            $("#pay-repay-year").val(dataPayRepayYear[1]);
 
         if ($("#pay-repay-day").length > 0)
-            $("#pay-repay-day").val(_dataPayRepayDay[1]);
+            $("#pay-repay-day").val(dataPayRepayDay[1]);
 
         if ($("#total-interest-pay-repay").length > 0)
-            $("#total-interest-pay-repay").val(_dataTotalInterestPayRepay[1]);
+            $("#total-interest-pay-repay").val(dataTotalInterestPayRepay[1]);
 
         if ($("#total-interest").length > 0)
-            $("#total-interest").val(_dataTotalInterest[1]);
+            $("#total-interest").val(dataTotalInterest[1]);
 
         if ($("#total-payment").length > 0)
-            $("#total-payment").val(_dataTotalPayment[1]);
+            $("#total-payment").val(dataTotalPayment[1]);
 
         if ($("#pay").length > 0)
-            $("#pay").val(_dataTotalPayment[1]);
+            $("#pay").val(dataTotalPayment[1]);
     }
 }
 
 function CalculateInterestOverpaymentAndPayRepay() {
-    if (ValidateCalculateInterestOverpayment() == true && ValidateCalculateInterestPayRepay() == true) {        
-        var _send = new Array();
-        _send[_send.length] = "capital=" + DelCommas("capital");
-        _send[_send.length] = "overpaymentyear=" + DelCommas("overpayment-year");
-        _send[_send.length] = "overpaymentday=" + DelCommas("overpayment-day");
-        _send[_send.length] = "overpaymentinterest=" + DelCommas("overpayment-interest");
-        _send[_send.length] = "overpaymentdatestart=" + $("#overpayment-date-start").val();
-        _send[_send.length] = "overpaymentdateend=" + $("#overpayment-date-end").val();
-        _send[_send.length] = "payrepayyear=" + DelCommas("pay-repay-year");
-        _send[_send.length] = "payrepayday=" + DelCommas("pay-repay-day");
-        _send[_send.length] = "payrepayinterest=" + DelCommas("pay-repay-interest");
-        _send[_send.length] = "payrepaydatestart=" + $("#pay-repay-date-start").val();
-        _send[_send.length] = "payrepaydateend=" + $("#pay-repay-date-end").val();
+    if (ValidateCalculateInterestOverpayment() == true &&
+        ValidateCalculateInterestPayRepay() == true) {        
+        var send = new Array();
+        send[send.length] = ("capital=" + DelCommas("capital"));
+        send[send.length] = ("overpaymentyear=" + DelCommas("overpayment-year"));
+        send[send.length] = ("overpaymentday=" + DelCommas("overpayment-day"));
+        send[send.length] = ("overpaymentinterest=" + DelCommas("overpayment-interest"));
+        send[send.length] = ("overpaymentdatestart=" + $("#overpayment-date-start").val());
+        send[send.length] = ("overpaymentdateend=" + $("#overpayment-date-end").val());
+        send[send.length] = ("payrepayyear=" + DelCommas("pay-repay-year"));
+        send[send.length] = ("payrepayday=" + DelCommas("pay-repay-day"));
+        send[send.length] = ("payrepayinterest=" + DelCommas("pay-repay-interest"));
+        send[send.length] = ("payrepaydatestart=" + $("#pay-repay-date-start").val());
+        send[send.length] = ("payrepaydateend=" + $("#pay-repay-date-end").val());
 
         SetMsgLoading("กำลังคำนวณ...");
 
-        CalculateFrm("interestoverpaymentandpayrepay", _send, function (_result) {
-            FillCalInterestOverpaymentAndPayRepay(_result);
+        CalculateFrm("interestoverpaymentandpayrepay", send, function (result) {
+            FillCalInterestOverpaymentAndPayRepay(result);
         });
 
         return true;
@@ -2301,7 +2341,7 @@ function CalculateInterestOverpaymentAndPayRepay() {
     return false;
 }
 
-function FillCalInterestOverpaymentAndPayRepay(_result) {
+function FillCalInterestOverpaymentAndPayRepay(result) {
     if ($("#overpayment-year").length > 0)
         $("#overpayment-year").val("");
 
@@ -2326,39 +2366,39 @@ function FillCalInterestOverpaymentAndPayRepay(_result) {
     if ($("#total-payment").length > 0)
         $("#total-payment").val("");
 
-    if (_result.length > 0) {
-        var _dataOverpaymentYear = _result.split("<overpaymentyear>");
-        var _dataOverpaymentDay = _result.split("<overpaymentday>");
-        var _dataTotalInterestOverpayment = _result.split("<totalinterestoverpayment>");
-        var _dataPayRepayYear = _result.split("<payrepayyear>");
-        var _dataPayRepayDay = _result.split("<payrepayday>");
-        var _dataTotalInterestPayRepay = _result.split("<totalinterestpayrepay>");
-        var _dataTotalInterest = _result.split("<totalinterest>");
-        var _dataTotalPayment = _result.split("<totalpayment>");
+    if (result.length > 0) {
+        var dataOverpaymentYear = result.split("<overpaymentyear>");
+        var dataOverpaymentDay = result.split("<overpaymentday>");
+        var dataTotalInterestOverpayment = result.split("<totalinterestoverpayment>");
+        var dataPayRepayYear = result.split("<payrepayyear>");
+        var dataPayRepayDay = result.split("<payrepayday>");
+        var dataTotalInterestPayRepay = result.split("<totalinterestpayrepay>");
+        var dataTotalInterest = result.split("<totalinterest>");
+        var dataTotalPayment = result.split("<totalpayment>");
 
         if ($("#overpayment-year").length > 0)
-            $("#overpayment-year").val(_dataOverpaymentYear[1]);
+            $("#overpayment-year").val(dataOverpaymentYear[1]);
 
         if ($("#overpayment-day").length > 0)
-            $("#overpayment-day").val(_dataOverpaymentDay[1]);
+            $("#overpayment-day").val(dataOverpaymentDay[1]);
 
         if ($("#total-interest-overpayment").length > 0)
-            $("#total-interest-overpayment").val(_dataTotalInterestOverpayment[1]);
+            $("#total-interest-overpayment").val(dataTotalInterestOverpayment[1]);
 
         if ($("#pay-repay-year").length > 0)
-            $("#pay-repay-year").val(_dataPayRepayYear[1]);
+            $("#pay-repay-year").val(dataPayRepayYear[1]);
 
         if ($("#pay-repay-day").length > 0)
-            $("#pay-repay-day").val(_dataPayRepayDay[1]);
+            $("#pay-repay-day").val(dataPayRepayDay[1]);
 
         if ($("#total-interest-pay-repay").length > 0)
-            $("#total-interest-pay-repay").val(_dataTotalInterestPayRepay[1]);
+            $("#total-interest-pay-repay").val(dataTotalInterestPayRepay[1]);
 
         if ($("#total-interest").length > 0)
-            $("#total-interest").val(_dataTotalInterest[1]);
+            $("#total-interest").val(dataTotalInterest[1]);
 
         if ($("#total-payment").length > 0)
-            $("#total-payment").val(_dataTotalPayment[1]);
+            $("#total-payment").val(dataTotalPayment[1]);
     }
 }
 
@@ -2369,11 +2409,11 @@ function CalculateChkBalance() {
     var totalPayment = ($("#total-payment").length > 0 ? DelCommas("total-payment") : "");
     var pay = ($("#pay").length > 0 ? DelCommas("pay") : "");
     var send = new Array();
-    send[send.length] = "capital=" + (capital.length > 0 ? capital : "0.00");
-    send[send.length] = "totalinterest=" + (totalInterest.length > 0 ? totalInterest : "0.00");
-    send[send.length] = "totalaccruedinterest=" + (totalAccruedInterest.length > 0 ? totalAccruedInterest : "0.00");
-    send[send.length] = "totalpayment=" + (totalPayment.length > 0 ? totalPayment : "0.00");
-    send[send.length] = "pay=" + (pay.length > 0 ? pay : "0.00");
+    send[send.length] = ("capital=" + (capital.length > 0 ? capital : "0.00"));
+    send[send.length] = ("totalinterest=" + (totalInterest.length > 0 ? totalInterest : "0.00"));
+    send[send.length] = ("totalaccruedinterest=" + (totalAccruedInterest.length > 0 ? totalAccruedInterest : "0.00"));
+    send[send.length] = ("totalpayment=" + (totalPayment.length > 0 ? totalPayment : "0.00"));
+    send[send.length] = ("pay=" + (pay.length > 0 ? pay : "0.00"));
 
     SetMsgLoading("");
 
@@ -2382,84 +2422,84 @@ function CalculateChkBalance() {
     });
 }
 
-function FillCalChkBalance(_result) {
-    if (_result.length > 0) {     
-        var _dataCapital = _result.split("<capital>");
-        var _dataTotalInterest = _result.split("<totalinterest>");
-        var _dataTotalAccruedInterest = _result.split("<totalaccruedinterest>");
-        var _dataTotalPayment = _result.split("<totalpayment>");
-        var _dataPay = _result.split("<pay>");
-        var _dataPayCapital = _result.split("<paycapital>");
-        var _dataPayInterest = _result.split("<payinterest>");        
-        var _dataRemainCapital = _result.split("<remaincapital>");
-        var _dataAccruedInterest = _result.split("<accruedinterest>");
-        var _dataRemainAccruedInterest = _result.split("<remainaccruedinterest>");
+function FillCalChkBalance(result) {
+    if (result.length > 0) {     
+        var dataCapital = result.split("<capital>");
+        var dataTotalInterest = result.split("<totalinterest>");
+        var dataTotalAccruedInterest = result.split("<totalaccruedinterest>");
+        var dataTotalPayment = result.split("<totalpayment>");
+        var dataPay = result.split("<pay>");
+        var dataPayCapital = result.split("<paycapital>");
+        var dataPayInterest = result.split("<payinterest>");        
+        var dataRemainCapital = result.split("<remaincapital>");
+        var dataAccruedInterest = result.split("<accruedinterest>");
+        var dataRemainAccruedInterest = result.split("<remainaccruedinterest>");
 
         if ($("#chk-balance-capital").length > 0) {
-            $("#chk-balance-capital").html(_dataCapital[1]);
+            $("#chk-balance-capital").html(dataCapital[1]);
             $("#chk-balance-capital-unit").show();
         }
 
         if ($("#chk-balance-total-interest").length > 0) {
-            $("#chk-balance-total-interest").html(_dataTotalInterest[1]);
-            (_dataTotalInterest[1].length > 0 ? $("#chk-balance-total-interest-unit").show() : "");
+            $("#chk-balance-total-interest").html(dataTotalInterest[1]);
+            (dataTotalInterest[1].length > 0 ? $("#chk-balance-total-interest-unit").show() : "");
         }
 
         if ($("#chk-balance-total-accrued-interest").length > 0) {
-            $("#chk-balance-total-accrued-interest").html(_dataTotalAccruedInterest[1]);
-            (_dataTotalAccruedInterest[1].length > 0 ? $("#chk-balance-total-accrued-interest-unit").show() : "");
+            $("#chk-balance-total-accrued-interest").html(dataTotalAccruedInterest[1]);
+            (dataTotalAccruedInterest[1].length > 0 ? $("#chk-balance-total-accrued-interest-unit").show() : "");
         }
 
         if ($("#chk-balance-total-payment").length > 0) {
-            $("#chk-balance-total-payment").html(_dataTotalPayment[1]);
-            (_dataTotalPayment[1].length > 0 ? $("#chk-balance-total-payment-unit").show() : "");
+            $("#chk-balance-total-payment").html(dataTotalPayment[1]);
+            (dataTotalPayment[1].length > 0 ? $("#chk-balance-total-payment-unit").show() : "");
         }
 
         if ($("#chk-balance-pay").length > 0) {
-            $("#chk-balance-pay").html(_dataPay[1]);
-            (_dataPay[1].length > 0 ? $("#chk-balance-pay-unit").show() : "");
+            $("#chk-balance-pay").html(dataPay[1]);
+            (dataPay[1].length > 0 ? $("#chk-balance-pay-unit").show() : "");
         }
 
         if ($("#chk-balance-pay-capital").length > 0) {
-            $("#chk-balance-pay-capital").html(_dataPayCapital[1]);
-            (_dataPayCapital[1].length > 0 ? $("#chk-balance-pay-capital-unit").show() : "");
+            $("#chk-balance-pay-capital").html(dataPayCapital[1]);
+            (dataPayCapital[1].length > 0 ? $("#chk-balance-pay-capital-unit").show() : "");
         }
 
         if ($("#chk-balance-pay-interest").length > 0) {
-            $("#chk-balance-pay-interest").html(_dataPayInterest[1]);
-            (_dataPayInterest[1].length > 0 ? $("#chk-balance-pay-interest-unit").show() : "");
+            $("#chk-balance-pay-interest").html(dataPayInterest[1]);
+            (dataPayInterest[1].length > 0 ? $("#chk-balance-pay-interest-unit").show() : "");
         }
 
         if ($("#chk-balance-remain-capital").length > 0) {
-            $("#chk-balance-remain-capital").html(_dataRemainCapital[1]);
-            (_dataRemainCapital[1].length > 0 ? $("#chk-balance-remain-capital-unit").show() : "");
+            $("#chk-balance-remain-capital").html(dataRemainCapital[1]);
+            (dataRemainCapital[1].length > 0 ? $("#chk-balance-remain-capital-unit").show() : "");
         }
 
         if ($("#chk-balance-accrued-interest").length > 0) {
-            $("#chk-balance-accrued-interest").html(_dataAccruedInterest[1]);
-            (_dataAccruedInterest[1].length > 0 ? $("#chk-balance-accrued-interest-unit").show() : "");
+            $("#chk-balance-accrued-interest").html(dataAccruedInterest[1]);
+            (dataAccruedInterest[1].length > 0 ? $("#chk-balance-accrued-interest-unit").show() : "");
         }
 
         if ($("#chk-balance-remain-accrued-interest").length > 0) {
-            $("#chk-balance-remain-accrued-interest").html(_dataRemainAccruedInterest[1]);
-            (_dataRemainAccruedInterest[1].length > 0 ? $("#chk-balance-remain-accrued-interest-unit").show() : "");
+            $("#chk-balance-remain-accrued-interest").html(dataRemainAccruedInterest[1]);
+            (dataRemainAccruedInterest[1].length > 0 ? $("#chk-balance-remain-accrued-interest-unit").show() : "");
         }
     }
 }
 
 function CalculateTotalPayment() {
-    var _send = new Array();
-    _send[_send.length] = "capital=" + DelCommas("capital");
-    _send[_send.length] = "totalinterest=" + DelCommas("total-interest");
-    _send[_send.length] = "totalaccruedinterest=" + DelCommas("total-accrued-interest");
+    var send = new Array();
+    send[send.length] = ("capital=" + DelCommas("capital"));
+    send[send.length] = ("totalinterest=" + DelCommas("total-interest"));
+    send[send.length] = ("totalaccruedinterest=" + DelCommas("total-accrued-interest"));
 
     SetMsgLoading("");
 
-    CalculateFrm("totalpayment", _send, function (_result) {
-        var _dataTotalPayment = _result.split("<totalpayment>");
+    CalculateFrm("totalpayment", send, function (result) {
+        var dataTotalPayment = result.split("<totalpayment>");
 
         if ($("#total-payment").length > 0) {
-            $("#total-payment").val(_dataTotalPayment[1]);
+            $("#total-payment").val(dataTotalPayment[1]);
 
             if ($("#pay").length > 0)
                 $("#pay").val($("#total-payment").val());
@@ -2468,62 +2508,61 @@ function CalculateTotalPayment() {
 }
 
 function BoxSearchCondition(
-    _countCondition,
-    _searchValue,
-    _id
+    countCondition,
+    searchValue,
+    id
 ) {
-    var _showCondition = new Array();
-    var _i, _j = 0;
+    var showCondition = new Array();
+    var i, j = 0;
 
-    for (_i = 0; _i < _countCondition; _i++) {        
-        if (_searchValue[_i].length > 0) {
-            _showCondition[_j] = _i;
-            _j++;
+    for (i = 0; i < countCondition; i++) {        
+        if (searchValue[i].length > 0) {
+            showCondition[j] = i;
+            j++;
         }
 
-        $("#" + _id + "-order" + (_i + 1)).hide();
+        $("#" + id + "-order" + (i + 1)).hide();
     }
 
-    if (_showCondition.length > 0) {
-        $("#" + _id).show();
+    if (showCondition.length > 0) {
+        $("#" + id).show();
 
-        for (_i = 0; _i < _showCondition.length; _i++) {
-            $("#" + _id + "-order" + (_showCondition[_i] + 1)).show();
-            $("#" + _id + "-order" + (_showCondition[_i] + 1) + "-value").html(_searchValue[_showCondition[_i]]);
+        for (i = 0; i < showCondition.length; i++) {
+            $("#" + id + "-order" + (showCondition[i] + 1)).show();
+            $("#" + id + "-order" + (showCondition[i] + 1) + "-value").html(searchValue[showCondition[i]]);
         }
     }
     else
-        $("#" + _id).hide();
+        $("#" + id).hide();
 }
 
 function ShowDocEContract(
-    _sid,
-    _path,
-    _file
+    sid,
+    path,
+    file
 ) {
-    $("#report-e-contract" + _sid).addClass("active");
-    $("#report-e-contract" + _sid).removeClass("active");
+    $("#report-e-contract" + sid).addClass("active");
+    $("#report-e-contract" + sid).removeClass("active");
 
-    window.open((_path + _file), "_blank");
+    window.open((path + file), "_blank");
     
     /*
-    var _send = new Array();
-    _send[_send.length] = "action=econtract";
-    _send[_send.length] = "path=" + _path;
-    _send[_send.length] = "file=" + _file;
+    var send = new Array();
+    send[send.length] = "action=econtract";
+    send[send.length] = ("path=" + path);
+    send[send.length] = ("file=" + file);
 
-    LoadAjax(_send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (_result) {
-        var _dataEContract = _result.split("<econtract>");
+    LoadAjax(send.join("&"), "Handler/eCPHandler.ashx", "POST", false, false, function (result) {
+        var dataEContract = result.split("<econtract>");
 
-        if (_dataEContract[1] == "1") {
-            DialogMessage("ไม่พบไฟล์เอกสาร", "", false, "report-e-contract" + _sid);
+        if (dataEContract[1] == "1") {
+            DialogMessage("ไม่พบไฟล์เอกสาร", "", false, ("report-e-contract" + sid));
             return;
         }
 
-        $("#report-e-contract" + _sid).removeClass("active");
+        $("#report-e-contract" + sid).removeClass("active");
 
-        window.open(_path + _file, "_blank");
+        window.open((path + file), "_blank");
     });
     */
-
 }

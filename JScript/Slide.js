@@ -1,24 +1,24 @@
 ﻿function InitSlide(
-    _scrollId,
-    _slide,
-    _download,
-    _file
+    scrollId,
+    slide,
+    download,
+    file
 ) {
-    var _slideSize = _slide.length;
-    var _slideStart = 1;
-    var _slideEnd = _slideSize;
-    var _slideNum = _slideStart;
+    var slideSize = slide.length;
+    var slideStart = 1;
+    var slideEnd = slideSize;
+    var slideNum = slideStart;
 
-    GoToTopElement(_scrollId);
-    $(".slide-tool-content").html(SlideTool(_slideSize, _download, _file));
+    GoToTopElement(scrollId);
+    $(".slide-tool-content").html(SlideTool(slideSize, download, file));
     $(".slide-tool").html("::::::::::");
-    $(".slide-contents img").attr("src", _slide[_slideNum - 1]);
+    $(".slide-contents img").attr("src", slide[slideNum - 1]);
     $(document).ready(function () {
-        $(_scrollId).scroll(function (e) {
-            var _scrollTop = $(_scrollId).scrollTop();
+        $(scrollId).scroll(function (e) {
+            var scrollTop = $(scrollId).scrollTop();
 
             $(".slide-tool-content").hide();
-            $(".slide-tools").css("top", (_scrollTop > 0 ? _scrollTop + "px" : "0px"));
+            $(".slide-tools").css("top", (scrollTop > 0 ? scrollTop + "px" : "0px"));
         });
 
         $(".slide-tool").click(function () {
@@ -29,62 +29,82 @@
         });
 
         $(".slide-first").click(function () {
-            _slideNum = _slideStart;
-            $(".slide-nav").val(_slideNum);
-            $(".slide-contents img").attr("src", _slide[_slideNum - 1]);
+            slideNum = slideStart;
+            $(".slide-nav").val(slideNum);
+            $(".slide-contents img").attr("src", slide[slideNum - 1]);
         });
 
         $(".slide-previous").click(function () {
-            _slideNum = (_slideNum > _slideStart ? (parseInt(_slideNum) - 1) : _slideStart);
-            $(".slide-nav").val(_slideNum);
-            $(".slide-contents img").attr("src", _slide[_slideNum - 1]);
+            slideNum = (slideNum > slideStart ? (parseInt(slideNum) - 1) : slideStart);
+            $(".slide-nav").val(slideNum);
+            $(".slide-contents img").attr("src", slide[slideNum - 1]);
         });
 
         $(".slide-next").click(function () {
-            _slideNum = (_slideNum < _slideEnd ? (parseInt(_slideNum) + 1) : _slideEnd);
-            $(".slide-nav").val(_slideNum);
-            $(".slide-contents img").attr("src", _slide[_slideNum - 1]);
+            slideNum = (slideNum < slideEnd ? (parseInt(slideNum) + 1) : slideEnd);
+            $(".slide-nav").val(slideNum);
+            $(".slide-contents img").attr("src", slide[slideNum - 1]);
         });
 
         $(".slide-last").click(function () {
-            _slideNum = _slideEnd;
-            $(".slide-nav").val(_slideNum);
-            $(".slide-contents img").attr("src", _slide[_slideNum - 1]);
+            slideNum = slideEnd;
+            $(".slide-nav").val(slideNum);
+            $(".slide-contents img").attr("src", slide[slideNum - 1]);
         });
 
         $(".slide-nav").change(function () {
-            _slideNum = $(this).val();
-            $(".slide-contents img").attr("src", _slide[_slideNum - 1]);
+            slideNum = $(this).val();
+            $(".slide-contents img").attr("src", slide[slideNum - 1]);
         });
     });
 }
 
 function SlideTool(
-    _slideSize,
-    _download,
-    _file
+    slideSize,
+    download,
+    file
 ) {
-    var _html = "";
+    var html = "";
 
-    _html += "<ul class='nav-slide'>" +
-             "  <li><a class='fix-width slide-first' href='javascript:void(0)'>&lt;&lt;</a></li>" +
-             "  <li><a class='fix-width slide-previous' href='javascript:void(0)'>&lt;</a></li>" +
-             "  <li>" +
-             "      <select class='slide-nav'>";
+    html += (
+        "<ul class='nav-slide'>" +
+        "   <li>" +
+        "       <a class='fix-width slide-first' href='javascript:void(0)'>&lt;&lt;</a>" +
+        "   </li > " +
+        "   <li>" +
+        "       <a class='fix-width slide-previous' href='javascript:void(0)'>&lt;</a>" +
+        "   </li > " +
+        "   <li>" +
+        "       <select class='slide-nav'>"
+    );
 
-    for (var _i = 1; _i <= _slideSize; _i++ ) {
-        _html += "      <option value='" + _i + "'>" + _i + "</option>";
+    for (var i = 1; i <= slideSize; i++ ) {
+        html += (
+            "       <option value='" + i + "'>" + i + "</option>"
+        );
     }
 
-    _html += "      </select>" +
-             "  </li>" +
-             "  <li><a class='fix-width slide-next' href='javascript:void(0)'>&gt;</a></li>" +
-             "  <li><a class='fix-width slide-last' href='javascript:void(0)'>&gt;&gt;</a></li>";
+    html += (
+        "       </select>" +
+        "   </li>" +
+        "   <li>" +
+        "       <a class='fix-width slide-next' href='javascript:void(0)'>&gt;</a>" +
+        "   </li > " +
+        "   <li>" +
+        "       <a class='fix-width slide-last' href='javascript:void(0)'>&gt;&gt;</a>" +
+        "   </li> "
+    );
 
-    if (_download == true)
-        _html += "<li><a href='" + _file + "' target='_top'>&nbsp;ดาว์นโหลด&nbsp;</a></li>";
+    if (download == true)
+        html += (
+            "<li>" +
+            "   <a href='" + file + "' target='_top'>&nbsp;ดาว์นโหลด&nbsp;</a>" +
+            "</li>"
+        );
 
-    _html += "</ul>";
+    html += (
+        "</ul>"
+    );
 
-    return _html;
+    return html;
 }

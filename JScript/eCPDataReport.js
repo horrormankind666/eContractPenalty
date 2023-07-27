@@ -35,79 +35,94 @@
 }
 
 function ValidateCalCPReportTableCalCapitalAndInterest() {
-    var _error = false;
-    var _msg;
-    var _focus;
-    var _capital = DelCommas("capital");
-    var _interest = DelCommas("interest");
-    var _pay = DelCommas("pay");
-    var _period = DelCommas("period");
-    var _paymentDate = $("#payment-date").val();
-    var _payLeast = DelCommas("pay-least-hidden");
-    var _periodLeast = DelCommas("period-least-hidden");
+    var error = false;
+    var msg;
+    var focus;
+    var capital = DelCommas("capital");
+    var interest = DelCommas("interest");
+    var pay = DelCommas("pay");
+    var period = DelCommas("period");
+    var paymentDate = $("#payment-date").val();
+    var payLeast = DelCommas("pay-least-hidden");
+    var periodLeast = DelCommas("period-least-hidden");
 
-    if (_error == false && (_capital.length == 0 || _capital == "0.00")) {
-        _error = true;
-        _msg = "กรุณาใส่จำนวนเงินต้นคงเหลือยกมา";
-        _focus = "#capital";
+    if (error == false &&
+        (capital.length == 0 || capital == "0.00")) {
+        error = true;
+        msg = "กรุณาใส่จำนวนเงินต้นคงเหลือยกมา";
+        focus = "#capital";
     }
 
-    if (_error == false && (_interest.length == 0 || _interest == "0.00")) {
-        _error = true;
-        _msg = "กรุณาใส่อัตราดอกเบี้ย";
-        _focus = "#interest";
+    if (error == false &&
+        (interest.length == 0 || interest == "0.00")) {
+        error = true;
+        msg = "กรุณาใส่อัตราดอกเบี้ย";
+        focus = "#interest";
     }
 
-    if (_error == false && parseFloat(_interest) > 100) {
-        _error = true;
-        _msg = "กรุณาใส่อัตราดอกเบี้ยไม่เกิน 100";
-        _focus = "#interest";
+    if (error == false &&
+        parseFloat(interest) > 100) {
+        error = true;
+        msg = "กรุณาใส่อัตราดอกเบี้ยไม่เกิน 100";
+        focus = "#interest";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกเงื่อนไขที่ใช้คำนวณ";
-        _focus = "#condition-tablecalcapitalandinterest";
+    if (error == false &&
+        ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "0") {
+        error = true;
+        msg = "กรุณาเลือกเงื่อนไขที่ใช้คำนวณ";
+        focus = "#condition-tablecalcapitalandinterest";
     }
 
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (_pay.length == 0 || _pay == "0.00"))) {
-        _error = true;
-        _msg = "กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือน";
-        _focus = "#pay";
+    if (error == false &&
+        ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" &&
+        (pay.length == 0 || pay == "0.00")) {
+        error = true;
+        msg = "กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือน";
+        focus = "#pay";
     }
 
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" && (_period.length == 0 || _period == "0"))) {
-        _error = true;
-        _msg = "กรุณาใส่จำนวนงวดที่ต้องการชำระ";
-        _focus = "#pay";
+    if (error == false &&
+        ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" &&
+        (period.length == 0 || period == "0")) {
+        error = true;
+        msg = "กรุณาใส่จำนวนงวดที่ต้องการชำระ";
+        focus = "#pay";
     }
 
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (parseFloat(_capital) - parseFloat(_pay)) < 0)) {
-        _error = true;
-        _msg = "<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนให้น้อยกว่าหรือเท่ากับ</div><div>จำนวนเงินต้นคงเหลือยกมา</div>";
-        _focus = "#pay";
+    if (error == false &&
+        ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" &&
+        (parseFloat(capital) - parseFloat(pay)) < 0) {
+        error = true;
+        msg = "<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนให้น้อยกว่าหรือเท่ากับ</div><div>จำนวนเงินต้นคงเหลือยกมา</div>";
+        focus = "#pay";
     }
 
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" && (parseFloat(_pay) < parseFloat(_payLeast)))) {
-        _error = true;
-        _msg = ("<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนไม่น้อยกว่า<div><div>" + $("#pay-least-hidden").val() + " บาท</div>");
-        _focus = "#pay";
+    if (error == false &&
+        ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1" &&
+        parseFloat(pay) < parseFloat(payLeast)) {
+        error = true;
+        msg = ("<div>กรุณาใส่จำนวนเงินต้นที่ต้องการชำระต่อเดือนไม่น้อยกว่า<div><div>" + $("#pay-least-hidden").val() + " บาท</div>");
+        focus = "#pay";
 
     }
-    if (_error == false && (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" && (parseInt(_period) > parseInt(_periodLeast)))) {
-        _error = true;
-        _msg = ("<div>กรุณาใส่จำนวนงวดที่ต้องการชำระให้น้อยกว่าหรือเท่ากับ<div><div>" + $("#period-least-hidden").val() + " งวด</div>");
-        _focus = "#period";
+    if (error == false &&
+        ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" &&
+        parseInt(period) > parseInt(periodLeast)) {
+        error = true;
+        msg = ("<div>กรุณาใส่จำนวนงวดที่ต้องการชำระให้น้อยกว่าหรือเท่ากับ<div><div>" + $("#period-least-hidden").val() + " งวด</div>");
+        focus = "#period";
     }
 
-    if (_error == false && _paymentDate.length == 0) {
-        _error = true;
-        _msg = "กรุณาใส่วันที่เริ่มชำระ";
-        _focus = "#payment-date";
+    if (error == false &&
+        paymentDate.length == 0) {
+        error = true;
+        msg = "กรุณาใส่วันที่เริ่มชำระ";
+        focus = "#payment-date";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return false;
     }
 
@@ -117,73 +132,83 @@ function ValidateCalCPReportTableCalCapitalAndInterest() {
 function CalReportTableCalCapitalAndInterest() {
     $("#capital-old").val(DelCommas("capital"));
     $("#interest-old").val(DelCommas("interest"));
-    if (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1") $("#pay-old").val(DelCommas("pay"));
-    if (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2") $("#period-old").val(DelCommas("period"));
+
+    if (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "1")
+        $("#pay-old").val(DelCommas("pay"));
+
+    if (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2")
+        $("#period-old").val(DelCommas("period"));
+
     $("#payment-date-old").val($("#payment-date").val());
 
     if (ValidateCalCPReportTableCalCapitalAndInterest() == true) {
-        var _pay = ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" ? (parseFloat(DelCommas("period")) == 1 ? DelCommas("capital") : (parseFloat((parseFloat(DelCommas("capital")) / parseFloat(DelCommas("period"))).toFixed(0)) + 1).toFixed(2)) : DelCommas("pay");
-        var _send = new Array();
-        _send[_send.length] = "capital=" + DelCommas("capital");
-        _send[_send.length] = "interest=" + DelCommas("interest");
-        _send[_send.length] = "pay=" + _pay;
-        _send[_send.length] = "paymentdate=" + $("#payment-date").val();
+        var pay = (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" ? (parseFloat(DelCommas("period") == 1 ? DelCommas("capital") : (parseFloat((parseFloat(DelCommas("capital")) / parseFloat(DelCommas("period"))).toFixed(0)) + 1).toFixed(2))) : DelCommas("pay"));
+        var send = new Array();
+        send[send.length] = ("capital=" + DelCommas("capital"));
+        send[send.length] = ("interest=" + DelCommas("interest"));
+        send[send.length] = ("pay=" + pay);
+        send[send.length] = ("paymentdate=" + $("#payment-date").val());
 
         SetMsgLoading("กำลังคำนวณ");
 
-        CalculateFrm("reporttablecalcapitalandinterest", _send, function (_result) {
-            var _dataRecordCount = _result.split("<recordcount>");
-            var _dataList = _result.split("<list>");
-            var _dataSumPayCapital = _result.split("<sumpaycapital>");
-            var _dataSumPayInterest = _result.split("<sumpayinterest>");
-            var _dataSumTotalPay = _result.split("<sumtotalpay>");
+        CalculateFrm("reporttablecalcapitalandinterest", send, function (result) {
+            var dataRecordCount = result.split("<recordcount>");
+            var dataList = result.split("<list>");
+            var dataSumPayCapital = result.split("<sumpaycapital>");
+            var dataSumPayInterest = result.split("<sumpayinterest>");
+            var dataSumTotalPay = result.split("<sumtotalpay>");
 
-            $("#record-count-cal-table-cal-capital-and-interest").html("ทั้งหมด " + _dataRecordCount[1] + " งวด");
-            $("#list-table-cal-capital-and-interest").html(_dataList[1]);
-            $("#sum-pay-capital").html(_dataSumPayCapital[1]);
-            $("#sum-pay-interest").html(_dataSumPayInterest[1]);
-            $("#sum-total-pay").html(_dataSumTotalPay[1]);
+            $("#record-count-cal-table-cal-capital-and-interest").html("ทั้งหมด " + dataRecordCount[1] + " งวด");
+            $("#list-table-cal-capital-and-interest").html(dataList[1]);
+            $("#sum-pay-capital").html(dataSumPayCapital[1]);
+            $("#sum-pay-interest").html(dataSumPayInterest[1]);
+            $("#sum-total-pay").html(dataSumTotalPay[1]);
         });
     }
 }
 
 function ValidateExportCPReportTableCalCapitalAndInterest() {
-    var _error = false;
-    var _msg;
-    var _focus;
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_error == false && $("#list-table-cal-capital-and-interest").html().length == 0) {
-        _error = true;
-        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ย";
-        _focus = "";
+    if (error == false &&
+        $("#list-table-cal-capital-and-interest").html().length == 0) {
+        error = true;
+        msg = "กรุณาคำนวณเงินต้นและดอกเบี้ย";
+        focus = "";
     }
 
-    if (_error == false && ($("#capital-old").val() != DelCommas("capital"))) {
-        _error = true;
-        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
-        _focus = "";
+    if (error == false &&
+        $("#capital-old").val() != DelCommas("capital")) {
+        error = true;
+        msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        focus = "";
     }
 
-    if (_error == false && ($("#interest-old").val() != DelCommas("interest"))) {
-        _error = true;
-        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
-        _focus = "";
+    if (error == false &&
+        $("#interest-old").val() != DelCommas("interest")) {
+        error = true;
+        msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        focus = "";
     }
 
-    if (_error == false && ($("#pay-old").val() != DelCommas("pay"))) {
-        _error = true;
-        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
-        _focus = "";
+    if (error == false &&
+        $("#pay-old").val() != DelCommas("pay")) {
+        error = true;
+        msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        focus = "";
     }
 
-    if (_error == false && ($("#payment-date-old").val() != $("#payment-date").val())) {
-        _error = true;
-        _msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
-        _focus = "";
+    if (error == false &&
+        $("#payment-date-old").val() != $("#payment-date").val()) {
+        error = true;
+        msg = "กรุณาคำนวณเงินต้นและดอกเบี้ยใหม่อีกครั้ง";
+        focus = "";
     }    
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return false;
     }
     
@@ -192,60 +217,60 @@ function ValidateExportCPReportTableCalCapitalAndInterest() {
 
 function ExportReportTableCalCapitalAndInterest() {    
     if (ValidateExportCPReportTableCalCapitalAndInterest() == true) {
-        var _pay = ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" ? (parseFloat(DelCommas("period")) == 1 ? DelCommas("capital") : (parseFloat((parseFloat(DelCommas("capital")) / parseFloat(DelCommas("period"))).toFixed(0)) + 1).toFixed(2)) : DelCommas("pay");
-        var _send = new Array();
-        _send[_send.length] = $("#cp2id").val();
-        _send[_send.length] = DelCommas("capital");
-        _send[_send.length] = DelCommas("interest");
-        _send[_send.length] = _pay;
-        _send[_send.length] = $("#payment-date").val();
-
-        Printing(_send.join("&"), "reporttablecalcapitalandinterest", "pdf", "eCPPrinting.aspx", "export-target");
+        var pay = (ComboboxGetSelectedValue("condition-tablecalcapitalandinterest") == "2" ? (parseFloat(DelCommas("period")) == 1 ? DelCommas("capital") : (parseFloat((parseFloat(DelCommas("capital")) / parseFloat(DelCommas("period"))).toFixed(0)) + 1).toFixed(2)) : DelCommas("pay"));
+        var send = new Array();
+        send[send.length] = $("#cp2id").val();
+        send[send.length] = DelCommas("capital");
+        send[send.length] = DelCommas("interest");
+        send[send.length] = pay;
+        send[send.length] = $("#payment-date").val();
+        
+        Printing(send.join("&"), "reporttablecalcapitalandinterest", "pdf", "eCPPrinting.aspx", "export-target");
     }
 }
 
 function ViewReportStepOfWorkOnStatisticRepayByProgram(
-    _order,
-    _facultyCode,
-    _facultyName,
-    _programCode,
-    _programName,
-    _majorCode,
-    _groupNum
+    order,
+    facultyCode,
+    facultyName,
+    programCode,
+    programName,
+    majorCode,
+    groupNum
 ) {
-    var _facultyName = _facultyName.replace("&", " ");
-    var _programName = _programName.replace("&", " ")
+    var facultyName = facultyName.replace("&", " ");
+    var programName = programName.replace("&", " ")
 
-    $("#faculty-report-step-of-work-on-statistic-repay-by-program-hidden").val(_facultyCode + ";" + _facultyName);
-    $("#program-report-step-of-work-on-statistic-repay-by-program-hidden").val(_programCode + ";" + _programName + ";" + _majorCode + ";" + _groupNum);
-    LoadForm(1, "reportstepofworkonstatisticrepaybyprogram", true, "", "", "report-statistic-repay-by-program" + _order);
+    $("#faculty-report-step-of-work-on-statistic-repay-by-program-hidden").val(facultyCode + ";" + facultyName);
+    $("#program-report-step-of-work-on-statistic-repay-by-program-hidden").val(programCode + ";" + programName + ";" + majorCode + ";" + groupNum);
+    LoadForm(1, "reportstepofworkonstatisticrepaybyprogram", true, "", "", "report-statistic-repay-by-program" + order);
 }
 
-function ViewReportStatisticRepayByProgram(_acadamicyear) {
-    $("#acadamicyear-hidden").val(_acadamicyear);
-    OpenTab("link-tab2-cp-report-statistic-repay", "#tab2-cp-report-statistic-repay", "สถิติการชำระหนี้ปีการศึกษา 25" + _acadamicyear + " แยกตามหลักสูตร", false, "", _acadamicyear, "");
+function ViewReportStatisticRepayByProgram(acadamicyear) {
+    $("#acadamicyear-hidden").val(acadamicyear);
+    OpenTab("link-tab2-cp-report-statistic-repay", "#tab2-cp-report-statistic-repay", ("สถิติการชำระหนี้ปีการศึกษา 25" + acadamicyear + " แยกตามหลักสูตร"), false, "", acadamicyear, "");
 }
 
-function ViewReportStatisticContractByProgram(_acadamicyear) {
-    $("#acadamicyear-hidden").val(_acadamicyear);
-    OpenTab("link-tab2-cp-report-statistic-contract", "#tab2-cp-report-statistic-contract", "สถิติการทำสัญญาและการผิดสัญญาปีการศึกษา 25" + _acadamicyear + " แยกตามหลักสูตร", false, "", _acadamicyear, "");
+function ViewReportStatisticContractByProgram(acadamicyear) {
+    $("#acadamicyear-hidden").val(acadamicyear);
+    OpenTab("link-tab2-cp-report-statistic-contract", "#tab2-cp-report-statistic-contract", ("สถิติการทำสัญญาและการผิดสัญญาปีการศึกษา 25" + acadamicyear + " แยกตามหลักสูตร"), false, "", acadamicyear, "");
 }
 
 function ViewReportStudentOnStatisticContractContractByProgram(
-    _order,
-    _facultyCode,
-    _facultyName,
-    _programCode,
-    _programName,
-    _majorCode,
-    _groupNum
+    order,
+    facultyCode,
+    facultyName,
+    programCode,
+    programName,
+    majorCode,
+    groupNum
 ) {
-    var _facultyName = _facultyName.replace("&", " ");
-    var _programName = _programName.replace("&", " ")
+    var facultyName = facultyName.replace("&", " ");
+    var programName = programName.replace("&", " ")
 
-    $("#faculty-report-student-on-statistic-contract-by-program-hidden").val(_facultyCode + ";" + _facultyName);
-    $("#program-report-student-on-statistic-contract-by-program-hidden").val(_programCode + ";" + _programName + ";" + _majorCode + ";" + _groupNum);
-    LoadForm(1, "reportstudentonstatisticcontractbyprogram", true, "", "", "report-statistic-contract-by-program" + _order);
+    $("#faculty-report-student-on-statistic-contract-by-program-hidden").val(facultyCode + ";" + facultyName);
+    $("#program-report-student-on-statistic-contract-by-program-hidden").val(programCode + ";" + programName + ";" + majorCode + ";" + groupNum);
+    LoadForm(1, "reportstudentonstatisticcontractbyprogram", true, "", "", "report-statistic-contract-by-program" + order);
 }
 
 function ConfirmPrintNoticeRepayComplete() {
@@ -265,160 +290,205 @@ function ConfirmPrintNoticeRepayComplete() {
 }
 
 function PrintNoticeCheckForReimbursement(
-    _cp1id,
-    _action
+    cp1id,
+    action
 ) {
-    var _send = new Array();
-    _send[_send.length] = _cp1id;
-    _send[_send.length] = _action;
+    var send = new Array();
+    send[send.length] = cp1id;
+    send[send.length] = action;
 
-    Printing(_send.join(":"), "reportnoticecheckforreimbursement", "pdf", "eCPPrinting.aspx", "export-target");
+    Printing(send.join(":"), "reportnoticecheckforreimbursement", "pdf", "eCPPrinting.aspx", "export-target");
 }
 
 function PrintNoticeRepayComplete() {
-    _elem = $("input[name=print-notice-repay-complete]:checked");
-    _countSend = _elem.length;
+    elem = $("input[name=print-notice-repay-complete]:checked");
+    countSend = elem.length;
 
-    if (_countSend == 0) {
+    if (countSend == 0) {
         DialogMessage("ไม่พบรายการที่ต้องการพิมพ์", "", false, "");
         return;
     }
 
-    var _valCheck = new Array();
+    var valCheck = new Array();
 
-    _elem.each(function (i) {
-        _valCheck[i] = this.value;
+    elem.each(function (i) {
+        valCheck[i] = this.value;
     });
 
-    Printing(_valCheck.join(";"), "reportnoticerepaycomplete", "word", "eCPPrinting.aspx", "export-target");
+    Printing(valCheck.join(";"), "reportnoticerepaycomplete", "word", "eCPPrinting.aspx", "export-target", true);
 }
 
 function PrintNoticeClaimDebt(
-    _cp1id,
-    _time,
-    _previousRepayDateEnd
+    cp1id,
+    time,
+    previousRepayDateEnd
 ) {
-    var _send = new Array();
-    _send[_send.length] = _cp1id;
-    _send[_send.length] = _time;
-    _send[_send.length] = _previousRepayDateEnd
+    var send = new Array();
+    send[send.length] = cp1id;
+    send[send.length] = time;
+    send[send.length] = previousRepayDateEnd
 
-    Printing(_send.join(":"), "reportnoticeclaimdebt", "word", "eCPPrinting.aspx", "export-target");
+    Printing(send.join(":"), "reportnoticeclaimdebt", "word", "eCPPrinting.aspx", "export-target", true);
 }
 
 function Printing(
-    _send,
-    _order,
-    _type,
-    _frmAction,
-    _frmTarget
+    send,
+    order,
+    type,
+    frmAction,
+    frmTarget,
+    processWatch = false
 ) {
-    DialogLoading("กำลังโหลด...");
-
-    $("#export-send").val(_send);
-    $("#export-order").val(_order);
-    $("#export-type").val(_type);
-    $("#export-setvalue").attr("action", _frmAction);
-    $("#export-setvalue").attr("target", _frmTarget);
+    console.log(order);
+    $("#export-target").contents().find("body").html("");
+    $("#export-send").val(send);
+    $("#export-order").val(order);
+    $("#export-type").val(type);
+    $("#export-setvalue").attr("action", frmAction);
+    $("#export-setvalue").attr("target", frmTarget);
     $("#export-setvalue").submit();
 
-    window.setTimeout(function () {
-        $("#dialog-loading").dialog("close");
-    }, 500);
+    DialogLoading("กำลังส่งออก...");
+
+    var timeWatchExportComplete = setInterval(() => {
+        DoWatchExportComplete();
+    }, 1000);
+
+    function DoWatchExportComplete() {
+        if (processWatch == true) {
+            var iframeBody = $("#export-target").contents().find("body");
+
+            if (iframeBody.html() != null &&
+                iframeBody.html().length > 0) {
+                clearInterval(timeWatchExportComplete);
+
+                var filename = iframeBody.find(".filename").html();
+                var contenttype = iframeBody.find(".contenttype").html();
+
+                iframeBody.find(".filename").remove();
+                iframeBody.find(".contenttype").remove();
+
+                var content = encodeURIComponent(iframeBody.html());
+                var element = document.createElement("a");
+                element.setAttribute("href", ("data:" + contenttype) + "," + content);
+                element.setAttribute("download", filename);
+                element.style.display = "none";
+
+                element.click();
+                element.remove();
+
+                window.setTimeout(function () {
+                    $("#dialog-loading").dialog("close");
+                }, 500);
+            }
+        }
+        else {
+            clearInterval(timeWatchExportComplete);
+
+            window.setTimeout(function () {
+                $("#dialog-loading").dialog("close");
+            }, 500);
+        }        
+    }
 }
 
 function ViewReportDebtorContractByProgram(
-    _facultyCode,
-    _facultyName,
-    _programCode,
-    _programName,
-    _majorCode,
-    _groupNum,
-    _dLevel,
-    _dLevelname
+    facultyCode,
+    facultyName,
+    programCode,
+    programName,
+    majorCode,
+    groupNum,
+    dLevel,
+    dLevelname
 ) {
-    var _facultyName = _facultyName.replace("&", " ");
-    var _programName = _programName.replace("&", " ")
+    var facultyName = facultyName.replace("&", " ");
+    var programName = programName.replace("&", " ")
 
-    $("#faculty-report-debtor-contract-by-program-hidden").val(_facultyCode + ";" + _facultyName);
-    $("#program-report-debtor-contract-by-program-hidden").val(_programCode + ";" + _programName + ";" + _majorCode + ";" + _groupNum);
-    OpenTab("link-tab2-cp-report-debtor-contract", "#tab2-cp-report-debtor-contract", "ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้ หลักสูตร " + _programCode + " - " + _programName + (_groupNum != "0" ? " ( กลุ่ม " + _groupNum + " )" : ""), false, "", "", "");
+    $("#faculty-report-debtor-contract-by-program-hidden").val(facultyCode + ";" + facultyName);
+    $("#program-report-debtor-contract-by-program-hidden").val(programCode + ";" + programName + ";" + majorCode + ";" + groupNum);
+    OpenTab("link-tab2-cp-report-debtor-contract", "#tab2-cp-report-debtor-contract", ("ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้ หลักสูตร " + programCode + " - " + programName + (groupNum != "0" ? (" ( กลุ่ม " + groupNum + " )") : "")), false, "", "", "");
 }
 
-function ViewTransPaymentReportDebtorContractByProgram(_cp2id) {
-    LoadForm(3, "viewtranspayment", true, "", (_cp2id + ":" + ($("#date-start-report-debtor-contract-hidden").length > 0 ? $("#date-start-report-debtor-contract-hidden").val() : "") + ":" + ($("#date-end-report-debtor-contract-hidden").length > 0 ? $("#date-end-report-debtor-contract-hidden").val() : "")), "")
+function ViewTransPaymentReportDebtorContractByProgram(cp2id) {
+    LoadForm(3, "viewtranspayment", true, "", (cp2id + ":" + ($("#date-start-report-debtor-contract-hidden").length > 0 ? $("#date-start-report-debtor-contract-hidden").val() : "") + ":" + ($("#date-end-report-debtor-contract-hidden").length > 0 ? $("#date-end-report-debtor-contract-hidden").val() : "")), "")
 }
 
-function PrintDebtorContract(_tabOrder) {
-    var _error = false;
-    var _msg;
+function PrintDebtorContract(tabOrder) {
+    var error = false;
+    var msg;
 
-    if (_error == false && _tabOrder == 1 && $("#list-data-report-debtor-contract").html().length == 0) {
-        _error = true;
-        _msg = "ไม่พบรายการที่ต้องการส่งออก";
+    if (error == false &&
+        tabOrder == 1 &&
+        $("#list-data-report-debtor-contract").html().length == 0) {
+        error = true;
+        msg = "ไม่พบรายการที่ต้องการส่งออก";
     }
 
-    if (_error == false && _tabOrder == 2 && $("#list-data-report-debtor-contract-by-program").html().length == 0) {
-        _error = true;
-        _msg = "ไม่พบรายการที่ต้องการส่งออก";
+    if (error == false &&
+        tabOrder == 2 &&
+        $("#list-data-report-debtor-contract-by-program").html().length == 0) {
+        error = true;
+        msg = "ไม่พบรายการที่ต้องการส่งออก";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, "", false, "");
+    if (error == true) {
+        DialogMessage(msg, "", false, "");
         return;
     }
     
-    var _reportOrder = $("#report-debtor-contract-order").val();
-    var _faculty = $("#faculty-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#faculty-report-debtor-contract-by-program-hidden").val() : "";
-    var _program = $("#program-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#program-report-debtor-contract-by-program-hidden").val() : "";
-    var _formatPayment = $("#format-payment-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#format-payment-report-debtor-contract-by-program-hidden").val() : "";
-    var _send = new Array();
-    _send[_send.length] = $("#date-start-report-debtor-contract-hidden").val();
-    _send[_send.length] = $("#date-end-report-debtor-contract-hidden").val();
-    _send[_send.length] = $("#id-name-report-debtor-contract-by-program-hidden").val();
-    _send[_send.length] = _faculty;
-    _send[_send.length] = _program;
-    _send[_send.length] = _formatPayment;
+    var reportOrder = $("#report-debtor-contract-order").val();
+    var faculty = ($("#faculty-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#faculty-report-debtor-contract-by-program-hidden").val() : "");
+    var program = ($("#program-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#program-report-debtor-contract-by-program-hidden").val() : "");
+    var formatPayment = ($("#format-payment-report-debtor-contract-by-program-hidden").val().length > 0 ? $("#format-payment-report-debtor-contract-by-program-hidden").val() : "");
+    var send = new Array();
+    send[send.length] = $("#date-start-report-debtor-contract-hidden").val();
+    send[send.length] = $("#date-end-report-debtor-contract-hidden").val();
+    send[send.length] = $("#id-name-report-debtor-contract-by-program-hidden").val();
+    send[send.length] = faculty;
+    send[send.length] = program;
+    send[send.length] = formatPayment;
     
-    Printing(_send.join(":"), _reportOrder, "excel", "eCPPrinting.aspx", "export-target");
+    Printing(send.join(":"), reportOrder, "excel", "eCPPrinting.aspx", "export-target", true);
 }
 
-function PrintCertificateReimbursement(_cp2id) {
-    var _send = new Array();
-    _send[_send.length] = _cp2id;
+function PrintCertificateReimbursement(cp2id) {
+    var send = new Array();
+    send[send.length] = cp2id;
 
-    Printing(_send.join(":"), "reportcertificatereimbursement", "word", "eCPPrinting.aspx", "export-target");
+    Printing(send.join(":"), "reportcertificatereimbursement", "word", "eCPPrinting.aspx", "export-target", true);
 }
 
-function PrintFormRequestCreateAndUpdateDebtor(_cp1id) {
-    var _send = new Array();
-    _send[_send.length] = _cp1id;
+function PrintFormRequestCreateAndUpdateDebtor(cp1id) {
+    var send = new Array();
+    send[send.length] = cp1id;
 
-    Printing(_send.join(":"), "reportformrequestcreateandupdatedebtor", "excel", "eCPPrinting.aspx", "export-target");
+    Printing(send.join(":"), "reportformrequestcreateandupdatedebtor", "excel", "eCPPrinting.aspx", "export-target");
 }
 
 function PrintDebtorContractBreakRequireRepayPayment() {
-    var _error = false;
-    var _msg;
+    var error = false;
+    var msg;
 
-    if (_error == false && $("#list-data-trans-payment").html().length == 0) {
-        _error = true;
-        _msg = "ไม่พบรายการที่ต้องการส่งออก";
+    if (error == false &&
+        $("#list-data-trans-payment").html().length == 0) {
+        error = true;
+        msg = "ไม่พบรายการที่ต้องการส่งออก";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, "", false, "");
+    if (error == true) {
+        DialogMessage(msg, "", false, "");
         return;
     }
     
-    var _send = new Array();
-    _send[_send.length] = $("#paymentstatus-trans-payment-hidden").val();
-    _send[_send.length] = $("#paymentrecordstatus-trans-payment-hidden").val();
-    _send[_send.length] = $("#id-name-trans-payment-hidden").val();
-    _send[_send.length] = $("#faculty-trans-payment-hidden").val();
-    _send[_send.length] = $("#program-trans-payment-hidden").val();
-    _send[_send.length] = $("#date-start-trans-repay1-reply-hidden").val();
-    _send[_send.length] = $("#date-end-trans-repay1-reply-hidden").val();
+    var send = new Array();
+    send[send.length] = $("#paymentstatus-trans-payment-hidden").val();
+    send[send.length] = $("#paymentrecordstatus-trans-payment-hidden").val();
+    send[send.length] = $("#id-name-trans-payment-hidden").val();
+    send[send.length] = $("#faculty-trans-payment-hidden").val();
+    send[send.length] = $("#program-trans-payment-hidden").val();
+    send[send.length] = $("#date-start-trans-repay1-reply-hidden").val();
+    send[send.length] = $("#date-end-trans-repay1-reply-hidden").val();
 
-    Printing(_send.join(":"), "reportdebtorcontractbreakrequirerepaypayment", "excel", "eCPPrinting.aspx", "export-target");
+    Printing(send.join(":"), "reportdebtorcontractbreakrequirerepaypayment", "excel", "eCPPrinting.aspx", "export-target");
 }

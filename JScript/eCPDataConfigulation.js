@@ -1,7 +1,7 @@
-﻿function ResetFrmCPTabProgram(_disable) {
+﻿function ResetFrmCPTabProgram(disable) {
     GoToTopElement("html, body");
 
-    if (_disable == true) {
+    if (disable == true) {
         ComboboxDisable("dlevel");
         ComboboxDisable("faculty");
         ComboboxDisable("program");
@@ -16,16 +16,16 @@
     $("#button-style12").hide();
 }
 
-function ConfirmActionCPTabProgram(_action) {
-    var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+function ConfirmActionCPTabProgram(action) {
+    var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-    DialogConfirm("ต้องการ" + _actionMsg + "ข้อมูลนี้หรือไม่");
+    DialogConfirm("ต้องการ" + actionMsg + "ข้อมูลนี้หรือไม่");
     $("#dialog-confirm").dialog({
         buttons: {
             "ตกลง": function () {
                 $(this).dialog("close");
 
-                ValidateCPTabProgram(_action);
+                ValidateCPTabProgram(action);
             },
             "ยกเลิก": function () {
                 $(this).dialog("close");
@@ -34,70 +34,73 @@ function ConfirmActionCPTabProgram(_action) {
     });
 }
 
-function ValidateCPTabProgram(_action) {
-    var _error = false;
-    var _msg;
-    var _focus;
+function ValidateCPTabProgram(action) {
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกระดับการศึกษา";
-        _focus = ".dlevel-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("dlevel") == "0") {
+        error = true;
+        msg = "กรุณาเลือกระดับการศึกษา";
+        focus = ".dlevel-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("faculty") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกคณะ";
-        _focus = ".faculty-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("faculty") == "0") {
+        error = true;
+        msg = "กรุณาเลือกคณะ";
+        focus = ".faculty-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("program") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกหลักสูตร";
-        _focus = ".program-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("program") == "0") {
+        error = true;
+        msg = "กรุณาเลือกหลักสูตร";
+        focus = ".program-combobox-input";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return;
     }
 
-    var _faculty = ComboboxGetSelectedValue("faculty").split(";");
-    var _program = ComboboxGetSelectedValue("program").split(";");
-    var _send = new Array();
-    _send[_send.length] = "cp1id=" + $("#cp1id").val();
-    _send[_send.length] = "dlevel=" + ComboboxGetSelectedValue("dlevel");
-    _send[_send.length] = "faculty=" + _faculty[0];
-    _send[_send.length] = "programcode=" + _program[0];
-    _send[_send.length] = "majorcode=" + _program[2];
-    _send[_send.length] = "groupnum=" + _program[3];
+    var faculty = ComboboxGetSelectedValue("faculty").split(";");
+    var program = ComboboxGetSelectedValue("program").split(";");
+    var send = new Array();
+    send[send.length] = ("cp1id=" + $("#cp1id").val());
+    send[send.length] = ("dlevel=" + ComboboxGetSelectedValue("dlevel"));
+    send[send.length] = ("faculty=" + faculty[0]);
+    send[send.length] = ("programcode=" + program[0]);
+    send[send.length] = ("majorcode=" + program[2]);
+    send[send.length] = ("groupnum=" + program[3]);
 
-    AddUpdateData(_action, _action + "cptabprogram", _send, false, "", "", "", false, function (_result) {
-        if (_result == "1") {
+    AddUpdateData(action, (action + "cptabprogram"), send, false, "", "", "", false, function (result) {
+        if (result == "1") {
             GotoSignin();
             return;
         }
 
-        if (_result == "2") {
+        if (result == "2") {
             DialogMessage("มีข้อมูลนี้อยู่ในระบบแล้ว", "", false, "");
             return;
         }
 
-        var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+        var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-        DialogConfirm(_actionMsg + "ข้อมูลเรียบร้อย");
+        DialogConfirm(actionMsg + "ข้อมูลเรียบร้อย");
         $("#dialog-confirm").dialog({
             buttons: {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add")
+                    if (action == "add")
                         ResetFrmCPTabProgram(false);
 
-                    if (_action == "update")
+                    if (action == "update")
                         ResetFrmCPTabProgram(true);
 
-                    if (_action == "del")
+                    if (action == "del")
                         OpenTab("link-tab1-cp-tab-program", "#tab1-cp-tab-program", "", true, "", "", "");
                 }
             }
@@ -105,10 +108,10 @@ function ValidateCPTabProgram(_action) {
     });
 }
 
-function ResetFrmCPTabInterest(_disable) {
+function ResetFrmCPTabInterest(disable) {
     GoToTopElement("html, body");
 
-    if (_disable == true) {
+    if (disable == true) {
         TextboxDisable("#in-contract-interest");
         TextboxDisable("#out-contract-interest");
         $("#button-style11").hide();
@@ -122,16 +125,16 @@ function ResetFrmCPTabInterest(_disable) {
     $("#button-style12").hide();
 }
 
-function ConfirmActionCPTabInterest(_action) {
-    var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+function ConfirmActionCPTabInterest(action) {
+    var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-    DialogConfirm("ต้องการ" + _actionMsg + "ข้อมูลนี้หรือไม่");
+    DialogConfirm("ต้องการ" + actionMsg + "ข้อมูลนี้หรือไม่");
     $("#dialog-confirm").dialog({
         buttons: {
             "ตกลง": function () {
                 $(this).dialog("close");
 
-                ValidateCPTabInterest(_action);
+                ValidateCPTabInterest(action);
             },
             "ยกเลิก": function () {
                 $(this).dialog("close");
@@ -140,60 +143,64 @@ function ConfirmActionCPTabInterest(_action) {
     });
 }
 
-function ValidateCPTabInterest(_action) {        
-    var _error = false;
-    var _msg;
-    var _focus;
+function ValidateCPTabInterest(action) {        
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_error == false && $("#in-contract-interest").val().length == 0) {
-        _error = true;
-        _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่กำหนดไว้ในสัญญา";
-        _focus = "#in-contract-interest";
+    if (error == false &&
+        $("#in-contract-interest").val().length == 0) {
+        error = true;
+        msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่กำหนดไว้ในสัญญา";
+        focus = "#in-contract-interest";
     }
 
-    if (_error == false && $("#out-contract-interest").val().length == 0) {
-        _error = true;
-        _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่มิได้กำหนดไว้ในสัญญา";
-        _focus = "#out-contract-interest";
+    if (error == false &&
+        $("#out-contract-interest").val().length == 0) {
+        error = true;
+        msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระที่มิได้กำหนดไว้ในสัญญา";
+        focus = "#out-contract-interest";
     }
 
-    if (_error == false && $("#in-contract-interest").val() == "0.00" && $("#out-contract-interest").val() == "0.00") {
-        _error = true;
-        _msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระ";
-        _focus = "#in-contract-interest";
+    if (error == false &&
+        $("#in-contract-interest").val() == "0.00" &&
+        $("#out-contract-interest").val() == "0.00") {
+        error = true;
+        msg = "กรุณาใส่ดอกเบี้ยจากการผิดนัดชำระ";
+        focus = "#in-contract-interest";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return;
     }
     
-    var _send = new Array();
-    _send[_send.length] = "cp1id=" + $("#cp1id").val();
-    _send[_send.length] = "incontractinterest=" + DelCommas("in-contract-interest");
-    _send[_send.length] = "outcontractinterest=" + DelCommas("out-contract-interest");
+    var send = new Array();
+    send[send.length] = ("cp1id=" + $("#cp1id").val());
+    send[send.length] = ("incontractinterest=" + DelCommas("in-contract-interest"));
+    send[send.length] = ("outcontractinterest=" + DelCommas("out-contract-interest"));
 
-    AddUpdateData(_action, _action + "cptabinterest", _send, false, "", "", "", false, function (_result) {
-        if (_result == "1") {
+    AddUpdateData(action, (action + "cptabinterest"), send, false, "", "", "", false, function (result) {
+        if (result == "1") {
             GotoSignin();
             return;
         }
 
-        var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+        var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-        DialogConfirm(_actionMsg + "ข้อมูลเรียบร้อย");
+        DialogConfirm(actionMsg + "ข้อมูลเรียบร้อย");
         $("#dialog-confirm").dialog({
             buttons: {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add")
+                    if (action == "add")
                         ResetFrmCPTabInterest(false);
 
-                    if (_action == "update")
+                    if (action == "update")
                         ResetFrmCPTabInterest(true);
 
-                    if (_action == "del")
+                    if (action == "del")
                         OpenTab("link-tab1-cp-tab-interest", "#tab1-cp-tab-interest", "", true, "", "", "");
                 }
             }
@@ -201,13 +208,13 @@ function ValidateCPTabInterest(_action) {
     });
 }
 
-function UpdateUseContractInterest(_cp1id) {
-    var _send = new Array();
-    _send[_send.length] = "cp1id=" + _cp1id;
-    _send[_send.length] = "usecontractinterest=" + ($("input[name='use-contract-interest']:checked").val() != null ? 1 : 0);
+function UpdateUseContractInterest(cp1id) {
+    var send = new Array();
+    send[send.length] = ("cp1id=" + cp1id);
+    send[send.length] = ("usecontractinterest=" + ($("input[name='use-contract-interest']:checked").val() != null ? 1 : 0));
 
-    AddUpdateData("update", "updateusecontractinterest", _send, false, "", "", "", false, function (_result) {
-        if (_result == "1") {
+    AddUpdateData("update", "updateusecontractinterest", send, false, "", "", "", false, function (result) {
+        if (result == "1") {
             GotoSignin();
             return;
         }
@@ -221,9 +228,9 @@ function InitSetAmtIndemnitorYear() {
 }
 
 function ResetSetAmtIndemnitorYear() {
-    var _result = $("input[name=set-amt-indemnitor-year]:checked").val();
+    var result = $("input[name=set-amt-indemnitor-year]:checked").val();
 
-    if (_result == "Y")
+    if (result == "Y")
         TextboxEnable("#amt-indemnitor-year")
     else {
         $("#amt-indemnitor-year").val("");
@@ -231,10 +238,10 @@ function ResetSetAmtIndemnitorYear() {
     }
 }
 
-function ResetFrmCPTabPayBreakContract(_disable) {
+function ResetFrmCPTabPayBreakContract(disable) {
     GoToTopElement("html, body");
 
-    if (_disable == true) {
+    if (disable == true) {
         ComboboxDisable("dlevel");
         ComboboxDisable("case-graduate");
         ComboboxDisable("facultycptabprogram");
@@ -261,29 +268,30 @@ function ResetFrmCPTabPayBreakContract(_disable) {
     $("#button-style12").hide();
 }
 
-function ViewCalDate(_calDateCondition) {
-    if (_calDateCondition.length <= 0) {
-        _calDateCondition = ComboboxGetSelectedValue("cal-date-condition");
+function ViewCalDate(calDateCondition) {
+    if (calDateCondition.length <= 0) {
+        calDateCondition = ComboboxGetSelectedValue("cal-date-condition");
 
-        if ((_calDateCondition == null) || (_calDateCondition == "0")) {
+        if (calDateCondition == null ||
+            calDateCondition == "0") {
             DialogMessage("กรุณาเลือกวิธีคิดและคำนวณเงินชดใช้", "", false, "");
             return;
         }
     }
 
-    LoadForm(1, "detailcptabcaldate", true, "", _calDateCondition, "");
+    LoadForm(1, "detailcptabcaldate", true, "", calDateCondition, "");
 }
 
-function ConfirmActionCPTabPayBreakContract(_action) {
-    var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+function ConfirmActionCPTabPayBreakContract(action) {
+    var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-    DialogConfirm("ต้องการ" + _actionMsg + "ข้อมูลนี้หรือไม่");
+    DialogConfirm("ต้องการ" + actionMsg + "ข้อมูลนี้หรือไม่");
     $("#dialog-confirm").dialog({
         buttons: {
             "ตกลง": function () {
                 $(this).dialog("close");
 
-                ValidateCPTabPayBreakContract(_action)
+                ValidateCPTabPayBreakContract(action)
             },
             "ยกเลิก": function () {
                 $(this).dialog("close");
@@ -292,98 +300,107 @@ function ConfirmActionCPTabPayBreakContract(_action) {
     });
 }
 
-function ValidateCPTabPayBreakContract(_action) {
-    var _error = false;
-    var _msg;
-    var _focus;
+function ValidateCPTabPayBreakContract(action) {
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกระดับการศึกษา";
-        _focus = ".dlevel-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("dlevel") == "0") {
+        error = true;
+        msg = "กรุณาเลือกระดับการศึกษา";
+        focus = ".dlevel-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("case-graduate") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกกรณีการชดใช้ตามสัญญา";
-        _focus = ".case-graduate-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("case-graduate") == "0") {
+        error = true;
+        msg = "กรุณาเลือกกรณีการชดใช้ตามสัญญา";
+        focus = ".case-graduate-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกคณะ";
-        _focus = ".facultycptabprogram-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("facultycptabprogram") == "0") {
+        error = true;
+        msg = "กรุณาเลือกคณะ";
+        focus = ".facultycptabprogram-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกหลักสูตร";
-        _focus = ".programcptabprogram-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("programcptabprogram") == "0") {
+        error = true;
+        msg = "กรุณาเลือกหลักสูตร";
+        focus = ".programcptabprogram-combobox-input";
     }
 
-    if (_error == false && (($("#amount-cash").val().length == 0) || ($("#amount-cash").val() == "0"))) {
-        _error = true;
-        _msg = "กรุณาใส่จำนวนเงินชดใช้";
-        _focus = "#amount-cash";
+    if (error == false &&
+        ($("#amount-cash").val().length == 0 || $("#amount-cash").val() == "0")) {
+        error = true;
+        msg = "กรุณาใส่จำนวนเงินชดใช้";
+        focus = "#amount-cash";
     }
 
-    if (_error == false && ((ComboboxGetSelectedValue("case-graduate") == "2") && ($("input[name=set-amt-indemnitor-year]:checked").val() == "Y") && (($("#amt-indemnitor-year").val().length == 0) || ($("#amt-indemnitor-year").val() == "0")))) {
-        _error = true;
-        _msg = "กรุณาใส่ระยะเวลาทำงานชดใช้หลังสำเร็จการศึกษา";
-        _focus = "#amt-indemnitor-year";
+    if (error == false &&
+        ComboboxGetSelectedValue("case-graduate") == "2" &&
+        $("input[name=set-amt-indemnitor-year]:checked").val() == "Y" &&
+        ($("#amt-indemnitor-year").val().length == 0 || $("#amt-indemnitor-year").val() == "0")) {
+        error = true;
+        msg = "กรุณาใส่ระยะเวลาทำงานชดใช้หลังสำเร็จการศึกษา";
+        focus = "#amt-indemnitor-year";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("cal-date-condition") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกวิธีคิดและคำนวณเงินชดใช้";
-        _focus = ".cal-date-condition-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("cal-date-condition") == "0") {
+        error = true;
+        msg = "กรุณาเลือกวิธีคิดและคำนวณเงินชดใช้";
+        focus = ".cal-date-condition-combobox-input";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return;
     }
 
-    var _faculty = ComboboxGetSelectedValue("facultycptabprogram").split(";");
-    var _program = ComboboxGetSelectedValue("programcptabprogram").split(";");
-    var _send = new Array();
-    _send[_send.length] = "cp1id=" + $("#cp1id").val();
-    _send[_send.length] = "dlevel=" + ComboboxGetSelectedValue("dlevel");
-    _send[_send.length] = "casegraduate=" + ComboboxGetSelectedValue("case-graduate");
-    _send[_send.length] = "faculty=" + _faculty[0];
-    _send[_send.length] = "programcode=" + _program[0];
-    _send[_send.length] = "majorcode=" + _program[2];
-    _send[_send.length] = "groupnum=" + _program[3];
-    _send[_send.length] = "amountcash=" + DelCommas("amount-cash");
-    _send[_send.length] = "amtindemnitoryear=" + DelCommas("amt-indemnitor-year");
-    _send[_send.length] = "caldatecondition=" + ComboboxGetSelectedValue("cal-date-condition");
+    var faculty = ComboboxGetSelectedValue("facultycptabprogram").split(";");
+    var program = ComboboxGetSelectedValue("programcptabprogram").split(";");
+    var send = new Array();
+    send[send.length] = ("cp1id=" + $("#cp1id").val());
+    send[send.length] = ("dlevel=" + ComboboxGetSelectedValue("dlevel"));
+    send[send.length] = ("casegraduate=" + ComboboxGetSelectedValue("case-graduate"));
+    send[send.length] = ("faculty=" + faculty[0]);
+    send[send.length] = ("programcode=" + program[0]);
+    send[send.length] = ("majorcode=" + program[2]);
+    send[send.length] = ("groupnum=" + program[3]);
+    send[send.length] = ("amountcash=" + DelCommas("amount-cash"));
+    send[send.length] = ("amtindemnitoryear=" + DelCommas("amt-indemnitor-year"));
+    send[send.length] = ("caldatecondition=" + ComboboxGetSelectedValue("cal-date-condition"));
   
-    AddUpdateData(_action, _action + "cptabpaybreakcontract", _send, false, "", "", "", false, function (_result) {
-        if (_result == "1") {
+    AddUpdateData(action, (action + "cptabpaybreakcontract"), send, false, "", "", "", false, function (result) {
+        if (result == "1") {
             GotoSignin();
             return;
         }
 
-        if (_result == "2") {
+        if (result == "2") {
             DialogMessage("มีข้อมูลนี้อยู่ในระบบแล้ว", "", false, "");
             return;
         }
 
-        var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+        var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-        DialogConfirm(_actionMsg + "ข้อมูลเรียบร้อย");
+        DialogConfirm(actionMsg + "ข้อมูลเรียบร้อย");
         $("#dialog-confirm").dialog({
             buttons: {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add")
+                    if (action == "add")
                         ResetFrmCPTabPayBreakContract(false);
 
-                    if (_action == "update")
+                    if (action == "update")
                         ResetFrmCPTabPayBreakContract(true);
 
-                    if (_action == "del")
+                    if (action == "del")
                         OpenTab("link-tab1-cp-tab-pay-break-contract", "#tab1-cp-tab-pay-break-contract", "", true, "", "", "");
                 }
             }
@@ -391,10 +408,10 @@ function ValidateCPTabPayBreakContract(_action) {
     });
 }
 
-function ResetFrmCPTabScholarship(_disable) {
+function ResetFrmCPTabScholarship(disable) {
     GoToTopElement("html, body");
 
-    if (_disable == true) {
+    if (disable == true) {
         ComboboxDisable("dlevel");
         ComboboxDisable("facultycptabprogram");
         ComboboxDisable("programcptabprogram");
@@ -411,16 +428,16 @@ function ResetFrmCPTabScholarship(_disable) {
     $("#button-style12").hide();
 }
 
-function ConfirmActionCPTabScholarship(_action) {
-    var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+function ConfirmActionCPTabScholarship(action) {
+    var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-    DialogConfirm("ต้องการ" + _actionMsg + "ข้อมูลนี้หรือไม่");
+    DialogConfirm("ต้องการ" + actionMsg + "ข้อมูลนี้หรือไม่");
     $("#dialog-confirm").dialog({
         buttons: {
             "ตกลง": function () {
                 $(this).dialog("close");
 
-                ValidateCPTabScholarship(_action)
+                ValidateCPTabScholarship(action)
             },
             "ยกเลิก": function () {
                 $(this).dialog("close");
@@ -429,77 +446,81 @@ function ConfirmActionCPTabScholarship(_action) {
     });
 }
 
-function ValidateCPTabScholarship(_action) {
-    var _error = false;
-    var _msg;
-    var _focus;
+function ValidateCPTabScholarship(action) {
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_error == false && ComboboxGetSelectedValue("dlevel") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกระดับการศึกษา";
-        _focus = ".dlevel-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("dlevel") == "0") {
+        error = true;
+        msg = "กรุณาเลือกระดับการศึกษา";
+        focus = ".dlevel-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("facultycptabprogram") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกคณะ";
-        _focus = ".faculty-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("facultycptabprogram") == "0") {
+        error = true;
+        msg = "กรุณาเลือกคณะ";
+        focus = ".faculty-combobox-input";
     }
 
-    if (_error == false && ComboboxGetSelectedValue("programcptabprogram") == "0") {
-        _error = true;
-        _msg = "กรุณาเลือกหลักสูตร";
-        _focus = ".program-combobox-input";
+    if (error == false &&
+        ComboboxGetSelectedValue("programcptabprogram") == "0") {
+        error = true;
+        msg = "กรุณาเลือกหลักสูตร";
+        focus = ".program-combobox-input";
     }
 
-    if (_error == false && (($("#scholarship-money").val().length == 0) || ($("#scholarship-money").val() == "0"))) {
-        _error = true;
-        _msg = "กรุณาใส่จำนวนเงินทุนการศึกษา";
-        _focus = "#scholarship-money";
+    if (error == false &&
+        ($("#scholarship-money").val().length == 0 || $("#scholarship-money").val() == "0")) {
+        error = true;
+        msg = "กรุณาใส่จำนวนเงินทุนการศึกษา";
+        focus = "#scholarship-money";
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return;
     }
 
-    var _faculty = ComboboxGetSelectedValue("facultycptabprogram").split(";");
-    var _program = ComboboxGetSelectedValue("programcptabprogram").split(";");
-    var _send = new Array();
-    _send[_send.length] = "cp1id=" + $("#cp1id").val();
-    _send[_send.length] = "dlevel=" + ComboboxGetSelectedValue("dlevel");
-    _send[_send.length] = "faculty=" + _faculty[0];
-    _send[_send.length] = "programcode=" + _program[0];
-    _send[_send.length] = "majorcode=" + _program[2];
-    _send[_send.length] = "groupnum=" + _program[3];
-    _send[_send.length] = "scholarshipmoney=" + DelCommas("scholarship-money");
+    var faculty = ComboboxGetSelectedValue("facultycptabprogram").split(";");
+    var program = ComboboxGetSelectedValue("programcptabprogram").split(";");
+    var send = new Array();
+    send[send.length] = ("cp1id=" + $("#cp1id").val());
+    send[send.length] = ("dlevel=" + ComboboxGetSelectedValue("dlevel"));
+    send[send.length] = ("faculty=" + faculty[0]);
+    send[send.length] = ("programcode=" + program[0]);
+    send[send.length] = ("majorcode=" + program[2]);
+    send[send.length] = ("groupnum=" + program[3]);
+    send[send.length] = ("scholarshipmoney=" + DelCommas("scholarship-money"));
 
-    AddUpdateData(_action, _action + "cptabscholarship", _send, false, "", "", "", false, function (_result) {
-        if (_result == "1") {
+    AddUpdateData(action, (action + "cptabscholarship"), send, false, "", "", "", false, function (result) {
+        if (result == "1") {
             GotoSignin();
             return;
         }
 
-        if (_result == "2") {
+        if (result == "2") {
             DialogMessage("มีข้อมูลนี้อยู่ในระบบแล้ว", "", false, "");
             return;
         }
 
-        var _actionMsg = (_action == "add" || _action == "update") ? "บันทึก" : "ลบ";
+        var actionMsg = (action == "add" || action == "update" ? "บันทึก" : "ลบ");
 
-        DialogConfirm(_actionMsg + "ข้อมูลเรียบร้อย");
+        DialogConfirm(actionMsg + "ข้อมูลเรียบร้อย");
         $("#dialog-confirm").dialog({
             buttons: {
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    if (_action == "add")
+                    if (action == "add")
                         ResetFrmCPTabScholarship(false);
 
-                    if (_action == "update")
+                    if (action == "update")
                         ResetFrmCPTabScholarship(true);
 
-                    if (_action == "del")
+                    if (action == "del")
                         OpenTab("link-tab1-cp-tab-scholarship", "#tab1-cp-tab-scholarship", "", true, "", "", "");
                 }
             }

@@ -1,232 +1,247 @@
 ﻿<%@ WebHandler Language="C#" Class="eCPHandler" %>
 
 /*
-Description         : สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป
-Date Created        : 06/08/2555
-Last Date Modified  : ๐๗/๐๗/๒๕๖๕
-Create By           : Yutthaphoom Tawana
+=============================================
+Author      : <ยุทธภูมิ ตวันนา>
+Create date : <๐๖/๐๘/๒๕๕๕>
+Modify date : <๐๕/๐๗/๒๕๖๖>
+Description : <สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป>
+=============================================
 */
 
 using System;
 using System.Web;
 using System.Web.SessionState;
 
-public class eCPHandler : IHttpHandler, IRequiresSessionState {
-    public void ProcessRequest (HttpContext _context) {
-        _context.Response.ContentType = "text/plain";
-        string[] _browser = Util.BrowserCapabilities();
-        bool _error = false;
+public class eCPHandler: IHttpHandler, IRequiresSessionState {
+    public void ProcessRequest (HttpContext context) {
+        context.Response.ContentType = "text/plain";
+        string[] browser = Util.BrowserCapabilities();
+        bool error = false;
 
-        if (_error.Equals(false) && _browser[1].Equals("IE") && (int.Parse(_browser[3]) < 9)) {
-            _error = true;
-            _context.Response.Write("<errorbrowser>1<errorbrowser>");
+        if (error.Equals(false) &&
+            browser[1].Equals("IE") &&
+            int.Parse(browser[3]) < 9) {
+            error = true;
+            context.Response.Write("<errorbrowser>1<errorbrowser>");
         }
 
-        if (_error.Equals(false) && bool.Parse(_browser[13]).Equals(false)) {
-            _error = true;
-            _context.Response.Write("<errorbrowser>2<errorbrowser>");
+        if (error.Equals(false) &&
+            bool.Parse(browser[13]).Equals(false)) {
+            error = true;
+            context.Response.Write("<errorbrowser>2<errorbrowser>");
         }
 
-        if (_error.Equals(false)) {
-            string _action = _context.Request["action"];
+        if (error.Equals(false)) {
+            string action = context.Request["action"];
 
-            switch (_action) {
+            switch (action) {
                 case "add":
                 case "update":
                 case "del":
-                    AddUpdateData(_context);
+                    AddUpdateData(context);
                     break;
                 case "form":
-                    ShowForm(_context);
+                    ShowForm(context);
                     break;
                 case "setpage":
-                    SetPage(_context);
+                    SetPage(context);
                     break;
                 case "page":
-                    ShowPage(_context);
+                    ShowPage(context);
                     break;
+                /*
                 case "signin":
-                    Signin(_context);
+                    Signin(context);
                     break;
+                */
                 case "signout":
                     Signout();
                     break;
                 case "list":
                 case "combobox":
-                    ShowList(_context);
+                    ShowList(context);
                     break;
                 case "search":
-                    ShowSearch(_context);
+                    ShowSearch(context);
                     break;
                 case "resize":
-                    ImageProcess.ResizeImage(_context.Request["file"], int.Parse(_context.Request["width"]), int.Parse(_context.Request["height"]));
+                    ImageProcess.ResizeImage(context.Request["file"], int.Parse(context.Request["width"]), int.Parse(context.Request["height"]));
                     break;
                 case "calculate":
-                    ShowCalculate(_context);
+                    ShowCalculate(context);
                     break;
                 case "print":
-                    ShowPrint(_context);
+                    ShowPrint(context);
                     break;
                 case "econtract":
-                    ShowDocEContract(_context);
+                    ShowDocEContract(context);
                     break;
             }
         }
     }
 
-    private static int _error;
-    private static string _menuBar;
-    private static int _menu;
-    private static string _head;
-    private static string _content;
+    private static int error;
+    private static int menu;
+    private static string menuBar;
+    private static string head;
+    private static string content;
 
     private string SetValuePageReturn() {
-        string _return = "<error>" + _error + "<error><head>" + _head + "<head><menubar>" + _menuBar + "<menubar><menu>" + _menu + "<menu><content>" + _content + "<content>";
-
-        return _return;
+        return (
+            "<error>" + error + "<error>" +
+            "<head>" + head + "<head>" +
+            "<menubar>" + menuBar + "<menubar>" +
+            "<menu>" + menu + "<menu>" +
+            "<content>" + content + "<content>"
+        );
     }
 
-    private void SetPage(HttpContext _c) {
-        int _section;
-        int _pid;
+    private void SetPage(HttpContext c) {
+        HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+        int section = 0;
+        int pid = 0;
 
-        HttpCookie _eCPCookie = new HttpCookie("eCPCookie");
-        _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
-
-        if (_eCPCookie == null) {
-            _section = 0;
-            _pid = 0;
+        if (eCPCookie == null) {
+            section = 0;
+            pid = 0;
         }
         else {
-            _section = int.Parse(_eCPCookie["UserSection"]);
-            _pid = int.Parse(_eCPCookie["Pid"]);
+            section = int.Parse(eCPCookie["UserSection"]);
+            pid = int.Parse(eCPCookie["Pid"]);
         }
 
-        _c.Response.Write("<section>" + _section + "<section><page>" + _pid + "<page>");
+        c.Response.Write(
+            "<section>" + section + "<section>" +
+            "<page>" + pid + "<page>"
+        );
     }
 
-    private void ShowPage(HttpContext _c) {
-        bool _loginResult;
-        eCPUtil _util = new eCPUtil();
+    private void ShowPage(HttpContext c) {
+        int loginResult = eCPDB.ChkLogin();
+        eCPUtil util = new eCPUtil();
 
-        _loginResult = eCPDB.ChkLogin();
-
-        if (!_loginResult) {
-            _error = 1;
-            _head = String.Empty;
-            _menuBar = String.Empty;
-            _menu = 0;
-            _content = eCPUtil.Signin();
+        if (!loginResult.Equals(0)) {
+            error = loginResult;
+            head = eCPUtil.Head();
+            menuBar = string.Empty;
+            menu = 0;
+            content = string.Empty;
+            /*
+            content = eCPUtil.Signin();
+            */
         }
         else {
-            _error = 0;
-            _head = eCPUtil.Head();
-            _menuBar = eCPUtil.MenuBar(_loginResult);
-            _menu = eCPUtil._activeMenu[int.Parse(_c.Request["section"]) - 1, int.Parse(_c.Request["pid"]) - 1];
-            _content = _util.GenPage(_loginResult, int.Parse(_c.Request["pid"]) - 1);
+            int section = (c.Request["section"].Equals("0") ? 1 : int.Parse(c.Request["section"]));
+            int pid = (c.Request["pid"].Equals("0") ? 1 : int.Parse(c.Request["pid"]));
+
+            error = loginResult;
+            head = eCPUtil.Head();
+            menuBar = eCPUtil.MenuBar(true);
+            menu = eCPUtil.activeMenu[(section - 1), (pid - 1)];
+            content = util.GenPage(pid - 1);
         }
 
-        _c.Response.Write(SetValuePageReturn());
+        c.Response.Write(SetValuePageReturn());
     }
+    /*
+    private void Signin(HttpContext c)    {
+        bool loginResult = eCPDB.Signin(c.Request["authen"]);
 
-    private void Signin(HttpContext _c)    {
-        bool _loginResult = eCPDB.Signin(_c.Request["authen"]);
-
-        if (!_loginResult) {
-            _error = 1;
-        }
+        if (!loginResult)
+            error = 1;
         else
-            _error = 0;
+            error = 0;
 
-        _c.Response.Write(SetValuePageReturn());
+        c.Response.Write(SetValuePageReturn());
     }
-
+    */
     private void Signout() {
         eCPDB.Signout();
     }
 
-    private void ShowForm(HttpContext _c) {
-        string _frmOrder = _c.Request["frm"];
-        string _frm = String.Empty;
-        string _trackingStatus = String.Empty;
-        string _action = String.Empty;
-        string _from = String.Empty;
-        int _width = 0;
-        int _height = 0;
-        string _title = String.Empty;
+    private void ShowForm(HttpContext c) {
+        string frmOrder = c.Request["frm"];
+        string frm = string.Empty;
+        string trackingStatus = string.Empty;
+        string action = string.Empty;
+        string from = string.Empty;
+        string title = string.Empty;
+        int width = 0;
+        int height = 0;
 
-        switch (_frmOrder) {
+        switch (frmOrder) {
             case "searchcptabuser":
-                _frm = eCPDataFormSearch.SearchCPTabUser();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-tab-user";
+                frm = eCPDataFormSearch.SearchCPTabUser();
+                width = 655;
+                height = 0;
+                title = "search-cp-tab-user";
                 break;
             case "addcptabuser":
-                _frm = eCPDataUser.AddCPTabuser();
+                frm = eCPDataUser.AddCPTabuser();
                 break;
             case "updatecptabuser":
-                _frm = eCPDataUser.UpdateCPTabUser(_c.Request["id"]);
+                frm = eCPDataUser.UpdateCPTabUser(c.Request["id"]);
                 break;
             case "addcptabprogram":
-                _frm = eCPDataConfiguration.AddCPTabProgram();
+                frm = eCPDataConfiguration.AddCPTabProgram();
                 break;
             case "updatecptabprogram":
-                _frm = eCPDataConfiguration.UpdateCPTabProgram(_c.Request["id"]);
+                frm = eCPDataConfiguration.UpdateCPTabProgram(c.Request["id"]);
                 break;
             case "detailcptabcaldate":
-                _frm = eCPDataConfiguration.DetailCPTabCalDate(_c.Request["id"]);
-                _width = 750;
-                _height = 0;
-                _title = "detail-cp-tab-cal-date";
+                frm = eCPDataConfiguration.DetailCPTabCalDate(c.Request["id"]);
+                width = 750;
+                height = 0;
+                title = "detail-cp-tab-cal-date";
                 break;
             case "addcptabinterest":
-                _frm = eCPDataConfiguration.AddCPTabInterest();
+                frm = eCPDataConfiguration.AddCPTabInterest();
                 break;
             case "updatecptabinterest":
-                _frm = eCPDataConfiguration.UpdateCPTabInterest(_c.Request["id"]);
+                frm = eCPDataConfiguration.UpdateCPTabInterest(c.Request["id"]);
                 break;
             case "addcptabpaybreakcontract":
-                _frm = eCPDataConfiguration.AddCPTabPayBreakContract();
+                frm = eCPDataConfiguration.AddCPTabPayBreakContract();
                 break;
             case "updatecptabpaybreakcontract":
-                _frm = eCPDataConfiguration.UpdateCPTabPayBreakContract(_c.Request["id"]);
+                frm = eCPDataConfiguration.UpdateCPTabPayBreakContract(c.Request["id"]);
                 break;
             case "addcptabscholarship":
-                _frm = eCPDataConfiguration.AddCPTabScholarship();
+                frm = eCPDataConfiguration.AddCPTabScholarship();
                 break;
             case "updatecptabscholarship":
-                _frm = eCPDataConfiguration.UpdateCPTabScholarship(_c.Request["id"]);
+                frm = eCPDataConfiguration.UpdateCPTabScholarship(c.Request["id"]);
                 break;
             case "addprofilestudent":
-                _frm = eCPDataBreakContract.AddProfileStudent();
-                _width = 831;
-                _height = 0;
-                _title = "add-profile-student";
+                frm = eCPDataBreakContract.AddProfileStudent();
+                width = 831;
+                height = 0;
+                title = "add-profile-student";
                 break;
             case "searchstudentwithresult":
-                _frm = eCPDataFormSearch.SearchStudentWithResult();
-                _width = 900;
-                _height = 0;
-                _title = "search-student";
+                frm = eCPDataFormSearch.SearchStudentWithResult();
+                width = 900;
+                height = 0;
+                title = "search-student";
                 break;
             case "addcptransbreakcontract":
-                _frm = eCPDataBreakContract.AddCPTransBreakContract();
+                frm = eCPDataBreakContract.AddCPTransBreakContract();
                 break;
             case "updatecptransbreakcontract":
-                _frm = eCPDataBreakContract.UpdateCPTransBreakContract(_c.Request["id"]);
+                frm = eCPDataBreakContract.UpdateCPTransBreakContract(c.Request["id"]);
                 break;
             case "searchcptransbreakcontract":
-                _frm =  eCPDataFormSearch.SearchCPTransBreakContract();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-trans-break-contract";
+                frm =  eCPDataFormSearch.SearchCPTransBreakContract();
+                width = 655;
+                height = 0;
+                title = "search-cp-trans-break-contract";
                 break;
             case "detailtrackingstatus":
-                _frm = "<div id='status-tracking-explanation'></div>";
-                _width = 350;
-                _height = 0;
-                _title = "detail-tracking-status";
+                frm = "<div id='status-tracking-explanation'></div>";
+                width = 350;
+                height = 0;
+                title = "detail-tracking-status";
                 break;
             case "detailcptransbreakcontract":
             case "detailcptransrequirecontract":
@@ -234,268 +249,282 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState {
             case "receivercptransbreakcontract":
             case "repaycptransrequirecontract":
             case "repaycptransrequirecontract1":
-                _trackingStatus = _frmOrder.Equals("detailcptransbreakcontract") ? "v1" : _trackingStatus;
-                _trackingStatus = _frmOrder.Equals("detailcptransrequirecontract") ? "v2" : _trackingStatus;
-                _trackingStatus = _frmOrder.Equals("detailcptransrequirerepaycontract") ? "v3" : _trackingStatus;
-                _trackingStatus = _frmOrder.Equals("receivercptransbreakcontract") ? "a" : _trackingStatus;
-                _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract") ? "r" : _trackingStatus;
-                _trackingStatus = _frmOrder.Equals("repaycptransrequirecontract1") ? "r1" : _trackingStatus;
+                trackingStatus = (frmOrder.Equals("detailcptransbreakcontract") ? "v1" : trackingStatus);
+                trackingStatus = (frmOrder.Equals("detailcptransrequirecontract") ? "v2" : trackingStatus);
+                trackingStatus = (frmOrder.Equals("detailcptransrequirerepaycontract") ? "v3" : trackingStatus);
+                trackingStatus = (frmOrder.Equals("receivercptransbreakcontract") ? "a" : trackingStatus);
+                trackingStatus = (frmOrder.Equals("repaycptransrequirecontract") ? "r" : trackingStatus);
+                trackingStatus = (frmOrder.Equals("repaycptransrequirecontract1") ? "r1" : trackingStatus);
 
-                if (_trackingStatus.Equals("v1") || _trackingStatus.Equals("a")) {
-                    _frm = eCPDataBreakContract.DetailCPTransBreakContract(_c.Request["id"], _trackingStatus);
-                    _width = 900;
-                    _height = 0;
-                    _title = "detail-cp-trans-break-contract";
+                if (trackingStatus.Equals("v1") ||
+                    trackingStatus.Equals("a")) {
+                    frm = eCPDataBreakContract.DetailCPTransBreakContract(c.Request["id"], trackingStatus);
+                    width = 900;
+                    height = 0;
+                    title = "detail-cp-trans-break-contract";
                 }
 
-                if (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") || _trackingStatus.Equals("r") || _trackingStatus.Equals("r1")) {
-                    _frm = eCPDataRequireContract.DetailCPTransRequireContract(_c.Request["id"], _trackingStatus);
-                    _width = 900;
-                    _height = 0;
-                    _title = (_trackingStatus.Equals("v2") || _trackingStatus.Equals("v3") ? "detail-cp-trans-require-contract" : "repay-cp-trans-require-contract");
+                if (trackingStatus.Equals("v2") ||
+                    trackingStatus.Equals("v3") ||
+                    trackingStatus.Equals("r") ||
+                    trackingStatus.Equals("r1")) {
+                    frm = eCPDataRequireContract.DetailCPTransRequireContract(c.Request["id"], trackingStatus);
+                    width = 900;
+                    height = 0;
+                    title = (trackingStatus.Equals("v2") || trackingStatus.Equals("v3") ? "detail-cp-trans-require-contract" : "repay-cp-trans-require-contract");
                 }
                 break;
             case "addcommenteditbreakcontract":
             case "addcommentcancelbreakcontract":
             case "addcommentcancelrequirecontract":
             case "addcommentcancelrepaycontract":
-                _action = _frmOrder.Equals("addcommenteditbreakcontract") ? "E" : _action;
-                _action = _frmOrder.Equals("addcommentcancelbreakcontract") ? "C" : _action;
-                _action = _frmOrder.Equals("addcommentcancelrequirecontract") ? "C" : _action;
-                _action = _frmOrder.Equals("addcommentcancelrepaycontract") ? "C" : _action;
+                action = (frmOrder.Equals("addcommenteditbreakcontract") ? "E" : action);
+                action = (frmOrder.Equals("addcommentcancelbreakcontract") ? "C" : action);
+                action = (frmOrder.Equals("addcommentcancelrequirecontract") ? "C" : action);
+                action = (frmOrder.Equals("addcommentcancelrepaycontract") ? "C" : action);
 
-                _from = _frmOrder.Equals("addcommenteditbreakcontract") ? "breakcontract" : _from;
-                _from = _frmOrder.Equals("addcommentcancelbreakcontract") ? "breakcontract" : _from;
-                _from = _frmOrder.Equals("addcommentcancelrequirecontract") ? "requirecontract" : _from;
-                _from = _frmOrder.Equals("addcommentcancelrepaycontract") ? "repaycontract" : _from;
+                from = (frmOrder.Equals("addcommenteditbreakcontract") ? "breakcontract" : from);
+                from = (frmOrder.Equals("addcommentcancelbreakcontract") ? "breakcontract" : from);
+                from = (frmOrder.Equals("addcommentcancelrequirecontract") ? "requirecontract" : from);
+                from = (frmOrder.Equals("addcommentcancelrepaycontract") ? "repaycontract" : from);
 
-                _frm = eCPDataBreakContract.AddCommentBreakContract(_c.Request["id"], _action, _from);
-                _width = 480;
-                _height = 0;
-                _title = "add-comment-" + _action + "-break-contract";
+                frm = eCPDataBreakContract.AddCommentBreakContract(c.Request["id"], action, from);
+                width = 480;
+                height = 0;
+                title = ("add-comment-" + action + "-break-contract");
                 break;
             case "addcptransrequirecontract":
-                _frm = eCPDataRequireContract.AddCPTransRequireContract(_c.Request["id"]);
+                frm = eCPDataRequireContract.AddCPTransRequireContract(c.Request["id"]);
                 break;
             case "updatecptransrequirecontract":
-                _frm = eCPDataRequireContract.UpdateCPTransRequireContract(_c.Request["id"]);
+                frm = eCPDataRequireContract.UpdateCPTransRequireContract(c.Request["id"]);
                 break;
             case "detailrepaystatus":
-                _frm = "<div id='status-repay-explanation'></div>";
-                _width = 406;
-                _height = 0;
-                _title = "detail-repay-status";
+                frm = "<div id='status-repay-explanation'></div>";
+                width = 406;
+                height = 0;
+                title = "detail-repay-status";
                 break;
             case "searchcptransrepaycontract":
-                _frm = eCPDataFormSearch.SearchCPTransRepayContract();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-trans-repay-contract";
+                frm = eCPDataFormSearch.SearchCPTransRepayContract();
+                width = 655;
+                height = 0;
+                title = "search-cp-trans-repay-contract";
                 break;
             case "addupdaterepaycontract":
-                _frm = eCPDataRepay.AddUpdateCPTransRepayContract(_c.Request["id"]);
-                _width = 680;
-                _height = 0;
-                _title = "addupdate-repay-contract";
+                frm = eCPDataRepay.AddUpdateCPTransRepayContract(c.Request["id"]);
+                width = 680;
+                height = 0;
+                title = "addupdate-repay-contract";
                 break;
             case "viewrepaycontract":
-                _frm = eCPDataRepay.ViewCPTransRepayContract(_c.Request["id"]);
-                _width = 680;
-                _height = 0;
-                _title = "addupdate-repay-contract";
+                frm = eCPDataRepay.ViewCPTransRepayContract(c.Request["id"]);
+                width = 680;
+                height = 0;
+                title = "addupdate-repay-contract";
                 break;
             case "calinterest":
-                _frm = eCPDataRepay.DetailCalInterestOverpayment(_c.Request["id"]);
-                _width = 721;
-                _height = 0;
-                _title = "cal-interest";
+                frm = eCPDataRepay.DetailCalInterestOverpayment(c.Request["id"]);
+                width = 721;
+                height = 0;
+                title = "cal-interest";
                 break;
             case "detailpaymentstatus":
-                _frm = "<div id='status-payment-explanation'></div>";
-                _width = 350;
-                _height = 146;
-                _title = "detail-payment-status";
+                frm = "<div id='status-payment-explanation'></div>";
+                width = 350;
+                height = 146;
+                title = "detail-payment-status";
                 break;
             case "adddetailcptranspayment":
-                _frm = eCPDataPayment.TabAddDetailCPTransPayment(_c.Request["id"]);
-                _width = 900;
-                _height = 0;
-                _title = "adddetail-cp-trans-payment";
+                frm = eCPDataPayment.TabAddDetailCPTransPayment(c.Request["id"]);
+                width = 900;
+                height = 0;
+                title = "adddetail-cp-trans-payment";
                 break;
             case "searchcptranspayment":
-                _frm = eCPDataFormSearch.SearchCPTransPayment();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-trans-payment";
+                frm = eCPDataFormSearch.SearchCPTransPayment();
+                width = 655;
+                height = 0;
+                title = "search-cp-trans-payment";
                 break;
             case "selectformatpayment":
-                _frm = eCPDataPayment.SelectFormatPayment(_c.Request["id"]);
-                _width = 500;
-                _height = 0;
-                _title = "select-format-payment";
+                frm = eCPDataPayment.SelectFormatPayment(c.Request["id"]);
+                width = 500;
+                height = 0;
+                title = "select-format-payment";
                 break;
             case "detailcptranspayment":
-                _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "detail");
+                frm = eCPDataPayment.AddDetailCPTransPayment(c.Request["id"], "detail");
                 break;
             case "detailtranspayment":
-                _frm = eCPDataPayment.DetailTransPayment(_c.Request["id"]);
-                _width = 990;
-                _height = 0;
-                _title = "detail-trans-payment";
+                frm = eCPDataPayment.DetailTransPayment(c.Request["id"]);
+                width = 990;
+                height = 0;
+                title = "detail-trans-payment";
                 break;
             case "addcptranspaymentfullrepay":
-                _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addfullrepay");
+                frm = eCPDataPayment.AddDetailCPTransPayment(c.Request["id"], "addfullrepay");
                 break;
             case "addcptranspaymentpayrepay":
-                _frm = eCPDataPayment.AddDetailCPTransPayment(_c.Request["id"], "addpayrepay");
+                frm = eCPDataPayment.AddDetailCPTransPayment(c.Request["id"], "addpayrepay");
                 break;
             case "addupdatecptransprosecution":
-                _frm = eCPDataProsecution.AddUpdateCPTransProsecution(_c.Request["id"]);
+                frm = eCPDataProsecution.AddUpdateCPTransProsecution(c.Request["id"]);
                 break;
             case "adddetailpaychannel":
-                _frm = eCPDataPayment.AddDetailPayChannel(_c.Request["id"]);
-                _width = 557;
-                _height = 0;
-                _title = "add-detail-pay-channel";
+                frm = eCPDataPayment.AddDetailPayChannel(c.Request["id"]);
+                width = 557;
+                height = 0;
+                title = "add-detail-pay-channel";
                 break;
             case "chkbalance":
-                _frm = eCPDataPayment.ChkBalance();
-                _width = 557;
-                _height = 0;
-                _title = "chk-balance";
+                frm = eCPDataPayment.ChkBalance();
+                width = 557;
+                height = 0;
+                title = "chk-balance";
                 break;
             case "searchcpreporttablecalcapitalandinterest":
-                _frm = eCPDataFormSearch.SearchCPReportTableCalCapitalAndInterest();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-table-cal-capital-and-interest";
+                frm = eCPDataFormSearch.SearchCPReportTableCalCapitalAndInterest();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-table-cal-capital-and-interest";
                 break;
             case "calreporttablecalcapitalandinterest":
-                _frm = eCPDataReportTableCalCapitalAndInterest.CalReportTableCalCapitalAndInterest(_c.Request["id"]);
+                frm = eCPDataReportTableCalCapitalAndInterest.CalReportTableCalCapitalAndInterest(c.Request["id"]);
                 break;
             case "searchcpreportstepofwork":
-                _frm = eCPDataFormSearch.SearchCPReportStepOfWork();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-step-of-work";
+                frm = eCPDataFormSearch.SearchCPReportStepOfWork();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-step-of-work";
                 break;
             case "reportstepofworkonstatisticrepaybyprogram":
-                _frm = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram();
-                _width = 750;
-                _height = 0;
-                _title = "report-step-of-work-on-statistic-repay-by-program";
+                frm = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram();
+                width = 750;
+                height = 0;
+                title = "report-step-of-work-on-statistic-repay-by-program";
                 break;
             case "reportstudentonstatisticcontractbyprogram":
-                _frm = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram();
-                _width = 750;
-                _height = 0;
-                _title = "report-student-on-statistic-contract-by-program";
+                frm = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram();
+                width = 750;
+                height = 0;
+                title = "report-student-on-statistic-contract-by-program";
                 break;
             case "searchcpreportnoticerepaycomplete":
-                _frm = eCPDataFormSearch.SearchCPReportNoticeRepayComplete();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-notice-repay-complete";
+                frm = eCPDataFormSearch.SearchCPReportNoticeRepayComplete();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-notice-repay-complete";
                 break;
             case "searchcpreportnoticeclaimdebt":
-                _frm = eCPDataFormSearch.SearchCPReportNoticeClaimDebt();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-notice-claim-debt";
+                frm = eCPDataFormSearch.SearchCPReportNoticeClaimDebt();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-notice-claim-debt";
                 break;
             case "searchcpreportpaymentbydate":
-                _frm = eCPDataFormSearch.SearchCPReportStatisticPaymentByDate();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-statistic-payment-by-date";
+                frm = eCPDataFormSearch.SearchCPReportStatisticPaymentByDate();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-statistic-payment-by-date";
                 break;
             case "viewtranspaymentbydate":
-                _frm = eCPDataReportStatisticPaymentByDate.ViewTransPaymentByDate(_c.Request["id"]);
-                _width = 950;
-                _height = 0;
-                _title = "view-trans-payment-by-date";
+                frm = eCPDataReportStatisticPaymentByDate.ViewTransPaymentByDate(c.Request["id"]);
+                width = 950;
+                height = 0;
+                title = "view-trans-payment-by-date";
                 break;
             case "viewtranspayment":
-                _frm = eCPDataReportDebtorContract.ViewTransPayment(_c.Request["id"]);
-                _width = 950;
-                _height = 0;
-                _title = "view-trans-payment";
+                frm = eCPDataReportDebtorContract.ViewTransPayment(c.Request["id"]);
+                width = 950;
+                height = 0;
+                title = "view-trans-payment";
                 break;
             case "manual":
-                _frm = eCPUtil.Manual();
-                _width = 570;
-                _height = 0;
-                _title = "manual";
+                frm = eCPUtil.Manual();
+                width = 570;
+                height = 0;
+                title = "manual";
                 break;
             case "detailecontractstatus":
-                _frm = "<div id='status-e-contract'></div>";
-                _width = 350;
-                _height = 117;
-                _title = "detail-e-contract-status";
+                frm = "<div id='status-e-contract'></div>";
+                width = 350;
+                height = 117;
+                title = "detail-e-contract-status";
                 break;
             case "searchcpreportecontract":
-                _frm = eCPDataFormSearch.SearchCPReportEContract();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-e-contract";
+                frm = eCPDataFormSearch.SearchCPReportEContract();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-e-contract";
                 break;
             case "searchcpreportdebtorcontract":
-                _frm = eCPDataFormSearch.SearchCPReportDebtorContract();
-                _width = 655;
-                _height = 0;
-                _title = "search-cp-report-debtor-contract";
+                frm = eCPDataFormSearch.SearchCPReportDebtorContract();
+                width = 655;
+                height = 0;
+                title = "search-cp-report-debtor-contract";
                 break;
             case "searchstudentdebtorcontractbyprogram":
-                _frm = eCPDataFormSearch.SearchStudentDebtorContractByProgram();
-                _width = 750;
-                _height = 0;
-                _title = "search-cp-report-debtor-contract-by-program";
+                frm = eCPDataFormSearch.SearchStudentDebtorContractByProgram();
+                width = 750;
+                height = 0;
+                title = "search-cp-report-debtor-contract-by-program";
                 break;
         }
 
-        _c.Response.Write("<form>" + _frm + "<form><width>" + _width + "<width><height>" + _height + "<height><title>" + _title + "<title>");
+        c.Response.Write(
+            "<form>" + frm + "<form>" +
+            "<width>" + width + "<width>" +
+            "<height>" + height + "<height>" +
+            "<title>" + title + "<title>"
+        );
     }
 
-    private void AddUpdateData(HttpContext _c) {
-        string _listUpdate = String.Empty;
-        string _trackingStauts = String.Empty;
-        bool _loginResult;
-        _error = 0;
+    private void AddUpdateData(HttpContext c) {
+        string listUpdate = string.Empty;
+        int loginResult = eCPDB.ChkLogin();
 
-        string _command = String.Empty;
+        error = 0;
 
-        _loginResult = eCPDB.ChkLogin();
-
-        if (!_loginResult) {
-            _error = 1;
-        }
+        if (!loginResult.Equals(0))
+            error = 1;
         else {
-            if (_c.Request["cmd"].Equals("addcptabuser") || _c.Request["cmd"].Equals("updatecptabuser"))
-                _error = (eCPDB.CheckRepeatCPTabUser(_c, "username") > 0 ? 2 : (eCPDB.CheckRepeatCPTabUser(_c, "password") > 0 ? 3 : _error));
+            if (c.Request["cmd"].Equals("addcptabuser") ||
+                c.Request["cmd"].Equals("updatecptabuser"))
+                error = (eCPDB.CheckRepeatCPTabUser(c, "username") > 0 ? 2 : error);
+                /*
+                error = (eCPDB.CheckRepeatCPTabUser(c, "username") > 0 ? 2 : (eCPDB.CheckRepeatCPTabUser(c, "password") > 0 ? 3 : error));
+                */
 
-            if (_c.Request["cmd"].Equals("addcptabprogram") || _c.Request["cmd"].Equals("updatecptabprogram"))
-                _error = (eCPDB.CheckRepeatCPTabProgram(_c) > 0 ? 2 : _error);
+            if (c.Request["cmd"].Equals("addcptabprogram") ||
+                c.Request["cmd"].Equals("updatecptabprogram"))
+                error = (eCPDB.CheckRepeatCPTabProgram(c) > 0 ? 2 : error);
 
-            if (_c.Request["cmd"].Equals("addcptabpaybreakcontract") || _c.Request["cmd"].Equals("updatecptabpaybreakcontract"))
-                _error = (eCPDB.CheckRepeatCPTabPayBreakContract(_c) > 0 ? 2 : _error);
+            if (c.Request["cmd"].Equals("addcptabpaybreakcontract") ||
+                c.Request["cmd"].Equals("updatecptabpaybreakcontract"))
+                error = (eCPDB.CheckRepeatCPTabPayBreakContract(c) > 0 ? 2 : error);
 
-            if (_c.Request["cmd"].Equals("addcptabscholarship") || _c.Request["cmd"].Equals("updatecptabscholarship"))
-                _error = (eCPDB.CheckRepeatCPTabScholarship(_c) > 0 ? 2 : _error);
+            if (c.Request["cmd"].Equals("addcptabscholarship") ||
+                c.Request["cmd"].Equals("updatecptabscholarship"))
+                error = (eCPDB.CheckRepeatCPTabScholarship(c) > 0 ? 2 : error);
 
-            if (_error == 0)
-                eCPDB.AddUpdateData(_c);
+            if (error == 0)
+                eCPDB.AddUpdateData(c);
         }
 
-        _c.Response.Write("<error>" + _error + "<error>" + _listUpdate);
+        c.Response.Write(
+            "<error>" + error + "<error>" +
+            listUpdate
+        );
     }
 
-    private void ShowList(HttpContext _c) {
-        string _listOrder = _c.Request["list"];
-        string _listData = String.Empty;
+    private void ShowList(HttpContext c) {
+        string listOrder = c.Request["list"];
+        string listData = string.Empty;
 
-        switch (_listOrder) {
+        switch (listOrder) {
             case "program":
-                _listData = eCPUtil.ListProgram(false, "program", _c.Request["dlevel"], _c.Request["faculty"]);
+                listData = eCPUtil.ListProgram(false, "program", c.Request["dlevel"], c.Request["faculty"]);
                 break;
             case "programcptabprogram":
             case "programtransbreakcontract":
@@ -509,486 +538,468 @@ public class eCPHandler : IHttpHandler, IRequiresSessionState {
             case "programreportnoticeclaimdebt":
             case "programreportstatisticpaymentbydate":
             case "programreportecontract":
-                _listData = eCPUtil.ListProgram(true, _listOrder, _c.Request["dlevel"], _c.Request["faculty"]);
+                listData = eCPUtil.ListProgram(true, listOrder, c.Request["dlevel"], c.Request["faculty"]);
                 break;
             case "cpprogram":
-                _listData = eCPDataConfiguration.ListUpdateCPTabProgram();
+                listData = eCPDataConfiguration.ListUpdateCPTabProgram();
                 break;
             case "interest":
-                _listData = eCPDataConfiguration.ListUpdateCPTabInterest();
+                listData = eCPDataConfiguration.ListUpdateCPTabInterest();
                 break;
             case "pay-break-contract":
-                _listData = eCPDataConfiguration.ListUpdateCPTabPayBreakContract();
+                listData = eCPDataConfiguration.ListUpdateCPTabPayBreakContract();
                 break;
             case "scholarship":
-                _listData = eCPDataConfiguration.ListUpdateCPTabScholarship();
+                listData = eCPDataConfiguration.ListUpdateCPTabScholarship();
                 break;
             case "cpreportstatisticrepay":
-                _listData = eCPDataReportStatisticRepay.ListUpdateCPReportStatisticRepay();
+                listData = eCPDataReportStatisticRepay.ListUpdateCPReportStatisticRepay();
                 break;
             case "cpreportstatisticrecontract":
-                _listData = eCPDataReportStatisticContract.ListUpdateCPReportStatisticContract();
+                listData = eCPDataReportStatisticContract.ListUpdateCPReportStatisticContract();
                 break;
         }
 
-        _c.Response.Write(_listData);
+        c.Response.Write(listData);
     }
 
-    private void ShowSearch(HttpContext _c) {
-        string _searchFrom = _c.Request["from"];
-        string _listData = String.Empty;
+    private void ShowSearch(HttpContext c) {
+        string searchFrom = c.Request["from"];
+        string listData = string.Empty;
 
-        switch (_searchFrom) {
+        switch (searchFrom) {
             case "tabuser":
-                _listData = eCPDataUser.ListCPTabUser(_c);
+                listData = eCPDataUser.ListCPTabUser(c);
                 break;
             case "studentwithresult":
-                _listData = eCPDataFormSearch.ListSearchStudentWithResult(_c);
+                listData = eCPDataFormSearch.ListSearchStudentWithResult(c);
                 break;
             case "profilestudent":
-                _listData = eCPDataFormSearch.ListProfileStudent(_c.Request["studentid"]);
+                listData = eCPDataFormSearch.ListProfileStudent(c.Request["studentid"]);
                 break;
             case "scholarship":
-                _listData = eCPDataConfiguration.ListSearchCPTabScholarship(_c);
+                listData = eCPDataConfiguration.ListSearchCPTabScholarship(c);
                 break;
             case "paybreakcontract":
-                _listData = eCPDataConfiguration.ListSearchCPTabPayBreakContract(_c);
+                listData = eCPDataConfiguration.ListSearchCPTabPayBreakContract(c);
                 break;
             case "scholarshipandpaybreakcontract":
-                _listData = eCPDataConfiguration.ListSearchScholarshipAndPayBreakContract(_c);
+                listData = eCPDataConfiguration.ListSearchScholarshipAndPayBreakContract(c);
                 break;
             case "studenttransbreakcontract":
-                _listData = eCPDataBreakContract.ListSearchStudentCPTransBreakContract(_c.Request["studentid"]);
+                listData = eCPDataBreakContract.ListSearchStudentCPTransBreakContract(c.Request["studentid"]);
                 break;
             case "transbreakcontract":
-                _listData = eCPDataBreakContract.ListCPTransBreakContract(_c);
+                listData = eCPDataBreakContract.ListCPTransBreakContract(c);
                 break;
             case "trackingstatustransbreakcontract":
-                _listData = eCPDataBreakContract.ListSearchTrackingStatusCPTransBreakContract(_c.Request["cp1id"]);
+                listData = eCPDataBreakContract.ListSearchTrackingStatusCPTransBreakContract(c.Request["cp1id"]);
                 break;
             case "repaystatustransrequirecontract":
-                _listData = eCPDataRequireContract.ListSearchRepayStatusCPTransRequireContract(_c.Request["cp1id"]);
+                listData = eCPDataRequireContract.ListSearchRepayStatusCPTransRequireContract(c.Request["cp1id"]);
                 break;
             case "transrepaycontract":
-                _listData = eCPDataRepay.ListRepay(_c);
+                listData = eCPDataRepay.ListRepay(c);
                 break;
             case "repaystatuscalinterest":
-                _listData = eCPDataRepay.ListSearchRepayStatusCalInterestOverpayment(_c.Request["cp2id"]);
+                listData = eCPDataRepay.ListSearchRepayStatusCalInterestOverpayment(c.Request["cp2id"]);
                 break;
             case "transpayment":
-                _listData = eCPDataPayment.ListPaymentOnCPTransRequireContract(_c);
+                listData = eCPDataPayment.ListPaymentOnCPTransRequireContract(c);
                 break;
             case "formatpayment":
-                _listData = eCPUtil._paymentFormat[int.Parse(_c.Request["formatpayment"]) - 1];
+                listData = eCPUtil.paymentFormat[int.Parse(c.Request["formatpayment"]) - 1];
                 break;
             case "reporttablecalcapitalandinterest":
-                _listData = eCPDataReportTableCalCapitalAndInterest.ListCPReportTableCalCapitalAndInterest(_c);
+                listData = eCPDataReportTableCalCapitalAndInterest.ListCPReportTableCalCapitalAndInterest(c);
                 break;
             case "reportstepofwork":
-                _listData = eCPDataReportStepOfWork.ListCPReportStepOfWork(_c);
+                listData = eCPDataReportStepOfWork.ListCPReportStepOfWork(c);
                 break;
             case "reportstatisticrepaybyprogram":
-                _listData = eCPDataReportStatisticRepay.ListCPReportStatisticRepayByProgram(_c.Request["acadamicyear"]);
+                listData = eCPDataReportStatisticRepay.ListCPReportStatisticRepayByProgram(c.Request["acadamicyear"]);
                 break;
             case "reportstepofworkonstatisticrepaybyprogram":
-                _listData = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram(_c);
+                listData = eCPDataReportStatisticRepay.ListReportStepOfWorkOnStatisticRepayByProgram(c);
                 break;
             case "reportstatisticcontractbyprogram":
-                _listData = eCPDataReportStatisticContract.ListCPReportStatisticContractByProgram(_c.Request["acadamicyear"]);
+                listData = eCPDataReportStatisticContract.ListCPReportStatisticContractByProgram(c.Request["acadamicyear"]);
                 break;
             case "reportstudentonstatisticcontractbyprogram":
-                _listData = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram(_c);
+                listData = eCPDataReportStatisticContract.ListReportStudentOnStatisticContractByProgram(c);
                 break;
             case "reportnoticerepaycomplete":
-                _listData = eCPDataReportNoticeRepayComplete.ListCPReportNoticeRepayComplete(_c);
+                listData = eCPDataReportNoticeRepayComplete.ListCPReportNoticeRepayComplete(c);
                 break;
             case "reportnoticeclaimdebt":
-                _listData = eCPDataReportNoticeClaimDebt.ListCPReportNoticeClaimDebt(_c);
+                listData = eCPDataReportNoticeClaimDebt.ListCPReportNoticeClaimDebt(c);
                 break;
             case "reportstatisticpaymentbydate":
-                _listData = eCPDataReportStatisticPaymentByDate.ListCPReportStatisticPaymentByDate(_c);
+                listData = eCPDataReportStatisticPaymentByDate.ListCPReportStatisticPaymentByDate(c);
                 break;
             case "reportecontract":
-                _listData = eCPDataReportEContract.ListCPReportEContract(_c);
+                listData = eCPDataReportEContract.ListCPReportEContract(c);
                 break;
             case "reportdebtorcontract":
-                _listData = eCPDataReportDebtorContract.ListCPReportDebtorContract(_c);
+                listData = eCPDataReportDebtorContract.ListCPReportDebtorContract(c);
                 break;
             case "reportdebtorcontractbyprogram":
-                _listData = eCPDataReportDebtorContract.ListCPReportDebtorContractByProgram(_c);
+                listData = eCPDataReportDebtorContract.ListCPReportDebtorContractByProgram(c);
                 break;
         }
 
-        _c.Response.Write(_listData);
+        c.Response.Write(listData);
     }
 
-    private void ShowCalculate(HttpContext _c) {
-        string _cal = _c.Request["cal"];
+    private void ShowCalculate(HttpContext c) {
+        string cal = c.Request["cal"];
 
-        switch (_cal) {
+        switch (cal) {
             case "scholarshipandpenalty":
-                ShowCalScholarshipPenalty(_c);
+                ShowCalScholarshipPenalty(c);
                 break;
             case "interestoverpayment":
-                ShowCalInterestOverpayment(_c);
+                ShowCalInterestOverpayment(c);
                 break;
             case "interestpayrepay":
-                ShowCalInterestPayRepay(_c);
+                ShowCalInterestPayRepay(c);
                 break;
             case "interestoverpaymentandpayrepay":
-                ShowCalInterestOverpaymentAndPayRepay(_c);
+                ShowCalInterestOverpaymentAndPayRepay(c);
                 break;
             case "chkbalance":
-                ShowCalChkBalance(_c);
+                ShowCalChkBalance(c);
                 break;
             case "totalpayment":
-                ShowCalTotalPayment(_c);
+                ShowCalTotalPayment(c);
                 break;
             case "reporttablecalcapitalandinterest":
-                ShowCalReportTableCalCapitalAndInterest(_c);
+                ShowCalReportTableCalCapitalAndInterest(c);
                 break;
         }
     }
 
-    private void ShowCalScholarshipPenalty(HttpContext _c) {
-        string _scholar = _c.Request["scholar"];
-        string _scholarshipMoney = _c.Request["scholarshipmoney"];
-        string _scholarshipYear = _c.Request["scholarshipyear"];
-        string _scholarshipMonth = _c.Request["scholarshipmonth"];
-        string _allActualMonthScholarship = _c.Request["allactualmonthscholarship"];
-        string _caseGraduate = _c.Request["casegraduate"];
-        string _educationDate = _c.Request["educationdate"];
-        string _graduateDate = _c.Request["graduatedate"];
-        string _civil = _c.Request["civil"];
-        string _dateStart = _c.Request["datestart"];
-        string _dateEnd = _c.Request["dateend"];
-        string _indemnitorYear = _c.Request["indemnitoryear"];
-        string _indemnitorCash = _c.Request["indemnitorcash"];
-        string _calDateCondition = _c.Request["caldatecondition"];
-        string _studyLeave = _c.Request["studyleave"];
-        string _beforeStudyLeaveStartDate = _c.Request["beforestudyleavestartdate"];
-        string _beforeStudyLeaveEndDate = _c.Request["beforestudyleaveenddate"];
-        string _studyLeaveStartDate = _c.Request["studyleavestartdate"];
-        string _studyLeaveEndDate = _c.Request["studyleaveenddate"];
-        string _afterStudyLeaveStartDate = _c.Request["afterstudyleavestartdate"];
-        string _afterStudyLeaveEndDate = _c.Request["afterstudyleaveenddate"];
-        string _result = String.Empty;
-        double[] _resultPayScholarship;
-        double[] _resultPenalty;
+    private void ShowCalScholarshipPenalty(HttpContext c) {
+        string scholar = c.Request["scholar"];
+        string scholarshipMoney = c.Request["scholarshipmoney"];
+        string scholarshipYear = c.Request["scholarshipyear"];
+        string scholarshipMonth = c.Request["scholarshipmonth"];
+        string allActualMonthScholarship = c.Request["allactualmonthscholarship"];
+        string caseGraduate = c.Request["casegraduate"];
+        string educationDate = c.Request["educationdate"];
+        string graduateDate = c.Request["graduatedate"];
+        string civil = c.Request["civil"];
+        string dateStart = c.Request["datestart"];
+        string dateEnd = c.Request["dateend"];
+        string indemnitorYear = c.Request["indemnitoryear"];
+        string indemnitorCash = c.Request["indemnitorcash"];
+        string calDateCondition = c.Request["caldatecondition"];
+        string studyLeave = c.Request["studyleave"];
+        string beforeStudyLeaveStartDate = c.Request["beforestudyleavestartdate"];
+        string beforeStudyLeaveEndDate = c.Request["beforestudyleaveenddate"];
+        string studyLeaveStartDate = c.Request["studyleavestartdate"];
+        string studyLeaveEndDate = c.Request["studyleaveenddate"];
+        string afterStudyLeaveStartDate = c.Request["afterstudyleavestartdate"];
+        string afterStudyLeaveEndDate = c.Request["afterstudyleaveenddate"];
+        double[] resultPayScholarship = eCPUtil.CalPayScholarship(scholar, caseGraduate, civil, scholarshipMoney, scholarshipYear, scholarshipMonth, allActualMonthScholarship);
+        double[] resultPenalty = eCPUtil.GetCalPenalty(studyLeave, beforeStudyLeaveStartDate, beforeStudyLeaveEndDate, afterStudyLeaveStartDate, afterStudyLeaveEndDate, scholar, caseGraduate, educationDate, graduateDate, civil, resultPayScholarship[1].ToString(), scholarshipYear, scholarshipMonth, dateStart, dateEnd, indemnitorYear, indemnitorCash, calDateCondition);
 
-        _resultPayScholarship = eCPUtil.CalPayScholarship(_scholar, _caseGraduate, _civil, _scholarshipMoney, _scholarshipYear, _scholarshipMonth, _allActualMonthScholarship);
-        _resultPenalty = eCPUtil.GetCalPenalty(_studyLeave, _beforeStudyLeaveStartDate, _beforeStudyLeaveEndDate, _afterStudyLeaveStartDate, _afterStudyLeaveEndDate, _scholar, _caseGraduate, _educationDate, _graduateDate, _civil, _resultPayScholarship[1].ToString(), _scholarshipYear, _scholarshipMonth, _dateStart, _dateEnd, _indemnitorYear, _indemnitorCash, _calDateCondition);
-
-        _result += "<allactualscholarship>" + _resultPayScholarship[0].ToString("#,##0.00") + "<allactualscholarship>" +
-                   "<totalpayscholarship>" + _resultPenalty[5].ToString("#,##0.00") + "<totalpayscholarship>" +
-                   "<month>" + _resultPenalty[0].ToString("#,##0") + "<month>" +
-                   "<day>" + _resultPenalty[1].ToString("#,##0") + "<day>" +
-                   "<allactual>" + _resultPenalty[2].ToString("#,##0") + "<allactual>" +
-                   "<actual>" + _resultPenalty[3].ToString("#,##0") + "<actual>" +
-                   "<remain>" + _resultPenalty[4].ToString("#,##0") + "<remain>" +
-                   "<totalpenalty>" + _resultPenalty[6].ToString("#,##0.00") + "<totalpenalty>" +
-                   "<total>" + _resultPenalty[7].ToString("#,##0.00") + "<total>";
-
-        _c.Response.Write(_result);
+        c.Response.Write(
+            "<allactualscholarship>" + resultPayScholarship[0].ToString("#,##0.00") + "<allactualscholarship>" +
+            "<totalpayscholarship>" + resultPenalty[5].ToString("#,##0.00") + "<totalpayscholarship>" +
+            "<month>" + resultPenalty[0].ToString("#,##0") + "<month>" +
+            "<day>" + resultPenalty[1].ToString("#,##0") + "<day>" +
+            "<allactual>" + resultPenalty[2].ToString("#,##0") + "<allactual>" +
+            "<actual>" + resultPenalty[3].ToString("#,##0") + "<actual>" +
+            "<remain>" + resultPenalty[4].ToString("#,##0") + "<remain>" +
+            "<totalpenalty>" + resultPenalty[6].ToString("#,##0.00") + "<totalpenalty>" +
+            "<total>" + resultPenalty[7].ToString("#,##0.00") + "<total>"
+        );
     }
 
-    private void ShowCalInterestOverpayment(HttpContext _c) {
+    private void ShowCalInterestOverpayment(HttpContext c) {
         /*
         interestoverpayment
-        _send[0] = "capital"
-        _send[1] = "overpaymentyear"
-        _send[2] = "overpaymentday"
-        _send[3] = "overpaymentinterest"
-        _send[4] = "overpaymentdatestart"
-        _send[5] = "overpaymentdateend"
-        _send[6] = "totalinterestpayrepay"
-        _send[7] = "totalaccruedinterest"
+        send[0] = "capital"
+        send[1] = "overpaymentyear"
+        send[2] = "overpaymentday"
+        send[3] = "overpaymentinterest"
+        send[4] = "overpaymentdatestart"
+        send[5] = "overpaymentdateend"
+        send[6] = "totalinterestpayrepay"
+        send[7] = "totalaccruedinterest"
         */
 
-        string _capital = _c.Request["capital"];
-        string _overpaymentYear = _c.Request["overpaymentyear"];
-        string _overpaymentDay = _c.Request["overpaymentday"];
-        string _overpaymentInterest = _c.Request["overpaymentinterest"];
-        string _overpaymentDateStart = _c.Request["overpaymentdatestart"];
-        string _overpaymentDateEnd = _c.Request["overpaymentdateend"];
-        string _totalInterestPayRepay = _c.Request["totalinterestpayrepay"];
-        string _totalAccruedInterest = _c.Request["totalaccruedinterest"];
-        string _result = String.Empty;
-        double[] _dayOverpayment;
-        double _totalInterestOverpayment = 0;
-        double _totalInterest = 0;
-        double _totalPayment = 0;
+        string capital = c.Request["capital"];
+        string overpaymentYear = c.Request["overpaymentyear"];
+        string overpaymentDay = c.Request["overpaymentday"];
+        string overpaymentInterest = c.Request["overpaymentinterest"];
+        string overpaymentDateStart = c.Request["overpaymentdatestart"];
+        string overpaymentDateEnd = c.Request["overpaymentdateend"];
+        string totalInterestPayRepay = c.Request["totalinterestpayrepay"];
+        string totalAccruedInterest = c.Request["totalaccruedinterest"];
+        double[] dayOverpayment;
+        double totalInterestOverpayment = 0;
+        double totalInterest = 0;
+        double totalPayment = 0;
 
-        IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
-        DateTime _dateA = DateTime.Parse(_overpaymentDateStart, _provider);
-        DateTime _dateB = DateTime.Parse(_overpaymentDateEnd, _provider);
+        IFormatProvider provider = new System.Globalization.CultureInfo("th-TH");
+        DateTime dateA = DateTime.Parse(overpaymentDateStart, provider);
+        DateTime dateB = DateTime.Parse(overpaymentDateEnd, provider);
 
-        _dayOverpayment = Util.CalcDate(_dateA, _dateB);
-        _totalInterestOverpayment = eCPUtil.CalInterestOverpayment((!_capital.Equals("0.00") ? _capital : _totalAccruedInterest), _dayOverpayment[4].ToString(), _dayOverpayment[5].ToString(), _overpaymentInterest, _overpaymentDateEnd);
-        _totalInterestOverpayment = double.Parse(_totalInterestOverpayment.ToString("#,##0.00"));
-        _totalInterest = _totalInterestOverpayment + double.Parse(_totalInterestPayRepay);
-        _totalPayment = double.Parse(_capital) + _totalInterest + double.Parse(_totalAccruedInterest);
+        dayOverpayment = Util.CalcDate(dateA, dateB);
+        totalInterestOverpayment = eCPUtil.CalInterestOverpayment((!capital.Equals("0.00") ? capital : totalAccruedInterest), dayOverpayment[4].ToString(), dayOverpayment[5].ToString(), overpaymentInterest, overpaymentDateEnd);
+        totalInterestOverpayment = double.Parse(totalInterestOverpayment.ToString("#,##0.00"));
+        totalInterest = (totalInterestOverpayment + double.Parse(totalInterestPayRepay));
+        totalPayment = (double.Parse(capital) + totalInterest + double.Parse(totalAccruedInterest));
         /*
-        _totalPayment = Util.RoundStang(_totalPayment);
-        _totalInterest = Util.RoundStang(_totalInterest);
+        totalPayment = Util.RoundStang(totalPayment);
+        totalInterest = Util.RoundStang(totalInterest);
         */
-        _totalInterest = double.Parse(_totalInterest.ToString("#,##0.00"));
-        _totalPayment = double.Parse(_totalPayment.ToString("#,##0.00"));
+        totalInterest = double.Parse(totalInterest.ToString("#,##0.00"));
+        totalPayment = double.Parse(totalPayment.ToString("#,##0.00"));
 
-        _result += "<overpaymentyear>" + _dayOverpayment[4].ToString("#,##0") + "<overpaymentyear>" +
-                    "<overpaymentday>" + _dayOverpayment[5].ToString("#,##0") + "<overpaymentday>" +
-                    "<totalinterestoverpayment>" + _totalInterestOverpayment.ToString("#,##0.00") + "<totalinterestoverpayment>" +
-                    "<totalinterest>" + _totalInterest.ToString("#,##0.00") + "<totalinterest>" +
-                    "<totalpayment>" + _totalPayment.ToString("#,##0.00") + "<totalpayment>";
-
-        _c.Response.Write(_result);
+        c.Response.Write(
+            "<overpaymentyear>" + dayOverpayment[4].ToString("#,##0") + "<overpaymentyear>" +
+            "<overpaymentday>" + dayOverpayment[5].ToString("#,##0") + "<overpaymentday>" +
+            "<totalinterestoverpayment>" + totalInterestOverpayment.ToString("#,##0.00") + "<totalinterestoverpayment>" +
+            "<totalinterest>" + totalInterest.ToString("#,##0.00") + "<totalinterest>" +
+            "<totalpayment>" + totalPayment.ToString("#,##0.00") + "<totalpayment>"
+        );
     }
 
-    private void ShowCalInterestPayRepay(HttpContext _c) {
+    private void ShowCalInterestPayRepay(HttpContext c) {
         /*
         interestpayrepay
-        _send[0] = "capital"
-        _send[1] = "payrepayyear"
-        _send[2] = "payrepayday"
-        _send[3] = "payrepayinterest"
-        _send[4] = "payrepaydatestart"
-        _send[5] = "payrepaydateend"
-        _send[6] = "totalinterestoverpayment"
-        _send[7] = "totalaccruedinterest"
+        send[0] = "capital"
+        send[1] = "payrepayyear"
+        send[2] = "payrepayday"
+        send[3] = "payrepayinterest"
+        send[4] = "payrepaydatestart"
+        send[5] = "payrepaydateend"
+        send[6] = "totalinterestoverpayment"
+        send[7] = "totalaccruedinterest"
         */
 
-        string _capital = _c.Request["capital"];
-        string _payRepayYear = _c.Request["payrepayyear"];
-        string _payRepayDay = _c.Request["payrepayday"];
-        string _payRepayInterest = _c.Request["payrepayinterest"];
-        string _payRepayDateStart = _c.Request["payrepaydatestart"];
-        string _payRepayDateEnd = _c.Request["payrepaydateend"];
-        string _totalInterestOverpayment = _c.Request["totalinterestoverpayment"];
-        string _totalAccruedInterest = _c.Request["totalaccruedinterest"];
-        string _result = String.Empty;
-        double[] _dayPayRepay;
-        double _totalInterestPayRepay = 0;
-        double _totalInterest = 0;
-        double _totalPayment = 0;
+        string capital = c.Request["capital"];
+        string payRepayYear = c.Request["payrepayyear"];
+        string payRepayDay = c.Request["payrepayday"];
+        string payRepayInterest = c.Request["payrepayinterest"];
+        string payRepayDateStart = c.Request["payrepaydatestart"];
+        string payRepayDateEnd = c.Request["payrepaydateend"];
+        string totalInterestOverpayment = c.Request["totalinterestoverpayment"];
+        string totalAccruedInterest = c.Request["totalaccruedinterest"];
+        double[] dayPayRepay;
+        double totalInterestPayRepay = 0;
+        double totalInterest = 0;
+        double totalPayment = 0;
 
-        IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
-        DateTime _dateA = DateTime.Parse(_payRepayDateStart, _provider);
-        DateTime _dateB = DateTime.Parse(_payRepayDateEnd, _provider);
+        IFormatProvider provider = new System.Globalization.CultureInfo("th-TH");
+        DateTime dateA = DateTime.Parse(payRepayDateStart, provider);
+        DateTime dateB = DateTime.Parse(payRepayDateEnd, provider);
 
-        _dayPayRepay = Util.CalcDate(_dateA, _dateB);
-        _totalInterestPayRepay = eCPUtil.CalInterestOverpayment((!_capital.Equals("0.00") ? _capital : _totalAccruedInterest), _dayPayRepay[4].ToString(), _dayPayRepay[5].ToString(), _payRepayInterest, _payRepayDateEnd);
-        _totalInterestPayRepay = double.Parse(_totalInterestPayRepay.ToString("#,##0.00"));
-        _totalInterest = _totalInterestPayRepay + double.Parse(_totalInterestOverpayment);
-        _totalPayment = double.Parse(_capital) + _totalInterest + double.Parse(_totalAccruedInterest);
+        dayPayRepay = Util.CalcDate(dateA, dateB);
+        totalInterestPayRepay = eCPUtil.CalInterestOverpayment((!capital.Equals("0.00") ? capital : totalAccruedInterest), dayPayRepay[4].ToString(), dayPayRepay[5].ToString(), payRepayInterest, payRepayDateEnd);
+        totalInterestPayRepay = double.Parse(totalInterestPayRepay.ToString("#,##0.00"));
+        totalInterest = (totalInterestPayRepay + double.Parse(totalInterestOverpayment));
+        totalPayment = (double.Parse(capital) + totalInterest + double.Parse(totalAccruedInterest));
         /*
-        _totalPayment = Util.RoundStang(_totalPayment);
-        _totalInterest = Util.RoundStang(_totalInterest);
+        totalPayment = Util.RoundStang(totalPayment);
+        totalInterest = Util.RoundStang(totalInterest);
         */
-        _totalInterest = double.Parse(_totalInterest.ToString("#,##0.00"));
-        _totalPayment = double.Parse(_totalPayment.ToString("#,##0.00"));
+        totalInterest = double.Parse(totalInterest.ToString("#,##0.00"));
+        totalPayment = double.Parse(totalPayment.ToString("#,##0.00"));
 
-        _result += "<payrepayyear>" + _dayPayRepay[4].ToString("#,##0") + "<payrepayyear>" +
-                    "<payrepayday>" + _dayPayRepay[5].ToString("#,##0") + "<payrepayday>" +
-                    "<totalinterestpayrepay>" + _totalInterestPayRepay.ToString("#,##0.00") + "<totalinterestpayrepay>" +
-                    "<totalinterest>" + _totalInterest.ToString("#,##0.00") + "<totalinterest>" +
-                    "<totalpayment>" + _totalPayment.ToString("#,##0.00") + "<totalpayment>";
-
-        _c.Response.Write(_result);
+        c.Response.Write(
+            "<payrepayyear>" + dayPayRepay[4].ToString("#,##0") + "<payrepayyear>" +
+            "<payrepayday>" + dayPayRepay[5].ToString("#,##0") + "<payrepayday>" +
+            "<totalinterestpayrepay>" + totalInterestPayRepay.ToString("#,##0.00") + "<totalinterestpayrepay>" +
+            "<totalinterest>" + totalInterest.ToString("#,##0.00") + "<totalinterest>" +
+            "<totalpayment>" + totalPayment.ToString("#,##0.00") + "<totalpayment>"
+        );
     }
 
-    private void ShowCalInterestOverpaymentAndPayRepay(HttpContext _c) {
+    private void ShowCalInterestOverpaymentAndPayRepay(HttpContext c) {
         /*
         interestoverpaymentandpayrepay
-        _send[0] = "capital"
-        _send[1] = "overpaymentyear"
-        _send[2] = "overpaymentday"
-        _send[3] = "overpaymentinterest"
-        _send[4] = "overpaymentdatestart"
-        _send[5] = "overpaymentdateend"
-        _send[6] = "payrepayyear"
-        _send[7] = "payrepayday"
-        _send[8] = "payrepayinterest"
-        _send[9] = "payrepaydatestart"
-        _send[10] = "payrepaydateend"
+        send[0] = "capital"
+        send[1] = "overpaymentyear"
+        send[2] = "overpaymentday"
+        send[3] = "overpaymentinterest"
+        send[4] = "overpaymentdatestart"
+        send[5] = "overpaymentdateend"
+        send[6] = "payrepayyear"
+        send[7] = "payrepayday"
+        send[8] = "payrepayinterest"
+        send[9] = "payrepaydatestart"
+        send[10] = "payrepaydateend"
         */
 
-        string _capital = _c.Request["capital"];
-        string _overpaymentYear = _c.Request["overpaymentyear"];
-        string _overpaymentDay = _c.Request["overpaymentday"];
-        string _overpaymentInterest = _c.Request["overpaymentinterest"];
-        string _overpaymentDateStart = _c.Request["overpaymentdatestart"];
-        string _overpaymentDateEnd = _c.Request["overpaymentdateend"];
-        string _payRepayYear = _c.Request["payrepayyear"];
-        string _payRepayDay = _c.Request["payrepayday"];
-        string _payRepayInterest = _c.Request["payrepayinterest"];
-        string _payRepayDateStart = _c.Request["payrepaydatestart"];
-        string _payRepayDateEnd = _c.Request["payrepaydateend"];
-        string _result = String.Empty;
-        double[] _dayOverpayment;
-        double _totalInterestOverpayment = 0;
-        double[] _dayPayRepay;
-        double _totalInterestPayRepay = 0;
-        double _totalInterest = 0;
-        double _totalPayment = 0;
-        IFormatProvider _provider = new System.Globalization.CultureInfo("th-TH");
-        DateTime _dateA;
-        DateTime _dateB;
+        string capital = c.Request["capital"];
+        string overpaymentYear = c.Request["overpaymentyear"];
+        string overpaymentDay = c.Request["overpaymentday"];
+        string overpaymentInterest = c.Request["overpaymentinterest"];
+        string overpaymentDateStart = c.Request["overpaymentdatestart"];
+        string overpaymentDateEnd = c.Request["overpaymentdateend"];
+        string payRepayYear = c.Request["payrepayyear"];
+        string payRepayDay = c.Request["payrepayday"];
+        string payRepayInterest = c.Request["payrepayinterest"];
+        string payRepayDateStart = c.Request["payrepaydatestart"];
+        string payRepayDateEnd = c.Request["payrepaydateend"];
+        double[] dayOverpayment;
+        double totalInterestOverpayment = 0;
+        double[] dayPayRepay;
+        double totalInterestPayRepay = 0;
+        double totalInterest = 0;
+        double totalPayment = 0;
 
-        _dateA = DateTime.Parse(_overpaymentDateStart, _provider);
-        _dateB = DateTime.Parse(_overpaymentDateEnd, _provider);
+        IFormatProvider provider = new System.Globalization.CultureInfo("th-TH");
+        DateTime dateA = DateTime.Parse(overpaymentDateStart, provider);
+        DateTime dateB = DateTime.Parse(overpaymentDateEnd, provider);
 
-        _dayOverpayment = Util.CalcDate(_dateA, _dateB);
-        _totalInterestOverpayment = eCPUtil.CalInterestOverpayment(_capital, _dayOverpayment[4].ToString(), _dayOverpayment[5].ToString(), _overpaymentInterest, _overpaymentDateEnd);
-        _totalInterestOverpayment = double.Parse(_totalInterestOverpayment.ToString("#,##0.00"));
+        dayOverpayment = Util.CalcDate(dateA, dateB);
+        totalInterestOverpayment = eCPUtil.CalInterestOverpayment(capital, dayOverpayment[4].ToString(), dayOverpayment[5].ToString(), overpaymentInterest, overpaymentDateEnd);
+        totalInterestOverpayment = double.Parse(totalInterestOverpayment.ToString("#,##0.00"));
 
-        _dateA = DateTime.Parse(_payRepayDateStart, _provider);
-        _dateB = DateTime.Parse(_payRepayDateEnd, _provider);
+        dateA = DateTime.Parse(payRepayDateStart, provider);
+        dateB = DateTime.Parse(payRepayDateEnd, provider);
 
-        _dayPayRepay = Util.CalcDate(_dateA, _dateB);
-        _totalInterestPayRepay = eCPUtil.CalInterestOverpayment(_capital, _dayPayRepay[4].ToString(), _dayPayRepay[5].ToString(), _payRepayInterest, _payRepayDateEnd);
-        _totalInterestPayRepay = double.Parse(_totalInterestPayRepay.ToString("#,##0.00"));
+        dayPayRepay = Util.CalcDate(dateA, dateB);
+        totalInterestPayRepay = eCPUtil.CalInterestOverpayment(capital, dayPayRepay[4].ToString(), dayPayRepay[5].ToString(), payRepayInterest, payRepayDateEnd);
+        totalInterestPayRepay = double.Parse(totalInterestPayRepay.ToString("#,##0.00"));
 
-        _totalInterest = _totalInterestOverpayment + _totalInterestPayRepay;
-        _totalPayment = double.Parse(_capital) + _totalInterest;
+        totalInterest = (totalInterestOverpayment + totalInterestPayRepay);
+        totalPayment = (double.Parse(capital) + totalInterest);
         /*
-        _totalPayment = Util.RoundStang(_totalPayment);
-        _totalInterest = Util.RoundStang(_totalInterest);
+        totalPayment = Util.RoundStang(totalPayment);
+        totalInterest = Util.RoundStang(totalInterest);
         */
-        _totalInterest = double.Parse(_totalInterest.ToString("#,##0.00"));
-        _totalPayment = double.Parse(_totalPayment.ToString("#,##0.00"));
+        totalInterest = double.Parse(totalInterest.ToString("#,##0.00"));
+        totalPayment = double.Parse(totalPayment.ToString("#,##0.00"));
 
 
-        _result += "<overpaymentyear>" + _dayOverpayment[4].ToString("#,##0") + "<overpaymentyear>" +
-                    "<overpaymentday>" + _dayOverpayment[5].ToString("#,##0") + "<overpaymentday>" +
-                    "<totalinterestoverpayment>" + _totalInterestOverpayment.ToString("#,##0.00") + "<totalinterestoverpayment>" +
-                    "<payrepayyear>" + _dayPayRepay[4].ToString("#,##0") + "<payrepayyear>" +
-                    "<payrepayday>" + _dayPayRepay[5].ToString("#,##0") + "<payrepayday>" +
-                    "<totalinterestpayrepay>" + _totalInterestPayRepay.ToString("#,##0.00") + "<totalinterestpayrepay>" +
-                    "<totalinterest>" + _totalInterest.ToString("#,##0.00") + "<totalinterest>" +
-                    "<totalpayment>" + _totalPayment.ToString("#,##0.00") + "<totalpayment>";
-
-        _c.Response.Write(_result);
+        c.Response.Write(
+            "<overpaymentyear>" + dayOverpayment[4].ToString("#,##0") + "<overpaymentyear>" +
+            "<overpaymentday>" + dayOverpayment[5].ToString("#,##0") + "<overpaymentday>" +
+            "<totalinterestoverpayment>" + totalInterestOverpayment.ToString("#,##0.00") + "<totalinterestoverpayment>" +
+            "<payrepayyear>" + dayPayRepay[4].ToString("#,##0") + "<payrepayyear>" +
+            "<payrepayday>" + dayPayRepay[5].ToString("#,##0") + "<payrepayday>" +
+            "<totalinterestpayrepay>" + totalInterestPayRepay.ToString("#,##0.00") + "<totalinterestpayrepay>" +
+            "<totalinterest>" + totalInterest.ToString("#,##0.00") + "<totalinterest>" +
+            "<totalpayment>" + totalPayment.ToString("#,##0.00") + "<totalpayment>"
+        );
     }
 
-    private void ShowCalChkBalance(HttpContext _c) {
+    private void ShowCalChkBalance(HttpContext c) {
         /*
         chkbalance
-        _send[0] = "capital"
-        _send[1] = "totalinterest"
-        _send[2] = "totalaccruedinterest"
-        _send[3] = "totalpayment"
-        _send[4] = "pay"
+        send[0] = "capital"
+        send[1] = "totalinterest"
+        send[2] = "totalaccruedinterest"
+        send[3] = "totalpayment"
+        send[4] = "pay"
         */
 
-        string _capital = _c.Request["capital"];
-        string _totalInterest = _c.Request["totalinterest"];
-        string _totalAccruedInterest = _c.Request["totalaccruedinterest"];
-        string _totalPayment = _c.Request["totalpayment"];
-        string _pay = _c.Request["pay"];
-        string[] _payRemain = new string[5];
-        string _result = String.Empty;
+        string capital = c.Request["capital"];
+        string totalInterest = c.Request["totalinterest"];
+        string totalAccruedInterest = c.Request["totalaccruedinterest"];
+        string totalPayment = c.Request["totalpayment"];
+        string pay = c.Request["pay"];
+        string[] payRemain = eCPUtil.CalChkBalance(capital, totalInterest, totalAccruedInterest, totalPayment, pay);
+        string result = string.Empty;
 
-        _payRemain = eCPUtil.CalChkBalance(_capital, _totalInterest, _totalAccruedInterest, _totalPayment, _pay);
-
-        _result += "<capital>" + double.Parse(_capital).ToString("#,##0.00") + "<capital>" +
-                    "<totalinterest>" + (!String.IsNullOrEmpty(_totalInterest) ? double.Parse(_totalInterest).ToString("#,##0.00") : _totalInterest) + "<totalinterest>" +
-                    "<totalaccruedinterest>" + (!String.IsNullOrEmpty(_totalAccruedInterest) ? double.Parse(_totalAccruedInterest).ToString("#,##0.00") : _totalAccruedInterest) + "<totalaccruedinterest>" +
-                    "<totalpayment>" + (!String.IsNullOrEmpty(_totalPayment) ? double.Parse(_totalPayment).ToString("#,##0.00") : _totalPayment) + "<totalpayment>" +
-                    "<pay>" + (!String.IsNullOrEmpty(_pay) ? double.Parse(_pay).ToString("#,##0.00") : _pay) + "<pay>" +
-                    "<paycapital>" + (!String.IsNullOrEmpty(_payRemain[0]) ? double.Parse(_payRemain[0]).ToString("#,##0.00") : _payRemain[0]) + "<paycapital>" +
-                    "<payinterest>" + (!String.IsNullOrEmpty(_payRemain[1]) ? double.Parse(_payRemain[1]).ToString("#,##0.00") : _payRemain[1]) + "<payinterest>" +
-                    "<remaincapital>" + (!String.IsNullOrEmpty(_payRemain[2]) ? double.Parse(_payRemain[2]).ToString("#,##0.00") : _payRemain[2]) + "<remaincapital>" +
-                    "<accruedinterest>" + (!String.IsNullOrEmpty(_payRemain[3]) ? double.Parse(_payRemain[3]).ToString("#,##0.00") : _payRemain[3]) + "<accruedinterest>" +
-                    "<remainaccruedinterest>" + (!String.IsNullOrEmpty(_payRemain[4]) ? double.Parse(_payRemain[4]).ToString("#,##0.00") : _payRemain[4]) + "<remainaccruedinterest>";
-
-        _c.Response.Write(_result);
+        c.Response.Write(
+            "<capital>" + double.Parse(capital).ToString("#,##0.00") + "<capital>" +
+            "<totalinterest>" + (!string.IsNullOrEmpty(totalInterest) ? double.Parse(totalInterest).ToString("#,##0.00") : totalInterest) + "<totalinterest>" +
+            "<totalaccruedinterest>" + (!string.IsNullOrEmpty(totalAccruedInterest) ? double.Parse(totalAccruedInterest).ToString("#,##0.00") : totalAccruedInterest) + "<totalaccruedinterest>" +
+            "<totalpayment>" + (!string.IsNullOrEmpty(totalPayment) ? double.Parse(totalPayment).ToString("#,##0.00") : totalPayment) + "<totalpayment>" +
+            "<pay>" + (!string.IsNullOrEmpty(pay) ? double.Parse(pay).ToString("#,##0.00") : pay) + "<pay>" +
+            "<paycapital>" + (!string.IsNullOrEmpty(payRemain[0]) ? double.Parse(payRemain[0]).ToString("#,##0.00") : payRemain[0]) + "<paycapital>" +
+            "<payinterest>" + (!string.IsNullOrEmpty(payRemain[1]) ? double.Parse(payRemain[1]).ToString("#,##0.00") : payRemain[1]) + "<payinterest>" +
+            "<remaincapital>" + (!string.IsNullOrEmpty(payRemain[2]) ? double.Parse(payRemain[2]).ToString("#,##0.00") : payRemain[2]) + "<remaincapital>" +
+            "<accruedinterest>" + (!string.IsNullOrEmpty(payRemain[3]) ? double.Parse(payRemain[3]).ToString("#,##0.00") : payRemain[3]) + "<accruedinterest>" +
+            "<remainaccruedinterest>" + (!string.IsNullOrEmpty(payRemain[4]) ? double.Parse(payRemain[4]).ToString("#,##0.00") : payRemain[4]) + "<remainaccruedinterest>"
+        );
     }
 
-    private void ShowCalTotalPayment(HttpContext _c) {
+    private void ShowCalTotalPayment(HttpContext c) {
         /*
         totalpayment
-        _send[0] = "capital"
-        _send[1] = "totalinterest"
-        _send[2] = "totalaccruedinterest"
+        send[0] = "capital"
+        send[1] = "totalinterest"
+        send[2] = "totalaccruedinterest"
         */
 
-        double _capital = double.Parse(_c.Request["capital"]);
-        double _totalInterest = double.Parse(_c.Request["totalinterest"]);
-        double _totalAccruedInterest = double.Parse(_c.Request["totalaccruedinterest"]);
-        double _totalPayment = _capital + _totalInterest + _totalAccruedInterest;
-        string _result = String.Empty;
+        double capital = double.Parse(c.Request["capital"]);
+        double totalInterest = double.Parse(c.Request["totalinterest"]);
+        double totalAccruedInterest = double.Parse(c.Request["totalaccruedinterest"]);
+        double totalPayment = (capital + totalInterest + totalAccruedInterest);
 
-        _result += "<totalpayment>" + _totalPayment.ToString("#,##0.00") + "<totalpayment>";
-
-        _c.Response.Write(_result);
+        c.Response.Write("<totalpayment>" + totalPayment.ToString("#,##0.00") + "<totalpayment>");
     }
 
-    private void ShowCalReportTableCalCapitalAndInterest(HttpContext _c) {
+    private void ShowCalReportTableCalCapitalAndInterest(HttpContext c) {
         /*
         reportrablecalcapitalandinterest
-        _send[0] = "capital"
-        _send[1] = "interest"
-        _send[2] = "pay"
-        _send[3] = "paymentdate"
+        send[0] = "capital"
+        send[1] = "interest"
+        send[2] = "pay"
+        send[3] = "paymentdate"
         */
 
-        string _capital = _c.Request["capital"];
-        string _interest = _c.Request["interest"];
-        string _pay = _c.Request["pay"];
-        string _paymentDate = _c.Request["paymentdate"];
-        string[,] _data;
-        string _result = String.Empty;
-        int _recordCount;
+        string capital = c.Request["capital"];
+        string interest = c.Request["interest"];
+        string pay = c.Request["pay"];
+        string paymentDate = c.Request["paymentdate"];
+        string[,] data = eCPDB.ListCalCPReportTableCalCapitalAndInterest(capital, interest, pay, paymentDate);
+        int recordCount = data.GetLength(0);
 
-        _data = eCPDB.ListCalCPReportTableCalCapitalAndInterest(_capital, _interest, _pay, _paymentDate);
-        _recordCount = _data.GetLength(0);
-        _result += "<recordcount>" + (_recordCount - 1).ToString("#,##0") + "<recordcount>" +
-                    "<list>" + eCPDataReportTableCalCapitalAndInterest.ListTableCalCapitalAndInterest(_data) + "<list>" +
-                    "<sumpaycapital>" + double.Parse(_data[_recordCount - 1, 6]).ToString("#,##0.00") + "<sumpaycapital>" +
-                    "<sumpayinterest>" + double.Parse(_data[_recordCount - 1, 7]).ToString("#,##0.00") + "<sumpayinterest>" +
-                    "<sumtotalpay>" + double.Parse(_data[_recordCount - 1, 8]).ToString("#,##0.00") + "<sumtotalpay>";
-
-
-        _c.Response.Write(_result);
+        c.Response.Write(
+            "<recordcount>" + (recordCount - 1).ToString("#,##0") + "<recordcount>" +
+            "<list>" + eCPDataReportTableCalCapitalAndInterest.ListTableCalCapitalAndInterest(data) + "<list>" +
+            "<sumpaycapital>" + double.Parse(data[(recordCount - 1), 6]).ToString("#,##0.00") + "<sumpaycapital>" +
+            "<sumpayinterest>" + double.Parse(data[(recordCount - 1), 7]).ToString("#,##0.00") + "<sumpayinterest>" +
+            "<sumtotalpay>" + double.Parse(data[(recordCount - 1), 8]).ToString("#,##0.00") + "<sumtotalpay>"
+        );
     }
 
-    private void ShowPrint(HttpContext _c) {
+    private void ShowPrint(HttpContext c) {
         /*
         eCPDB.ConnectStoreProcAddUpdate(eCPDB.InsertTransactionLog("EXPORT", "", "SelectReportExport, " + Request.Form["export-order"], Request.Form["export-send"]));
         */
 
-        string _send = _c.Request["cp1id"] + ":" + _c.Request["action"];
+        string send = (c.Request["cp1id"] + ":" + c.Request["action"]);
 
-        if (_c.Request["type"].Equals("pdf")) {
-            switch (_c.Request["order"]) {
+        if (c.Request["type"].Equals("pdf")) {
+            switch (c.Request["order"]) {
                 case "reporttablecalcapitalandinterest":
-                    eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(_send);
+                    eCPDataReportTableCalCapitalAndInterest.ExportCPReportTableCalCapitalAndInterest(send);
                     break;
                 case "reportnoticecheckforreimbursement":
-                    eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(_send);
+                    eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(send);
                     break;
             }
         }
 
-        if (_c.Request["type"].Equals("word")) {
-            switch (_c.Request["order"]) {
+        if (c.Request["type"].Equals("word")) {
+            switch (c.Request["order"]) {
                 case "reportnoticerepaycomplete":
-                    eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(_send);
+                    eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(send);
                     break;
                 case "reportnoticeclaimdebt":
-                    eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(_send);
+                    eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(send);
                     break;
             }
         }
     }
 
-    private void ShowDocEContract(HttpContext _c) {
+    private void ShowDocEContract(HttpContext c) {
         /*
-        int _result = (Util.FileSiteExist(_c.Request["path"] + _c.Request["file"]).Equals(true) ? 0 : 1);
+        int result = (Util.FileSiteExist(c.Request["path"] + (c.Request["file"]).Equals(true) ? 0 : 1));
         */
-        int _result = 0;
+        int result = 0;
 
-        _c.Response.Write("<econtract>" + _result + "<econtract>");
+        c.Response.Write("<econtract>" + result + "<econtract>");
     }
 
     public bool IsReusable {

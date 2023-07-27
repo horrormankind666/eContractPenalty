@@ -4283,10 +4283,24 @@ a.link-disable:hover {
     margin-top: 7px;
 }
 
-#add-profile-students .button-style1 {
+#add-profile-students .button .button-style1 {
     position: relative;
     left: 278px;
     width: 273px;
+}
+
+#add-profile-students .button .button-style2 {
+    width: 111px;
+    height: 30px;
+    line-height: 30px;
+    margin: auto;
+    display: none;
+}
+
+#add-profile-students .button .button-style2 ul li {   
+    color: #000000;
+    margin-right: 0;
+    float: none;
 }
 
 #addupdate-cp-trans-break-contract #profile-student #picture-add-student {

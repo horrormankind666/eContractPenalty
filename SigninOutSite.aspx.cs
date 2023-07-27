@@ -8,8 +8,8 @@ public partial class Signin: Page {
     ) {
         /*
         eContractPenaltyDB.Signout();
-        eContractPenaltyDB._username = Request.Form["username"];
-        eContractPenaltyDB._password = Request.Form["password"];
+        eContractPenaltyDB.username = Request.Form["username"];
+        eContractPenaltyDB.password = Request.Form["password"];
         Response.Redirect("index.aspx");
         */
     }

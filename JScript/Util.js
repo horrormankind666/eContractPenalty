@@ -1,170 +1,171 @@
-﻿var _msgLoading
-var _monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+﻿var msgLoading
+var monthNames = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
 
-function SetMsgLoading(_val) {
-    _msgLoading = _val;
+function SetMsgLoading(val) {
+    msgLoading = val;
 }
 
 function LoadAjax(
-    _param,
-    _url,
-    _method,
-    _loading,
-    _close,
-    _callbackFunc
+    param,
+    url,
+    method,
+    loading,
+    close,
+    callbackFunc
 ) {
     $.ajax({
-    beforeSend: function () {
-        if (_loading == true)
-            DialogLoading(_msgLoading);
-    },
-    /*
-    complete: function () {
-        if (_close == true)
-        $("#dialog-loading").dialog("close");
-    },
-    */
-    async: true,
-    type: _method,
-    url: _url,
-    data: _param,
-    dataType: "html",
-    charset: "utf-8",
-    success: function (_data) {
-        if (_close == true)
-            $("#dialog-loading").dialog("close");
+        beforeSend: function () {
+            if (loading == true)
+                DialogLoading(msgLoading);
+        },
+        /*
+        complete: function () {
+            if (close == true)
+                $("#dialog-loading").dialog("close");
+        },
+        */
+        async: true,
+        type: method,
+        url: url,
+        data: param,
+        dataType: "html",
+        charset: "utf-8",
+        success: function (data) {
+            if (close == true)
+                $("#dialog-loading").dialog("close");
 
-        var _dataErrorBrowser = _data.split("<errorbrowser>");
-        var _error = false;
-        var _msg;
+            var dataErrorBrowser = data.split("<errorbrowser>");
+            var error = false;
+            var msg;
 
-        if (_error == false && _dataErrorBrowser[1] == "1") {
-            _error = true;
-            _msg = "ไม่สนับสนุน IE6, IE7 และ IE8";
-        }
-
-        if (_error == false && _dataErrorBrowser[1] == "2") {
-            _error = true;
-            _msg = "ไม่ได้เปิดใช้งาน Cookies";
-        }
-
-        if (_error == true) {
-            DialogMessage(_msg, "", false, "");
-            return;
-        }
-
-        _callbackFunc(_data);
-    },
-    error: function (
-        xhr,
-        ajaxOptions,
-        thrownError
-    ) {
-        DialogConfirm("ประมวลผลไม่สำเร็จ");
-        $("#dialog-confirm").dialog({
-            buttons: {
-                "ตกลง": function () {
-                    $(this).dialog("close");
-                }
-            },
-            close: function () {
-                location.reload();
+            if (error == false &&
+                dataErrorBrowser[1] == "1") {
+                error = true;
+                msg = "ไม่สนับสนุน IE6, IE7 และ IE8";
             }
-        });
-    }
+
+            if (error == false &&
+                dataErrorBrowser[1] == "2") {
+                error = true;
+                msg = "ไม่ได้เปิดใช้งาน Cookies";
+            }
+
+            if (error == true) {
+                DialogMessage(msg, "", false, "");
+                return;
+            }
+
+            callbackFunc(data);
+        },
+        error: function (
+            xhr,
+            ajaxOptions,
+            thrownError
+        ) {
+            DialogConfirm("ประมวลผลไม่สำเร็จ");
+            $("#dialog-confirm").dialog({
+                buttons: {
+                    "ตกลง": function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function () {
+                    location.reload();
+                }
+            });
+        }
     });
 }
 
-function Trim(_id) {
-    return $("#" + _id).val($.trim($("#" + _id).val()));
+function Trim(id) {
+    return $("#" + id).val($.trim($("#" + id).val()));
 }
 
-function TextToEntities(_text) {
-    var _entities = "";
+function TextToEntities(text) {
+    var entities = "";
 
-    for (var _i = 0; _i < _text.length; _i++) {
-        if (_text.charAt(i) == "&") {
-            _entities += "%26";
+    for (var i = 0; i < text.length; i++) {
+        if (text.charAt(i) == "&") {
+            entities += "%26";
         }
         else {
-            if (_text.charAt(i) == "+") {
-                _entities += "%2b";
+            if (text.charAt(i) == "+") {
+                entities += "%2b";
             }
             else
-                _entities += _text.charAt(i);
+                entities += text.charAt(i);
         }
     }
 
-    return _entities;
+    return entities;
 }
 
-function IsEnglishCharacter(_strString) {
-    var _strValidChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var _strChar;
-    var _blnResult = true;
+function IsEnglishCharacter(strString) {
+    var strValidChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var strChar;
+    var blnResult = true;
 
-    if (_strString.length == 0)
+    if (strString.length == 0)
         return false;
 
-    for (_i = 0; _i < _strString.length && _blnResult == true; _i++) {
-        _strChar = _strString.charAt(_i);
+    for (var i = 0; i < strString.length && blnResult == true; i++) {
+        strChar = strString.charAt(i);
 
-        if (_strValidChars.indexOf(_strChar) == -1) {
-            _blnResult = false;
+        if (strValidChars.indexOf(strChar) == -1) {
+            blnResult = false;
         }
     }
 
-    return _blnResult;
+    return blnResult;
 }
 
-function IsNumeric(_strString) {
-    var _strValidChars = "0123456789";
-    var _strChar;
-    var _blnResult = true;
+function IsNumeric(strString) {
+    var strValidChars = "0123456789";
+    var strChar;
+    var blnResult = true;
 
-    if (_strString.length == 0)
+    if (strString.length == 0)
         return false;
 
-    for (_i = 0; _i < _strString.length && _blnResult == true; _i++) {
-        _strChar = _strString.charAt(_i);
+    for (var i = 0; i < strString.length && blnResult == true; i++) {
+        strChar = strString.charAt(i);
 
-        if (_strValidChars.indexOf(_strChar) == -1) {
-            _blnResult = false;
+        if (strValidChars.indexOf(strChar) == -1) {
+            blnResult = false;
         }
     }
 
-    return _blnResult;
+    return blnResult;
 }
 
-function EmailCheck(_emailStr) {
-    var _emailPat = /^(.+)@(.+)$/;
-    var _specialChars = "\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
-    var _validChars = "\[^\\s" + _specialChars + "\]";
-    var _quotedUser = "(\"[^\"]*\")";
-    var _ipDomainPat = /^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
-    var _atom = _validChars + '+';
-    var _word = "(" + _atom + "|" + _quotedUser + ")";
-    var _userPat = new RegExp("^" + _word + "(\\." + _word + ")*$");
-    var _domainPat = new RegExp("^" + _atom + "(\\." + _atom + ")*$");
+function EmailCheck(emailStr) {
+    var emailPat = /^(.+)@(.+)$/;
+    var specialChars = "\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
+    var validChars = ("\[^\\s" + specialChars + "\]");
+    var quotedUser = "(\"[^\"]*\")";
+    var ipDomainPat = /^\[(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\]$/;
+    var atom = (validChars + '+');
+    var word = ("(" + atom + "|" + quotedUser + ")");
+    var userPat = new RegExp("^" + word + "(\\." + word + ")*$");
+    var domainPat = new RegExp("^" + atom + "(\\." + atom + ")*$");
+    var matchArray = emailStr.match(emailPat);
 
-    var _matchArray = _emailStr.match(_emailPat);
-
-    if (_matchArray == null) {
+    if (matchArray == null) {
         return false;
     }
 
-    var _user = _matchArray[1];
-    var _domain = _matchArray[2];
+    var user = matchArray[1];
+    var domain = matchArray[2];
 
-    if (_user.match(_userPat) == null) {
+    if (user.match(userPat) == null) {
         return false;
     }
 
-    var _ipArray = _domain.match(_ipDomainPat);
+    var ipArray = domain.match(ipDomainPat);
 
-    if (_ipArray != null) {
-        for (var _i = 1; _i <= 4; _i++) {
-            if (_ipArray[i] > 255) {
+    if (ipArray != null) {
+        for (var i = 1; i <= 4; i++) {
+            if (ipArray[i] > 255) {
                 return false;
             }
         }
@@ -172,48 +173,52 @@ function EmailCheck(_emailStr) {
         return true;
     }
 
-    var _domainArray = _domain.match(_domainPat);
+    var domainArray = domain.match(domainPat);
 
 
-    if (_domainArray == null) {
+    if (domainArray == null) {
         return false;
     }
 
-    var _atomPat = new RegExp(_atom, "g");
-    var _domArr = _domain.match(_atomPat);
-    var _len = _domArr.length;
+    var atomPat = new RegExp(atom, "g");
+    var domArr = domain.match(atomPat);
+    var len = domArr.length;
 
-    if (_domArr[_domArr.length - 1].length < 2 || _domArr[_domArr.length - 1].length > 3) {
+    if (domArr[domArr.length - 1].length < 2 ||
+        domArr[domArr.length - 1].length > 3) {
         return false;
     }
 
-    if (_len < 2) {
+    if (len < 2) {
         return false
     }
 
     return true;
 }
 
-function UrlCheck(_urlStr) {
+function UrlCheck(urlStr) {
     var RegExp = /^(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,4}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?$/;
 
-    return RegExp.test(_urlStr);
+    return RegExp.test(urlStr);
 }
 
-function DaysInFebruary(_year) {
-    return (((_year % 4 == 0) && ((!(_year % 100 == 0)) || (_year % 400 == 0))) ? 29 : 28);
+function DaysInFebruary(year) {
+    return ((year % 4 == 0) && (!(year % 100 == 0) || (year % 400 == 0)) ? 29 : 28);
 }
 
-function DaysArray(_n) {
-    for (var _i = 1; _i <= _n; _i++) {
-        this[_i] = 31;
+function DaysArray(n) {
+    for (var i = 1; i <= n; i++) {
+        this[i] = 31;
 
-        if (_i == 4 || _i == 6 || _i == 9 || _i == 11) {
-            this[_i] = 30;
+        if (i == 4 ||
+            i == 6 ||
+            i == 9 ||
+            i == 11) {
+            this[i] = 30;
         }
 
-        if (_i == 2) {
-            this[_i] = 29;
+        if (i == 2) {
+            this[i] = 29;
         }
     }
 
@@ -221,24 +226,25 @@ function DaysArray(_n) {
 }
 
 function IsDate(
-    _day,
-    _month,
-    _year
+    day,
+    month,
+    year
 ) {
-    var _daysInMonth = DaysArray(12);
-    var _date = _day + "-" + _month + "-" + _year;
+    var daysInMonth = DaysArray(12);
+    var date = (day + "-" + month + "-" + year);
 
-    if (_date != "00-00-0000") {
-        if (_day == "00")
+    if (date != "00-00-0000") {
+        if (day == "00")
             return false;
 
-        if (_month == "00")
+        if (month == "00")
             return false;
 
-        if (_year == "0000")
+        if (year == "0000")
             return false;
 
-        if (((parseInt(_month) == 2) && (_day > DaysInFebruary(_year))) || (_day > _daysInMonth[parseInt(_month)]))
+        if ((parseInt(month) == 2 && day > DaysInFebruary(year)) ||
+            day > daysInMonth[parseInt(month)])
             return false;
     }
 
@@ -274,292 +280,302 @@ function InitTextSelect() {
     });
 }
 
-function StoreCaret(_text) {
-    if (typeof (_text.createTextRange) != "undefined")
-        _text.caretPos = document.selection.createRange().duplicate();
+function StoreCaret(text) {
+    if (typeof (text.createTextRange) != "undefined")
+        text.caretPos = document.selection.createRange().duplicate();
 }
 
-function ReplaceText(_text, _textArea) {
-    if (typeof (_textArea.caretPos) != "undefined" && _textArea.createTextRange) {
-        var _caretPos = _textArea.caretPos;
+function ReplaceText(
+    text,
+    textArea
+) {
+    if (typeof (textArea.caretPos) != "undefined" &&
+        textArea.createTextRange) {
+        var caretPos = textArea.caretPos;
 
-        _caretPos.text = _caretPos.text.charAt(_caretPos.text.length - 1) == ' ' ? _text + ' ' : _text;
-        _caretPos.select();
+        caretPos.text = (caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? (text + ' ') : text);
+        caretPos.select();
     }
     else {
-        if (typeof (_textArea.selectionStart) != "undefined") {
-            var _begin = _textArea.value.substr(0, _textArea.selectionStart);
-            var _end = _textArea.value.substr(_textArea.selectionEnd);
-            var _scrollPos = _textArea.scrollTop;
+        if (typeof (textArea.selectionStart) != "undefined") {
+            var begin = textArea.value.substr(0, textArea.selectionStart);
+            var end = textArea.value.substr(textArea.selectionEnd);
+            var scrollPos = textArea.scrollTop;
 
-            _textArea.value = _begin + _text + _end;
+            textArea.value = (begin + text + end);
 
-            if (_textArea.setSelectionRange) {
-                _textArea.focus();
-                _textArea.setSelectionRange(_begin.length + _text.length, _begin.length + _text.length);
+            if (textArea.setSelectionRange) {
+                textArea.focus();
+                textArea.setSelectionRange((begin.length + text.length), (begin.length + text.length));
             }
 
-            _textArea.scrollTop = _scrollPos;
+            textArea.scrollTop = scrollPos;
         }
         else {
-            _textArea.value += text;
-            _textArea.focus(_textArea.value.length - 1);
+            textArea.value += text;
+            textArea.focus(textArea.value.length - 1);
         }
     }
 }
 
 function SurroundText(
-    _text1,
-    _text2,
-    _textArea
+    text1,
+    text2,
+    textArea
 ) {
-    if (typeof (_textArea.caretPos) != "undefined" && _textArea.createTextRange) {
-        var _caretPos = _textArea.caretPos, _tempLength = _caretPos.text.length;
+    if (typeof (textArea.caretPos) != "undefined" &&
+        textArea.createTextRange) {
+        var caretPos = textArea.caretPos, tempLength = caretPos.text.length;
 
-        _caretPos.text = _caretPos.text.charAt(_caretPos.text.length - 1) == ' ' ? _text1 + _caretPos.text + _text2 + ' ' : _text1 + _caretPos.text + _text2;
+        caretPos.text = (caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? (text1 + caretPos.text + text2 + ' ') : (text1 + caretPos.text + text2));
 
-        if (_tempLength == 0) {
-            _caretPos.moveStart("character", -_text2.length);
-            _caretPos.moveEnd("character", -_text2.length);
-            _caretPos.select();
+        if (tempLength == 0) {
+            caretPos.moveStart("character", -text2.length);
+            caretPos.moveEnd("character", -text2.length);
+            caretPos.select();
         }
         else
-            _textArea.focus(_caretPos);
+            textArea.focus(caretPos);
     }
     else {
-        if (typeof (_textArea.selectionStart) != "undefined") {
-            var _begin = _textArea.value.substr(0, _textArea.selectionStart);
-            var _selection = _textArea.value.substr(_textArea.selectionStart, _textArea.selectionEnd - _textArea.selectionStart);
-            var _end = _textArea.value.substr(_textArea.selectionEnd);
-            var _newCursorPos = _textArea.selectionStart;
-            var _scrollPos = _textArea.scrollTop;
+        if (typeof (textArea.selectionStart) != "undefined") {
+            var begin = textArea.value.substr(0, textArea.selectionStart);
+            var selection = textArea.value.substr(textArea.selectionStart, (textArea.selectionEnd - textArea.selectionStart));
+            var end = textArea.value.substr(textArea.selectionEnd);
+            var newCursorPos = textArea.selectionStart;
+            var scrollPos = textArea.scrollTop;
 
-            _textArea.value = _begin + _text1 + _selection + _text2 + _end;
+            textArea.value = (begin + text1 + selection + text2 + end);
 
-            if (_textArea.setSelectionRange) {
-                if (_selection.length == 0)
-                    _textArea.setSelectionRange(_newCursorPos + _text1.length, _newCursorPos + _text1.length);
+            if (textArea.setSelectionRange) {
+                if (selection.length == 0)
+                    textArea.setSelectionRange((newCursorPos + text1.length), (newCursorPos + text1.length));
                 else
-                    _textArea.setSelectionRange(_newCursorPos, _newCursorPos + _text1.length + _selection.length + _text2.length);
-                _textArea.focus();
+                    textArea.setSelectionRange(newCursorPos, (newCursorPos + text1.length + selection.length + text2.length));
+
+                textArea.focus();
             }
 
-            _textArea.scrollTop = _scrollPos;
+            textArea.scrollTop = scrollPos;
         }
         else {
-            _textArea.value += _text1 + _text2;
-            _textArea.focus(_textArea.value.length - 1);
+            textArea.value += (text1 + text2);
+            textArea.focus(textArea.value.length - 1);
         }
     }
 }
 
 function SelectToList(
-    _objChoose,
-    _objList
+    objChoose,
+    objList
 ) {
-    var _choose = $("#" + _objChoose).val();
+    var choose = $("#" + objChoose).val();
 
-    if (_choose.length > 0) {
-        var _obj = $("#" + _objList);
-        var _i;
+    if (choose.length > 0) {
+        var obj = $("#" + objList);
 
-        if (_obj.length > 0) {
-            for (_i = 0; _i < _obj.length; _i++) {
-                if (_choose == _obj.options[i].value)
+        if (obj.length > 0) {
+            for (var i = 0; i < obj.length; i++) {
+                if (choose == obj.options[i].value)
                     return;
             }
         }
 
-        var _opt = document.createElement("OPTION");
-        _obj.options.add(_opt);
-        _opt.innerHTML = _choose;
-        _opt.value = _choose;
+        var opt = document.createElement("OPTION");
+        obj.options.add(opt);
+        opt.innerHTML = choose;
+        opt.value = choose;
     }
 }
 
 function ClearList(
-    _obj,
-    _mode
+    obj,
+    mode
 ) {
-    var _objCombo = $("#" + _obj);
+    var objCombo = $("#" + obj);
 
-    if (_mode == 1) {
-        if (_objCombo.options.selectedIndex >= 0)
-            _objCombo.options[_objCombo.options.selectedIndex] = null;
+    if (mode == 1) {
+        if (objCombo.options.selectedIndex >= 0)
+            objCombo.options[objCombo.options.selectedIndex] = null;
     }
 
-    if (_mode == 2) {
-        for (_i = _objCombo.length - 1; _i >= 0; _i--) {
-            _objCombo.options[i] = null;
+    if (mode == 2) {
+        for (var i = (objCombo.length - 1); i >= 0; i--) {
+            objCombo.options[i] = null;
         }
     }
 }
 
-function DeleteList(_obj) {
-    var _objCombo = $("#" + _obj);
+function DeleteList(obj) {
+    var objCombo = $("#" + obj);
 
-    if (_objCombo.options.selectedIndex >= 0)
-        _objCombo.options[_objCombo.options.selectedIndex] = null;
+    if (objCombo.options.selectedIndex >= 0)
+        objCombo.options[objCombo.options.selectedIndex] = null;
 }
 
-function GroupValueList(_obj) {
-    var _result = "";
+function GroupValueList(obj) {
+    var result = "";
 
-    for (var _i = 0; _i < _obj.length; i++) {
-        if (_result.length > 0) {
-            _result = _result + ";" + _obj.options[_i].value;
+    for (var i = 0; i < obj.length; i++) {
+        if (result.length > 0) {
+            result = (result + ";" + obj.options[i].value);
         }
         else {
-            _result = _obj.options[_i].value;
+            result = obj.options[i].value;
         }
     }
 
-    return _result;
+    return result;
 }
 
 function CopyList(
-    _objSource,
-    _objDestination
+    objSource,
+    objDestination
 ) {
-    ClearList(_objDestination, 2);
+    ClearList(objDestination, 2);
 
-    _objCombo = $("#" + _objSource);
+    objCombo = $("#" + objSource);
 
-    for (_i = 0; _i < _objCombo.length; _i++) {
-        var _tmp = _objCombo.options[i].value;
-        var _data = _tmp.split(";");
-        var _obj = $("#" + _objDestination);
-        var _opt = document.createElement("OPTION");
-        _obj.options.add(_opt);
-        _opt.innerHTML = _data[1];
-        _opt.value = _data[0];
+    for (var i = 0; i < objCombo.length; i++) {
+        var tmp = objCombo.options[i].value;
+        var data = tmp.split(";");
+        var obj = $("#" + objDestination);
+        var opt = document.createElement("OPTION");
+        obj.options.add(opt);
+        opt.innerHTML = data[1];
+        opt.value = data[0];
     }
 }
 
 function GetPageSize() {
-    var _xPage, _yPage;
+    var xPage, yPage;
 
     if (self.innerHeight) {
-        _xPage = self.innerWidth;
-        _yPage = self.innerHeight;
+        xPage = self.innerWidth;
+        yPage = self.innerHeight;
     }
     else {
-        if (document.documentElement && document.documentElement.clientHeight) {
-            _xPage = document.documentElement.clientWidth;
-            _yPage = document.documentElement.clientHeight;
+        if (document.documentElement &&
+            document.documentElement.clientHeight) {
+            xPage = document.documentElement.clientWidth;
+            yPage = document.documentElement.clientHeight;
         }
         else {
             if (document.body) {
-                _xPage = document.body.clientWidth;
-                _yPage = document.body.clientHeight;
+                xPage = document.body.clientWidth;
+                yPage = document.body.clientHeight;
             }
         }
     }
 
-    return new Array(_xPage, _yPage);
+    return new Array(xPage, yPage);
 }
 
 function GetPageScroll() {
-    var _yScroll;
+    var yScroll;
 
     if (self.pageYOffset) {
-        _yScroll = self.pageYOffset;
+        yScroll = self.pageYOffset;
     }
     else {
-        if (document.documentElement && document.documentElement.scrollTop) {
-            _yScroll = document.documentElement.scrollTop;
+        if (document.documentElement &&
+            document.documentElement.scrollTop) {
+            yScroll = document.documentElement.scrollTop;
         }
         else {
             if (document.body) {
-                _yScroll = document.body.scrollTop;
+                yScroll = document.body.scrollTop;
             }
         }
     }
 
-    return new Array("", _yScroll);
+    return new Array("", yScroll);
 }
 
-function GoToElement(_anchor) {
-    var _ele = $("#" + _anchor);
-    var _offset = _ele.offset();
+function GoToElement(anchor) {
+    var ele = $("#" + anchor);
+    var offset = ele.offset();
     
-    if (_ele.length > 0)
+    if (ele.length > 0)
         $("html, body").animate({
-            scrollTop: (_offset.top - 154)
+            scrollTop: (offset.top - 154)
         }, 500);
 }
 
-function GoToTopElement(_anchor) {
-    $(_anchor).animate({
+function GoToTopElement(anchor) {
+    $(anchor).animate({
         scrollTop: 0
     }, 500);
 }
 
 function InitCombobox(
-    _id,
-    _valueDefault,
-    _valueNew,
-    _widthInput,
-    _widthList
+    id,
+    valueDefault,
+    valueNew,
+    widthInput,
+    widthList
 ) {
     $(document).ready(function () {
-        $("#" + _id).val(_valueDefault);
-        $("#" + _id).combobox();
-        $("." + _id + "-combobox-input").css({
+        $("#" + id).val(valueDefault);
+        $("#" + id).combobox();
+        $("." + id + "-combobox-input").css({
             background: "#FFFFFF",
-            width: _widthInput + "px"
+            width: widthInput + "px"
         });
-        $("." + _id + "-combobox-input").bind("autocompleteopen", function (event, ui) {
-            $(".ui-autocomplete.ui-menu").width(_widthList + "px");
+        $("." + id + "-combobox-input").bind("autocompleteopen", function (event, ui) {
+            $(".ui-autocomplete.ui-menu").width(widthList + "px");
         });
     });
 
-    ComboboxSetSelectedValue(_id, _valueNew);
-    InitComboboxOnClick(_id);    
+    ComboboxSetSelectedValue(id, valueNew);
+    InitComboboxOnClick(id);
     InitTextSelect();
 }
 
-function TextboxDisable(_id) {
-    $(_id).attr("readonly", "readonly");
-    $(_id).addClass("textbox-disable");
+function TextboxDisable(id) {
+    $(id).attr("readonly", "readonly");
+    $(id).addClass("textbox-disable");
 }
 
-function TextboxEnable(_id) {
-    $(_id).removeAttr("readonly");
-    $(_id).removeClass("textbox-disable");
+function TextboxEnable(id) {
+    $(id).removeAttr("readonly");
+    $(id).removeClass("textbox-disable");
 }
 
-function ComboboxDisable(_id) {
-    $("." + _id + "-combobox-input").css({
+function ComboboxDisable(id) {
+    $("." + id + "-combobox-input").css({
         background: "#CCCCCC",
         color: "#000000"
     });
-    $("." + _id + "-combobox-input").attr("readonly", "readonly");
-    $("." + _id + "-combobox-input").autocomplete({
+    $("." + id + "-combobox-input").attr("readonly", "readonly");
+    $("." + id + "-combobox-input").autocomplete({
         disabled: true
     });
 }
 
-function ComboboxEnable(_id) {
-    $("." + _id + "-combobox-input").css({
+function ComboboxEnable(id) {
+    $("." + id + "-combobox-input").css({
         background: "#FFFFFF",
         color: "#000000"
     });    
-    $("." + _id + "-combobox-input").removeAttr("readonly");
-    $("." + _id + "-combobox-input").autocomplete({
+    $("." + id + "-combobox-input").removeAttr("readonly");
+    $("." + id + "-combobox-input").autocomplete({
         disabled: false
     });
 }
 
-function ComboboxSetSelectedValue(_id, _value) {
-    $("#" + _id).val(_value);
-    $("." + _id + "-combobox-input").val($("#" + _id + " option:selected").text());
+function ComboboxSetSelectedValue(
+    id,
+    value
+) {
+    $("#" + id).val(value);
+    $("." + id + "-combobox-input").val($("#" + id + " option:selected").text());
 }
 
-function ComboboxGetSelectedValue(_id) {
-    var _val = ($("#" + _id + " option:selected").text().toLowerCase() == $("." + _id + "-combobox-input").val().toLowerCase()) ? $("#" + _id).val() : null;
+function ComboboxGetSelectedValue(id) {
+    var val = ($("#" + id + " option:selected").text().toLowerCase() == $("." + id + "-combobox-input").val().toLowerCase() ? $("#" + id).val() : null);
 
-    return _val;
+    return val;
 }
 
 function HiddenButton() {
@@ -568,31 +584,34 @@ function HiddenButton() {
     $(".button").hide();
 }
 
-function ButtonDisable(_idButton, _classButtonDisable) {
-    $(_idButton).addClass(_classButtonDisable);
-    $(_idButton + " a").removeAttr("onclick");
+function ButtonDisable(
+    idButton,
+    classButtonDisable
+) {
+    $(idButton).addClass(classButtonDisable);
+    $(idButton + " a").removeAttr("onclick");
 }
 
-function LinkDisable(_idLink) {
-    $(_idLink).addClass("link-disable");
-    $(_idLink).removeAttr("onclick");
+function LinkDisable(idLink) {
+    $(idLink).addClass("link-disable");
+    $(idLink).removeAttr("onclick");
 }
 
-function CalendarDisable(_id) {
-    TextboxDisable(_id);
-    $(_id).datepicker("disable");
+function CalendarDisable(id) {
+    TextboxDisable(id);
+    $(id).datepicker("disable");
 }
 
-function CalendarEnable(_id) {
-    TextboxEnable(_id);
-    $(_id).attr("readonly", "true");
-    $(_id).datepicker("enable");
+function CalendarEnable(id) {
+    TextboxEnable(id);
+    $(id).attr("readonly", "true");
+    $(id).datepicker("enable");
 }
 
-function InitCalendar(_calendarID) {
+function InitCalendar(calendarID) {
     $(document).ready(function () {
-        $(_calendarID).datepicker("destroy");
-        $(_calendarID).datepicker({
+        $(calendarID).datepicker("destroy");
+        $(calendarID).datepicker({
             buttonImage: "Image/DatePicker.png",
             buttonImageOnly: true,
             showOn: "button",
@@ -608,55 +627,24 @@ function InitCalendar(_calendarID) {
             monthNames: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
             monthNamesShort: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."]
         });
-        $("img.ui-datepicker-trigger").css({"cursor" : "pointer", "vertical-align" : "bottom", "margin-left" : "2px"});
+        $("img.ui-datepicker-trigger").css({
+            "cursor": "pointer",
+            "vertical-align": "bottom",
+            "margin-left": "2px"
+        });
     });
 }
 
 function InitCalendarFromTo(
-    _fromID,
-    _fromFix,
-    _toID,
-    _toFix
+    fromID,
+    fromFix,
+    toID,
+    toFix
 ) {
     $(document).ready(function () {
-        if (_fromFix == false) {
-            $(_fromID).datepicker("destroy");
-            $(_fromID).datepicker({
-            buttonImage: "Image/DatePicker.png",
-            buttonImageOnly: true,
-            showOn: "button",
-            prevText: "",
-            nextText: "",
-            changeMonth: true,
-            changeYear: true,
-            yearRange: "-26:+1",
-            dateFormat: "dd/mm/yy",
-            isBuddhist: true,
-            dayNames: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"],
-            dayNamesMin: ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."],
-            monthNames: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
-            monthNamesShort: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
-            beforeShow: function () {
-                if ($(_toID).val().length > 0) {
-                    $(_fromID).datepicker("option", "maxDate", $(_toID).val()); 
-                    $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
-                }
-            },
-            /*
-            onSelect: function (selectedDate) {
-                if (_toFix == false) {
-                    $(_toID).datepicker("option", "minDate", selectedDate);
-                    $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
-                }
-            }
-            */
-            });
-            $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
-        }
-        
-        if (_toFix == false) {
-            $(_toID).datepicker("destroy");
-            $(_toID).datepicker({
+        if (fromFix == false) {
+            $(fromID).datepicker("destroy");
+            $(fromID).datepicker({
                 buttonImage: "Image/DatePicker.png",
                 buttonImageOnly: true,
                 showOn: "button",
@@ -672,16 +660,71 @@ function InitCalendarFromTo(
                 monthNames: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
                 monthNamesShort: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
                 beforeShow: function () {
-                    if ($(_fromID).val().length > 0) {
-                        $(_toID).datepicker("option", "minDate", $(_fromID).val());
-                        $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
+                    if ($(toID).val().length > 0) {
+                        $(fromID).datepicker("option", "maxDate", $(toID).val()); 
+                        $("img.ui-datepicker-trigger").css({
+                            "cursor": "pointer",
+                            "vertical-align": "bottom",
+                            "margin-left": "2px"
+                        });
                     }
                 },
                 /*
                 onSelect: function (selectedDate) {
-                    if (_fromFix == false) {
-                        $(_fromID).datepicker("option", "maxDate", selectedDate);
-                        $("img.ui-datepicker-trigger").css({ "cursor": "pointer", "vertical-align": "bottom", "margin-left": "2px" });
+                    if (toFix == false) {
+                        $(toID).datepicker("option", "minDate", selectedDate);
+                        $("img.ui-datepicker-trigger").css({
+                            "cursor": "pointer",
+                            "vertical-align": "bottom",
+                            "margin-left": "2px"
+                        });
+                    }
+                }
+                */
+            });
+            $("img.ui-datepicker-trigger").css({
+                "cursor": "pointer",
+                "vertical-align": "bottom",
+                "margin-left": "2px"
+            });
+        }
+        
+        if (toFix == false) {
+            $(toID).datepicker("destroy");
+            $(toID).datepicker({
+                buttonImage: "Image/DatePicker.png",
+                buttonImageOnly: true,
+                showOn: "button",
+                prevText: "",
+                nextText: "",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-26:+1",
+                dateFormat: "dd/mm/yy",
+                isBuddhist: true,
+                dayNames: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"],
+                dayNamesMin: ["อา.", "จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส."],
+                monthNames: ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+                monthNamesShort: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."],
+                beforeShow: function () {
+                    if ($(fromID).val().length > 0) {
+                        $(toID).datepicker("option", "minDate", $(fromID).val());
+                        $("img.ui-datepicker-trigger").css({
+                            "cursor": "pointer",
+                            "vertical-align": "bottom",
+                            "margin-left": "2px"
+                        });
+                    }
+                },
+                /*
+                onSelect: function (selectedDate) {
+                    if (fromFix == false) {
+                        $(fromID).datepicker("option", "maxDate", selectedDate);
+                        $("img.ui-datepicker-trigger").css({
+                            "cursor": "pointer",
+                            "vertical-align": "bottom",
+                            "margin-left": "2px"
+                        });
                     }
                 }
                 */
@@ -696,12 +739,12 @@ function InitCalendarFromTo(
 }
 
 function StickyRelocate() {
-    var _windowTop = $(window).scrollTop();
-    var _divTop = $("#sticky-anchor").offset().top;
+    var windowTop = $(window).scrollTop();
+    var divTop = $("#sticky-anchor").offset().top;
 
-    _windowTop = _windowTop + 35;
+    windowTop = (windowTop + 35);
 
-    if (_windowTop >= _divTop) {
+    if (windowTop >= divTop) {
         $("#sticky").addClass("stick");
     }
     else
@@ -709,21 +752,23 @@ function StickyRelocate() {
 }
 
 function RemoveSticky() {
-    if (($("#sticky-anchor").length > 0) && ($("#sticky").length > 0))
+    if ($("#sticky-anchor").length > 0 &&
+        $("#sticky").length > 0)
         $("#sticky").removeClass("stick").next().css("padding-top", "0px");
 
     GoToElement("top-page");
 }    
 
 function InitSticky() {
-    if (($("#sticky-anchor").length > 0) && ($("#sticky").length > 0)) {
+    if ($("#sticky-anchor").length > 0 &&
+        $("#sticky").length > 0) {
         RemoveSticky();
 
         $(document).ready(function () {
-            var _aboveHeight = ($(".head").outerHeight() + $(".menu-bar-main").outerHeight() + $(".content-data-head").outerHeight()) + 10;
+            var aboveHeight = (($(".head").outerHeight() + $(".menu-bar-main").outerHeight() + $(".content-data-head").outerHeight()) + 10);
 
             $(window).scroll(function () {
-                if ($(window).scrollTop() > _aboveHeight) {
+                if ($(window).scrollTop() > aboveHeight) {
                     $("#sticky").addClass("stick").next().css("padding-top", $("#sticky").outerHeight() + "px");
                 }
                 else {
@@ -735,189 +780,192 @@ function InitSticky() {
 }
 
 function ExtractNumber(
-    _obj,
-    _decimalPlaces,
-    _allowNegative
+    obj,
+    decimalPlaces,
+    allowNegative
 ) {
-    var _temp = _obj.value;
-    var _reg0Str = "[0-9]*";
+    var temp = obj.value;
+    var reg0Str = "[0-9]*";
 
-    if (_decimalPlaces > 0) {
-        _reg0Str += "\\.?[0-9]{0," + _decimalPlaces + "}";
+    if (decimalPlaces > 0) {
+        reg0Str += ("\\.?[0-9]{0," + decimalPlaces + "}");
     }
     else
-        if (_decimalPlaces < 0) {
-            _reg0Str += "\\.?[0-9]*";
+        if (decimalPlaces < 0) {
+            reg0Str += "\\.?[0-9]*";
         }
     
-    _reg0Str = _allowNegative ? "^-?" + _reg0Str : "^" + _reg0Str;
-    _reg0Str = _reg0Str + "$";
-    var _reg0 = new RegExp(_reg0Str);
+    reg0Str = (allowNegative ? ("^-?" + reg0Str) : ("^" + reg0Str));
+    reg0Str = (reg0Str + "$");
+    var reg0 = new RegExp(reg0Str);
 
-    if (_reg0.test(_temp))
+    if (reg0.test(temp))
         return true;
     
-    var _reg1Str = "[^0-9" + (_decimalPlaces != 0 ? "." : "") + (_allowNegative ? "-" : "") + "]";
-    var _reg1 = new RegExp(_reg1Str, "g");
+    var reg1Str = ("[^0-9" + (decimalPlaces != 0 ? "." : "") + (allowNegative ? "-" : "") + "]");
+    var reg1 = new RegExp(reg1Str, "g");
 
-    _temp = _temp.replace(_reg1, "");
+    temp = temp.replace(reg1, "");
 
-    if (_allowNegative) {
-        var _hasNegative = _temp.length > 0 && _temp.charAt(0) == "-";
-        var _reg2 = /-/g;
+    if (allowNegative) {
+        var hasNegative = (temp.length > 0 && temp.charAt(0) == "-");
+        var reg2 = /-/g;
 
-        _temp = _temp.replace(_reg2, "");
+        temp = temp.replace(reg2, "");
         
-        if (_hasNegative)
-            _temp = "-" + _temp;
+        if (hasNegative)
+            temp = ("-" + temp);
     }
 
-    if (_decimalPlaces != 0) {
-        var _reg3 = /\./g;
-        var _reg3Array = _reg3.exec(_temp);
+    if (decimalPlaces != 0) {
+        var reg3 = /\./g;
+        var reg3Array = reg3.exec(temp);
 
-        if (_reg3Array != null) {
-            var _reg3Right = _temp.substring(_reg3Array.index + _reg3Array[0].length);
+        if (reg3Array != null) {
+            var reg3Right = temp.substring(reg3Array.index + reg3Array[0].length);
 
-            _reg3Right = _reg3Right.replace(_reg3, "");
-            _reg3Right = _decimalPlaces > 0 ? _reg3Right.substring(0, _decimalPlaces) : _reg3Right;
-            _temp = _temp.substring(0, _reg3Array.index) + "." + _reg3Right;
+            reg3Right = reg3Right.replace(reg3, "");
+            reg3Right = (decimalPlaces > 0 ? reg3Right.substring(0, decimalPlaces) : reg3Right);
+            temp = (temp.substring(0, reg3Array.index) + "." + reg3Right);
         }
     }
 
-    _obj.value = _temp;
+    obj.value = temp;
 }
 
 function BlockNonNumbers(
-    _obj,
-    _e,
-    _allowDecimal,
-    _allowNegative
+    obj,
+    e,
+    allowDecimal,
+    allowNegative
 ) {
-    var _key;
-    var _isCtrl = false;
-    var _keychar;
-    var _reg;
+    var key;
+    var isCtrl = false;
+    var keychar;
+    var reg;
 
     if (window.event) {
-        _key = _e.keyCode;
-        _isCtrl = window.event.ctrlKey
+        key = e.keyCode;
+        isCtrl = window.event.ctrlKey
     }
     else
-        if (_e.which) {
-            _key = _e.which;
-            _isCtrl = _e.ctrlKey;
+        if (e.which) {
+            key = e.which;
+            isCtrl = e.ctrlKey;
         }
 
-    if (isNaN(_key))
+    if (isNaN(key))
         return true;
 
-    _keychar = String.fromCharCode(_key);
+    keychar = String.fromCharCode(key);
 
-    if (_key == 8 || _isCtrl)
+    if (key == 8 ||
+        isCtrl)
         return true;
 
-    _reg = /\d/;
+    reg = /\d/;
 
-    var _isFirstN = _allowNegative ? _keychar == "-" && _obj.value.indexOf("-") == -1 : false;
-    var _isFirstD = _allowDecimal ? _keychar == "." && _obj.value.indexOf(".") == -1 : false;
+    var isFirstN = (allowNegative ? (keychar == "-" && obj.value.indexOf("-") == -1) : false);
+    var isFirstD = (allowDecimal ? (keychar == "." && obj.value.indexOf(".") == -1) : false);
 
-    return _isFirstN || _isFirstD || _reg.test(_keychar);
+    return isFirstN || isFirstD || reg.test(keychar);
 }
 
 function AddCommas(
-    _obj,
-    _decimalPlaces
+    obj,
+    decimalPlaces
 ) {
-    var _nStr = parseFloat(DelCommas(_obj).length > 0 ? DelCommas(_obj) : "0").toString();
-    _nStr += "";    
-    var _x = _nStr.split(".");
-    _x1 = _x[0];
-    var _i, _j;
-    var _x2 = _x.length > 1 ? "." + _x[1] : "";
+    var nStr = (parseFloat(DelCommas(obj).length > 0 ? DelCommas(obj) : "0").toString());
+    nStr += "";    
+    var x = nStr.split(".");
+    x1 = x[0];
+    var i, j;
+    var x2 = (x.length > 1 ? ("." + x[1]) : "");
 
-    if (_x2.length > 0)
-        _x1 = _x1.length == 0 ? "0" : _x1;
+    if (x2.length > 0)
+        x1 = (x1.length == 0 ? "0" : x1);
 
-    if (parseInt(_x1) == 0)
-        _x1 = "0";
+    if (parseInt(x1) == 0)
+        x1 = "0";
 
-    if (_x1.length > 0 && _decimalPlaces != null && _decimalPlaces != 0) {        
-        if (_x2.length > 0) {
-            if (_x[1].length < _decimalPlaces) {
-                _i = _decimalPlaces - _x[1].length;
+    if (x1.length > 0 &&
+        decimalPlaces != null &&
+        decimalPlaces != 0) {        
+        if (x2.length > 0) {
+            if (x[1].length < decimalPlaces) {
+                i = (decimalPlaces - x[1].length);
 
-                for(_j = 0; _j < _i; _j++) {
-                    _x[1] = _x[1] + "0";
+                for(j = 0; j < i; j++) {
+                    x[1] = (x[1] + "0");
                 }
             }
 
-            _x2 = "." + _x[1];
+            x2 = ("." + x[1]);
         }
         else {
-            _x2 = ".";
+            x2 = ".";
 
-            for(_i = 0; _i < _decimalPlaces; _i++) {
-                _x2 = _x2 + "0";
+            for(i = 0; i < decimalPlaces; i++) {
+                x2 = (x2 + "0");
             }
         }
     }
 
-    var _rgx = /(\d+)(\d{3})/;
+    var rgx = /(\d+)(\d{3})/;
 
-    while (_rgx.test(_x1)) {
-        _x1 = _x1.replace(_rgx, "$1" + "," + "$2");
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, ("$1" + "," + "$2"));
     }
 
-    $("#" + _obj).val(_x1 + _x2);
+    $("#" + obj).val(x1 + x2);
 
-    return _x1 + _x2;
+    return (x1 + x2);
 }
 
-function DelCommas(_obj) {
-    var _nStr = $("#" + _obj).val();   
-    _nStr += "";
+function DelCommas(obj) {
+    var nStr = $("#" + obj).val();   
+    nStr += "";
 
-    for (var _i = 0; _i < _nStr.length; _i++)
-        _nStr = _nStr.replace(",", "");
+    for (var i = 0; i < nStr.length; i++)
+        nStr = nStr.replace(",", "");
 
-    return _nStr;
+    return nStr;
 }
 
-function SingleSelectCheckbox(_elem) {
-    var _elems = document.getElementsByTagName("input");
-    var _currentState = _elem.checked;
-    var _elemsLength = _elems.length;
+function SingleSelectCheckbox(elem) {
+    var elems = document.getElementsByTagName("input");
+    var currentState = elem.checked;
+    var elemsLength = elems.length;
 
-    for(var _i = 0; _i < _elemsLength; _i++) {
-        if (_elems[_i].type === "checkbox") {
-            _elems[_i].checked = false;   
+    for(var i = 0; i < elemsLength; i++) {
+        if (elems[i].type === "checkbox") {
+            elems[i].checked = false;   
         }
     }
 
-    _elem.checked = _currentState;
+    elem.checked = currentState;
 }
 
-function UncheckRoot(_checkboxRoot) {
-    if ($("#" + _checkboxRoot).is(":checked") == true) {
-        _elem = $("input[name=" + _checkboxRoot + "]:checkbox");
-        _elem.attr("checked", false);
+function UncheckRoot(checkboxRoot) {
+    if ($("#" + checkboxRoot).is(":checked") == true) {
+        elem = $("input[name=" + checkboxRoot + "]:checkbox");
+        elem.attr("checked", false);
     }
 }
 
 function CheckUncheckAll(
-    _checkboxRoot,
-    _checkboxChild
+    checkboxRoot,
+    checkboxChild
 ) {
-    _elem = $("input[name=" + _checkboxChild + "]:checkbox");
-    _elem.attr("checked", $("#" + _checkboxRoot).is(":checked"));
+    elem = $("input[name=" + checkboxChild + "]:checkbox");
+    elem.attr("checked", $("#" + checkboxRoot).is(":checked"));
 }
 
-function HideShowObj(_id) {
-    if ($("#" + _id).css("display") == "none")
-        $("#" + _id).show("fade")
+function HideShowObj(id) {
+    if ($("#" + id).css("display") == "none")
+        $("#" + id).show("fade")
     else
-        $("#" + _id).hide({
+        $("#" + id).hide({
             effect: "drop",
             direction: "down",
             distance: 100,
@@ -925,57 +973,57 @@ function HideShowObj(_id) {
         });
 }
 
-function GetDateObject(_str) {
-    if (_str.length > 0) {
-        var _arr = _str.split("/");
+function GetDateObject(str) {
+    if (str.length > 0) {
+        var arr = str.split("/");
         
-        return (_arr[2] + "-" + _arr[1] + "-" + _arr[0]);
+        return (arr[2] + "-" + arr[1] + "-" + arr[0]);
     }
     else
-        return _str;
+        return str;
 }
 
 function DateDiff(
-    _date1,
-    _date2,
-    _interval
+    date1,
+    date2,
+    interval
 ) {
-    var _second = 1000;
-    var _minute = _second * 60;
-    var _hour = _minute * 60;
-    var _day = _hour * 24;
-    var _week = _day * 7;
+    var second = 1000;
+    var minute = (second * 60);
+    var hour = (minute * 60);
+    var day = (hour * 24);
+    var week = (day * 7);
 
-    _date1 = new Date(_date1);
-    _date2 = new Date(_date2);
+    date1 = new Date(date1);
+    date2 = new Date(date2);
     
-    var _timeDiff = _date2 - _date1;
+    var timeDiff = (date2 - date1);
 
-    if (isNaN(_timeDiff))
+    if (isNaN(timeDiff))
         return NaN;
     
-    switch (_interval) {
+    switch (interval) {
         case "years":
-            return _date2.getFullYear() - _date1.getFullYear();
+            return (date2.getFullYear() - date1.getFullYear());
         case "months":
-            return ((_date2.getFullYear() * 12 + _date2.getMonth()) - (_date1.getFullYear() * 12 + _date1.getMonth()));
+            return ((date2.getFullYear() * 12 + date2.getMonth()) - (date1.getFullYear() * 12 + date1.getMonth()));
         case "weeks":
-            return Math.floor(_timeDiff / _week);
+            return Math.floor(timeDiff / week);
         case "days":
-            return Math.floor(_timeDiff / _day);
+            return Math.floor(timeDiff / day);
         case "hours":
-            return Math.floor(_timeDiff / _hour);
+            return Math.floor(timeDiff / hour);
         case "minutes":
-            return Math.floor(_timeDiff / _minute);
+            return Math.floor(timeDiff / minute);
         case "seconds":
-            return Math.floor(_timeDiff / _second);
+            return Math.floor(timeDiff / second);
         default:
             return undefined;
     }
 }
 
-function DialogLoading(_loadingMsg) {
-    $("#dialog-loading").html(_loadingMsg);
+function DialogLoading(loadingMsg) {
+    $("#dialog-loading").html(loadingMsg);
     $("#dialog-loading").dialog({
         dialogClass: "class-dialog-loading",
         position: "center",
@@ -988,12 +1036,12 @@ function DialogLoading(_loadingMsg) {
 }
 
 function DialogMessage(
-    _alertMsg,
-    _focus,
-    _closeFrm,
-    _idActive
+    alertMsg,
+    focus,
+    closeFrm,
+    idActive
 ) {
-    $("#dialog-message").html(_alertMsg);
+    $("#dialog-message").html(alertMsg);
     $("#dialog-message").dialog({
         dialogClass: "class-dialog-message",
         position: "center",
@@ -1009,20 +1057,20 @@ function DialogMessage(
             "ตกลง": function () {
                 $(this).dialog("close");
                 
-                if (_closeFrm == true)
+                if (closeFrm == true)
                     $("#dialog-form1").dialog("close");
             
-                $(_focus).focus();
+                $(focus).focus();
 
-                if (_idActive.length > 0)
-                    $("#" + _idActive).removeClass("active");
+                if (idActive.length > 0)
+                    $("#" + idActive).removeClass("active");
             }
         }
     });
 }
 
-function DialogConfirm(_confirmMsg) {
-    $("#dialog-confirm").html(_confirmMsg);
+function DialogConfirm(confirmMsg) {
+    $("#dialog-confirm").html(confirmMsg);
     $("#dialog-confirm").dialog({
         dialogClass: "class-dialog-confirm",
         position: "center",
@@ -1035,30 +1083,30 @@ function DialogConfirm(_confirmMsg) {
 }
 
 function DialogForm(
-    _frmIndex,
-    _frm,
-    _width,
-    _height,
-    _title,
-    _idActive
+    frmIndex,
+    frm,
+    width,
+    height,
+    title,
+    idActive
 ) {
     $("body").css("overflow", "hidden");
 
-    if (_frmIndex == 2)
+    if (frmIndex == 2)
         $(".dialog-overlay1").css("overflow-y", "hidden");
 
-    if (_frmIndex == 3)
+    if (frmIndex == 3)
         $(".dialog-overlay2").css("overflow-y", "hidden");
 
-    $("#dialog-form" + _frmIndex).html(_frm);
-    $("#dialog-form" + _frmIndex).dialog({
-        dialogClass: "class-dialog-form class-dialog-form-" + _title,
+    $("#dialog-form" + frmIndex).html(frm);
+    $("#dialog-form" + frmIndex).dialog({
+        dialogClass: ("class-dialog-form class-dialog-form-" + title),
         position: "center",
         modal: true,
         resizable: false,
         draggable: true,
-        width: _width,
-        height: (_height == 0 ? "auto" : _height),
+        width: width,
+        height: (height == 0 ? "auto" : height),
         /*
         show: { 
             effect: "fade"
@@ -1071,46 +1119,48 @@ function DialogForm(
         },
         */
         open: function () {
-            var _dialogObj = $("#dialog-form" + _frmIndex).closest("div[role='dialog']");
-            var _dialogOverlay = ("dialog-overlay" + _frmIndex);
-            var _lastOverlayZIndex = $(".ui-widget-overlay:eq(" + ($(".ui-widget-overlay").length - 1) + ")").css("z-index");
+            var dialogObj = $("#dialog-form" + frmIndex).closest("div[role='dialog']");
+            var dialogOverlay = ("dialog-overlay" + frmIndex);
+            var lastOverlayZIndex = $(".ui-widget-overlay:eq(" + ($(".ui-widget-overlay").length - 1) + ")").css("z-index");
 
-            _dialogObj.wrap("<div class='" + _dialogOverlay + "'>");
-            $("." + _dialogOverlay).css("z-index", (parseInt(_lastOverlayZIndex) + 1));
+            dialogObj.wrap("<div class='" + dialogOverlay + "'>");
+            $("." + dialogOverlay).css("z-index", (parseInt(lastOverlayZIndex) + 1));
 
-            if (_dialogObj.height() <= $("." + _dialogOverlay).height()) {
-                _dialogObj.position({
+            if (dialogObj.height() <= $("." + dialogOverlay).height()) {
+                dialogObj.position({
                     my: "center",
                     at: "center",
-                    of: ("." + _dialogOverlay)
+                    of: ("." + dialogOverlay)
                 });
             }
             else
-                _dialogObj.css("top", "0");
+                dialogObj.css("top", "0");
 
-            _dialogObj.css("position", "absolute");
+            dialogObj.css("position", "absolute");
         },
         close: function () {
-            if (_idActive.length > 0) $("#" + _idActive).removeClass("active");
+            if (idActive.length > 0)
+                $("#" + idActive).removeClass("active");
+
             $(".combobox-input").autocomplete("close");
-            $(".dialog-overlay" + _frmIndex).remove();
+            $(".dialog-overlay" + frmIndex).remove();
             
-            if (_frmIndex == 1)
+            if (frmIndex == 1)
                 $("body").css("overflow", "auto");
 
-            if (_frmIndex == 2)
+            if (frmIndex == 2)
                 $(".dialog-overlay1").css("overflow-y", "auto");
 
-            if (_frmIndex == 3)
+            if (frmIndex == 3)
                 $(".dialog-overlay2").css("overflow-y", "auto");
         }
     });      
 }
 
-function SetPositionDialogForm(_frmIndex) {
-    var _dialogObj = $("#dialog-form" + _frmIndex).closest("div[role='dialog']");
-    var _dialogOverlay = ("dialog-overlay" + _frmIndex);
+function SetPositionDialogForm(frmIndex) {
+    var dialogObj = $("#dialog-form" + frmIndex).closest("div[role='dialog']");
+    var dialogOverlay = ("dialog-overlay" + frmIndex);
 
-    if (_dialogObj.height() > $("." + _dialogOverlay).height())
-        _dialogObj.css("top", "0");
+    if (dialogObj.height() > $("." + dialogOverlay).height())
+        dialogObj.css("top", "0");
 }

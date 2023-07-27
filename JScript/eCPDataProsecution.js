@@ -1,55 +1,56 @@
-﻿function InitDocumentCopy(_doc) {
-    $("#" + _doc + "-copy-linkpreview a").click(function () {
-        DownloadDocumentCopy(_doc);
+﻿function InitDocumentCopy(doc) {
+    $("#" + doc + "-copy-linkpreview a").click(function () {
+        DownloadDocumentCopy(doc);
     });
 
-    $("#" + _doc + "-copy-file").change(function () {
-        $("#" + _doc + "-copy").val("");
-        $("#" + _doc + "-copy-preview, " +
-          "#" + _doc + "-copy-nopreview, " +
-          "#" + _doc + "-copy-linkpreview").addClass("hidden");
+    $("#" + doc + "-copy-file").change(function () {
+        $("#" + doc + "-copy").val("");
+        $("#" + doc + "-copy-preview, " +
+          "#" + doc + "-copy-nopreview, " +
+          "#" + doc + "-copy-linkpreview").addClass("hidden");
 
-        if (this.files && this.files[0]) {
-            var _fd = new FormData();
-            var _files = this.files[0];
+        if (this.files &&
+            this.files[0]) {
+            var fd = new FormData();
+            var files = this.files[0];
 
-            if (_files.type == "application/pdf") {
-                if (_files.size <= 4194304) {
-                    _fd.append("action", "preview");
-                    _fd.append("file", _files);
+            if (files.type == "application/pdf") {
+                if (files.size <= 4194304) {
+                    fd.append("action", "preview");
+                    fd.append("file", files);
 
                     $.ajax({
                         beforeSend: function () {
-                            $("#" + _doc + "-copy-input .uploadfile-container .uploadfile-form, " +
-                              "#" + _doc + "-copy-input .uploadfile-container .form-discription-style, " +
-                              "#" + _doc + "-copy-preview").addClass("hidden");
-                            $("#" + _doc + "-copy-input .uploadfile-container .preloading-inline").removeClass("hidden");
+                            $("#" + doc + "-copy-input .uploadfile-container .uploadfile-form, " +
+                              "#" + doc + "-copy-input .uploadfile-container .form-discription-style, " +
+                              "#" + doc + "-copy-preview").addClass("hidden");
+                            $("#" + doc + "-copy-input .uploadfile-container .preloading-inline").removeClass("hidden");
                         },
                         async: true,
                         type: "POST",
                         url: "FileProcess.aspx",
-                        data: _fd,
+                        data: fd,
                         contentType: false,
                         processData: false,
-                        success: function (_result) {
-                            $("#" + _doc + "-copy").val("data:" + _files.type + ";base64," + _result);
+                        success: function (result) {
+                            $("#" + doc + "-copy").val("data:" + files.type + ";base64," + result);
 
-                            PreviewDocumentCopy(_doc, function (_success) {
-                                if (_success == true) {
-                                    $("#" + _doc + "-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
-                                    $("#" + _doc + "-copy-input .uploadfile-container .uploadfile-form, " +
-                                      "#" + _doc + "-copy-input .uploadfile-container .form-discription-style, " +
-                                      "#" + _doc + "-copy-preview, " +
-                                      "#" + _doc + "-copy-linkpreview").removeClass("hidden");
+                            PreviewDocumentCopy(doc, function (success) {
+                                if (success == true) {
+                                    $("#" + doc + "-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
+                                    $("#" + doc + "-copy-input .uploadfile-container .uploadfile-form, " +
+                                      "#" + doc + "-copy-input .uploadfile-container .form-discription-style, " +
+                                      "#" + doc + "-copy-preview, " +
+                                      "#" + doc + "-copy-linkpreview").removeClass("hidden");
 
                                     DialogMessage("อัพโหลดเอกสารเรียบร้อย", "", false, "");
                                 }
                                 else {
-                                    $("#" + _doc + "-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
-                                    $("#" + _doc + "-copy-input .uploadfile-container .uploadfile-form, " +
-                                      "#" + _doc + "-copy-input .uploadfile-container .form-discription-style, " +
-                                      "#" + _doc + "-copy-nopreview, " +
-                                      "#" + _doc + "-copy-linkpreview").removeClass("hidden");
+                                    $("#" + doc + "-copy-input .uploadfile-container .preloading-inline").addClass("hidden");
+                                    $("#" + doc + "-copy-input .uploadfile-container .uploadfile-form, " +
+                                      "#" + doc + "-copy-input .uploadfile-container .form-discription-style, " +
+                                      "#" + doc + "-copy-nopreview, " +
+                                      "#" + doc + "-copy-linkpreview").removeClass("hidden");
 
                                     DialogMessage("อัพโหลดเอกสารเรียบร้อย", "", false, "");
                                 }
@@ -66,13 +67,13 @@
     });
 }
 
-function DownloadDocumentCopy(_doc) {
+function DownloadDocumentCopy(doc) {
     DialogLoading("กำลังโหลด...");
 
-    var _file = btoa($("#" + _doc + "-copy").val())
+    var file = btoa($("#" + doc + "-copy").val())
 
-    $("#download-" + _doc + "copy-form #file").val(_file);
-    $("#download-" + _doc + "copy-form").submit();
+    $("#download-" + doc + "copy-form #file").val(file);
+    $("#download-" + doc + "copy-form").submit();
 
     window.setTimeout(function () {
         $("#dialog-loading").dialog("close");
@@ -80,65 +81,69 @@ function DownloadDocumentCopy(_doc) {
 }
 
 function PreviewDocumentCopy(
-    _doc,
-    _callbackFunc
+    doc,
+    callbackFunc
 ) {
     try {
-        var _pdfData = atob($("#" + _doc + "-copy").val().split("base64,")[1]);
-        var _pdfjs = window["pdfjs-dist/build/pdf"];
+        var pdfData = atob($("#" + doc + "-copy").val().split("base64,")[1]);
+        var pdfjs = window["pdfjs-dist/build/pdf"];
 
-        _pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.worker.min.js";
+        pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.8.335/pdf.worker.min.js";
 
-        var _canvas = document.getElementById(_doc + "-copy-preview");
-        var _context = _canvas.getContext("2d");
-        var _scale = 0.5;
+        var canvas = document.getElementById(doc + "-copy-preview");
+        var context = canvas.getContext("2d");
+        var scale = 0.5;
 
-        _pdfjs.getDocument({ data: _pdfData }).promise.then(function (_pdf) {
-            _pdf.getPage(1).then(function (_page) {
-                var _viewport = _page.getViewport({ scale: _scale });
-
-                _canvas.width = _viewport.width;
-                _canvas.height = _viewport.height;
-                _page.render({
-                    canvasContext: _context,
-                    viewport: _viewport
+        pdfjs.getDocument({
+            data: pdfData
+        }).promise.then(function (pdf) {
+            pdf.getPage(1).then(function (page) {
+                var viewport = page.getViewport({
+                    scale: scale
                 });
 
-                _callbackFunc(true);
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                });
+
+                callbackFunc(true);
             });
         });
     }
-    catch (_e) {
-        _callbackFunc(false);
+    catch (e) {
+        callbackFunc(false);
     };
 }
 
-function ResetFrmDocumentCopy(_doc) {
-    $("#" + _doc + "-copy").val($("#" + _doc + "-copy-hidden").val());
+function ResetFrmDocumentCopy(doc) {
+    $("#" + doc + "-copy").val($("#" + doc + "-copy-hidden").val());
 
-    if ($("#" + _doc + "-copy").val().length > 0) {
-        PreviewDocumentCopy(_doc, function (_success) {
-            if (_success == true) {
-                $("#" + _doc + "-copy-preview, " +
-                  "#" + _doc + "-copy-linkpreview").removeClass("hidden");
+    if ($("#" + doc + "-copy").val().length > 0) {
+        PreviewDocumentCopy(doc, function (success) {
+            if (success == true) {
+                $("#" + doc + "-copy-preview, " +
+                  "#" + doc + "-copy-linkpreview").removeClass("hidden");
             }
             else {
-                $("#" + _doc + "-copy-nopreview, " +
-                  "#" + _doc + "-copy-linkpreview").removeClass("hidden");
+                $("#" + doc + "-copy-nopreview, " +
+                  "#" + doc + "-copy-linkpreview").removeClass("hidden");
             }
         });
     }
     else {
-        $("#" + _doc + "-copy-preview, " +
-          "#" + _doc + "-copy-nopreview, " +
-          "#" + _doc + "-copy-linkpreview").addClass("hidden");
+        $("#" + doc + "-copy-preview, " +
+          "#" + doc + "-copy-nopreview, " +
+          "#" + doc + "-copy-linkpreview").addClass("hidden");
     }
 }
 
 function InitCPTransProsecution() {
-    var _statusPayment = $("#statuspayment-hidden").val();
+    var statusPayment = $("#statuspayment-hidden").val();
     
-    if (_statusPayment != "3") {
+    if (statusPayment != "3") {
         InitDocumentCopy("judgment");
         InitDocumentCopy("execution");
         InitDocumentCopy("executionwithdraw");
@@ -158,26 +163,26 @@ function ResetFrmCPTransProsecution() {
     ResetFrmCPTransProsecutionWithDoc("executionwithdraw");
 }
 
-function ResetFrmCPTransProsecutionWithDoc(_doc) {
-    var _formatPayment = $("#format-payment-hidden").val();
-    var _statusPayment = $("#statuspayment-hidden").val();
+function ResetFrmCPTransProsecutionWithDoc(doc) {
+    var formatPayment = $("#format-payment-hidden").val();
+    var statusPayment = $("#statuspayment-hidden").val();
 
-    $("#" + _doc + "-lawyer").html($("#" + _doc + "-lawyer-hidden").val());
+    $("#" + doc + "-lawyer").html($("#" + doc + "-lawyer-hidden").val());
 
-    if (_doc == "complaint") {        
-        var _complaintCapital = ""
+    if (doc == "complaint") {        
+        var complaintCapital = ""
 
-        if (_formatPayment == "1")
-            _complaintCapital = $("#totalpenalty-hidden").val();
+        if (formatPayment == "1")
+            complaintCapital = $("#totalpenalty-hidden").val();
 
-        if (_formatPayment == "2")
-            _complaintCapital = (_statusPayment == "1" ? $("#totalpenalty-hidden").val() : $("#totalremain-hidden").val());
+        if (formatPayment == "2")
+            complaintCapital = (statusPayment == "1" ? $("#totalpenalty-hidden").val() : $("#totalremain-hidden").val());
 
-        var _complaintActionDate = $("#complaint-actiondate-hidden").val();
+        var complaintActionDate = $("#complaint-actiondate-hidden").val();
 
-        if (_complaintActionDate.length > 0) {
+        if (complaintActionDate.length > 0) {
             $("#complaint-actiondate-y").removeClass("hidden");
-            $("#complaint-actiondate").html(_complaintActionDate);
+            $("#complaint-actiondate").html(complaintActionDate);
             $("#complaint-actiondate-n").addClass("hidden");
         }
         else {
@@ -187,19 +192,19 @@ function ResetFrmCPTransProsecutionWithDoc(_doc) {
         }
 
         $("#complaint-blackcaseno").val($("#complaint-blackcaseno-hidden").val());
-        $("#complaint-capital").val($("#complaint-capital-hidden").val().length > 0 ? $("#complaint-capital-hidden").val() : _complaintCapital);
+        $("#complaint-capital").val($("#complaint-capital-hidden").val().length > 0 ? $("#complaint-capital-hidden").val() : complaintCapital);
         $("#complaint-interest").val($("#complaint-interest-hidden").val());
         TextboxDisable("#complaint-capital");
         TextboxDisable("#complaint-totalpayment");
         CalTotalPayment();
     }
 
-    if (_doc == "judgment") {
-        var _judgmentActionDate = $("#judgment-actiondate-hidden").val();
+    if (doc == "judgment") {
+        var judgmentActionDate = $("#judgment-actiondate-hidden").val();
 
-        if (_judgmentActionDate.length > 0) {
+        if (judgmentActionDate.length > 0) {
             $("#judgment-actiondate-y").removeClass("hidden");
-            $("#judgment-actiondate").html(_judgmentActionDate);
+            $("#judgment-actiondate").html(judgmentActionDate);
             $("#judgment-actiondate-n").addClass("hidden");
         }
         else {
@@ -219,12 +224,12 @@ function ResetFrmCPTransProsecutionWithDoc(_doc) {
         $("#judgment-remark").val($("#judgment-remark-hidden").val());
     }
 
-    if (_doc == "execution") {
-        var _executionActionDate = $("#execution-actiondate-hidden").val();
+    if (doc == "execution") {
+        var executionActionDate = $("#execution-actiondate-hidden").val();
 
-        if (_executionActionDate.length > 0) {
+        if (executionActionDate.length > 0) {
             $("#execution-actiondate-y").removeClass("hidden");
-            $("#execution-actiondate").html(_executionActionDate);
+            $("#execution-actiondate").html(executionActionDate);
             $("#execution-actiondate-n").addClass("hidden");
         }
         else {
@@ -238,12 +243,12 @@ function ResetFrmCPTransProsecutionWithDoc(_doc) {
         ResetFrmDocumentCopy("execution");
     }
 
-    if (_doc == "executionwithdraw") {
-        var _executionWithdrawActionDate = $("#executionwithdraw-actiondate-hidden").val();
+    if (doc == "executionwithdraw") {
+        var executionWithdrawActionDate = $("#executionwithdraw-actiondate-hidden").val();
 
-        if (_executionWithdrawActionDate.length > 0) {
+        if (executionWithdrawActionDate.length > 0) {
             $("#executionwithdraw-actiondate-y").removeClass("hidden");
-            $("#executionwithdraw-actiondate").html(_executionWithdrawActionDate);
+            $("#executionwithdraw-actiondate").html(executionWithdrawActionDate);
             $("#executionwithdraw-actiondate-n").addClass("hidden");
         }
         else {
@@ -260,123 +265,128 @@ function ResetFrmCPTransProsecutionWithDoc(_doc) {
 }
 
 function CalTotalPayment() {
-    var _complaintCapital = DelCommas("complaint-capital");
-    var _complaintInterest = ($("#complaint-interest").val().length > 0 ? DelCommas("complaint-interest") : "0.00");    
-    var _complaintTotalPayment = (parseFloat(_complaintCapital) + parseFloat(_complaintInterest));
+    var complaintCapital = DelCommas("complaint-capital");
+    var complaintInterest = ($("#complaint-interest").val().length > 0 ? DelCommas("complaint-interest") : "0.00");    
+    var complaintTotalPayment = (parseFloat(complaintCapital) + parseFloat(complaintInterest));
 
-    $("#complaint-totalpayment").val(_complaintTotalPayment.toLocaleString());
+    $("#complaint-totalpayment").val(complaintTotalPayment.toLocaleString());
 }
 
-function ValidateCPTransProsecution(_doc) {
-    var _error = false;
-    var _msg;
-    var _focus;
+function ValidateCPTransProsecution(doc) {
+    var error = false;
+    var msg;
+    var focus;
 
-    if (_doc == "complaint") {
-        var _complaintBlackCaseNo = $("#complaint-blackcaseno").val();
-        var _complaintInterest = DelCommas("complaint-interest");
+    if (doc == "complaint") {
+        var complaintBlackCaseNo = $("#complaint-blackcaseno").val();
+        var complaintInterest = DelCommas("complaint-interest");
 
-        if (_error == false && _complaintBlackCaseNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่คำฟ้อง - คดีหมายเลขดำที่";
-            _focus = "#complaint-blackcaseno";
+        if (error == false &&
+            complaintBlackCaseNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่คำฟ้อง - คดีหมายเลขดำที่";
+            focus = "#complaint-blackcaseno";
         }
 
-        if (_error == false && _complaintInterest.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่คำฟ้อง - ดอกเบี้ยถึงวันฟ้อง";
-            _focus = "#complaint-interest";
-        }
-    }
-
-    if (_doc == "judgment") {
-        var _judgmentRedCaseNo = $("#judgment-redcaseno").val();
-        var _judgmentResult = $("input[name=judgment-result]:checked");
-
-        if (_error == false && _judgmentRedCaseNo.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่คำพิพากษา - คดีหมายเลขแดงที่";
-            _focus = "#judgment-redcaseno";
-        }
-
-        if (_error == false && _judgmentResult.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่คำพิพากษา - ผลคำพิพากษา";
-            _focus = "#judgment-input";
+        if (error == false &&
+            complaintInterest.length == 0) {
+            error = true;
+            msg = "กรุณาใส่คำฟ้อง - ดอกเบี้ยถึงวันฟ้อง";
+            focus = "#complaint-interest";
         }
     }
 
-    if (_doc == "execution") {
-        var _executionDate = $("#execution-date").val();
+    if (doc == "judgment") {
+        var judgmentRedCaseNo = $("#judgment-redcaseno").val();
+        var judgmentResult = $("input[name=judgment-result]:checked");
 
-        if (_error == false && _executionDate.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่หมายบังคับคดี - ลงวันที่";
-            _focus = "#execution-date";
+        if (error == false &&
+            judgmentRedCaseNo.length == 0) {
+            error = true;
+            msg = "กรุณาใส่คำพิพากษา - คดีหมายเลขแดงที่";
+            focus = "#judgment-redcaseno";
+        }
+
+        if (error == false &&
+            judgmentResult.length == 0) {
+            error = true;
+            msg = "กรุณาใส่คำพิพากษา - ผลคำพิพากษา";
+            focus = "#judgment-input";
         }
     }
 
-    if (_doc == "executionwithdraw") {
-        var _executionWithdrawDate = $("#executionwithdraw-date").val();
+    if (doc == "execution") {
+        var executionDate = $("#execution-date").val();
 
-        if (_error == false && _executionWithdrawDate.length == 0) {
-            _error = true;
-            _msg = "กรุณาใส่หมายถอนการบังคับคดี - ลงวันที่";
-            _focus = "#executionwithdraw-date";
+        if (error == false &&
+            executionDate.length == 0) {
+            error = true;
+            msg = "กรุณาใส่หมายบังคับคดี - ลงวันที่";
+            focus = "#execution-date";
         }
     }
 
-    if (_error == true) {
-        DialogMessage(_msg, _focus, false, "");
+    if (doc == "executionwithdraw") {
+        var executionWithdrawDate = $("#executionwithdraw-date").val();
+
+        if (error == false &&
+            executionWithdrawDate.length == 0) {
+            error = true;
+            msg = "กรุณาใส่หมายถอนการบังคับคดี - ลงวันที่";
+            focus = "#executionwithdraw-date";
+        }
+    }
+
+    if (error == true) {
+        DialogMessage(msg, focus, false, "");
         return false;
     }
 
     return true;
-
 }
 
-function ConfirmActionCPTransProsecution(_doc) {
+function ConfirmActionCPTransProsecution(doc) {
     DialogConfirm("ต้องการบันทึกข้อมูลนี้หรือไม่");
     $("#dialog-confirm").dialog({
         buttons: {
             "ตกลง": function () {
                 $(this).dialog("close");
 
-                if (ValidateCPTransProsecution(_doc)) {
-                    var _send = new Array();
-                    _send[_send.length] = "cp2id=" + $("#cp2id").val();
-                    _send[_send.length] = "document=" + _doc;
-                    _send[_send.length] = (_doc + "lawyerfullname=" + $("#" + _doc + "-lawyer-fullname-hidden").val());
-                    _send[_send.length] = (_doc + "lawyerphonenumber=" + $("#" + _doc + "-lawyer-phonenumber-hidden").val());
-                    _send[_send.length] = (_doc + "lawyermobilenumber=" + $("#" + _doc + "-lawyer-mobilenumber-hidden").val());
-                    _send[_send.length] = (_doc + "lawyeremail=" + $("#" + _doc + "-lawyer-email-hidden").val());
+                if (ValidateCPTransProsecution(doc)) {
+                    var send = new Array();
+                    send[send.length] = ("cp2id=" + $("#cp2id").val());
+                    send[send.length] = ("document=" + doc);
+                    send[send.length] = (doc + "lawyerfullname=" + $("#" + doc + "-lawyer-fullname-hidden").val());
+                    send[send.length] = (doc + "lawyerphonenumber=" + $("#" + doc + "-lawyer-phonenumber-hidden").val());
+                    send[send.length] = (doc + "lawyermobilenumber=" + $("#" + doc + "-lawyer-mobilenumber-hidden").val());
+                    send[send.length] = (doc + "lawyeremail=" + $("#" + doc + "-lawyer-email-hidden").val());
 
-                    if (_doc == "complaint") {
-                        _send[_send.length] = "complaintblackcaseno=" + $("#complaint-blackcaseno").val();
-                        _send[_send.length] = "complaintcapital=" + DelCommas("complaint-capital");
-                        _send[_send.length] = "complaintinterest=" + ($("#complaint-interest").val() != "0.00" ? DelCommas("complaint-interest") : "");
+                    if (doc == "complaint") {
+                        send[send.length] = ("complaintblackcaseno=" + $("#complaint-blackcaseno").val());
+                        send[send.length] = ("complaintcapital=" + DelCommas("complaint-capital"));
+                        send[send.length] = ("complaintinterest=" + ($("#complaint-interest").val() != "0.00" ? DelCommas("complaint-interest") : ""));
                     }
 
-                    if (_doc == "judgment") {
-                        _send[_send.length] = "judgmentredcaseno=" + $("#judgment-redcaseno").val();
-                        _send[_send.length] = "judgmentverdict=" + $("input[name=judgment-result]:checked").val();
-                        _send[_send.length] = "judgmentcopy=" + ($("#judgment-copy").val().length > 0 ? btoa($("#judgment-copy").val()) : "");
-                        _send[_send.length] = "judgmentremark=" + $("#judgment-remark").val();
+                    if (doc == "judgment") {
+                        send[send.length] = ("judgmentredcaseno=" + $("#judgment-redcaseno").val());
+                        send[send.length] = ("judgmentverdict=" + $("input[name=judgment-result]:checked").val());
+                        send[send.length] = ("judgmentcopy=" + ($("#judgment-copy").val().length > 0 ? btoa($("#judgment-copy").val()) : ""));
+                        send[send.length] = ("judgmentremark=" + $("#judgment-remark").val());
 
                     }
 
-                    if (_doc == "execution") {
-                        _send[_send.length] = "executiondate=" + $("#execution-date").val();
-                        _send[_send.length] = "executioncopy=" + ($("#execution-copy").val().length > 0 ? btoa($("#execution-copy").val()) : "");
+                    if (doc == "execution") {
+                        send[send.length] = ("executiondate=" + $("#execution-date").val());
+                        send[send.length] = ("executioncopy=" + ($("#execution-copy").val().length > 0 ? btoa($("#execution-copy").val()) : ""));
                     }
 
-                    if (_doc == "executionwithdraw") {
-                        _send[_send.length] = "executionwithdrawdate=" + $("#executionwithdraw-date").val();
-                        _send[_send.length] = "executionwithdrawreason=" + $("#executionwithdraw-reason").val();
-                        _send[_send.length] = "executionwithdrawcopy=" + ($("#executionwithdraw-copy").val().length > 0 ? btoa($("#executionwithdraw-copy").val()) : "");
+                    if (doc == "executionwithdraw") {
+                        send[send.length] = ("executionwithdrawdate=" + $("#executionwithdraw-date").val());
+                        send[send.length] = ("executionwithdrawreason=" + $("#executionwithdraw-reason").val());
+                        send[send.length] = ("executionwithdrawcopy=" + ($("#executionwithdraw-copy").val().length > 0 ? btoa($("#executionwithdraw-copy").val()) : ""));
                     }
 
-                    AddUpdateCPTransProsecution(_send, _doc);
+                    AddUpdateCPTransProsecution(send, doc);
                 }
             },
             "ยกเลิก": function () {
@@ -387,14 +397,14 @@ function ConfirmActionCPTransProsecution(_doc) {
 }
 
 function AddUpdateCPTransProsecution(
-    _send,
-    _doc
+    send,
+    doc
 ) {
-    var _RCID = $("#RCID-hidden").val();
-    var _action = (_RCID.length > 0 ? "update" : "add");
+    var RCID = $("#RCID-hidden").val();
+    var action = (RCID.length > 0 ? "update" : "add");
 
-    AddUpdateData(_action, _action + "cptransprosecution", _send, false, "", "", "", false, function (_result) {
-        if (_result == "1") {
+    AddUpdateData(action, (action + "cptransprosecution"), send, false, "", "", "", false, function (result) {
+        if (result == "1") {
             GotoSignin();
             return;
         }
@@ -405,44 +415,44 @@ function AddUpdateCPTransProsecution(
                 "ตกลง": function () {
                     $(this).dialog("close");
 
-                    var _dt = new Date();
-                    var _thLongDate = (_dt.getDate() + " " + _monthNames[_dt.getMonth()] + " " + (_dt.getFullYear() + 543));
+                    var dt = new Date();
+                    var thLongDate = (dt.getDate() + " " + monthNames[dt.getMonth()] + " " + (dt.getFullYear() + 543));
 
-                    if (_action == "add")
+                    if (action == "add")
                         $("#RCID-hidden").val($("#cp2id").val());
 
-                    $("#" + _doc + "-lawyer-hidden").val($("#" + _doc + "-lawyer-fullname-hidden").val());
+                    $("#" + doc + "-lawyer-hidden").val($("#" + doc + "-lawyer-fullname-hidden").val());
                     
-                    if (_doc == "complaint") {
+                    if (doc == "complaint") {
                         $("#complaint-blackcaseno-hidden").val($("#complaint-blackcaseno").val());
                         $("#complaint-capital-hidden").val($("#complaint-capital").val());
                         $("#complaint-interest-hidden").val($("#complaint-interest").val());
-                        $("#complaint-actiondate-hidden").val(_thLongDate);
+                        $("#complaint-actiondate-hidden").val(thLongDate);
                     }
 
-                    if (_doc == "judgment") {
+                    if (doc == "judgment") {
                         $("#judgment-redcaseno-hidden").val($("#judgment-redcaseno").val());
                         $("#judgment-result-hidden").val($("input[name=judgment-result]:checked").val());
                         $("#judgment-copy-hidden").val($("#judgment-copy").val());
                         $("#judgment-remark-hidden").val($("#judgment-remark").val());
-                        $("#judgment-actiondate-hidden").val(_thLongDate);
+                        $("#judgment-actiondate-hidden").val(thLongDate);
                     }
 
-                    if (_doc == "execution") {
+                    if (doc == "execution") {
                         $("#execution-date-hidden").val($("#execution-date").val());
                         $("#execution-copy-hidden").val($("#execution-copy").val());
-                        $("#execution-actiondate-hidden").val(_thLongDate);
+                        $("#execution-actiondate-hidden").val(thLongDate);
                     }
 
-                    if (_doc == "executionwithdraw") {
+                    if (doc == "executionwithdraw") {
                         $("#executionwithdraw-date-hidden").val($("#executionwithdraw-date").val());
                         $("#executionwithdraw-reason-hidden").val($("#executionwithdraw-reason").val());
                         $("#executionwithdraw-copy-hidden").val($("#executionwithdraw-copy").val());
-                        $("#executionwithdraw-actiondate-hidden").val(_thLongDate);
+                        $("#executionwithdraw-actiondate-hidden").val(thLongDate);
                     }
 
-                    GoToElement(_doc);
-                    ResetFrmCPTransProsecutionWithDoc(_doc);
+                    GoToElement(doc);
+                    ResetFrmCPTransProsecutionWithDoc(doc);
                 }
             }
         });
