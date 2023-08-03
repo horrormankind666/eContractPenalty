@@ -97,7 +97,10 @@ function SetPage() {
     });
 }
 
-function GoToPage(section, order) {
+function GoToPage(
+    section,
+    order
+) {
     var area;
     var pid;
 
@@ -162,49 +165,49 @@ function GoToPage(section, order) {
                 area = "sec";
                 break;
             /*
-            รับแจ้งนักศึกษาผิดสัญญา
+            แจ้งผู้ผิดสัญญา
             */
             case 8:
                 pid = 8;
                 area = "sec";
                 break;
             /*
-            บันทึกการชำระหนี้ / ดอกเบี้ย
+            รับแจ้งนักศึกษาผิดสัญญา
             */
             case 9:
                 pid = 9;
                 area = "sec";
                 break;
             /*
-            รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
+            บันทึกการชำระหนี้ / ดอกเบี้ย
             */
             case 10:
                 pid = 10;
                 area = "sec";
                 break;
             /*
-            รายงาน - ตารางคำนวณเงินต้นและดอกเบี้ย
+            รายงาน - เอกสารสัญญาการเป็นนักศึกษา
             */
             case 11:
                 pid = 11;
                 area = "sec";
                 break;
             /*
-            รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
+            รายงาน - สถานะขั้นตอนการดำเงินงานของผู้ผิดสัญญา
             */
             case 12:
                 pid = 12;
                 area = "sec";
                 break;
             /*
-            รายงาน - หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
+            รายงาน - ตารางคำนวณเงินต้นและดอกเบี้ย
             */
             case 13:
                 pid = 13;
                 area = "sec";
                 break;
             /*
-            รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
+            รายงาน - สถิติการชำระหนี้ของผู้ผิดสัญญา
             */
             case 14:
                 pid = 14;
@@ -218,38 +221,45 @@ function GoToPage(section, order) {
                 area = "sec";
                 break;
             /*
-            รายงาน - เอกสารสัญญาการเป็นนักศึกษา
+            รายงาน - สถิติการทำสัญญาและการผิดสัญญาของนักศึกษา
             */
             case 16:
                 pid = 16;
                 area = "sec";
                 break;
             /*
-            รายงาน - ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
+            รายงาน - หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน
             */
             case 17:
                 pid = 17;
                 area = "sec";
                 break;
             /*
-            รายงาน - การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
+            รายงาน - ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
             */
             case 18:
                 pid = 18;
                 area = "sec";
                 break;
             /*
-            รายงาน - ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้
+            รายงาน - การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้
             */
             case 19:
                 pid = 19;
                 area = "sec";
                 break;
             /*
-            รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            รายงาน - ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้
             */
             case 20:
                 pid = 20;
+                area = "sec";
+                break;
+            /*
+            รายงาน - ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )
+            */
+            case 21:
+                pid = 21;
                 area = "sec";
                 break;
         }
@@ -453,7 +463,6 @@ function LoadPage(
         if (dataError[1] == "2")
             DialogMessage("ไม่พบผู้ใช้งานนี้", "", false, "");
 
-        
         $("#head-content").html(dataHead[1]);
         $("#menu-bar-content").html(dataMenuBar[1]);
         $("#menu" + dataMenu[1]).removeClass("noactive").addClass("active");
@@ -475,45 +484,49 @@ function LoadPage(
             InitTab(false);
 
             if (section == 1) {
+                console.log(pid);
                 switch (pid) {
                     case 2:
                         OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");
                         break;
                     case 8:
-                        OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
+                        OpenTab("link-tab1-cp-trans-break-contract", "#tab1-cp-trans-break-contract", "", true, "", "", "");
                         break;
                     case 9:
-                    case 20:
-                        OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
+                        OpenTab("link-tab1-cp-trans-require-contract", "#tab1-cp-trans-require-contract", "", true, "", "", "");
                         break;
                     case 10:
+                    case 21:
+                        OpenTab("link-tab1-cp-trans-payment", "#tab1-cp-trans-payment", "", true, "", "", "");
+                        break;
+                    case 12:
                         SetMsgLoading("กำลังโหลด...");
                         SearchReportStepOfWork();
                         break;
-                    case 11:
+                    case 13:
                         OpenTab("link-tab1-cp-report-table-cal-capital-and-interest", "#tab1-cp-report-table-cal-capital-and-interest", "", true, "", "", "");
                         break;
-                    case 12:
+                    case 14:
                         OpenTab("link-tab1-cp-report-statistic-repay", "#tab1-cp-report-statistic-repay", "", true, "", "", "");
                         break;
-                    case 13:
+                    case 17:
                         SetMsgLoading("กำลังโหลด...");
                         SearchReportNoticeClaimDebt();
                         break;
-                    case 14:
+                    case 16:
                         OpenTab("link-tab1-cp-report-statistic-contract", "#tab1-cp-report-statistic-contract", "", true, "", "", "");
                         break;
                     case 15:
                         SetMsgLoading("กำลังโหลด...");
                         SearchReportStatisticPaymentByDate();
                         break;
-                    case 16:
+                    case 11:
                         SetMsgLoading("กำลังโหลด...");
                         SearchReportEContract();
                         break;
-                    case 17:
                     case 18:
                     case 19:
+                    case 20:
                         OpenTab("link-tab1-cp-report-debtor-contract", "#tab1-cp-report-debtor-contract", "", true, "", "", "");
                         break;
                 }

@@ -3099,14 +3099,16 @@ a.link-disable:hover {
 .menu-bar-main .menu-bar ul #submenu21:hover ul,
 .menu-bar-main .menu-bar ul #submenu31:hover ul,
 .menu-bar-main .menu-bar ul #submenu41:hover ul,
-.menu-bar-main .menu-bar ul #submenu61:hover ul {
+.menu-bar-main .menu-bar ul #submenu61:hover ul,
+.menu-bar-main .menu-bar ul #submenu71:hover ul {
     display: block;
 }
 
 .menu-bar-main .menu-bar ul #submenu21 ul,
 .menu-bar-main .menu-bar ul #submenu31 ul,
 .menu-bar-main .menu-bar ul #submenu41 ul,
-.menu-bar-main .menu-bar ul #submenu61 ul {
+.menu-bar-main .menu-bar ul #submenu61 ul,
+.menu-bar-main .menu-bar ul #submenu71 ul {
     left: 0;
     background: #FFFFFF;
     -moz-box-shadow: 0 10px 10px 10px rgba(50,50,50,.4);
@@ -3151,6 +3153,11 @@ a.link-disable:hover {
 
 .menu-bar-main .menu-bar ul #submenu61 ul li .item-submenu-first,
 .menu-bar-main .menu-bar ul #submenu61 ul li .item-submenu {
+    width: 385px;
+}
+
+.menu-bar-main .menu-bar ul #submenu71 ul li .item-submenu-first,
+.menu-bar-main .menu-bar ul #submenu71 ul li .item-submenu {
     width: 385px;
 }
 

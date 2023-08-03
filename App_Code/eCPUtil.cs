@@ -26,7 +26,7 @@ public class eCPUtil {
     public const string DIRECTOR = "นายอวยชัย อิสรวิริยะสกุล";
     public const string USERTYPE_STAFF = "STAFF";
 
-    private static string[,] pageOrder = new string[,] {
+    public static string[,] pageOrder = new string[,] {
         {
             "Home",
             "CPTabUser",
@@ -35,15 +35,16 @@ public class eCPUtil {
             "CPTabInterest",
             "CPTabPayBreakContract",
             "CPTabScholarship",
+            "CPTransBreakContract",
             "CPTransRequireContract",
             "CPTransPayment",
+            "CPReportEContract",
             "CPReportStepOfWork",
             "CPReportTableCalCapitalAndInterest",
             "CPReportStatisticRepay",
-            "CPReportNoticeClaimDebt",
-            "CPReportStatisticContract",
             "CPReportStatisticPaymentByDate",
-            "CPReportEContract",
+            "CPReportStatisticContract",
+            "CPReportNoticeClaimDebt",                               
             "CPReportDebtorContract",
             "CPReportDebtorContractPaid",
             "CPReportDebtorContractRemain",
@@ -59,6 +60,7 @@ public class eCPUtil {
             "CPReportStatisticContract",
             "CPReportStatisticPaymentByDate",
             "CPReportEContract",
+            "",
             "",
             "",
             "",
@@ -91,14 +93,15 @@ public class eCPUtil {
             "",
             "",
             "",
+            "",
             ""
         }
     };
 
     public static int[,] activeMenu = new int[,] {
-        { 1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6 },
-        { 1, 2, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-        { 1, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        { 1, 2, 3, 3, 3, 3, 3, 4, 5, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 },
+        { 1, 2, 3, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 1, 2, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
     };
 
     public static string[,,] actionTrackingStatus = new string[,,] {
@@ -355,46 +358,49 @@ public class eCPUtil {
 
                 html += (
                     "   <li class='have-link'>" +
-                    "       <a class='link-msg' id='menu4' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",8)'>รับแจ้งผู้ผิดสัญญา / แจ้งชำระหนี้</a>" +
+                    "       <a class='link-msg' id='menu4' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",8)'>แจ้งผู้ผิดสัญญา</a>" +
                     "   </li>" +
                     "   <li class='have-link'>" +
-                    "       <a class='link-msg' id='menu5' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",9)'>ชำระหนี้ / ดอกเบี้ย</a>" +
+                    "       <a class='link-msg' id='menu5' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",9)'>รับแจ้งผู้ผิดสัญญา / แจ้งชำระหนี้</a>" +
                     "   </li>" +
-                    "   <li class='have-link' id='submenu61'>" +
-                    "       <div class='link-msg' id='menu6'>รายงาน</div>" +
+                    "   <li class='have-link'>" +
+                    "       <a class='link-msg' id='menu6' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",10)'>ชำระหนี้ / ดอกเบี้ย</a>" +
+                    "   </li>" +
+                    "   <li class='have-link' id='submenu71'>" +
+                    "       <div class='link-msg' id='menu7'>รายงาน</div>" +
                     "       <ul>" +
                     "           <li>" +
-                    "               <a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",16)'>เอกสารสัญญาการเป็นนักศึกษา</a>" +
+                    "               <a class='item-submenu-first' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",11)'>เอกสารสัญญาการเป็นนักศึกษา</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",10)'>สถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",12)'>สถานะขั้นตอนการดำเนินงานของผู้ผิดสัญญา</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",11)'>ตารางคำนวณเงินต้นและดอกเบี้ย</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",13)'>ตารางคำนวณเงินต้นและดอกเบี้ย</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",12)'>สถิติการผิดสัญญาและการชำระหนี้</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",14)'>สถิติการผิดสัญญาและการชำระหนี้</a>" +
                     "           </li>" +
                     "           <li>" +
                     "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",15)'>สถิติการชำระหนี้ตามช่วงวันที่</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",14)'>สถิติการทำสัญญาและการผิดสัญญา</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",16)'>สถิติการทำสัญญาและการผิดสัญญา</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",13)'>หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",17)'>หนังสือทวงถามผู้ผิดสัญญาและผู้ค้ำประกัน</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",17)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",18)'>ลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",18)'>การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",19)'>การรับชำระเงินจากลูกหนี้ผิดสัญญาการศึกษาที่ยอมรับสภาพหนี้</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",19)'>ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",20)'>ลูกหนี้ผิดสัญญาการศึกษาคงค้างที่ยอมรับสภาพหนี้</a>" +
                     "           </li>" +
                     "           <li>" +
-                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",20)'>ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )</a>" +
+                    "               <a class='item-submenu' href='javascript:void(0)' onclick='GoToPage(" + eCPCookie["UserSection"] + ",21)'>ลูกหนี้ผิดสัญญาคงค้าง ( กรณี Z600 ลูกหนี้นักศึกษา )</a>" +
                     "           </li>" +
                     "       </ul>" +
                     "   </li>"

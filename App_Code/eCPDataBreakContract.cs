@@ -9,6 +9,8 @@ Description : <สำหรับการทำรายการแจ้ง>
 
 using System;
 using System.Collections;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Web;
 
 public class eCPDataBreakContract {
@@ -1297,7 +1299,18 @@ public class eCPDataBreakContract {
 
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int section = int.Parse(eCPCookie["UserSection"]);
-        
+        int pid = (int.Parse(eCPCookie["Pid"]) - 1);
+        int order = 0;
+
+        if (eCPCookie["UserSection"].Equals("1"))
+            order = 0;
+
+        if (eCPCookie["UserSection"].Equals("2"))
+            order = 1;
+
+        if (eCPCookie["UserSection"].Equals("3"))
+            order = 2;
+
         int recordCount = eCPDB.CountCPTransBreakContract(c);
 
         if (recordCount > 0) {
@@ -1320,7 +1333,8 @@ public class eCPDataBreakContract {
                 highlight = ((i % 2) == 0 ? "highlight1" : "highlight2");
                 callFunc = ("ViewTrackingStatusViewTransBreakContract('" + data[i, 1] + "','" + trackingStatus + "','" + data[i, 15] + "')");                                
 
-                if (section.Equals(1)) {
+                if (section.Equals(1) &&
+                    eCPUtil.pageOrder[order, pid].Equals("CPTransRequireContract")) {
                     html += (
                         "<ul class='table-row-content " + highlight + "' id='trans-break-contract" + data[i, 1] + "'>" +
                         "   <li id='tab1-table-content-cp-trans-require-contract-col1' onclick=" + callFunc + ">" +
@@ -1351,7 +1365,8 @@ public class eCPDataBreakContract {
                     );
                 }
 
-                if (section.Equals(2)) {
+                if ((section.Equals(1) && eCPUtil.pageOrder[order, pid].Equals("CPTransBreakContract")) ||
+                    section.Equals(2)) {
                     html += (
                         "<ul class='table-row-content " + highlight + "' id='trans-break-contract" + data[i, 1] + "'>" +
                         "   <li id='tab2-table-content-cp-trans-break-contract-col1' onclick=" + callFunc + ">" +
@@ -1418,8 +1433,27 @@ public class eCPDataBreakContract {
 
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int section = int.Parse(eCPCookie["UserSection"]);
+        int pid = (int.Parse(eCPCookie["Pid"]) - 1);
+        int order = 0;
 
-        Array trackingStatus = (section.Equals(1) ? eCPUtil.trackingStatusORLA : eCPUtil.trackingStatusORAA);
+        if (eCPCookie["UserSection"].Equals("1"))
+            order = 0;
+
+        if (eCPCookie["UserSection"].Equals("2"))
+            order = 1;
+
+        if (eCPCookie["UserSection"].Equals("3"))
+            order = 2;
+
+        Array trackingStatus = null;
+
+        if (section.Equals(1) &&
+            eCPUtil.pageOrder[order, pid].Equals("CPTransRequireContract"))
+            trackingStatus = eCPUtil.trackingStatusORLA;
+
+        if ((section.Equals(1) && eCPUtil.pageOrder[order, pid].Equals("CPTransBreakContract")) ||
+            section.Equals(2))
+            trackingStatus = eCPUtil.trackingStatusORAA;
 
         html += (
             "<div id='cp-trans-break-contract-head'>" +

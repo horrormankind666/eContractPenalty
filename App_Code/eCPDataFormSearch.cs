@@ -268,6 +268,17 @@ public class eCPDataFormSearch {
         
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int section = int.Parse(eCPCookie["UserSection"]);
+        int pid = (int.Parse(eCPCookie["Pid"]) - 1);
+        int order = 0;
+
+        if (eCPCookie["UserSection"].Equals("1"))
+            order = 0;
+
+        if (eCPCookie["UserSection"].Equals("2"))
+            order = 1;
+
+        if (eCPCookie["UserSection"].Equals("3"))
+            order = 2;
 
         html += (
             "<div class='form-content' id='search-cp-trans-break-contract'>" +
@@ -287,9 +298,18 @@ public class eCPDataFormSearch {
             "                   <div class='combobox'>" +
             "                       <select id='trackingstatus-trans-break-contract'>" +
             "                           <option value='0'>เลือกสถานะรายการแจ้ง</option>"
-        );            
-                                
-        Array trackingStatus = (section.Equals(1) ? eCPUtil.trackingStatusORLA : eCPUtil.trackingStatusORAA);
+        );
+
+        Array trackingStatus = null;
+
+        if (section.Equals(1) &&
+            eCPUtil.pageOrder[order, pid].Equals("CPTransRequireContract"))
+            trackingStatus = eCPUtil.trackingStatusORLA;
+
+        if ((section.Equals(1) && eCPUtil.pageOrder[order, pid].Equals("CPTransBreakContract")) ||
+            section.Equals(2))
+            trackingStatus = eCPUtil.trackingStatusORAA;
+
 
         for (int i = 0; i < trackingStatus.GetLength(0); i++) {
             html += (
