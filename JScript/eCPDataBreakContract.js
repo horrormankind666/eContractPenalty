@@ -706,7 +706,7 @@ function ChkTrackingStatusViewTransBreakContract(
     send[send.length] = ("cp1id=" + cp1id);
 
     SetMsgLoading("");
-
+    
     ViewData("trackingstatustransbreakcontract", send, function (result) {
         var dataTrackingStatus = result.split("<trackingstatus>");
 
@@ -734,7 +734,7 @@ function ViewTrackingStatusViewTransBreakContract(
     ChkTrackingStatusViewTransBreakContract(cp1id, trackingStatus, ("trans-break-contract" + cp1id), function (result) {
         if (result == "0") {
             var frmIndex = ($("#dialog-form1").is(":visible") == false ? 1 : 2);
-
+            console.log(action);
             if (action == "v1")
                 LoadForm(frmIndex, "detailcptransbreakcontract", true, "", cp1id, ("trans-break-contract" + cp1id));
 

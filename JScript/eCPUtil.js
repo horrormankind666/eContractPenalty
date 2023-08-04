@@ -484,7 +484,6 @@ function LoadPage(
             InitTab(false);
 
             if (section == 1) {
-                console.log(pid);
                 switch (pid) {
                     case 2:
                         OpenTab("link-tab1-cp-tab-user", "#tab1-cp-tab-user", "", true, "", "", "");

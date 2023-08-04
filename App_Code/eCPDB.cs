@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๐๖/๐๗/๒๕๖๖>
+Modify date : <๐๔/๐๘/๒๕๖๖>
 Description : <สำหรับจัดการฐานข้อมูล>
 =============================================
 */
@@ -15,8 +15,9 @@ using System.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using FinService;
+using System.Web.UI;
 
-public class eCPDB {    
+public class eCPDB {
     public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Asynchronous Processing=true;";    
     /*
     public const string CONNECTION_STRING = "Server=10.41.117.18;Database=Infinity;User ID=yutthaphoom.taw;Password=F=8fu,u=yp;Asynchronous Processing=true;";
@@ -912,8 +913,13 @@ public class eCPDB {
     }
 
     public static int CountCPTransBreakContract(HttpContext c) {
-        HttpCookie _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
-        int section = int.Parse(_eCPCookie["UserSection"]);
+        HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+        int section = int.Parse(eCPCookie["UserSection"]);
+        int pid = int.Parse(eCPCookie["Pid"]);
+
+        if (section.Equals(1) &&
+            eCPUtil.pageOrder[(section - 1), (pid - 1)].Equals("CPTransBreakContract"))
+            section = 2;
 
         DataSet ds = ExecuteCommandStoredProcedure(
             new SqlParameter("@ordertable", 10),
@@ -942,8 +948,13 @@ public class eCPDB {
     }
 
     public static string[,] ListCPTransBreakContract(HttpContext c) {
-        HttpCookie _eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
-        int section = int.Parse(_eCPCookie["UserSection"]);
+        HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
+        int section = int.Parse(eCPCookie["UserSection"]);
+        int pid = int.Parse(eCPCookie["Pid"]);
+
+        if (section.Equals(1) &&
+            eCPUtil.pageOrder[(section - 1), (pid - 1)].Equals("CPTransBreakContract"))
+            section = 2;
 
         DataSet ds = ExecuteCommandStoredProcedure(
             new SqlParameter("@ordertable", 10),
@@ -997,6 +1008,10 @@ public class eCPDB {
         int section = int.Parse(eCPCookie["UserSection"]);
         int pid = int.Parse(eCPCookie["Pid"]);
 
+        if (section.Equals(1) &&
+            eCPUtil.pageOrder[(section - 1), (pid - 1)].Equals("CPTransBreakContract"))
+            section = 2;
+
         DataSet ds = ExecuteCommandStoredProcedure(
             new SqlParameter("@ordertable", 10),
             new SqlParameter("@section", section),
@@ -1016,6 +1031,11 @@ public class eCPDB {
     public static string[,] ListDetailCPTransBreakContract(string cp1id) {
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int section = int.Parse(eCPCookie["UserSection"]);
+        int pid = int.Parse(eCPCookie["Pid"]);
+
+        if (section.Equals(1) &&
+            eCPUtil.pageOrder[(section - 1), (pid - 1)].Equals("CPTransBreakContract"))
+            section = 2;
 
         DataSet ds = ExecuteCommandStoredProcedure(
             new SqlParameter("@ordertable", 10),

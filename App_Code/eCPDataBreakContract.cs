@@ -2,15 +2,13 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๒๘/๐๕/๒๕๖๖>
+Modify date : <๐๔/๐๘/๒๕๖๖>
 Description : <สำหรับการทำรายการแจ้ง>
 =============================================
 */
 
 using System;
 using System.Collections;
-using System.Reflection;
-using System.Security.Cryptography;
 using System.Web;
 
 public class eCPDataBreakContract {
@@ -1299,17 +1297,7 @@ public class eCPDataBreakContract {
 
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int section = int.Parse(eCPCookie["UserSection"]);
-        int pid = (int.Parse(eCPCookie["Pid"]) - 1);
-        int order = 0;
-
-        if (eCPCookie["UserSection"].Equals("1"))
-            order = 0;
-
-        if (eCPCookie["UserSection"].Equals("2"))
-            order = 1;
-
-        if (eCPCookie["UserSection"].Equals("3"))
-            order = 2;
+        int pid = int.Parse(eCPCookie["Pid"]);
 
         int recordCount = eCPDB.CountCPTransBreakContract(c);
 
@@ -1320,6 +1308,7 @@ public class eCPDataBreakContract {
             string iconStatus;
             string highlight;
             string callFunc;
+            string page = eCPUtil.pageOrder[(section - 1), (pid - 1)];
             int i;
 
             html += (
@@ -1334,7 +1323,7 @@ public class eCPDataBreakContract {
                 callFunc = ("ViewTrackingStatusViewTransBreakContract('" + data[i, 1] + "','" + trackingStatus + "','" + data[i, 15] + "')");                                
 
                 if (section.Equals(1) &&
-                    eCPUtil.pageOrder[order, pid].Equals("CPTransRequireContract")) {
+                    !page.Equals("CPTransBreakContract")) {
                     html += (
                         "<ul class='table-row-content " + highlight + "' id='trans-break-contract" + data[i, 1] + "'>" +
                         "   <li id='tab1-table-content-cp-trans-require-contract-col1' onclick=" + callFunc + ">" +
@@ -1365,7 +1354,7 @@ public class eCPDataBreakContract {
                     );
                 }
 
-                if ((section.Equals(1) && eCPUtil.pageOrder[order, pid].Equals("CPTransBreakContract")) ||
+                if ((section.Equals(1) && page.Equals("CPTransBreakContract")) ||
                     section.Equals(2)) {
                     html += (
                         "<ul class='table-row-content " + highlight + "' id='trans-break-contract" + data[i, 1] + "'>" +
@@ -1433,25 +1422,16 @@ public class eCPDataBreakContract {
 
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int section = int.Parse(eCPCookie["UserSection"]);
-        int pid = (int.Parse(eCPCookie["Pid"]) - 1);
-        int order = 0;
+        int pid = int.Parse(eCPCookie["Pid"]);
 
-        if (eCPCookie["UserSection"].Equals("1"))
-            order = 0;
-
-        if (eCPCookie["UserSection"].Equals("2"))
-            order = 1;
-
-        if (eCPCookie["UserSection"].Equals("3"))
-            order = 2;
-
+        string page = eCPUtil.pageOrder[(section - 1), (pid - 1)];
         Array trackingStatus = null;
 
         if (section.Equals(1) &&
-            eCPUtil.pageOrder[order, pid].Equals("CPTransRequireContract"))
+            !page.Equals("CPTransBreakContract"))
             trackingStatus = eCPUtil.trackingStatusORLA;
 
-        if ((section.Equals(1) && eCPUtil.pageOrder[order, pid].Equals("CPTransBreakContract")) ||
+        if ((section.Equals(1) && page.Equals("CPTransBreakContract")) ||
             section.Equals(2))
             trackingStatus = eCPUtil.trackingStatusORAA;
 
