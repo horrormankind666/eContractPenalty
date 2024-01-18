@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๙/๐๘/๒๕๕๕>
-Modify date : <๐๖/๐๗/๒๕๖๖>
+Modify date : <๑๗/๐๑/๒๕๖๗>
 Description : <สำหรับการแสดงรายงาน>
 =============================================
 */
@@ -12,11 +12,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Reflection.Emit;
 using System.Text;
 using System.Web;
+using System.Web.UI.WebControls;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NExport2PDF;
 using OfficeOpenXml;
+using System.Web.UI;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 
 public class eCPDataReport {
     public static string ReplaceFacultyToShortProgram(string faculty) {
@@ -217,19 +225,19 @@ public class eCPDataReportStatisticRepay {
             "                   <li class='table-col' id='table-head-report-step-of-work-col4'>" +
             "                       <div class='table-head-line1'>สถานะรายการแจ้ง</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(2,'detailtrackingstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(2,'detailtrackingstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-report-step-of-work-col5'>" +
             "                       <div class='table-head-line1'>สถานะการแจ้งชำระหนี้</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(2,'detailrepaystatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(2,'detailrepaystatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-report-step-of-work-col6'>" +
             "                       <div class='table-head-line1'>สถานะการชำระหนี้</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(2,'detailpaymentstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(2,'detailpaymentstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "               </ul>" +
@@ -884,19 +892,19 @@ public class eCPDataReportStatisticContract {
             "                   <li class='table-col' id='table-head-report-step-of-work-col4'>" +
             "                       <div class='table-head-line1'>สถานะรายการแจ้ง</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(2,'detailtrackingstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(2,'detailtrackingstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-report-step-of-work-col5'>" +
             "                       <div class='table-head-line1'>สถานะการแจ้งชำระหนี้</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(2,'detailrepaystatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(2,'detailrepaystatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-report-step-of-work-col6'>" +
             "                       <div class='table-head-line1'>สถานะการชำระหนี้</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(2,'detailpaymentstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(2,'detailpaymentstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "               </ul>" +
@@ -1346,19 +1354,19 @@ public class eCPDataReportStepOfWork {
             "               <li class='table-col' id='table-head-cp-report-step-of-work-col5'>" +
             "                   <div class='table-head-line1'>สถานะรายการแจ้ง</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailtrackingstatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailtrackingstatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "               <li class='table-col' id='table-head-cp-report-step-of-work-col6'>" +
             "                   <div class='table-head-line1'>สถานะการแจ้งชำระหนี้</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailrepaystatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailrepaystatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "               <li class='table-col' id='table-head-cp-report-step-of-work-col7'>" +
             "                   <div class='table-head-line1'>สถานะการชำระหนี้</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "           </ul>" +
@@ -2478,7 +2486,7 @@ public class eCPDataReportNoticeRepayComplete {
             "               <li class='table-col' id='table-head-cp-report-notice-repay-complete-col7'>" +
             "                   <div class='table-head-line1'>สถานะการชำระหนี้</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "           </ul>" +
@@ -2735,12 +2743,21 @@ public class eCPDataReportNoticeClaimDebt {
         return html;
     }
     
-    private static string ExportCPReportNoticeClaimDebtTime1(string[,] data) {
+    private static void ExportCPReportNoticeClaimDebtTime1(
+        string template,
+        string[,] data
+    ) {
+        /*
         string html = string.Empty;
         string width = "600";
         string font = "TH SarabunPSK, TH Sarabun New";
+        */
+        string pdfFontRegular = "Font/THSarabunNew.ttf";
+        string pdfFontBold = "Font/THSarabunNewBold.ttf";
+        string saveFile = template;
         string resignationDate = string.Empty;
-   
+        int fontSize = 15;
+        
         if (data[0, 19].Equals("N"))
             resignationDate = data[0, 16];
 
@@ -2750,9 +2767,379 @@ public class eCPDataReportNoticeClaimDebt {
         Dictionary<string, string> lawyer = new Dictionary<string, string>();
         lawyer.Add("Fullname", (!string.IsNullOrEmpty(data[0, 21]) ? data[0, 21] : string.Empty));
         lawyer.Add("FullnameWithoutNamePrefix", (!string.IsNullOrEmpty(data[0, 21]) ? data[0, 21].Replace("นาย", "").Replace("นางสาว", "").Replace("นาง", "") : string.Empty));
+        lawyer.Add("FirstName", (!string.IsNullOrEmpty(data[0, 21]) ? (data[0, 21].Split(' '))[0] : string.Empty));
         lawyer.Add("PhoneNumber", (!string.IsNullOrEmpty(data[0, 22]) ? data[0, 22] : data[0, 23]));
         lawyer.Add("Email", (!string.IsNullOrEmpty(data[0, 24]) ? data[0, 24] : string.Empty));
 
+        Export2PDF export2PDF = new Export2PDF();
+        export2PDF.ExportToPDFConnect(saveFile);
+
+        export2PDF.PDFConnectTemplate(("ExportTemplate/" + template), "pdf");        
+        export2PDF.PDFAddTemplate("pdf", 1, 1);
+        
+        if (template.Equals("NoticeClaimDebt@DTDAU-0U.0.2.1.Y.af.63.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty) , 436, 623, 139, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 447, 108, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 430, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 430, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 328, 154, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 328, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 240, 260, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDAU-0U.0.2.2.af.63.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 436, 623, 139, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 362, 154, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 362, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 240, 294, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDSB-0B.0.2.1.Y.af.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 411, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 634, 145, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 108, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 436, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 436, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 340, 154, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 340, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 276, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDSB-0B.0.2.1.Y.bf.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 367, 634, 172, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 108, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 420, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 420, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 324, 154, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 324, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 240, 260, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDSB-0B.0.2.2.af.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 411, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 413, 623, 127, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 154, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDSB-0B.0.2.2.bf.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 715, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 682, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 642, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 367, 625, 172, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 334, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 334, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 266, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDTU-0U.0.2.1.Y.af.62.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 389, 628, 150, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 457, 108, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 441, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 441, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 342, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 342, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 276, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@DTDTU-0U.0.2.2.af.62.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 389, 623, 150, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@NSNSB-0B.0.1.0.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 447, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 447, 295, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@NSNSB-0B.0.2.1.Y.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 634, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 107, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 436, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 436, 297, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 340, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 340, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 276, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@NSNSB-0B.0.2.2.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@PYPYB-2B.0.2.1.Y.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 81, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 411, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 345, 634, 195, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 107, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 420, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 420, 297, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 324, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 324, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 260, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@PYPYB-2B.0.2.2.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 345, 623, 194, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 328, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 328, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 260, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RAMDB-0B.0.2.1.Y.af.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 628, 145, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 108, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 424, 72, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 424, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 325, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 325, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 259, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RAMDB-0B.0.2.1.Y.bf.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 411, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 634, 192, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 108, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 420, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 420, 297, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 324, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 324, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 260, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RAMDB-0B.0.2.2.af.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 411, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 623, 146, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RAMDB-0B.0.2.2.bf.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 715, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 682, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 642, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 625, 192, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 334, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 334, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 266, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RANSB-0B.0.1.0.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 447, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 447, 295, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RANSB-0B.0.2.1.Y.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 634, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 107, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 436, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 436, 295, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 340, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 340, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 276, 165, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@RANSB-0B.0.2.2.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 154, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIMDB-0B.0.2.1.Y.af.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 628, 145, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 107, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 424, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 424, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 325, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 325, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 259, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIMDB-0B.0.2.1.Y.bf.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 628, 191, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 107, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 424, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 424, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 325, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 325, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 259, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIMDB-0B.0.2.2.af.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 411, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 443, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 623, 146, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIMDB-0B.0.2.2.bf.65.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 715, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 682, 410, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 642, 442, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 625, 191, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 334, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 334, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 266, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIPNU-0U.2.1.0.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 447, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 447, 295, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIPNU-0U.2.2.1.Y.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 447, 107, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 430, 71, 0);
+            export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 430, 298, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 328, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 328, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 260, 164, 0);
+        }
+
+        if (template.Equals("NoticeClaimDebt@SIPNU-0U.2.2.2.pdf")) {
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
+        }
+
+        string programCode = data[0, 8];
+        string contractName = string.Empty;
+
+        switch (programCode) {
+            case "SIMDB":
+                contractName = "สัญญาการเป็นนักศึกษาเพื่อศึกษาวิชาแพทยศาสตร์ฯ";
+                break;
+            case "RAMDB":
+                contractName = "สัญญาการเป็นนักศึกษาเพื่อศึกษาวิชาแพทยศาสตร์ฯ";
+                break;
+            case "RANSB":
+                contractName = "สัญญาการเป็นนักศึกษาเพื่อศึกษาในหลักสูตรวิชาพยาบาลศาสตรบัณฑิตฯ";
+                break;
+            case "NSNSB":
+                contractName = "สัญญาการเป็นนักศึกษาเพื่อศึกษาในหลักสูตรวิชาพยาบาลศาสตรบัณฑิตฯ";
+                break;
+            case "DTDSB":
+                contractName = "สัญญาการเป็นนักศึกษาเพื่อศึกษาวิชาทันตแพทยศาสตร์ฯ";
+                break;
+            case "PYPYB":
+                contractName = "สัญญาการเป็นนักศึกษาเพื่อศึกษาวิชาเภสัชศาสตร์ฯ";
+                break;
+            case "SIPNU":
+                contractName = "สัญญาการเป็นนักศึกษาหลักสูตรประกาศนียบัตรผู้ช่วยพยาบาลฯ";
+                break;
+            case "DTDAU":
+                contractName = "สัญญาการเป็นนักศึกษาหลักสูตรประกาศนียบัตรผู้ช่วยทันตแพทย์ขั้นสูงฯ";
+                break;
+            case "DTDTU":
+                contractName = "สัญญาเข้าศึกษาหลักสูตรประกาศนียบัตรวิชาช่างทันตกรรมฯ";
+                break;
+        }
+
+        export2PDF.PDFConnectTemplate("ExportTemplate/FormRequestRecordAccountDebtor.pdf", "pdf", true);
+        export2PDF.PDFAddTemplate("pdf", 1, 1);
+
+        export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 345, 686, 90, 0);
+        export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 646, 409, 0);
+        export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 368, 570, 201, 0);
+        export2PDF.FillForm(pdfFontRegular, fontSize, 0, contractName, 115, 550, 322, 0);
+        export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 134, 530, 143, 0);        
+
+        fontSize = 9;
+        export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FirstName"], 498, 278, 70, 0);
+
+        export2PDF.ExportToPdfDisconnect();
+
+        /*
         html += (
             "<table align='center' border='0' cellpadding='0' cellspacing='0'>" +
             "   <tr>" +
@@ -2922,6 +3309,7 @@ public class eCPDataReportNoticeClaimDebt {
         );
 
         return html;
+        */
     }
 
     private static string ExportCPReportNoticeClaimDebtTime2(
@@ -2953,7 +3341,7 @@ public class eCPDataReportNoticeClaimDebt {
         }
 
         html += (
-            "<table align='center' border='0' cellpadding='0' cellspacing='0'>" +
+            "<table align='center' border='0' cellpadding='0' cellspacing='0' style='margin: 0; padding: 0; top: 0'>" +
             "   <tr>" +
             "       <td width='" + width + "' valign='top'>" +
             "           <table width='100%' border='0' cellpadding='0' cellspacing='0'>" +
@@ -3215,7 +3603,9 @@ public class eCPDataReportNoticeClaimDebt {
     }
 
     public static void ExportCPReportNoticeClaimDebt(string exportSend) {
+        /*
         string html = string.Empty;
+        */
         char[] separator = new char[] { ':' };
         string[] value = exportSend.Split(separator);
         string cp1id = value[0];        
@@ -3225,9 +3615,12 @@ public class eCPDataReportNoticeClaimDebt {
 
         switch (time) {
             case 1:
-                html = ExportCPReportNoticeClaimDebtTime1(data);
+                string template = value[3];
+
+                ExportCPReportNoticeClaimDebtTime1(template, data);
                 break;
             case 2:
+                string html = string.Empty;
                 string overpaymentDateStart = string.Empty;
 
                 if (!string.IsNullOrEmpty(previousRepayDateEnd)) {
@@ -3236,23 +3629,32 @@ public class eCPDataReportNoticeClaimDebt {
                     overpaymentDateStart = repayDate[2];
                 }
 
-                html = ExportCPReportNoticeClaimDebtTime2(data, overpaymentDateStart);
+                html += (
+                    ExportCPReportNoticeClaimDebtTime2(data, overpaymentDateStart) +
+                    "<div class='filename hidden'>NoticeClaimDebtTime" + time.ToString() + ".doc</div>" +
+                    "<div class='contenttype hidden'>application/msword</div>"
+                );
+
+                HttpContext.Current.Response.ClearHeaders();
+                HttpContext.Current.Response.ClearContent();
+                HttpContext.Current.Response.Write(html);
                 break;
         }
-
+        /*
         html += (
             "<div class='filename hidden'>NoticeClaimDebtTime" + time.ToString() + ".doc</div>" +
             "<div class='contenttype hidden'>application/msword</div>"
         );
-        /*
+
         HttpContext.Current.Response.AddHeader("Content-Disposition", "attachment; filename=NoticeClaimDebtTime" + time.ToString() + ".doc");
         HttpContext.Current.Response.ContentType = "application/msword";
         HttpContext.Current.Response.ContentEncoding = UnicodeEncoding.UTF8;
         HttpContext.Current.Response.Charset = "UTF-8";
-        */
+
         HttpContext.Current.Response.ClearHeaders();
         HttpContext.Current.Response.ClearContent();
         HttpContext.Current.Response.Write(html);
+        */
     }
 
     public static string ListCPReportNoticeClaimDebt(HttpContext c) {
@@ -3408,7 +3810,7 @@ public class eCPDataReportNoticeClaimDebt {
             "               <li class='table-col' id='table-head-cp-report-notice-claim-debt-col6'>" +
             "                   <div class='table-head-line1'>สถานะการแจ้งชำระหนี้</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailrepaystatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailrepaystatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "           </ul>" +
@@ -4347,19 +4749,19 @@ public class eCPDataReportEContract {
             "               <li class='table-col' id='table-head-cp-report-e-contract-col5'>" +
             "                   <div class='table-head-line1'>สัญญานักศึกษา</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailecontractstatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailecontractstatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "               <li class='table-col' id='table-head-cp-report-e-contract-col6'>" +
             "                   <div class='table-head-line1'>หนังสือยินยอม ฯ</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailecontractstatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailecontractstatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "               <li class='table-col' id='table-head-cp-report-e-contract-col7'>" +
             "                   <div class='table-head-line1'>สัญญาค้ำประกัน</div>" +
             "                   <div>" +
-            "                       <a href='javascript:void(0)' onclick=LoadForm(1,'detailecontractstatus',true,'','','')>( ความหมาย )</a>" +
+            "                       <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailecontractstatus',true,'','','')>ความหมาย</a>" +
             "                   </div>" +
             "               </li>" +
             "           </ul>" +

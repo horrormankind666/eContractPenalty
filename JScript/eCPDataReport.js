@@ -319,16 +319,40 @@ function PrintNoticeRepayComplete() {
 }
 
 function PrintNoticeClaimDebt(
+    studentCode,
     cp1id,
     time,
     previousRepayDateEnd
 ) {
-    var send = new Array();
-    send[send.length] = cp1id;
-    send[send.length] = time;
-    send[send.length] = previousRepayDateEnd
+    if (time === 1) {
+        var send1 = new Array();
+        send1[send1.length] = ("studentCode=" + studentCode);
 
-    Printing(send.join(":"), "reportnoticeclaimdebt", "word", "eCPPrinting.aspx", "export-target", true);
+        SetMsgLoading("กำลังค้นหาแบบหนังสือทวงถาม");
+
+        ViewData("gettemplatenoticeclaimdebt", send1, function (result) {
+            if (result.length > 0) {
+                var send2 = new Array();
+                send2[send2.length] = cp1id;
+                send2[send2.length] = time;
+                send2[send2.length] = previousRepayDateEnd
+                send2[send2.length] = result;
+
+                Printing(send2.join(":"), "reportnoticeclaimdebttime1", "pdf", "eCPPrinting.aspx", "export-target");
+            }
+            else
+                DialogMessage("ไม่พบแบบหนังสือทวงถามของหลักสูตรนี้", "", false, "");
+        });
+    }
+
+    if (time === 2) {
+        var send = new Array();
+        send[send.length] = cp1id;
+        send[send.length] = time;
+        send[send.length] = previousRepayDateEnd
+
+        Printing(send.join(":"), "reportnoticeclaimdebttime2", "word", "eCPPrinting.aspx", "export-target", true);
+    }
 }
 
 function Printing(
@@ -339,7 +363,6 @@ function Printing(
     frmTarget,
     processWatch = false
 ) {
-    console.log(order);
     $("#export-target").contents().find("body").html("");
     $("#export-send").val(send);
     $("#export-order").val(order);
@@ -357,7 +380,7 @@ function Printing(
     function DoWatchExportComplete() {
         if (processWatch == true) {
             var iframeBody = $("#export-target").contents().find("body");
-
+            
             if (iframeBody.html() != null &&
                 iframeBody.html().length > 0) {
                 clearInterval(timeWatchExportComplete);

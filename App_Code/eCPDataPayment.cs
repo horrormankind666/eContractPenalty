@@ -2,11 +2,12 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๒๙/๐๕/๒๕๖๖>
+Modify date : <๑๑/๐๑/๒๕๖๗>
 Description : <สำหรับการทำรายการชำระหนี้ตามรายการแจ้ง>
 =============================================
 */
 
+using System;
 using System.Collections;
 using System.Web;
 
@@ -375,7 +376,9 @@ public class eCPDataPayment {
         if (statusPayment.Equals("1")) {
             if ((overpaymentYear + overpaymentDay) > 0) {
                 html += (
+                    /*
                     CalInterestYesNo("overpayment") +
+                    */
                     "<div id='cal-interest-overpayment'>" +
                     "   <div>" +
                     "       <div class='content-left' id='payment-label'>" +
@@ -613,7 +616,7 @@ public class eCPDataPayment {
                 "       <div>" +
                 "           <div class='content-left' id='total-interest-overpayment-label'>จำนวนเงินที่หักชำระดอกเบี้ยผิดนัด</div>" +
                 "           <div class='content-left' id='total-interest-overpayment-input'>" +
-                "               <input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment' onblur=Trim('total-interest-overpayment');AddCommas('total-interest-overpayment',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' />" +
+                "               <input class='inputbox textbox-numeric' type='text' id='total-interest-overpayment' onblur=Trim('total-interest-overpayment');AddCommas('total-interest-overpayment',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment(this)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' />" +
                 "           </div>" +
                 "           <div class='content-left' id='total-interest-overpayment-unit-label'>บาท</div>" +
                 "       </div>" +
@@ -621,7 +624,7 @@ public class eCPDataPayment {
                 "       <div>" +
                 "           <div class='content-left' id='pay-label'>จำนวนเงินที่หักชำระเงินต้น</div>" +
                 "           <div class='content-left' id='pay-input'>" +
-                "               <input class='inputbox textbox-numeric' type='text' id='pay' onblur=Trim('pay');AddCommas('pay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' />" +
+                "               <input class='inputbox textbox-numeric' type='text' id='pay' onblur=Trim('pay');AddCommas('pay',2); onkeyup='ExtractNumber(this,2,false)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' />" +
                 "           </div>" +
                 "           <div class='content-left' id='pay-unit-label'>บาท</div>" +
                 "       </div>" +
@@ -629,7 +632,7 @@ public class eCPDataPayment {
                 "       <div>" +
                 "           <div class='content-left' id='overpay-label'>จำนวนเงินส่วนที่ชำระเกิน</div>" +
                 "           <div class='content-left' id='overpay-input'>" +
-                "               <input class='inputbox textbox-numeric' type='text' id='overpay' onblur=Trim('overpay');AddCommas('overpay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment()' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' />" +
+                "               <input class='inputbox textbox-numeric' type='text' id='overpay' onblur=Trim('overpay');AddCommas('overpay',2); onkeyup='ExtractNumber(this,2,false);doCalculatePayment(this)' onkeypress='return BlockNonNumbers(this,event,true,false)' value='' style='width:110px' />" +
                 "           </div>" +
                 "           <div class='content-left' id='overpay-unit-label'>บาท</div>" +
                 "       </div>" +
@@ -779,6 +782,7 @@ public class eCPDataPayment {
             "               </div>" +
             "           </div>" +
             "           <div class='clear'></div>" +
+            /*
             "           <div>" +
             "               <div class='content-left' id='channel-label'>จ่ายชำระด้วย</div>" +
             "               <div class='content-left' id='channel-input'>" +
@@ -806,6 +810,7 @@ public class eCPDataPayment {
             "               </div>" +
             "           </div>" +
             "           <div class='clear'></div>" +
+            */
             "       </div>" +
             "   </div>" +
             "</div>" +
@@ -842,6 +847,7 @@ public class eCPDataPayment {
             "               </div>" +
             "           </div>" +
             "           <div class='clear'></div>" +
+            /*
             "           <div>" +
             "               <div class='content-left' id='receipt-send-no-label'>เลขที่ใบนำส่ง</div>" +
             "               <div class='content-left' id='receipt-send-no-input'>" +
@@ -856,6 +862,7 @@ public class eCPDataPayment {
             "               </div>" +
             "           </div>" +
             "           <div class='clear'></div>" +
+            */
             "           <div>" +
             "               <div class='content-left' id='receipt-copy-label'>สำเนาใบเสร็จรับเงิน</div>" +
             "               <div class='content-left' id='receipt-copy-input'>" +
@@ -1057,12 +1064,14 @@ public class eCPDataPayment {
         /*
         string totalPenaltyDefault = data[0, 4];
         string statusPayment = data[0, 7];
+        */
         string replyDateDefault = data[0, 24];
         string[] repayDate = eCPUtil.RepayDate(replyDateDefault);
         string repayDateStartDefault = (!string.IsNullOrEmpty(repayDate[0]) ? repayDate[0] : string.Empty);
         string repayDateEndDefault = (!string.IsNullOrEmpty(repayDate[1]) ? repayDate[1] : string.Empty);
         string overpaymentDateStartDefault = (!string.IsNullOrEmpty(repayDate[2]) ? repayDate[2] : string.Empty);
         string overpaymentDateEndDefault = Util.ConvertDateTH(Util.CurrentDate("yyyy-MM-dd"));
+        /*
         string overpaymentInterestDefault = string.Empty;
         string capitalDefault = string.Empty;
         string totalInterestDefault = string.Empty;
@@ -1071,15 +1080,18 @@ public class eCPDataPayment {
         double[] overpayment;
         double overpaymentYear = 0;
         double overpaymentDay = 0;
-        string[] contractInterest;        
+        */
+        string[] contractInterest = eCPUtil.GetContractInterest();
+        string overpaymentInterestDefault = double.Parse(contractInterest[1]).ToString("#,##0.00");
 
         IFormatProvider provider = new System.Globalization.CultureInfo("th-TH");
         DateTime dateA = DateTime.Parse(overpaymentDateStartDefault, provider);
         DateTime dateB = DateTime.Parse(overpaymentDateEndDefault, provider);
 
-        overpayment = Util.CalcDate(dateA, dateB);
-        overpaymentYear = overpayment[4];
-        overpaymentDay = overpayment[5];
+        double[]  overpayment = Util.CalcDate(dateA, dateB);
+        double overpaymentYear = overpayment[4];
+        double overpaymentDay = overpayment[5];
+        /*
         capitalDefault = totalPenaltyDefault;
         totalInterestDefault = ((overpayment[4] + overpayment[5]) > 0 ? totalInterestDefault : "0.00");
         totalAccruedInterestDefault = "0.00";
@@ -1092,7 +1104,6 @@ public class eCPDataPayment {
             "<div class='form-content' id='add-cp-trans-payment'>" +
             "   <div id='add-trans-payment'>" +
             "       <input type='hidden' id='statuspayment-hidden' value='" + statusPayment + "' />" +                
-            /*
             "       <input type='hidden' id='repay-date-end-hidden' value='" + repayDateEndDefault + "' />" +
             "       <input type='hidden' id='overpayment-hidden' value='" + (overpaymentYear + overpaymentDay) + "' />" +
             "       <input type='hidden' id='overpayment-date-start-hidden' value='" + overpaymentDateStartDefault + "' />" +
@@ -1100,6 +1111,7 @@ public class eCPDataPayment {
             "       <input type='hidden' id='overpayment-year-hidden' value='" + overpaymentYear + "' />" +
             "       <input type='hidden' id='overpayment-day-hidden' value='" + overpaymentDay + "' />" +
             "       <input type='hidden' id='overpayment-interest-hidden' value='" + overpaymentInterestDefault + "' />" +
+            /*
             "       <input type='hidden' id='subtotal-penalty-hidden' value='" + double.Parse(totalPenaltyDefault).ToString("#,##0.00") + "' />" +
             */
             "       <input type='hidden' id='capital-hidden' value='" + double.Parse(capitalDefault).ToString("#,##0.00") + "' />" +
@@ -1112,7 +1124,7 @@ public class eCPDataPayment {
                         
                     DetailPenaltyAndFormatPayment(data, false) +
             /*
-                    FrmOverpayment("1", _statusPayment, _repayDateStartDefault, _repayDateEndDefault, _overpaymentYear, _overpaymentDay) +
+                    FrmOverpayment("1", statusPayment, repayDateStartDefault, repayDateEndDefault, overpaymentYear, overpaymentDay) +
             */
                     FrmPayment("1") +
                  
@@ -1591,64 +1603,72 @@ public class eCPDataPayment {
             html += (
                 "               </div>" +
                 "           </div>" +
-                "           <div class='clear'></div>" +
-                "           <div id='pay-channel" + channelDefault + "'>" +
-                "               <div class='content-left'>" +
-                "                   <div class='form-label-discription-style'>" +
-                "                       <div class='form-label-style'>จ่ายชำระด้วย</div>" +
-                "                   </div>" +
-                "               </div>" +
-                "               <div class='content-left'>" +
-                "                   <div class='form-input-style'>" +
-                "                       <div class='form-input-content'>" +
-                "                           <div>" +
-                "                               <span>" + eCPUtil.payChannel[int.Parse(channelDefault) - 1] + "</span>" +
-                "                           </div>"
+                "           <div class='clear'></div>"
             );
 
-            if (channelDefault.Equals("2")) {
+            if (!string.IsNullOrEmpty(channelDefault)) {
                 html += (
-                    "                       <div class='form-input-content-line'>" +
-                    "                           เลขที่เช็ค <span>" + chequeNoDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           ธนาคาร <span>" + chequeBankDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           สาขา <span>" + chequeBankBranchDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           วันที่บนเช็ค <span>" + chequeDateDefault + "</span>" +
+                    "       <div id='pay-channel" + channelDefault + "'>" +
+                    "           <div class='content-left'>" +
+                    "               <div class='form-label-discription-style'>" +
+                    "                   <div class='form-label-style'>จ่ายชำระด้วย</div>" +
+                    "               </div>" +
+                    "           </div>" +
+                    "           <div class='content-left'>" +
+                    "               <div class='form-input-style'>" +
+                    "                   <div class='form-input-content'>" +
+                    "                       <div>" +
+                    "                           <span>" + eCPUtil.payChannel[int.Parse(channelDefault) - 1] + "</span>" +
                     "                       </div>"
                 );
-            }
 
-            if (channelDefault.Equals("3")) {
+                if (channelDefault.Equals("2")) {
+                    html += (
+                        "                   <div class='form-input-content-line'>" +
+                        "                       เลขที่เช็ค <span>" + chequeNoDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       ธนาคาร <span>" + chequeBankDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       สาขา <span>" + chequeBankBranchDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       วันที่บนเช็ค <span>" + chequeDateDefault + "</span>" +
+                        "                   </div>"
+                    );
+                }
+
+                if (channelDefault.Equals("3")) {
+                    html += (
+                        "                   <div class='form-input-content-line'>" +
+                        "                       ธนาคาร <span>" + cashBankDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       สาขา <span>" + cashBankBranchDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       ชื่อบัญชี <span>" + cashBankAccountDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       เลขที่บัญชี <span>" + cashBankAccountNoDefault + "</span>" +
+                        "                   </div>" +
+                        "                   <div class='form-input-content-line'>" +
+                        "                       วันที่บนใบนำฝาก <span>" + cashBankDateDefault + "</span>" +
+                        "                   </div>"
+                    );
+                }
+
                 html += (
-                    "                       <div class='form-input-content-line'>" +
-                    "                           ธนาคาร <span>" + cashBankDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           สาขา <span>" + cashBankBranchDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           ชื่อบัญชี <span>" + cashBankAccountDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           เลขที่บัญชี <span>" + cashBankAccountNoDefault + "</span>" +
-                    "                       </div>" +
-                    "                       <div class='form-input-content-line'>" +
-                    "                           วันที่บนใบนำฝาก <span>" + cashBankDateDefault + "</span>" +
-                    "                       </div>"
+                    "                   </div>" +
+                    "               </div>" +
+                    "           </div>" +
+                    "       </div>" +
+                    "       <div class='clear'></div>"
                 );
             }
 
             html += (
-                "                       </div>" +
-                "                   </div>" +
-                "               </div>" +
-                "           </div>" +
-                "           <div class='clear'></div>" +
                 "           <div id='detail-receipt'>" +
                 "               <div class='content-left'>" +
                 "                   <div class='form-label-discription-style'>" +
@@ -1668,10 +1688,10 @@ public class eCPDataPayment {
                 "                               ลงวันที่ <span>" + receiptDateDefault + "</span>" +
                 "                           </div>" +
                 "                           <div class='form-input-content-line'>" +
-                "                               เลขที่ใบนำส่ง <span>" + receiptSendNoDefault + "</span>" +
+                "                               เลขที่ใบนำส่ง <span>" + (!string.IsNullOrEmpty(receiptSendNoDefault) ? receiptSendNoDefault : "-") + "</span>" +
                 "                           </div>" +
                 "                           <div class='form-input-content-line'>" +
-                "                               เข้ากองทุน <span>" + receiptFundDefault + "</span>" +
+                "                               เข้ากองทุน <span>" + (!string.IsNullOrEmpty(receiptSendNoDefault) ? receiptFundDefault : "-") + "</span>" +
                 "                           </div>" +
                 "                           <div class='form-input-content-line'>" +
                 "                               สำเนาใบเสร็จรับเงิน <span>" + (!string.IsNullOrEmpty(receiptCopyDefault) ? ("<a class='text-underline' href='javascript:void(0)' onclick=DownloadReceiptCopy('" + receiptCopyDefault + "')>ดาว์นโหลดสำเนาใบเสร็จรับเงิน</a>") : "-") + "</span>" +
@@ -1743,6 +1763,7 @@ public class eCPDataPayment {
         double totalPayInterest = 0;
         double totalPay = 0;
         double totalPayment = 0;
+        double totalOverPay = 0;
         string callFunc;
         int i;
 
@@ -1757,6 +1778,7 @@ public class eCPDataPayment {
             totalPayInterest += double.Parse(data[i, 9]);
             totalPay += double.Parse(data[i, 10]);
             totalPayment += double.Parse(data[i, 7]);
+            totalOverPay += double.Parse(data[i, 15]);
             callFunc = ("ShowDetailTransPayment('" + data[i, 1] + "','" + double.Parse(data[i, 0]).ToString("#,##0") + "')");
 
             html += (
@@ -1780,20 +1802,25 @@ public class eCPDataPayment {
                 "       <div>" + double.Parse(data[i, 7]).ToString("#,##0.00") + "</div>" +
                 "   </li>" +
                 "   <li class='table-col' id='table-content-trans-payment-col7' onclick=" + callFunc + ">" +
-                "       <div>" + double.Parse(data[i, 11]).ToString("#,##0.00") + "</div>" +
+                "       <div>" + double.Parse(data[i, 15]).ToString("#,##0.00") + "</div>" +
                 "   </li>" +
                 "   <li class='table-col' id='table-content-trans-payment-col8' onclick=" + callFunc + ">" +
-                "       <div>" + double.Parse(data[i, 6]).ToString("#,##0.00") + "</div>" +
+                "       <div>" + double.Parse(data[i, 11]).ToString("#,##0.00") + "</div>" +
                 "   </li>" +
                 "   <li class='table-col' id='table-content-trans-payment-col9' onclick=" + callFunc + ">" +
-                "       <div>" + double.Parse(data[i, 12]).ToString("#,##0.00") + "</div>" +
+                "       <div>" + double.Parse(data[i, 6]).ToString("#,##0.00") + "</div>" +
                 "   </li>" +
                 "   <li class='table-col' id='table-content-trans-payment-col10' onclick=" + callFunc + ">" +
+                "       <div>" + double.Parse(data[i, 12]).ToString("#,##0.00") + "</div>" +
+                "   </li>" +
+                "   <li class='table-col' id='table-content-trans-payment-col11' onclick=" + callFunc + ">" +
                 "       <div>" + data[i, 3] + "</div>" +
                 "   </li>" +
+                /*
                 "   <li class='table-col' id='table-content-trans-payment-col11' onclick=" + callFunc + ">" +
                 "       <div>" + eCPUtil.payChannel[int.Parse(data[i, 14]) - 1] + "</div>" +
                 "   </li>" +
+                */
                 "</ul>"
             );
         }
@@ -1817,11 +1844,16 @@ public class eCPDataPayment {
                 "   <li class='table-col' id='table-content-trans-payment-total-col6'>" +
                 "       <div>" + totalPay.ToString("#,##0.00") + "</div>" +
                 "   </li>" +
-                "   <li class='table-col' id='table-content-trans-payment-total-col7'></li>" +
+                "   <li class='table-col' id='table-content-trans-payment-total-col7'>" +
+                "       <div>" + totalOverPay.ToString("#,##0.00") + "</div>" +
+                "   </li>" +
                 "   <li class='table-col' id='table-content-trans-payment-total-col8'></li>" +
                 "   <li class='table-col' id='table-content-trans-payment-total-col9'></li>" +
                 "   <li class='table-col' id='table-content-trans-payment-total-col10'></li>" +
                 "   <li class='table-col' id='table-content-trans-payment-total-col11'></li>" +
+                /*
+                "   <li class='table-col' id='table-content-trans-payment-total-col11'></li>" +
+                */
                 "</ul>"
             );
         }
@@ -1901,24 +1933,30 @@ public class eCPDataPayment {
             "                       <div>( บาท )</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-trans-payment-col7'>" +
-            "                       <div class='table-head-line1'>เงินต้นคงเหลือ</div>" +
+            "                       <div class='table-head-line1'>ยอดเงินที่ชำระเกิน</div>" +
             "                       <div>( บาท )</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-trans-payment-col8'>" +
-            "                       <div class='table-head-line1'>ดอกเบี้ยคงเหลือ</div>" +
+            "                       <div class='table-head-line1'>เงินต้นคงเหลือ</div>" +
             "                       <div>( บาท )</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-trans-payment-col9'>" +
-            "                       <div class='table-head-line1'>ดอกเบี้ยค้างจ่าย</div>" +
+            "                       <div class='table-head-line1'>ดอกเบี้ยคงเหลือ</div>" +
             "                       <div>( บาท )</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-trans-payment-col10'>" +
+            "                       <div class='table-head-line1'>ดอกเบี้ยค้างจ่าย</div>" +
+            "                       <div>( บาท )</div>" +
+            "                   </li>" +
+            "                   <li class='table-col' id='table-head-trans-payment-col11'>" +
             "                       <div class='table-head-line1'>วันเดือนปี</div>" +
             "                       <div>ที่รับชำระหนี้</div>" +
             "                   </li>" +
+            /*
             "                   <li class='table-col' id='table-head-trans-payment-col11'>" +
             "                       <div class='table-head-line1'>จ่ายชำระด้วย</div>" +
             "                   </li>" +
+            */
             "               </ul>" +
             "           </div>" +
             "           <div class='clear'></div>" +                
@@ -2368,7 +2406,7 @@ public class eCPDataPayment {
                 highlight = ((i % 2) == 0 ? "highlight1" : "highlight2");
                 groupNum = (!data[i, 9].Equals("0") ? (" ( กลุ่ม " + data[i, 9] + " )") : "");                
 
-                if (!pid.Equals(20) &&
+                if (!pid.Equals(21) &&
                     !pid.Equals(6))
                     callFunc = ("ChkSelectFormatPayment('" + data[i, 1] + "','" + data[i, 15] + "','" + data[i, 16] + "')");
 
@@ -2386,9 +2424,7 @@ public class eCPDataPayment {
                     "       <div>" + (data[i, 4] + data[i, 5] + " " + data[i, 6]) + "</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col4' onclick=" + callFunc + ">" +
-                    "       <div>" +
-                    "           <span class='programcode-col'>" + data[i, 7] + "</span>- " + (data[i, 8] + groupNum) +
-                    "       </div>" +
+                    "       <div>" + data[i, 7] + "<br />" + (data[i, 8] + groupNum) + "</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col5' onclick=" + callFunc + ">" +
                     "       <div>" + data[i, 22].Replace(",", "<br />") +"</div>" +
@@ -2406,12 +2442,15 @@ public class eCPDataPayment {
                     "       <div>" + double.Parse(data[i, 25]).ToString("#,##0.00") + "</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col10' onclick=" + callFunc + ">" +
-                    "       <div>" + double.Parse(data[i, 26]).ToString("#,##0.00") + "</div>" +
+                    "       <div>" + double.Parse(data[i, 28]).ToString("#,##0.00") + "</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col11' onclick=" + callFunc + ">" +
-                    "       <div>" + double.Parse(data[i, 27]).ToString("#,##0.00") + "</div>" +
+                    "       <div>" + double.Parse(data[i, 26]).ToString("#,##0.00") + "</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col12' onclick=" + callFunc + ">" +
+                    "       <div>" + double.Parse(data[i, 27]).ToString("#,##0.00") + "</div>" +
+                    "   </li>" +
+                    "   <li class='table-col' id='table-content-cp-trans-payment-col13' onclick=" + callFunc + ">" +
                     "       <div class='icon-status-style'>" +
                     "           <ul>" +
                     "               <li class='" + iconStatus + "'></li>" +
@@ -2451,7 +2490,7 @@ public class eCPDataPayment {
         HttpCookie eCPCookie = HttpContext.Current.Request.Cookies["eCPCookie"];
         int pid = int.Parse(eCPCookie["Pid"]);
 
-        if (pid.Equals(20) ||
+        if (pid.Equals(21) ||
             pid.Equals(6))
             title = "cp-report-debtor-contract-break-require-repay-payment";
 
@@ -2561,7 +2600,8 @@ public class eCPDataPayment {
             "                       <div>นักศึกษา</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-cp-trans-payment-col3'>" +
-            "                       <div class='table-head-line1'>ชื่อ - นามสกุล</div>" +
+            "                       <div class='table-head-line1'>ชื่อ</div>" +
+            "                       <div>นามสกุล</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-cp-trans-payment-col4'>" +
             "                       <div class='table-head-line1'>หลักสูตร</div>" +
@@ -2592,20 +2632,25 @@ public class eCPDataPayment {
             "                       <div>( บาท )</div>" +
             "                   </li>" +
             "                   <li class='table-col' id='table-head-cp-trans-payment-col10'>" +
+            "                       <div class='table-head-line1'>รวมเงิน</div>" +
+            "                       <div>ที่ชำระเกิน</div>" +
+            "                       <div>( บาท )</div>" +
+            "                   </li>" +
+            "                   <li class='table-col' id='table-head-cp-trans-payment-col11'>" +
             "                       <div class='table-head-line1'>เงินต้น</div>" +
             "                       <div>คงเหลือ</div>" +
             "                       <div>( บาท )</div>" +
             "                   </li>" +
-            "                   <li class='table-col' id='table-head-cp-trans-payment-col11'>" +
+            "                   <li class='table-col' id='table-head-cp-trans-payment-col12'>" +
             "                       <div class='table-head-line1'>ดอกเบี้ย</div>" +
             "                       <div>ค้างชำระ</div>" +
             "                       <div>( บาท )</div>" +
             "                   </li>" +
-            "                   <li class='table-col' id='table-head-cp-trans-payment-col12'>" +
+            "                   <li class='table-col' id='table-head-cp-trans-payment-col13'>" +
             "                       <div class='table-head-line1'>สถานะ</div>" +
             "                       <div>การชำระหนี้</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailpaymentstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "               </ul>" +

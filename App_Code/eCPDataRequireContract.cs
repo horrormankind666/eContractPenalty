@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๒๙/๐๖/๒๕๖๖>
+Modify date : <๑๑/๐๑/๒๕๖๗>
 Description : <สำหรับการรับรายการแจ้ง>
 =============================================
 */
@@ -961,7 +961,7 @@ public class eCPDataRequireContract {
             "                   <li class='table-col' id='tab1-table-head-cp-trans-require-contract-col6'>" +
             "                       <div class='table-head-line1'>สถานะรายการแจ้ง</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(1,'detailtrackingstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailtrackingstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "               </ul>" +
@@ -1000,7 +1000,7 @@ public class eCPDataRequireContract {
             "                       <div class='table-head-line1'>สถานะการแจ้งชำระหนี้</div>" +
             "                       <div>&nbsp;</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(1,'detailrepaystatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailrepaystatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "               </ul>" +

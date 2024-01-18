@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๐๔/๐๘/๒๕๖๖>
+Modify date : <๑๑/๐๑/๒๕๖๗>
 Description : <สำหรับจัดการฐานข้อมูล>
 =============================================
 */
@@ -17,12 +17,13 @@ using Newtonsoft.Json.Linq;
 using FinService;
 using System.Web.UI;
 
-public class eCPDB {
-    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Asynchronous Processing=true;";    
+public class eCPDB {    
+    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Asynchronous Processing=true;";
     /*
     public const string CONNECTION_STRING = "Server=10.41.117.18;Database=Infinity;User ID=yutthaphoom.taw;Password=F=8fu,u=yp;Asynchronous Processing=true;";
     public const string CONNECTION_STRING = "Server=stddb2023.mahidol;Database=Infinity;User ID=eContractPenalty;Password=!2023!#eC0ntr@ctPen@lty#;Asynchronous Processing=true;";
     */
+
     private const string STORE_PROC = "sp_ecpEContractPenalty";
     public static string[] userSection = new string[] {"กองกฎหมาย", "กองบริหารการศึกษา", "กองคลัง"};
     public static string username;
@@ -1661,7 +1662,7 @@ public class eCPDB {
             new SqlParameter("@dateend", (!string.IsNullOrEmpty(c.Request["dateend"]) ? c.Request["dateend"] : null))
         );
 
-        string[,] data = new string[ds.Tables[1].Rows.Count, 28];
+        string[,] data = new string[ds.Tables[1].Rows.Count, 29];
         int i = 0;
 
         foreach (DataRow dr in ds.Tables[1].Rows) {
@@ -1693,6 +1694,7 @@ public class eCPDB {
             data[i, 25] = (!string.IsNullOrEmpty(dr["TotalPay"].ToString()) ? dr["TotalPay"].ToString() : "0");
             data[i, 26] = (!string.IsNullOrEmpty(dr["TotalRemain"].ToString()) ? dr["TotalRemain"].ToString() : "0");
             data[i, 27] = (!string.IsNullOrEmpty(dr["RemainAccruedInterest"].ToString()) ? dr["RemainAccruedInterest"].ToString() : "0");
+            data[i, 28] = (!string.IsNullOrEmpty(dr["TotalOverPay"].ToString()) ? dr["TotalOverPay"].ToString() : "0");
 
             i++;
         }
@@ -1779,7 +1781,7 @@ public class eCPDB {
             new SqlParameter("@dateend", (!string.IsNullOrEmpty(dateEnd) ? dateEnd : null))
         );
 
-        string[,] data = new string[ds.Tables[0].Rows.Count, 15];
+        string[,] data = new string[ds.Tables[0].Rows.Count, 16];
         int i = 0;
 
         foreach (DataRow dr in ds.Tables[0].Rows) {
@@ -1798,6 +1800,7 @@ public class eCPDB {
             data[i, 12] = dr["RemainAccruedInterest"].ToString();
             data[i, 13] = dr["TotalRemain"].ToString();
             data[i, 14] = dr["Channel"].ToString();
+            data[i, 15] = dr["Overpay"].ToString();
 
             i++;
         }
@@ -2793,7 +2796,7 @@ public class eCPDB {
             new SqlParameter("@cp1id", (!string.IsNullOrEmpty(cp1id) ? cp1id : null))
         );
         
-        string[,] data = new string[ds.Tables[1].Rows.Count, 27];
+        string[,] data = new string[ds.Tables[1].Rows.Count, 28];
         int i = 0;
 
         foreach (DataRow dr in ds.Tables[1].Rows) {
@@ -2824,11 +2827,28 @@ public class eCPDB {
             data[i, 24] = dr["LawyerEmail"].ToString();
             data[i, 25] = dr["StatusRepay"].ToString();
             data[i, 26] = dr["StatusPayment"].ToString();
+            data[i, 27] = dr["GraduateDate"].ToString();
         }
 
         ds.Dispose();
 
         return data;
+    }
+
+    public static string GetTemplateNoticeClaimDebt(string studentCode) {
+        DataSet ds = ExecuteCommandStoredProcedure(
+            new SqlParameter("@ordertable", 56),
+            new SqlParameter("@studentid", (!string.IsNullOrEmpty(studentCode) ? studentCode : null))
+        );
+
+        string template = string.Empty;
+
+        foreach (DataRow dr in ds.Tables[0].Rows)
+            template = dr["templateName"].ToString();
+
+        ds.Dispose();
+
+        return template;
     }
 
     public static int CountCPReportStatisticPaymentByDate(HttpContext c) {
@@ -3066,9 +3086,9 @@ public class eCPDB {
             data[i, 7] = dr["DLevel"].ToString();
             data[i, 8] = dr["DLevelName"].ToString();            
             data[i, 9] = dr["CountStudentDebtor"].ToString();
-            data[i, 10] = dr["SumTotalPenalty"].ToString();
-            data[i, 11] = dr["SumTotalPayCapital"].ToString();
-            data[i, 12] = dr["SumTotalPayInterest"].ToString();
+            data[i, 10] = (!string.IsNullOrEmpty(dr["SumTotalPenalty"].ToString()) ? dr["SumTotalPenalty"].ToString() : "0");
+            data[i, 11] = (!string.IsNullOrEmpty(dr["SumTotalPayCapital"].ToString()) ? dr["SumTotalPayCapital"].ToString() : "0");
+            data[i, 12] = (!string.IsNullOrEmpty(dr["SumTotalPayInterest"].ToString()) ? dr["SumTotalPayInterest"].ToString() : "0");
 
             remain = (double.Parse(data[i, 10]) - double.Parse(data[i, 11]));
 
@@ -4222,7 +4242,7 @@ public class eCPDB {
                 (!string.IsNullOrEmpty(pay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(pay))) : 0) +
                 (!string.IsNullOrEmpty(overpay) ? double.Parse(eCPUtil.DoubleToString2Decimal(double.Parse(overpay))) : 0)
             );
-
+            /*
             switch (int.Parse(c.Request["channel"])) {
                 case 1: 
                     channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
@@ -4237,6 +4257,9 @@ public class eCPDB {
                     channelDetail[1] = ("'" + c.Request["cashbank"] + "', '" + c.Request["cashbankbranch"] + "', '" + c.Request["cashbankaccount"] + "', " + (string.IsNullOrEmpty(c.Request["cashbankaccountno"]) ? "NULL" : ("'" + c.Request["cashbankaccountno"] + "'")) + ", '" + c.Request["cashbankdate"] + "', '" + c.Request["receiptno"] + "', '" + c.Request["receiptbookno"] + "', '" + c.Request["receiptdate"] + "', '" + c.Request["receiptsendno"] + "', '" + c.Request["receiptfund"] + "', " + (string.IsNullOrEmpty(c.Request["receiptcopy"]) ? "NULL" : ("'" + c.Request["receiptcopy"] + "'")));
                     break;
             }
+            */
+            channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptCopy";
+            channelDetail[1] = ("'" + c.Request["receiptno"] + "', '" + c.Request["receiptbookno"] + "', '" + c.Request["receiptdate"] + "', " + (string.IsNullOrEmpty(c.Request["receiptcopy"]) ? "NULL" : ("'" + c.Request["receiptcopy"] + "'")));
 
             what = "UPDATE, INSERT";
             where = "ecpTransRequireContract, ecpTransPayment";
@@ -4248,7 +4271,10 @@ public class eCPDB {
                 "WHERE ID = " + c.Request["cp2id"] + "; " +
                 "INSERT INTO ecpTransPayment " +
                 "(" +
+                /*
                 "RCID, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail" +
+                */
+                "RCID, OverpaymentTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail" +
                 ")" +
                 "VALUES " +
                 "(" +
@@ -4267,7 +4293,9 @@ public class eCPDB {
                 "0, " +
                 "0, " +
                 "0, " +
+                /*
                 c.Request["channel"] + ", " +
+                */
                 channelDetail[1] + ", " +
                 "'" + c.Request["lawyerfullname"] + "', " +
                 (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
@@ -4446,7 +4474,7 @@ public class eCPDB {
                 remainAccruedInterest
                 */
             );
-
+            /*
             switch (int.Parse(c.Request["channel"])) {
                 case 1:
                     channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptSendNo, ReceiptFund, ReceiptCopy";
@@ -4461,6 +4489,9 @@ public class eCPDB {
                     channelDetail[1] = ("'" + c.Request["cashbank"] + "', '" + c.Request["cashbankbranch"] + "', '" + c.Request["cashbankaccount"] + "', " + (string.IsNullOrEmpty(c.Request["cashbankaccountno"]) ? "NULL" : ("'" + c.Request["cashbankaccountno"] + "'")) + ", '" + c.Request["cashbankdate"] + "', '" + c.Request["receiptno"] + "', '" + c.Request["receiptbookno"] + "', '" + c.Request["receiptdate"] + "', '" + c.Request["receiptsendno"] + "', '" + c.Request["receiptfund"] + "', " + (string.IsNullOrEmpty(c.Request["receiptcopy"]) ? "NULL" : ("'" + c.Request["receiptcopy"] + "'")));
                     break;
             }
+            */
+            channelDetail[0] = "ReceiptNo, ReceiptBookNo, ReceiptDate, ReceiptCopy";
+            channelDetail[1] = ("'" + c.Request["receiptno"] + "', '" + c.Request["receiptbookno"] + "', '" + c.Request["receiptdate"] + "', " + (string.IsNullOrEmpty(c.Request["receiptcopy"]) ? "NULL" : ("'" + c.Request["receiptcopy"] + "'")));
 
             what = "UPDATE, INSERT";
             where = "ecpTransRequireContract, ecpTransPayment";
@@ -4472,7 +4503,10 @@ public class eCPDB {
                 "WHERE ID = " + c.Request["cp2id"] + "; " +
                 "INSERT INTO ecpTransPayment " +
                 "(" +
+                /*
                 "RCID, OverpaymentTotalInterestBefore, OverpaymentTotalInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, Channel, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail" +
+                */
+                "RCID, OverpaymentTotalInterestBefore, OverpaymentTotalInterest, PayRepayTotalInterest, DateTimePayment, Capital, Interest, TotalAccruedInterest, TotalPayment, PayCapital, PayInterest, TotalPay, Overpay, RemainCapital, AccruedInterest, RemainAccruedInterest, TotalRemain, " + channelDetail[0] + ", LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail" +
                 ")" +
                 "VALUES " +
                 "(" +
@@ -4493,7 +4527,9 @@ public class eCPDB {
                 "0, " +
                 remainAccruedInterest + ", " +                        
                 remainCapital.ToString() + ", " +
+                /*
                 c.Request["channel"] + ", " +
+                */
                 channelDetail[1] + ", " +
                 "'" + c.Request["lawyerfullname"] + "', " +
                 (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +

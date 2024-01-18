@@ -20,6 +20,9 @@
             case "reportnoticecheckforreimbursement":
                 eCPDataReportNoticeCheckForReimbursement.ExportCPReportNoticeCheckForReimbursement(Request.Form["export-send"]);
                 break;
+            case "reportnoticeclaimdebttime1":
+                eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(Request.Form["export-send"]);
+                break;
         }
     }
 
@@ -28,7 +31,7 @@
             case "reportnoticerepaycomplete":
                 eCPDataReportNoticeRepayComplete.ExportCPReportNoticeRepayComplete(Request.Form["export-send"]);
                 break;
-            case "reportnoticeclaimdebt":
+            case "reportnoticeclaimdebttime2":
                 eCPDataReportNoticeClaimDebt.ExportCPReportNoticeClaimDebt(Request.Form["export-send"]);
                 break;
             case "reportcertificatereimbursement":

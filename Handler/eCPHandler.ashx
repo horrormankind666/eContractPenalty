@@ -4,7 +4,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๐๕/๐๗/๒๕๖๖>
+Modify date : <๑๔/๑๒/๒๕๖๖>
 Description : <สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป>
 =============================================
 */
@@ -645,6 +645,9 @@ public class eCPHandler: IHttpHandler, IRequiresSessionState {
                 break;
             case "reportdebtorcontractbyprogram":
                 listData = eCPDataReportDebtorContract.ListCPReportDebtorContractByProgram(c);
+                break;
+            case "gettemplatenoticeclaimdebt":
+                listData = eCPDB.GetTemplateNoticeClaimDebt(c.Request["studentCode"]);
                 break;
         }
 

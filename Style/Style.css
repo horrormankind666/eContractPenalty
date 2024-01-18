@@ -1242,7 +1242,7 @@ a.link-disable:hover {
 
 .table-head ul #table-head-cp-trans-payment-col1,
 .table-content ul #table-content-cp-trans-payment-col1 {
-    width: 61px;
+    width: 62px;
 }
 
 .table-head ul #table-head-cp-trans-payment-col2,
@@ -1252,24 +1252,24 @@ a.link-disable:hover {
 
 .table-head ul #table-head-cp-trans-payment-col3,
 .table-content ul #table-content-cp-trans-payment-col3 {
-    width: 96px;
+    width: 60px;
     word-break: break-all;
 }
 
 .table-head ul #table-head-cp-trans-payment-col4,
 .table-content ul #table-content-cp-trans-payment-col4 {
-    width: 81px;
+    width: 60px;
     word-break: break-all;
 }
 
 .table-head ul #table-head-cp-trans-payment-col5,
 .table-content ul #table-content-cp-trans-payment-col5 {
-    width: 84px;
+    width: 81px;
 }
 
 .table-head ul #table-head-cp-trans-payment-col6,
 .table-content ul #table-content-cp-trans-payment-col6 {
-    width: 85px;
+    width: 80px;
 }
 
 .table-head ul #table-head-cp-trans-payment-col7,
@@ -1279,7 +1279,7 @@ a.link-disable:hover {
 
 .table-head ul #table-head-cp-trans-payment-col8,
 .table-content ul #table-content-cp-trans-payment-col8 {
-    width: 84px;
+    width: 80px;
 }
 
 .table-head ul #table-head-cp-trans-payment-col9,
@@ -1299,7 +1299,12 @@ a.link-disable:hover {
 
 .table-head ul #table-head-cp-trans-payment-col12,
 .table-content ul #table-content-cp-trans-payment-col12 {
-    width: 97px;
+    width: 80px;
+}
+
+.table-head ul #table-head-cp-trans-payment-col13,
+.table-content ul #table-content-cp-trans-payment-col13 {
+    width: 85px;
 }
 
 .table-head ul #table-head-cp-trans-payment-col1,
@@ -1313,14 +1318,15 @@ a.link-disable:hover {
 .table-head ul #table-head-cp-trans-payment-col9,
 .table-head ul #table-head-cp-trans-payment-col10,
 .table-head ul #table-head-cp-trans-payment-col11,
-.table-head ul #table-head-cp-trans-payment-col12 {
+.table-head ul #table-head-cp-trans-payment-col12,
+.table-head ul #table-head-cp-trans-payment-col13{
     height: 75px;
     line-height: 20px;
 }
 
 .table-content ul #table-content-cp-trans-payment-col3 div,
 .table-content ul #table-content-cp-trans-payment-col4 div,
-.table-content ul #table-content-cp-trans-payment-col12 div {
+.table-content ul #table-content-cp-trans-payment-col13 div {
     text-align: left;
 }
 
@@ -1329,11 +1335,12 @@ a.link-disable:hover {
 .table-content ul #table-content-cp-trans-payment-col8 div,
 .table-content ul #table-content-cp-trans-payment-col9 div,
 .table-content ul #table-content-cp-trans-payment-col10 div,
-.table-content ul #table-content-cp-trans-payment-col11 div {
+.table-content ul #table-content-cp-trans-payment-col11 div,
+.table-content ul #table-content-cp-trans-payment-col12 div {
     text-align: right;
 }
 
-.table-content ul #table-content-cp-trans-payment-col12 .icon-status-style {
+.table-content ul #table-content-cp-trans-payment-col13 .icon-status-style {
     position: relative;
     left: 30px;
 }
@@ -1341,66 +1348,72 @@ a.link-disable:hover {
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col1,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col1,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col1 {
-    width: 45px;
+    width: 43px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col2,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col2,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col2 {
-    width: 91px;
+    width: 94px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col3,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col3,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col3 {
-    width: 91px;
+    width: 94px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col4,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col4,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col4 {
-    width: 91px;
+    width: 94px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col5,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col5,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col5 {
-    width: 91px;
+    width: 94px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col6,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col6,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col6 {
-    width: 91px;
+    width: 94px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col7,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col7,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col7 {
-    width: 91px;
+    width: 106px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col8,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col8,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col8 {
-    width: 91px;
+    width: 88px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col9,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col9,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col9 {
-    width: 91px;
+    width: 94px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col10,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col10,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col10 {
-    width: 85px;
+    width: 95px;
 }
 
 #list-cp-trans-payment .table-head ul #table-head-trans-payment-col11,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col11,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col11 {
+    width: 78px;
+}
+
+#list-cp-trans-payment .table-head ul #table-head-trans-payment-col12,
+#list-cp-trans-payment .table-content ul #table-content-trans-payment-col12,
+#list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col12 {
     width: 116px;
 }
 
@@ -1434,11 +1447,13 @@ a.link-disable:hover {
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col8 div,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col8 div,
 #list-cp-trans-payment .table-content ul #table-content-trans-payment-col9 div,
-#list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col9 div {
+#list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col9 div,
+#list-cp-trans-payment .table-content ul #table-content-trans-payment-col10 div,
+#list-cp-trans-payment .table-content ul #table-content-trans-payment-total-col10 div {
     text-align: right;
 }
 
-#list-cp-trans-payment .table-content ul #table-content-trans-payment-col11 div {
+#list-cp-trans-payment .table-content ul #table-content-trans-payment-col12 div {
     text-align: left;
 }
 
@@ -6273,32 +6288,32 @@ a.link-disable:hover {
 }
 
 #add-cp-trans-payment #format-payment-full-repay #detail-payment-label {
-    height: 162px;
-    margin-top: 121px;
+    height: 129px;
+    margin-top: 88px;
 }
 
 #add-cp-trans-payment #format-payment-pay-repay #detail-payment-label {
-    height: 242px;
-    margin-top: 201px;
+    height: 209px;
+    margin-top: 168px;
 }
 
 #add-cp-trans-payment #format-payment-full-repay #detail-payment-input,
 #add-cp-trans-payment #format-payment-pay-repay #detail-payment-input {
-    height: 279px;
+    height: 213px;
     margin-top: 10px;
 }
 
 #add-cp-trans-payment #format-payment-pay-repay #detail-payment-input {
-    height: 439px;
+    height: 373px;
 }
 
 #add-cp-trans-payment #detail-receipt-label {
-    height: 239px;
-    margin-top: 198px;
+    height: 209px;
+    margin-top: 168px;
 } 
 
 #add-cp-trans-payment #detail-receipt-input {
-    height: 433px;
+    height: 373px;
     margin-top: 10px;
 }
 

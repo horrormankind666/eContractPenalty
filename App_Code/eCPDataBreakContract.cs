@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๐๔/๐๘/๒๕๖๖>
+Modify date : <๑๑/๐๑/๒๕๖๗>
 Description : <สำหรับการทำรายการแจ้ง>
 =============================================
 */
@@ -1561,7 +1561,7 @@ public class eCPDataBreakContract {
             "                   <li class='table-col' id='tab2-table-head-cp-trans-break-contract-col8'>" +
             "                       <div class='table-head-line1'>สถานะรายการแจ้ง</div>" +
             "                       <div>" +
-            "                           <a href='javascript:void(0)' onclick=LoadForm(1,'detailtrackingstatus',true,'','','')>( ความหมาย )</a>" +
+            "                           <a class='text-underline' href='javascript:void(0)' onclick=LoadForm(1,'detailtrackingstatus',true,'','','')>ความหมาย</a>" +
             "                       </div>" +
             "                   </li>" +
             "               </ul>" +

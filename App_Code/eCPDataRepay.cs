@@ -1,5 +1,4 @@
-﻿
-/*
+﻿/*
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
@@ -212,6 +211,7 @@ public class eCPDataRepay {
         string html = string.Empty;
         string cp1id = data[0, 2];
         string cp2id = data[0, 1];
+        string studentCode = data[0, 19];
         string statusRepayDefault = data[0, 18];
         string statusPaymentDefault = data[0, 58];
         string statusReplyDefault = string.Empty;
@@ -301,7 +301,7 @@ public class eCPDataRepay {
                     "                   ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil.resultReply[int.Parse(data2[i, 3]) - 1] + "</span>" +
                     "               </div>" +
                     "               <div class='form-input-content-line'>" +
-                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + cp1id + "'," + data2[i, 1] + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + data2[i, 1] + "</a>" +
+                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + studentCode + "','" + cp1id + "'," + data2[i, 1] + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + data2[i, 1] + "</a>" +
                     "               </div>"
                 );
 
@@ -343,7 +343,7 @@ public class eCPDataRepay {
             if (action.Equals("update")) {
                 html += (
                     "               <div class='form-input-content-line'>" +
-                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
+                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + studentCode + "','" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
                     "               </div>"
                 );
 
@@ -422,7 +422,7 @@ public class eCPDataRepay {
                 "                       ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil.resultReply[int.Parse(replyResultDefault) - 1] + "</span>" +
                 "                   </div>" +
                 "                   <div class='form-input-content-line'>" +
-                "                       <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
+                "                       <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + studentCode + "','" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
                 "                   </div>"
             );
 
@@ -673,6 +673,7 @@ public class eCPDataRepay {
         string html = string.Empty;
         string cp1id = data[0, 2];
         string cp2id = data[0, 1];
+        string studentCode = data[0, 19];
         string statusRepayDefault = data[0, 18];
         string statusPaymentDefault = data[0, 58];
         string statusReplyDefault = string.Empty;
@@ -750,7 +751,7 @@ public class eCPDataRepay {
                     "                   ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil.resultReply[int.Parse(data2[i, 3]) - 1] + "</span>" +
                     "               </div>" +
                     "               <div class='form-input-content-line'>" +
-                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + cp1id + "'," + data2[i, 1] + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + data2[i, 1] + "</a>" +
+                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + studentCode + "','" + cp1id + "'," + data2[i, 1] + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + data2[i, 1] + "</a>" +
                     "               </div>"
                 );
 
@@ -792,7 +793,7 @@ public class eCPDataRepay {
             if (action.Equals("update")) {
                 html += (
                     "               <div class='form-input-content-line'>" +
-                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
+                    "                   <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + studentCode + "','" + studentCode + "','" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
                     "               </div>"
                 );
 
@@ -838,7 +839,7 @@ public class eCPDataRepay {
                 "                       ผลการรับทราบการแจ้งชำระหนี้ <span>" + eCPUtil.resultReply[int.Parse(replyResultDefault) - 1] + "</span>" +
                 "                   </div>" +
                 "                   <div class='form-input-content-line'>" +
-                "                       <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
+                "                       <a class='text-underline' href='javascript:void(0)' onclick=PrintNoticeClaimDebt('" + studentCode + "','" + cp1id + "'," + statusRepayDefault + ",'" + previousRepayDateEnd + "')>พิมพ์แบบหนังสือทวงถามครั้งที่ " + statusRepayDefault + "</a>" +
                 "                   </div>"
             );
 
