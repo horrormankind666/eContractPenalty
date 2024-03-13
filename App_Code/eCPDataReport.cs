@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๙/๐๘/๒๕๕๕>
-Modify date : <๑๗/๐๑/๒๕๖๗>
+Modify date : <๑๓/๐๓/๒๕๖๗>
 Description : <สำหรับการแสดงรายงาน>
 =============================================
 */
@@ -2102,7 +2102,7 @@ public class eCPDataReportNoticeRepayComplete {
                 "<tr>" +
                 "   <td width='100%'>" +
                 "       <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
-                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บัดนี้ " + data[0, 3] + data[0, 4] + " " + data[0, 5] + " ซึ่งสำเร็จการศึกษาจาก" + data[0, 7] + " เมื่อวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 11])) + " " +
+                "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;บัดนี้ " + data[0, 3] + data[0, 4] + " " + data[0, 5] + " ซึ่งสำเร็จการศึกษาจาก" + data[0, 7] + " เมื่อวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 11])) + " " +
                 "ได้ชดใช้เงินแทนการปฏิบัติงานตามสัญญาฯ ซึ่งมหาวิทยาลัยคิดคำนวณแล้วเป็นเงินทั้งสิ้น " + Util.NumberArabicToThai(double.Parse(data[0, 14]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data[0, 14]) + ") " +
                 "โดย" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " ได้นำเงินดังกล่าวมาชำระให้กับมหาวิทยาลัยมหิดลเรียบร้อยแล้ว" +
                 "       </p>" +
@@ -2781,8 +2781,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty) , 436, 623, 139, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 447, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty) , 436, 623, 139, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 447, 108, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 430, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 430, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 328, 154, 0);
@@ -2794,7 +2794,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 436, 623, 139, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 436, 623, 139, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 362, 154, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 362, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 240, 294, 165, 0);
@@ -2804,8 +2804,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 411, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 634, 145, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 634, 145, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 108, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 436, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 436, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 340, 154, 0);
@@ -2817,8 +2817,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 367, 634, 172, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 367, 634, 172, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 108, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 420, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 420, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 324, 154, 0);
@@ -2830,7 +2830,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 411, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 413, 623, 127, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 413, 623, 127, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 154, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 165, 0);
@@ -2840,7 +2840,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 715, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 682, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 642, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 367, 625, 172, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 367, 625, 172, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 334, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 334, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 266, 165, 0);
@@ -2850,8 +2850,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 389, 628, 150, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 457, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 389, 628, 150, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 457, 108, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 441, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 237, 441, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 342, 155, 0);
@@ -2863,7 +2863,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 389, 623, 150, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 389, 623, 150, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
@@ -2873,8 +2873,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 447, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 447, 295, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
@@ -2886,8 +2886,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 634, 108, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 107, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 634, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 107, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 436, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 436, 297, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 340, 155, 0);
@@ -2899,7 +2899,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
@@ -2909,8 +2909,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 81, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 411, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 345, 634, 195, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 107, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 345, 634, 195, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 107, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 420, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 420, 297, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 324, 155, 0);
@@ -2922,7 +2922,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 345, 623, 194, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 345, 623, 194, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 328, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 328, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 260, 164, 0);
@@ -2932,8 +2932,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 628, 145, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 628, 145, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 108, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 424, 72, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 424, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 325, 155, 0);
@@ -2945,8 +2945,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 411, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 634, 192, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 634, 192, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 436, 108, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 420, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 420, 297, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 324, 155, 0);
@@ -2958,7 +2958,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 411, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 623, 146, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 623, 146, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
@@ -2968,7 +2968,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 715, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 682, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 642, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 625, 192, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 625, 192, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 334, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 334, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 266, 164, 0);
@@ -2978,8 +2978,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 447, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 447, 295, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
@@ -2991,8 +2991,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 720, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 688, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 650, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 634, 108, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 107, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 634, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 452, 107, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 436, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 436, 295, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 340, 155, 0);
@@ -3004,7 +3004,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 430, 623, 108, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 154, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
@@ -3014,8 +3014,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 628, 145, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 107, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 628, 145, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 107, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 424, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 424, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 325, 155, 0);
@@ -3027,8 +3027,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 717, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 684, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 645, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 628, 191, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 107, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 628, 191, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 441, 107, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 424, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 424, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 325, 155, 0);
@@ -3040,7 +3040,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 411, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 443, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 623, 146, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 394, 623, 146, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
@@ -3050,7 +3050,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 715, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 682, 410, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 642, 442, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 625, 191, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 348, 625, 191, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 334, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 334, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 266, 164, 0);
@@ -3060,8 +3060,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(data[0, 27]) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(data[0, 27])).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 69, 464, 105, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 447, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 447, 295, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
@@ -3073,8 +3073,8 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(Util.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 447, 107, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, (!string.IsNullOrEmpty(resignationDate) ? Util.ThaiLongDateWithNumberTH(DateTime.Parse(eCPUtil.ConvertDateEN(resignationDate)).AddDays(1).ToString()).Replace("พ.ศ. ", string.Empty) : ""), 189, 447, 107, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")), 139, 430, 71, 0);
             export2PDF.FillForm(pdfFontBold, fontSize, 0, Util.ThaiBaht(data[0, 18]), 238, 430, 298, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 328, 155, 0);
@@ -3086,7 +3086,7 @@ public class eCPDataReportNoticeClaimDebt {
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 351, 714, 80, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (Util._longMonth[int.Parse(Util.CurrentDate("MM")) - 1, 0] + " " + Util.NumberArabicToThai((int.Parse(Util.CurrentDate("yyyy")) + 543).ToString())), 129, 680, 409, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, (data[0, 3] + data[0, 4] + " " + data[0, 5]), 97, 640, 441, 0);
-            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
+            export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])).Replace("พ.ศ. ", string.Empty), 395, 623, 143, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["FullnameWithoutNamePrefix"], 85, 345, 155, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, Util.NumberArabicToThai(lawyer["PhoneNumber"]), 245, 345, 79, 0);
             export2PDF.FillForm(pdfFontRegular, fontSize, 0, lawyer["Email"], 241, 277, 164, 0);
@@ -3367,7 +3367,7 @@ public class eCPDataReportNoticeClaimDebt {
             "                                       <div style='font:normal 15pt " + font + ";'>อ้างถึง</div>" +
             "                                   </td>" +
             "                                   <td width='550'>" +
-            "                                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>หนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
+            "                                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>หนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
             "                                   </td>" +
             "                               </tr>" +
             "                           </table>" +
@@ -3383,9 +3383,9 @@ public class eCPDataReportNoticeClaimDebt {
             "                   <td width='100%'>" +
             "                       <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง มหาวิทยาลัยมหิดลแจ้งให้ท่านชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษา " +
-            "เพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")) + " บาท " +
+            "เพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")) + " บาท " +
             "(" + Util.ThaiBaht(data[0, 18]) + ") ให้แก่มหาวิทยาลัยมหิดล ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือ" +
-            "ดังกล่าว และท่านได้รับหนังสือดังกล่าวแล้วเมื่อวันที่ " + (!string.IsNullOrEmpty(replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(replyDate)) : "") + " ความละเอียดทราบแล้ว นั้น" +
+            "ดังกล่าว และท่านได้รับหนังสือดังกล่าวแล้วเมื่อวันที่ " + (!string.IsNullOrEmpty(replyDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(replyDate)) : "") + " ความละเอียดทราบแล้ว นั้น" +
             "                       </p>" +
             "                   </td>" +
             "               </tr>" +
@@ -3395,7 +3395,7 @@ public class eCPDataReportNoticeClaimDebt {
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;มหาวิทยาลัยมหิดล ขอเรียนว่า บัดนี้ได้ล่วงเลยระยะเวลาตามที่กำหนดแล้ว ท่านยังมิได้ชำระเงินดังกล่าวแต่อย่างใด " +
             "ในการนี้ จึงขอให้ท่านเร่งนำเงินจำนวน " + Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data[0, 18]) + ") " +
             "พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(contractInterest[1]) + " ต่อปีของต้นเงินจำนวนข้างต้น " +
-            "นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(overpaymentDateStart)) + " ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
+            "นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(overpaymentDateStart)) + " ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
             "มิเช่นนั้นมหาวิทยาลัยมหิดลจำต้องดำเนินการตามกฎหมายต่อไป" +
             "                       </p>" +
             "                   </td>" +
@@ -3446,7 +3446,7 @@ public class eCPDataReportNoticeClaimDebt {
             "                                       <div style='font:normal 15pt " + font + ";'>อ้างถึง</div>" +
             "                                   </td>" +
             "                                   <td width='550'>" +
-            "                                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>สัญญาค้ำประกัน ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 15])) + "</div>" +
+            "                                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>สัญญาค้ำประกัน ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 15])) + "</div>" +
             "                                   </td>" +
             "                               </tr>" +
             "                           </table>" +
@@ -3458,7 +3458,7 @@ public class eCPDataReportNoticeClaimDebt {
             "                                       <div style='font:normal 15pt " + font + ";'>สิ่งที่ส่งมาด้วย</div>" +
             "                                   </td>" +
             "                                   <td width='502'>" +
-            "                                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>สำเนาหนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
+            "                                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>สำเนาหนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
             "                                   </td>" +
             "                               </tr>" +
             "                           </table>" +
@@ -3474,7 +3474,7 @@ public class eCPDataReportNoticeClaimDebt {
             "                   <td width='100%'>" +
             "                       <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามสัญญาที่อ้างถึง ท่านได้ทำสัญญาค้ำประกันผูกพันไว้ต่อมหาวิทยาลัยมหิดลว่า " +
-            "ถ้า" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " ต้องรับผิดชดใช้เงินตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])) + " " + 
+            "ถ้า" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " ต้องรับผิดชดใช้เงินตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])) + " " + 
             "แก่มหาวิทยาลัยแล้ว ท่านยินยอมชดใช้เงินตามจำนวนที่" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " " +
             "ต้องรับผิดจนครบถ้วน ความละเอียดทราบแล้ว นั้น" +  
             "                       </p>" +
@@ -3489,7 +3489,7 @@ public class eCPDataReportNoticeClaimDebt {
             "ชดใช้เงินภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือ รายละเอียดปรากฏตามสิ่งที่ส่งมาด้วย ซึ่ง" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " " +
             "ได้รับหนังสือแล้วแต่กลับเพิกเฉยไม่ชำระเงินภายในกำหนด เป็นเหตุให้ท่านซึ่งเป็นผู้ค้ำประกันต้องรับผิดชดใช้เงินให้แก่มหาวิทยาลัยมหิดล " + 
             "ในการนี้ จึงขอให้ท่านนำเงินจำนวน " + Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data[0, 18]) + ") " +
-            "พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(contractInterest[1]) + " ต่อปีของต้นเงินจำนวนดังกล่าว นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(overpaymentDateStart)) + " " +
+            "พร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(contractInterest[1]) + " ต่อปีของต้นเงินจำนวนดังกล่าว นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(overpaymentDateStart)) + " " +
             "ซึ่งเป็นวันผิดนัด จนถึงวันที่ท่านชำระเสร็จสิ้น มาชำระให้แก่มหาวิทยาลัยมหิดลโดยเร็ว " +
             "มิเช่นนั้นมหาวิทยาลัยมหิดลจำต้องดำเนินการตามกฎหมายต่อไป" +
             "                       </p>" +
@@ -3556,8 +3556,8 @@ public class eCPDataReportNoticeClaimDebt {
             "               <tr>" +
             "                   <td width='100%'>" +
             "                       <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
-            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่มหาวิทยาลัยได้มีหนังสือที่ อว ๗๘/ " + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(pursuantBookDate)) : "") + " " +
-            "ถึง" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " เพื่อขอให้ชดใช้เงินกรณีปฏิบัติงานไม่ครบกำหนดตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data[0, 13])) + " " +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่มหาวิทยาลัยได้มีหนังสือที่ อว ๗๘/ " + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(pursuantBookDate)) : "") + " " +
+            "ถึง" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " เพื่อขอให้ชดใช้เงินกรณีปฏิบัติงานไม่ครบกำหนดตามสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data[0, 9]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data[0, 13])) + " " +
             "เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data[0, 18]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data[0, 18]) + ") " +
             "ให้แก่มหาวิทยาลัย ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือดังกล่าว นั้น" +  
             "                       </p>" +
@@ -3566,10 +3566,10 @@ public class eCPDataReportNoticeClaimDebt {
             "               <tr>" +
             "                   <td width='100%'>" +
             "                       <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
-            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;งานกฎหมายและนิติกรรมสัญญา ขอเรียนว่า หนังสือดังกล่าวมีผู้รับไว้โดยชอบแล้วเมื่อวันที่ " + (!string.IsNullOrEmpty(replyDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(replyDate)) : "") + " " +
+            "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;งานกฎหมายและนิติกรรมสัญญา ขอเรียนว่า หนังสือดังกล่าวมีผู้รับไว้โดยชอบแล้วเมื่อวันที่ " + (!string.IsNullOrEmpty(replyDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(replyDate)) : "") + " " +
             "รายละเอียดปรากฏตามใบตอบรับไปรษณีย์ลงทะเบียนในประเทศ บัดนี้ได้ล่วงเลยกำหนดระยะเวลาการชำระเงินแล้ว ยังไม่ปรากฏว่า" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " " +
             "ได้ชำระเงินให้แก่มหาวิทยาลัยแต่อย่างใด ในการนี้ งานกฎหมายและนิติกรรมสัญญาจึงเห็นควรให้มหาวิทยาลัยมีหนังสือทวงถามถึง" + data[0, 3] + data[0, 4] + " " + data[0, 5] + " (ครั้งที่ ๒) และ" + data[0, 14] + " ในฐานะผู้ค้ำประกัน " +
-            "เพื่อดำเนินการชำระเงินจำนวนดังกล่าวพร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(contractInterest[1]) + " ต่อปีของต้นเงิน นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(overpaymentDateStart)) + " " +
+            "เพื่อดำเนินการชำระเงินจำนวนดังกล่าวพร้อมดอกเบี้ยผิดนัดในอัตราร้อยละ " + Util.NumberArabicToThai(contractInterest[1]) + " ต่อปีของต้นเงิน นับตั้งแต่วันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(overpaymentDateStart)) + " " +
             "ซึ่งเป็นวันผิดนัดจนถึงวันที่ชำระเสร็จสิ้น ให้แก่มหาวิทยาลัยมหิดลโดยเร็ว" +
             "                       </p>" +
             "                   </td>" +
@@ -3860,19 +3860,19 @@ public class eCPDataReportNoticeCheckForReimbursement {
         exportToPdf.ExportToPdfConnect(template, "pdf", saveFile);
         exportToPdf.FillForm(pdfFont, 11, 0, data[0, 18], 105, 809, 190, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 19], 309, 811, 138, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 20])), 470, 811, 80, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 20])), 470, 811, 80, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 21], 154, 791, 45, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 22])), 221, 791, 77, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 22])), 221, 791, 77, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 23], 404, 791, 45, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 24])), 470, 791, 80, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 24])), 470, 791, 80, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, (data[0, 5] + data[0, 8] + " " + data[0, 9]), 63, 698, 158, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 2], 281, 698, 115, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, eCPDataReport.ReplaceProgramToShortProgram(data[0, 11]), 67, 678, 120, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, eCPDataReport.ReplaceFacultyToShortProgram(data[0, 14]), 210, 678, 114, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 25])), 471, 678, 82, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 25])), 471, 678, 82, 0);
         exportToPdf.FillForm(pdfFont, 11, 0, data[0, 26], 107, 656, 92, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, (int.Parse(DateTime.Parse(Util.ConvertDateEN(data[0, 31])).ToString("yyyy")) + 543).ToString(), 313, 658, 48, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 32])), 460, 658, 94, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, (int.Parse(DateTime.Parse(eCPUtil.ConvertDateEN(data[0, 31])).ToString("yyyy")) + 543).ToString(), 313, 658, 48, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 32])), 460, 658, 94, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, (civil.Equals("1") && !data[0, 36].Equals("0") ? (data[0, 36] + " ปี") : string.Empty), 150, 638, 132, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, (double.Parse(data[0, 37]).ToString("#,##0.00") + " บาท"), 366, 638, 187, 0);
         exportToPdf.ExportToPdfDisconnect();
@@ -3929,24 +3929,24 @@ public class eCPDataReportNoticeCheckForReimbursement {
         exportToPdf.ExportToPdfConnect(template, "pdf", saveFile);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 31], 105, 811, 190, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 32], 309, 811, 138, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 33])), 470, 811, 80, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 33])), 470, 811, 80, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 34], 154, 791, 45, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 35])), 221, 791, 77, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 35])), 221, 791, 77, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 36], 404, 791, 45, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 37])), 470, 791, 80, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 37])), 470, 791, 80, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, (data[0, 20] + data[0, 21] + " " + data[0, 22]), 63, 698, 158, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 19], 281, 698, 115, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, eCPDataReport.ReplaceProgramToShortProgram(data[0, 24]), 67, 678, 120, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, eCPDataReport.ReplaceFacultyToShortProgram(data[0, 27]), 210, 678, 114, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 38])), 471, 678, 82, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 38])), 471, 678, 82, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 39], 107, 658, 92, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, (int.Parse(DateTime.Parse(Util.ConvertDateEN(data[0, 44])).ToString("yyyy")) + 543).ToString(), 313, 658, 48, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 45])), 460, 658, 94, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, (int.Parse(DateTime.Parse(eCPUtil.ConvertDateEN(data[0, 44])).ToString("yyyy")) + 543).ToString(), 313, 658, 48, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 45])), 460, 658, 94, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, (civil.Equals("1") && !data[0, 49].Equals("0") ? (data[0, 49] + " ปี") : string.Empty), 150, 638, 132, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, (double.Parse(data[0, 50]).ToString("#,##0.00") + " บาท"), 366, 638, 187, 0);
 
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 44])), 261, 479, 87, 0);
-        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(Util.ConvertDateEN(data[0, 45])), 461, 479, 91, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 44])), 261, 479, 87, 0);
+        exportToPdf.FillForm(pdfFont, 13, 0, Util.ThaiLongDate(eCPUtil.ConvertDateEN(data[0, 45])), 461, 479, 91, 0);
         exportToPdf.FillForm(pdfFont, 13, 1, ((!string.IsNullOrEmpty(data[0, 11]) && !data[0, 11].Equals("0") ? (data[0, 11] + " เดือน") : string.Empty) + " " + (!string.IsNullOrEmpty(data[0, 12]) && !data[0, 12].Equals("0") ? data[0, 12] : string.Empty)), 203, 459, 80, 0);
         exportToPdf.FillForm(pdfFont, 13, 1, (!string.IsNullOrEmpty(data[0, 13]) ? double.Parse(data[0, 13]).ToString("#,##0") : string.Empty), 458, 459, 80, 0);
         exportToPdf.FillForm(pdfFont, 13, 0, data[0, 3], 209, 438, 344, 0);
@@ -6592,7 +6592,7 @@ public class eCPDataReportDebtorContract {
                     ws.Cells["C" + j.ToString()].Value = dr["studentCode"].ToString();
                     ws.Cells["D" + j.ToString()].Value = (dr["programCode"].ToString() + "-" + dr["programName"].ToString() + (!dr["groupNum"].ToString().Equals("0") ? (" ( กลุ่ม " + dr["groupNum"].ToString() + " )") : ""));
                     ws.Cells["E" + j.ToString()].Value = dr["facultyName"].ToString();
-                    ws.Cells["F" + j.ToString()].Value = ("สัญญาการเป็นนักศึกษา" + eCPDataReport.ReplaceProgramToShortProgram(dr["programName"].ToString()) + " ฉบับลงวันที่ " + Util.ThaiLongDate(Util.ConvertDateEN(dr["contractDate"].ToString())));
+                    ws.Cells["F" + j.ToString()].Value = ("สัญญาการเป็นนักศึกษา" + eCPDataReport.ReplaceProgramToShortProgram(dr["programName"].ToString()) + " ฉบับลงวันที่ " + Util.ThaiLongDate(eCPUtil.ConvertDateEN(dr["contractDate"].ToString())));
                     ws.Cells["G" + j.ToString()].Value = Util.ConvertDateTH(dr["sendDate"].ToString());
                     ws.Cells["H" + j.ToString()].Value = Util.ConvertDateTH(dr["receiverDate"].ToString());
                     ws.Cells["I" + j.ToString()].Value = (dr["replyDateHistory"].ToString().Replace(",", "\n"));
@@ -6842,7 +6842,7 @@ public class eCPDataReportCertificateReimbursement {
             "                   <td width='100%'>" +
             "                       <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
             "                           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามที่" + data1[0, 10] + data1[0, 11] + " " + data1[0, 12] + " " +
-            "                           ได้ชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data1[0, 14]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data1[0, 28])) + " " +
+            "                           ได้ชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data1[0, 14]) + " ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data1[0, 28])) + " " +
             "                           ให้แก่มหาวิทยาลัยครบถ้วนแล้ว รายละเอียดปรากฏตามใบเสร็จรับเงินที่แนบมานี้ นั้น" +
             "                       </p>" +
             "                   </td>" +
@@ -6920,7 +6920,7 @@ public class eCPDataReportCertificateReimbursement {
                     "                               <div style='font:normal 15pt " + font + ";'>อ้างถึง</div>" +
                     "                           </td>" +
                     "                           <td width='550'>" +
-                    "                               <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>หนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
+                    "                               <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>หนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
                     "                           </td>" +
                     "                       </tr>" +
                     "                   </table>" +
@@ -6943,7 +6943,7 @@ public class eCPDataReportCertificateReimbursement {
                         "                           <div style='font:normal 15pt " + font + ";'>สิ่งที่ส่งมาด้วย</div>" +
                         "                       </td>" +
                         "                       <td width='502'>" +
-                        "                           <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>ใบเสร็จรับเงิน เล่มที่ " + (!string.IsNullOrEmpty(receiptBookNo) ? Util.NumberArabicToThai(receiptBookNo) : "") + " เลขที่ " + (!string.IsNullOrEmpty(receiptNo) ? Util.NumberArabicToThai(receiptNo) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(receiptDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(receiptDate)) : "") + "</div>" +
+                        "                           <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>ใบเสร็จรับเงิน เล่มที่ " + (!string.IsNullOrEmpty(receiptBookNo) ? Util.NumberArabicToThai(receiptBookNo) : "") + " เลขที่ " + (!string.IsNullOrEmpty(receiptNo) ? Util.NumberArabicToThai(receiptNo) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(receiptDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(receiptDate)) : "") + "</div>" +
                         "                       </td>" +
                         "                   </tr>" +
                         "               </table>" +
@@ -6963,7 +6963,7 @@ public class eCPDataReportCertificateReimbursement {
                     "           <td width='100%'>" +
                     "               <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
                     "                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง มหาวิทยาลัยมหิดลแจ้งให้ท่านชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data1[0, 14]) + " " +
-                    "                   ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data1[0, 28])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data1[0, 4]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data1[0, 4]) + ") " +
+                    "                   ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data1[0, 28])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data1[0, 4]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data1[0, 4]) + ") " +
                     "                   ให้แก่มหาวิทยาลัยมหิดล ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือดังกล่าว นั้น" +
                     "               </p>" +
                     "           </td>" +
@@ -7006,7 +7006,7 @@ public class eCPDataReportCertificateReimbursement {
                     "                               <div style='font:normal 15pt " + font + ";'>อ้างถึง</div>" +
                     "                           </td>" +
                     "                           <td width='550'>" +
-                    "                               <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>๑. หนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
+                    "                               <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>๑. หนังสือมหาวิทยาลัยมหิดล ที่ อว ๗๘/" + (!string.IsNullOrEmpty(pursuant) ? Util.NumberArabicToThai(pursuant) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(pursuantBookDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(pursuantBookDate)) : "") + "</div>" +
                     "                               <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>๒. หนังสือรับสภาพหนี้ ฉบับลงวันที่</div>" +
                     "                           </td>" +
                     "                       </tr>" +
@@ -7030,7 +7030,7 @@ public class eCPDataReportCertificateReimbursement {
                         receiptDate = (!string.IsNullOrEmpty(data4[0, 30]) ? data4[0, 30] : string.Empty);
 
                         html += (
-                            "                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" + Util.NumberArabicToThai((i + 1).ToString()) + ". สำเนาใบเสร็จรับเงิน เล่มที่ " + (!string.IsNullOrEmpty(receiptBookNo) ? Util.NumberArabicToThai(receiptBookNo) : "") + " เลขที่ " + (!string.IsNullOrEmpty(receiptNo) ? Util.NumberArabicToThai(receiptNo) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(receiptDate) ? Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(receiptDate)) : "") + "</div>"
+                            "                       <div style='font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" + Util.NumberArabicToThai((i + 1).ToString()) + ". สำเนาใบเสร็จรับเงิน เล่มที่ " + (!string.IsNullOrEmpty(receiptBookNo) ? Util.NumberArabicToThai(receiptBookNo) : "") + " เลขที่ " + (!string.IsNullOrEmpty(receiptNo) ? Util.NumberArabicToThai(receiptNo) : "") + " ลงวันที่ " + (!string.IsNullOrEmpty(receiptDate) ? Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(receiptDate)) : "") + "</div>"
                         );
                     }
                 }
@@ -7051,7 +7051,7 @@ public class eCPDataReportCertificateReimbursement {
                     "           <td width='100%'>" +
                     "               <p style='text-wrap:normal;font:normal 15pt " + font + ";text-align:justify;text-justify:inter-cluster;'>" +
                     "                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ตามหนังสือที่อ้างถึง ๑. มหาวิทยาลัยมหิดลแจ้งให้ท่านชดใช้เงินกรณีผิดสัญญาการเป็นนักศึกษาเพื่อศึกษาวิชา" + eCPDataReport.ReplaceProgramToShortProgram(data1[0, 14]) + " " +
-                    "                   ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(Util.ConvertDateEN(data1[0, 28])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data1[0, 4]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data1[0, 4]) + ") " +
+                    "                   ฉบับลงวันที่ " + Util.ThaiLongDateWithNumberTH(eCPUtil.ConvertDateEN(data1[0, 28])) + " เป็นจำนวนเงิน " + Util.NumberArabicToThai(double.Parse(data1[0, 4]).ToString("#,##0.00")) + " บาท (" + Util.ThaiBaht(data1[0, 4]) + ") " +
                     "                   ให้แก่มหาวิทยาลัยมหิดล ภายใน ๓๐ วันนับถัดจากวันที่ได้รับหนังสือดังกล่าว และท่านได้ตกลงผ่อนชำระเงินให้แก่มหาวิทยาลัยตามหนังสือที่อ้างถึง ๒. นั้น" +
                     "               </p>" +
                     "           </td>" +

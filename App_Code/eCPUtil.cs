@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๐๔/๐๘/๒๕๖๖>
+Modify date : <๑๓/๐๓/๒๕๖๗>
 Description : <สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป>
 =============================================
 */
@@ -10,6 +10,7 @@ Description : <สำหรับรวบรวมฟังก์ชั่น�
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -303,6 +304,16 @@ public class eCPUtil {
         }
         else
             return dateEN;
+    }
+
+    public static string ConvertDateEN(string dateTH) {
+        if (!string.IsNullOrEmpty(dateTH)) {
+            DateTime dateTime = DateTime.Parse((dateTH.Substring(6, 4) + "/" + dateTH.Substring(3, 2) + "/" + dateTH.Substring(0, 2)), new CultureInfo("th-TH"));
+
+            return (dateTime.Year + "/" + dateTime.Month + "/" + dateTime.Day);
+        }
+
+        return dateTH;
     }
 
     public static string MenuBar(bool loginResult) {
