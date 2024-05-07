@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๑๑/๐๑/๒๕๖๗>
+Modify date : <๐๓/๐๕/๒๕๖๗>
 Description : <สำหรับจัดการฐานข้อมูล>
 =============================================
 */
@@ -17,10 +17,12 @@ using Newtonsoft.Json.Linq;
 using FinService;
 using System.Web.UI;
 
-public class eCPDB {    
-    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Asynchronous Processing=true;";
+public class eCPDB {
     /*
+    public const string CONNECTION_STRING = "Server=smartdev-write.mahidol;Database=Infinity;User ID=A;Password=ryoT6Noidc9d;Asynchronous Processing=true;";
+    */
     public const string CONNECTION_STRING = "Server=10.41.117.18;Database=Infinity;User ID=yutthaphoom.taw;Password=F=8fu,u=yp;Asynchronous Processing=true;";
+    /*
     public const string CONNECTION_STRING = "Server=stddb2023.mahidol;Database=Infinity;User ID=eContractPenalty;Password=!2023!#eC0ntr@ctPen@lty#;Asynchronous Processing=true;";
     */
 
@@ -1816,7 +1818,7 @@ public class eCPDB {
             new SqlParameter("@cp2id", (!string.IsNullOrEmpty(cp2id) ? cp2id : null))
         );
 
-        string[,] data = new string[ds.Tables[0].Rows.Count, 52];
+        string[,] data = new string[ds.Tables[0].Rows.Count, 53];
         int i = 0;
 
         foreach (DataRow dr in ds.Tables[0].Rows) {
@@ -1872,6 +1874,7 @@ public class eCPDB {
             data[i, 49] = dr["LawyerPhoneNumber"].ToString();
             data[i, 50] = dr["LawyerMobileNumber"].ToString();
             data[i, 51] = dr["LawyerEmail"].ToString();
+            data[i, 52] = dr["TotalPayScholarship"].ToString();
         }
 
         ds.Dispose();
@@ -3962,7 +3965,7 @@ public class eCPDB {
                 if (c.Request["scholar"].Equals("1")) {
                     command += (
                         "(" +
-                        "BCID, ActualMonthScholarship, ActualScholarship, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
+                        "BCID, ActualMonthScholarship, ActualScholarship, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, TotalPenaltyRoundStang, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
                         ")" +
                         "VALUES " +
                         "(" +
@@ -3974,6 +3977,7 @@ public class eCPDB {
                         c.Request["actualday"] + ", " +
                         c.Request["subtotalpenalty"] + ", " +
                         c.Request["totalpenalty"] + ", " +
+                        c.Request["totalpenaltyroundstang"] + ", " +
                         "'" + c.Request["lawyerfullname"] + "', " +
                         (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                         (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +
@@ -3987,7 +3991,7 @@ public class eCPDB {
                 else {
                     command += (
                         "(" +
-                        "BCID, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
+                        "BCID, TotalPayScholarship, ActualMonth, ActualDay, SubtotalPenalty, TotalPenalty, TotalPenaltyRoundStang, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
                         ")" +
                         "VALUES " +
                         "(" +
@@ -3997,6 +4001,7 @@ public class eCPDB {
                         c.Request["actualday"] + ", " +
                         c.Request["subtotalpenalty"] + ", " +
                         c.Request["totalpenalty"] + ", " +
+                        c.Request["totalpenaltyroundstang"] + ", " +
                         "'" + c.Request["lawyerfullname"] + "', " +
                         (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                         (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +
@@ -4013,7 +4018,7 @@ public class eCPDB {
                 if (c.Request["civil"].Equals("1")) {
                     command += (
                         "(" +
-                        "BCID, IndemnitorAddress, Province, StudyLeave, RequireDate, ApproveDate, BeforeStudyLeaveStartDate, BeforeStudyLeaveEndDate, StudyLeaveStartDate, StudyLeaveEndDate, AfterStudyLeaveStartDate, AfterStudyLeaveEndDate, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
+                        "BCID, IndemnitorAddress, Province, StudyLeave, RequireDate, ApproveDate, BeforeStudyLeaveStartDate, BeforeStudyLeaveEndDate, StudyLeaveStartDate, StudyLeaveEndDate, AfterStudyLeaveStartDate, AfterStudyLeaveEndDate, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, TotalPenaltyRoundStang, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
                         ")" +
                         "VALUES " +
                         "(" +
@@ -4036,6 +4041,7 @@ public class eCPDB {
                         (string.IsNullOrEmpty(c.Request["actualday"]) ? "NULL" : c.Request["actualday"]) + ", " +
                         c.Request["subtotalpenalty"] + ", " +
                         c.Request["totalpenalty"] + ", " +
+                        c.Request["totalpenaltyroundstang"] + ", " +
                         "'" + c.Request["lawyerfullname"] + "', " +
                         (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                         (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +
@@ -4049,7 +4055,7 @@ public class eCPDB {
                 else {
                     command += (
                         "(" +
-                        "BCID, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
+                        "BCID, TotalPayScholarship, AllActualDate, ActualDate, RemainDate, ActualDay, SubtotalPenalty, TotalPenalty, TotalPenaltyRoundStang, LawyerFullname, LawyerPhoneNumber, LawyerMobileNumber, LawyerEmail, StatusRepay, StatusPayment, FormatPayment" +
                         ")" +
                         "VALUES " +
                         "(" +
@@ -4061,6 +4067,7 @@ public class eCPDB {
                         (string.IsNullOrEmpty(c.Request["actualday"]) ? "NULL" : c.Request["actualday"]) + ", " +
                         c.Request["subtotalpenalty"] + ", " +
                         c.Request["totalpenalty"] + ", " +
+                        c.Request["totalpenaltyroundstang"] + ", " +
                         "'" + c.Request["lawyerfullname"] + "', " +
                         (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                         (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +
@@ -4097,6 +4104,7 @@ public class eCPDB {
                     "ActualDay = " + c.Request["actualday"] + ", " +
                     "SubtotalPenalty = " + c.Request["subtotalpenalty"] + ", " +
                     "TotalPenalty = " + c.Request["totalpenalty"] + ", " +
+                    "TotalPenaltyRoundStang = " + c.Request["totalpenaltyroundstang"] + ", " +
                     "LawyerFullname = '" + c.Request["lawyerfullname"] + "', " +
                     "LawyerPhoneNumber = " + (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                     "LawyerMobileNumber = " + (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +
@@ -4128,6 +4136,7 @@ public class eCPDB {
                         "ActualDay = " + (string.IsNullOrEmpty(c.Request["actualday"]) ? "NULL" : c.Request["actualday"]) + ", " +
                         "SubtotalPenalty = " + c.Request["subtotalpenalty"] + ", " +
                         "TotalPenalty = " + c.Request["totalpenalty"] + ", " +
+                        "TotalPenaltyRoundStang = " + c.Request["totalpenaltyroundstang"] + ", " +
                         "LawyerFullname = '" + c.Request["lawyerfullname"] + "', " +
                         "LawyerPhoneNumber = " + (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                         "LawyerMobileNumber = " + (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +
@@ -4142,6 +4151,7 @@ public class eCPDB {
                         "TotalPayScholarship = " + c.Request["totalpayscholarship"] + ", " +
                         "SubtotalPenalty = " + c.Request["subtotalpenalty"] + ", " +
                         "TotalPenalty = " + c.Request["totalpenalty"] + ", " +
+                        "TotalPenaltyRoundStang = " + c.Request["totalpenaltyroundstang"] + ", " +
                         "LawyerFullname = '" + c.Request["lawyerfullname"] + "', " +
                         "LawyerPhoneNumber = " + (string.IsNullOrEmpty(c.Request["lawyerphonenumber"]) ? "NULL" : ("'" + c.Request["lawyerphonenumber"] + "'")) + ", " +
                         "LawyerMobileNumber = " + (string.IsNullOrEmpty(c.Request["lawyermobilenumber"]) ? "NULL" : ("'" + c.Request["lawyermobilenumber"] + "'")) + ", " +

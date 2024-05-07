@@ -4,7 +4,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๑๔/๑๒/๒๕๖๖>
+Modify date : <๐๓/๐๕/๒๕๖๗>
 Description : <สำหรับรับ request แล้วนำมา process แล้วส่ง response กลับไป>
 =============================================
 */
@@ -716,7 +716,8 @@ public class eCPHandler: IHttpHandler, IRequiresSessionState {
             "<actual>" + resultPenalty[3].ToString("#,##0") + "<actual>" +
             "<remain>" + resultPenalty[4].ToString("#,##0") + "<remain>" +
             "<totalpenalty>" + resultPenalty[6].ToString("#,##0.00") + "<totalpenalty>" +
-            "<total>" + resultPenalty[7].ToString("#,##0.00") + "<total>"
+            "<total>" + resultPenalty[15].ToString("#,##0.00") + "<total>" +
+            "<totalroundstang>" + resultPenalty[7].ToString("#,##0.00") + "<totalroundstang>"
         );
     }
 

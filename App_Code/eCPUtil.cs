@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๑๓/๐๓/๒๕๖๗>
+Modify date : <๐๓/๐๕/๒๕๖๗>
 Description : <สำหรับรวบรวมฟังก์ชั่นการทำงานทั่วไป>
 =============================================
 */
@@ -22,7 +22,7 @@ public class eCPUtil {
     public const int HEIGHT_PICTURE_STUDENT = 120;
     public const int ROW_PER_PAGE = 50;
     public const double PAYMENT_AT_LEAST = 30;
-    public const double PAY_REPAY_LEAST = 500;
+    public const double PAY_REPAY_LEAST = 1;
     public const int PERIOD_REPAY_LEAST = 40;
     public const string DIRECTOR = "นายอวยชัย อิสรวิริยะสกุล";
     public const string USERTYPE_STAFF = "STAFF";
@@ -1132,7 +1132,7 @@ public class eCPUtil {
         double allActual;
         double educationActual = 0;
         double totalPenalty = 0;
-        double[] result = new double[15];
+        double[] result = new double[16];
         int sYear = (!string.IsNullOrEmpty(scholarshipYear) ? int.Parse(scholarshipYear) : 0);
         int sMonth = (!string.IsNullOrEmpty(scholarshipMonth) ? int.Parse(scholarshipMonth) : 0);
         int iYear = (!string.IsNullOrEmpty(indemnitorYear) ? int.Parse(indemnitorYear) : 0);
@@ -1217,6 +1217,7 @@ public class eCPUtil {
             result[12] = dayLastMonth;
             result[13] = resultCalcDate[0];
             result[14] = educationActual;
+            result[15] = (sPayScholarship + totalPenalty);
 
             return result;
         }
@@ -1236,6 +1237,7 @@ public class eCPUtil {
         result[12] = 0;
         result[13] = 0;
         result[14] = educationActual;
+        result[15] = (sPayScholarship + iCash);
 
         return result;
     }

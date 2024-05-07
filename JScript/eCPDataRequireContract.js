@@ -399,6 +399,9 @@ function FillCalPayScholarshipPenalty(result) {
     if ($("#total-penalty").length > 0)
         $("#total-penalty").val("");
 
+    if ($("#total-penalty-roundstang").length > 0)
+        $("#total-penalty-roundstang").val("");
+
     if (result.length > 0) {
         var dataActualScholarship = result.split("<allactualscholarship>");
         var dataTotalPayScholarship = result.split("<totalpayscholarship>");
@@ -409,6 +412,7 @@ function FillCalPayScholarshipPenalty(result) {
         var dataRemain = result.split("<remain>");
         var dataSubtotal = result.split("<totalpenalty>");
         var dataTotal = result.split("<total>");
+        var dataTotalRoundStang = result.split("<totalroundstang>");
 
         if ($("#all-actual-month-scholarship").length > 0 &&
             $("#all-actual-month-scholarship").val().length == 0)
@@ -471,6 +475,9 @@ function FillCalPayScholarshipPenalty(result) {
 
         if ($("#total-penalty").length > 0)
             $("#total-penalty").val(dataTotal[1]);
+
+        if ($("#total-penalty-roundstang").length > 0)
+            $("#total-penalty-roundstang").val(dataTotalRoundStang[1]);
     }
 }
 
@@ -552,6 +559,7 @@ function ConfirmActionCPTransRequireContract(action) {
                             send1[send1.length] = ("actualday=" + DelCommas("all-actual-day"));
                             send1[send1.length] = ("subtotalpenalty=" + DelCommas("subtotal-penalty"));
                             send1[send1.length] = ("totalpenalty=" + DelCommas("total-penalty"));
+                            send1[send1.length] = ("totalpenaltyroundstang=" + DelCommas("total-penalty-roundstang"));
                         }
 
                         if (caseGraduate == "2") {
@@ -584,6 +592,7 @@ function ConfirmActionCPTransRequireContract(action) {
 
                                     send1[send1.length] = ("subtotalpenalty=" + DelCommas("subtotal-penalty"));
                                     send1[send1.length] = ("totalpenalty=" + DelCommas("total-penalty"));
+                                    send1[send1.length] = ("totalpenaltyroundstang=" + DelCommas("total-penalty-roundstang"));
                                 }
                                 else {
                                     if (DelCommas("remain-date") <= 0) {
@@ -606,6 +615,7 @@ function ConfirmActionCPTransRequireContract(action) {
                                 send1[send1.length] = ("totalpayscholarship=" + ($("#total-pay-scholarship").val().length > 0 ? DelCommas("total-pay-scholarship") : "0"));
                                 send1[send1.length] = ("subtotalpenalty=" + DelCommas("subtotal-penalty"));
                                 send1[send1.length] = ("totalpenalty=" + DelCommas("total-penalty"));
+                                send1[send1.length] = ("totalpenaltyroundstang=" + DelCommas("total-penalty-roundstang"));
                             }
                         }
 

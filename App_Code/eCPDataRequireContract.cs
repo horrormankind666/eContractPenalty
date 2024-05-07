@@ -2,7 +2,7 @@
 =============================================
 Author      : <ยุทธภูมิ ตวันนา>
 Create date : <๐๖/๐๘/๒๕๕๕>
-Modify date : <๑๑/๐๑/๒๕๖๗>
+Modify date : <๐๒/๐๕/๒๕๖๗>
 Description : <สำหรับการรับรายการแจ้ง>
 =============================================
 */
@@ -386,12 +386,13 @@ public class eCPDataRequireContract {
                 "                           <div class='content-left' id='subtotal-penalty-unit-label'>บาท</div>" +
                 "                       </div>" +
                 "                       <div class='clear'></div>" +
-                "                   </div>" +
+                "                   </div>" +                
                 "                   <div class='form-label-discription-style clear-bottom' id='cal-contract-penalty-total'>" +
                 "                       <div>" +
                 "                           <div class='content-left' id='total-penalty-label'>ยอดเงินที่ต้องรับผิดชอบชดใช้</div>" +
                 "                           <div class='content-left' id='total-penalty-input'>" +
                 "                               <input class='inputbox textbox-numeric' type='text' id='total-penalty' value='' style='width:120px' />" +
+                "                               <input class='inputbox textbox-numeric' type='hidden' id='total-penalty-roundstang' value='' style='width:120px' />" +
                 "                           </div>" +
                 "                           <div class='content-left' id='total-penalty-unit-label'>บาท</div>" +
                 "                       </div>" +
@@ -637,6 +638,7 @@ public class eCPDataRequireContract {
                 "                           <div class='content-left' id='total-penalty-label'>ยอดเงินที่ต้องรับผิดชอบชดใช้</div>" +
                 "                           <div class='content-left' id='total-penalty-input'>" +
                 "                               <input class='inputbox textbox-numeric' type='text' id='total-penalty' value='' style='width:120px' />" +
+                "                               <input class='inputbox textbox-numeric' type='hidden' id='total-penalty-roundstang' value='' style='width:120px' />" +
                 "                           </div>" +
                 "                           <div class='content-left' id='total-penalty-unit-label'>บาท</div>" +
                 "                       </div>" +

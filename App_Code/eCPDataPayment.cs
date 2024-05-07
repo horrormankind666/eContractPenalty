@@ -905,7 +905,10 @@ public class eCPDataPayment {
 
     private static string AddCpTransPaymentPayRepay(string[,] data) {
         string html = string.Empty;
+        /*
         string totalPenaltyDefault = data[0, 4];
+        */
+        string totalPenaltyDefault = data[0, 5];
         string statusPayment = data[0, 7];
         string remainDefault = data[0, 27];
         string capitalDefault = (statusPayment.Equals("1") ? totalPenaltyDefault : remainDefault);
@@ -1053,7 +1056,10 @@ public class eCPDataPayment {
 
     private static string AddCpTransPaymentFullRepay(string[,] data) {
         string html = string.Empty;
+        /*
         string totalPenaltyDefault = data[0, 4];
+        */
+        string totalPenaltyDefault = data[0, 5];
         string statusPayment = data[0, 7];
         string capitalDefault = totalPenaltyDefault;
         string totalInterestOverpaymentDefault = "0.00";
@@ -1163,6 +1169,7 @@ public class eCPDataPayment {
 
         if (data.GetLength(0) > 0) {
             string formatPayment = data[0, 43];
+            string totalPayScholarshipDefault = double.Parse(data[0, 52]).ToString("#,##0.00");
             string subtotalPenaltyDefault = double.Parse(data[0, 44]).ToString("#,##0.00");
             string totalPenaltyDefault = double.Parse(data[0, 45]).ToString("#,##0.00");
             string calInterestYesNoDefault = (!string.IsNullOrEmpty(data[0, 2]) ? eCPUtil.calInterestYesNo[Util.FindIndexArray2D(1, eCPUtil.calInterestYesNo, data[0, 2]) - 1, 0] : string.Empty);
@@ -1438,6 +1445,9 @@ public class eCPDataPayment {
                 "           <div>" +
                 "               <div class='content-left'>" +
                 "                   <div class='form-label-discription-style'>" +
+                "                       <div class='form-label-style'>จำนวนเงินทุนการศึกษาที่ชดใช้</div>" +
+                "                   </div>" +
+                "                   <div class='form-label-discription-style'>" +
                 "                       <div class='form-label-style'>จำนวนเงินค่าปรับผิดสัญญา</div>" +
                 "                   </div>" +
                 "                   <div class='form-label-discription-style'>" +
@@ -1503,6 +1513,11 @@ public class eCPDataPayment {
             html += (
                 "               </div>" +
                 "               <div class='content-left'>" +
+                "                   <div class='form-input-style'>" +
+                "                       <div class='form-input-content'>" +
+                "                           <span>" + totalPayScholarshipDefault + "</span> บาท" +
+                "                       </div>" +
+                "                   </div>" +
                 "                   <div class='form-input-style'>" +
                 "                       <div class='form-input-content'>" +
                 "                           <span>" + subtotalPenaltyDefault + "</span> บาท" +
@@ -2430,7 +2445,10 @@ public class eCPDataPayment {
                     "       <div>" + data[i, 22].Replace(",", "<br />") +"</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col6' onclick=" + callFunc + ">" +
+                    /*
                     "       <div>" + double.Parse(data[i, 19]).ToString("#,##0.00") + "</div>" +
+                    */
+                    "       <div>" + double.Parse(data[i, 20]).ToString("#,##0.00") + "</div>" +
                     "   </li>" +
                     "   <li class='table-col' id='table-content-cp-trans-payment-col7' onclick=" + callFunc + ">" +
                     "       <div>" + double.Parse(data[i, 23]).ToString("#,##0.00") + "</div>" +
